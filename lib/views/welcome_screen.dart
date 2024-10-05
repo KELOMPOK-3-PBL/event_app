@@ -2,6 +2,8 @@ import 'package:event_proposal_app/views/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +51,7 @@ class WelcomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // Keterangan aplikasi
-                        Text(
+                        const Text(
                           "Welcome to Polivent",
                           style: TextStyle(
                             fontSize: 24.0,
@@ -58,8 +60,8 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 16.0),
-                        Text(
+                        const SizedBox(height: 16.0),
+                        const Text(
                           "Polivent is an event app designed specifically to make it easier for you to explore and join exciting events around Polines. ",
                           style: TextStyle(
                             fontSize: 16.0,
@@ -67,7 +69,7 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(height: 40.0),
+                        const SizedBox(height: 40.0),
                         // Tombol Get Started
                         ElevatedButton(
                           onPressed: () {
@@ -76,18 +78,18 @@ class WelcomeScreen extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    LoginScreen(), // Ganti ke screen berikutnya
+                                    const LoginScreen(), // Ganti ke screen berikutnya
                               ),
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 80.0, vertical: 16.0),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
-                              backgroundColor: Color(0xff1886EA)),
-                          child: Text(
+                              backgroundColor: const Color(0xff1886EA)),
+                          child: const Text(
                             "Get Started",
                             style: TextStyle(
                               fontSize: 18.0,

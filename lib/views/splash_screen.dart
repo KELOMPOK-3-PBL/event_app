@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:event_proposal_app/views/welcome_screen.dart'; // Pastikan import WelcomeScreen
+import 'package:event_proposal_app/views/welcome_screen.dart'; // Pastikan path benar
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,39 +15,48 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreen(),
+      home: const SplashScreen(), // Mulai dari SplashScreen
     );
   }
 }
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  SplashScreenState createState() => SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class SplashScreenState extends State<SplashScreen> {
   double _opacity = 1.0;
 
   @override
   void initState() {
     super.initState();
 
-    // Mulai animasi fade out setelah 2 detik dan selesai dalam 1 detik
-    Future.delayed(Duration(seconds: 2), () {
+    // Mulai animasi fade out setelah 2 detik
+    Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         _opacity = 0.0; // Mengubah opacity menjadi 0 (fade out)
       });
-    });
 
-    // Setelah animasi selesai, navigasi ke WelcomeScreen
-    Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => WelcomeScreen(), // Ganti ke screen berikutnya
-        ),
-      );
+      // Setelah 1 detik (animasi fade out selesai), navigasi ke WelcomeScreen
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                const WelcomeScreen(), // Navigasi ke screen berikutnya
+          ),
+        );
+      });
     });
+  }
+
+  @override
+  void dispose() {
+    // Pastikan dispose dipanggil
+    super.dispose();
   }
 
   @override
@@ -55,18 +66,18 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: AnimatedOpacity(
           opacity: _opacity,
-          duration: Duration(seconds: 1), // Durasi animasi fade out
+          duration: const Duration(seconds: 1), // Durasi animasi fade out
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Logo
               Image.asset(
-                'assets/logo.png', // Ganti dengan path gambar logo Anda
-                width: 100, // Ubah ukuran sesuai kebutuhan
+                'assets/logo.png', // Pastikan path gambar logo benar
+                width: 100, // Ukuran logo
                 height: 100,
               ),
-              SizedBox(height: 20), // Jarak antara logo dan teks
-              Text(
+              const SizedBox(height: 20), // Jarak antara logo dan teks
+              const Text(
                 'POLIVENT',
                 style: TextStyle(
                   fontSize: 36.0,

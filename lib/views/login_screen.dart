@@ -1,11 +1,17 @@
+import 'package:event_proposal_app/uikit/ui_colors.dart';
+import 'package:event_proposal_app/views/home_superadmin.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uicons/uicons.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool rememberMe = false; // Variabel untuk slide button "Remember Me"
@@ -33,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: CustomScrollView(
         // Menggunakan CustomScrollView untuk dapat scroll
         slivers: [
-          SliverAppBar(
+          const SliverAppBar(
             floating: false, // Membuat AppBar floating
             pinned: true, // Menjaga AppBar tetap terlihat
           ),
@@ -49,51 +55,56 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 100,
                     height: 100,
                   ),
-                  SizedBox(height: 2),
+                  const SizedBox(height: 2),
                   Text(
-                    "Polivent",
-                    style: TextStyle(
-                      fontSize: 36.0,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff282A74),
+                    "POLIVENT",
+                    style: GoogleFonts.inter(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w800,
+                      color: const Color(0xff282A74),
                     ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 55),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Sign in",
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 28,
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w500,
+                        color: UIColor.typoBlack,
+                        fontSize: 24,
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   // Field input untuk email
                   TextField(
+                    // style: const TextStyle(color: UIColor.bgSolidWhite),
                     controller: emailController,
                     focusNode: emailFocusNode, // Mengaitkan FocusNode
                     decoration: InputDecoration(
                       labelText: 'Email',
-                      border: OutlineInputBorder(),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
+                        borderSide: const BorderSide(color: UIColor.primary),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
-                      ),
-                      labelStyle: TextStyle(color: Colors.black),
-                      floatingLabelStyle: TextStyle(color: Colors.blue),
+                          borderSide: const BorderSide(color: UIColor.typoGray),
+                          borderRadius: BorderRadius.circular(12)),
+                      labelStyle: const TextStyle(
+                          color: UIColor.typoGray, fontSize: 14),
+                      floatingLabelStyle:
+                          const TextStyle(color: UIColor.primary),
                       prefixIcon: Icon(
-                        Icons.email,
+                        UIcons.regularRounded.envelope,
+                        size: 20,
                         color: emailFocusNode.hasFocus
-                            ? Colors.blue // Warna saat fokus
-                            : Colors.black38, // Warna saat tidak fokus
+                            ? UIColor.primary // Warna saat fokus
+                            : UIColor.typoGray, // Warna saat tidak fokus
                       ),
                     ),
                   ),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
                   // Field input untuk password
                   TextField(
                     controller: passwordController,
@@ -102,22 +113,32 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: InputDecoration(
                       labelText: 'Password',
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
+                        borderSide: const BorderSide(color: UIColor.primary),
+                        borderRadius: BorderRadius.circular(12),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey),
+                        borderSide: const BorderSide(color: UIColor.typoGray),
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      labelStyle: TextStyle(color: Colors.black),
-                      floatingLabelStyle: TextStyle(color: Colors.blue),
-                      prefixIcon: Icon(Icons.lock, color: Colors.black38),
+                      labelStyle: const TextStyle(
+                          color: UIColor.typoGray, fontSize: 14),
+                      floatingLabelStyle:
+                          const TextStyle(color: UIColor.primary),
+                      prefixIcon: Icon(
+                        UIcons.regularRounded.lock,
+                        size: 20,
+                        color: passwordFocusNode.hasFocus
+                            ? UIColor.primary // Warna saat fokus
+                            : UIColor.typoGray, // Warna saat tidak fokus
+                      ),
                     ),
                   ),
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   // Slide button "Remember Me"
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Remember Me"),
+                      const Text("Remember Me"),
                       Switch(
                         value: rememberMe,
                         onChanged: (value) {
@@ -125,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             rememberMe = value;
                           });
                         },
-                        activeColor: Color(0xff1886EA),
+                        activeColor: UIColor.primary,
                       ),
                     ],
                   ),
@@ -137,25 +158,25 @@ class _LoginScreenState extends State<LoginScreen> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text("Forgot Password?"),
-                            content:
-                                Text("Reset password functionality goes here."),
+                            title: const Text("Forgot Password?"),
+                            content: const Text(
+                                "Reset password functionality goes here."),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: Text("OK"),
+                                child: const Text("OK"),
                               ),
                             ],
                           );
                         },
                       );
                     },
-                    child: Text("Forgot Password?",
+                    child: const Text("Forgot Password?",
                         style: TextStyle(color: Color(0xff1886EA))),
                   ),
-                  SizedBox(height: 24.0),
+                  const SizedBox(height: 24.0),
                   // Tombol Login
                   ElevatedButton(
                     onPressed: () {
@@ -165,67 +186,68 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Navigasi ke halaman berikutnya jika login berhasil
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        MaterialPageRoute(
+                            builder: (context) => const HomeSuperadmin()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
+                      padding: const EdgeInsets.symmetric(
                           horizontal: 130.0, vertical: 13.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
-                      backgroundColor: Color(0xff1886EA),
+                      backgroundColor: const Color(0xff1886EA),
                     ),
-                    child: Text("Sign in",
+                    child: const Text("Sign in",
                         style: TextStyle(fontSize: 18.0, color: Colors.white)),
                   ),
-                  SizedBox(height: 16.0),
-                  Text("OR",
-                      style: TextStyle(fontSize: 18, color: Colors.black38)),
-                  SizedBox(height: 16.0),
+                  const SizedBox(height: 16.0),
+                  // const Text("OR",
+                  //     style: TextStyle(fontSize: 18, color: Colors.black38)),
+                  //const SizedBox(height: 16.0),
                   // Sign In with Google button
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 13.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      backgroundColor: Colors.white70,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset('assets/google_logo.png', height: 20),
-                        SizedBox(width: 8.0),
-                        Text("Sign In with Google",
-                            style:
-                                TextStyle(fontSize: 18.0, color: Colors.black)),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  // Link untuk pendaftaran
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignupScreen()),
-                      );
-                    },
-                    child: Text(
-                      "Don't have an account? Sign Up",
-                      style: TextStyle(
-                        color: Color(0xff1886EA),
-                      ),
-                    ),
-                  ),
+                  //ElevatedButton(
+                  //  onPressed: () {
+                  //    Navigator.push(
+                  //      context,
+                  //      MaterialPageRoute(builder: (context) => HomeScreen()),
+                  //    );
+                  //  },
+                  //  style: ElevatedButton.styleFrom(
+                  //    padding: const EdgeInsets.symmetric(
+                  //        horizontal: 20.0, vertical: 13.0),
+                  //    shape: RoundedRectangleBorder(
+                  //      borderRadius: BorderRadius.circular(30.0),
+                  //    ),
+                  //    backgroundColor: Colors.white70,
+                  //  ),
+                  //  child: Row(
+                  //    mainAxisAlignment: MainAxisAlignment.center,
+                  //    children: [
+                  //      Image.asset('assets/google_logo.png', height: 20),
+                  //      const SizedBox(width: 8.0),
+                  //      const Text("Sign In with Google",
+                  //          style:
+                  //              TextStyle(fontSize: 18.0, color: Colors.black)),
+                  //    ],
+                  //  ),
+                  //),
+                  // const SizedBox(height: 16.0),
+                  // // Link untuk pendaftaran
+                  // TextButton(
+                  //   onPressed: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) => SignupScreen()),
+                  //     );
+                  //   },
+                  //   child: const Text(
+                  //     "Don't have an account? Sign Up",
+                  //     style: TextStyle(
+                  //       color: Color(0xff1886EA),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -236,28 +258,32 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Screen'),
-      ),
-      body: Center(
-        child: Text('Welcome to the Home Screen!'),
-      ),
-    );
-  }
-}
+// class HomeScreen extends StatelessWidget {
+//   const HomeScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Home Screen'),
+//       ),
+//       body: const Center(
+//         child: Text('Welcome to the Home Screen!'),
+//       ),
+//     );
+//   }
+// }
 
 class SignupScreen extends StatelessWidget {
+  const SignupScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: const Text('Sign Up'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('This is the signup screen.'),
       ),
     );

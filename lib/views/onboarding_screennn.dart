@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -8,16 +8,16 @@ class OnboardingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Container(
+        body: SizedBox(
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
-              Text(
+              const Text(
                 "Selamat Datang",
                 style: TextStyle(
                   color: Colors.black,
@@ -25,39 +25,39 @@ class OnboardingScreen extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              Text(
+              const Text(
                 "di Polivent",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 27,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w100,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 "POLINES Event",
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Padding(
-                padding: EdgeInsets.only(left: 5, right: 5),
+                padding: const EdgeInsets.only(left: 5, right: 5),
                 child: Image.asset('assets/onboardicon.png'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 50,
               ),
               Expanded(
                 child: Container(
                   width: double.infinity,
                   height: 300,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: Colors.white,
                       boxShadow: [
                         BoxShadow(
@@ -72,7 +72,7 @@ class OnboardingScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Padding(
+                      const Padding(
                         padding: EdgeInsets.only(left: 30, right: 30),
                         child: Text(
                           "Polivent merupakan sistem event proposal tempat pengguna dapat membuat, menemukan, dan berbagi informasi seputar event di Polines",
@@ -82,21 +82,21 @@ class OnboardingScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         child: MaterialButton(
                           minWidth: 100,
                           color: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(16), // Border radius
-                            side: BorderSide(
+                            side: const BorderSide(
                               color: Color.fromARGB(
                                   100, 2, 16, 36), // Warna border
                               width: 1, // Ketebalan border
                             ),
                           ),
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             "Mulai",
                             style: TextStyle(
                               fontSize: 17,

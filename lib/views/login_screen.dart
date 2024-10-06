@@ -1,6 +1,7 @@
 import 'package:event_proposal_app/uikit/ui_colors.dart';
 import 'package:event_proposal_app/views/home_superadmin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uicons/uicons.dart';
 
@@ -22,7 +23,14 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarIconBrightness:
+          Brightness.dark, // Menetapkan warna ikon status bar
+    ));
     emailFocusNode.addListener(() {
+      setState(() {}); // Memperbarui tampilan saat fokus berubah
+    });
+    passwordFocusNode.addListener(() {
       setState(() {}); // Memperbarui tampilan saat fokus berubah
     });
   }
@@ -39,10 +47,10 @@ class LoginScreenState extends State<LoginScreen> {
       body: CustomScrollView(
         // Menggunakan CustomScrollView untuk dapat scroll
         slivers: [
-          const SliverAppBar(
-            floating: false, // Membuat AppBar floating
-            pinned: true, // Menjaga AppBar tetap terlihat
-          ),
+          // const SliverAppBar(
+          //   floating: false, // Membuat AppBar floating
+          //   pinned: true, // Menjaga AppBar tetap terlihat
+          // ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
@@ -50,6 +58,7 @@ class LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  const SizedBox(height: 100),
                   Image.asset(
                     'assets/logo.png',
                     width: 100,
@@ -83,6 +92,8 @@ class LoginScreenState extends State<LoginScreen> {
                     controller: emailController,
                     focusNode: emailFocusNode, // Mengaitkan FocusNode
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: UIColor.bgSolidWhite,
                       labelText: 'Email',
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: UIColor.primary),
@@ -111,6 +122,8 @@ class LoginScreenState extends State<LoginScreen> {
                     focusNode: passwordFocusNode, // Mengaitkan FocusNode
                     obscureText: true,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: UIColor.bgSolidWhite,
                       labelText: 'Password',
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: UIColor.primary),

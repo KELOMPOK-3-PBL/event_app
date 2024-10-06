@@ -1,5 +1,13 @@
 import 'package:event_proposal_app/views/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+void initState() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarIconBrightness:
+        Brightness.light, // Menetapkan warna ikon status bar
+  ));
+}
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -20,7 +28,7 @@ class WelcomeScreen extends StatelessWidget {
                       // Gambar di bagian atas
                       Positioned.fill(
                         child: Image.asset(
-                          'assets/welcome.jpg', // Ganti dengan path gambar Anda
+                          'assets/welcome_screen.jpg', // Ganti dengan path gambar Anda
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -33,7 +41,8 @@ class WelcomeScreen extends StatelessWidget {
                               end: Alignment.bottomCenter,
                               colors: [
                                 Colors.transparent,
-                                Colors.white.withOpacity(0.6),
+                                const Color.fromARGB(255, 255, 255, 255)
+                                    .withOpacity(0.6),
                               ],
                             ),
                           ),

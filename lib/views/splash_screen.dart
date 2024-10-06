@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:event_proposal_app/views/welcome_screen.dart'; // Pastikan path benar
+import 'package:event_proposal_app/views/welcome_screen.dart';
+import 'package:google_fonts/google_fonts.dart'; // Pastikan path benar
 
 void main() {
   runApp(const MyApp());
@@ -73,16 +74,16 @@ class SplashScreenState extends State<SplashScreen> {
               // Logo
               Image.asset(
                 'assets/logo.png', // Pastikan path gambar logo benar
-                width: 100, // Ukuran logo
-                height: 100,
+                width: 200, // Ukuran logo
+                height: 200,
               ),
               const SizedBox(height: 20), // Jarak antara logo dan teks
-              const Text(
+              Text(
                 'POLIVENT',
-                style: TextStyle(
+                style: GoogleFonts.inter(
                   fontSize: 36.0,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff282A74),
+                  fontWeight: FontWeight.w700,
+                  color: const Color(0xff282A74),
                 ),
               ),
             ],

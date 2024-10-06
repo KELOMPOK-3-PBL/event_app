@@ -23,10 +23,6 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarIconBrightness:
-          Brightness.dark, // Menetapkan warna ikon status bar
-    ));
     emailFocusNode.addListener(() {
       setState(() {}); // Memperbarui tampilan saat fokus berubah
     });
@@ -204,15 +200,20 @@ class LoginScreenState extends State<LoginScreen> {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 130.0, vertical: 13.0),
+                      padding: const EdgeInsets.symmetric(vertical: 13.0),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                       backgroundColor: const Color(0xff1886EA),
                     ),
-                    child: const Text("Sign in",
-                        style: TextStyle(fontSize: 18.0, color: Colors.white)),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width *
+                          0.90, // Set the width to 90% of the screen width
+                      child: const Text("Sign in",
+                          textAlign: TextAlign.center,
+                          style:
+                              TextStyle(fontSize: 18.0, color: Colors.white)),
+                    ),
                   ),
                   const SizedBox(height: 16.0),
                   // const Text("OR",

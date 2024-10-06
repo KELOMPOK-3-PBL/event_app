@@ -1,15 +1,8 @@
 import 'package:event_proposal_app/uikit/ui_colors.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uicons/uicons.dart';
 import 'package:flutter/material.dart';
-
-void initState() {
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarIconBrightness:
-        Brightness.light, // Menetapkan warna ikon status bar
-  ));
-}
 
 class HomeSuperadmin extends StatelessWidget {
   const HomeSuperadmin({super.key});

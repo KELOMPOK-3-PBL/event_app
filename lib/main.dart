@@ -6,8 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarBrightness: Brightness.dark,
     statusBarIconBrightness:
-        Brightness.light, // Menetapkan warna ikon status bar
+        Brightness.dark, // Menetapkan warna ikon status bar
     systemNavigationBarColor:
         Colors.transparent, // Menetapkan warna navigation bar
     statusBarColor: Colors.transparent, // Set the status bar color

@@ -5,6 +5,7 @@ class UIColor {
 
   static const Color typoBlack = Color(0xff000000);
   static const Color typoGray = Color(0xff747688);
+  static const Color typoGray2 = Color(0xcccccccc);
 
   static const Color bgSolidWhite = Color(0xffffffff);
   static const Color bgWhite = Color(0xfff6f6f6);

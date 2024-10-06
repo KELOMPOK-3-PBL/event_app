@@ -4,7 +4,7 @@ import 'package:uicons/uicons.dart';
 import 'package:flutter/material.dart';
 
 class HomeSuperadmin extends StatelessWidget {
-  const HomeSuperadmin({Key? key}) : super(key: key);
+  const HomeSuperadmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -142,11 +142,13 @@ class HomeSuperadmin extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: 0,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
+        selectedFontSize: 12,
+        selectedItemColor: UIColor.primary,
+        unselectedItemColor: UIColor.typoGray2,
         showUnselectedLabels: true,
-        items: [
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(UIcons.solidRounded.navigation),
             label: 'Explore',

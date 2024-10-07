@@ -1,7 +1,7 @@
-import 'package:event_proposal_app/uikit/ui_colors.dart';
+import 'package:event_proposal_app/models/ui_colors.dart';
 import 'package:event_proposal_app/views/home_superadmin.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uicons/uicons.dart';
 
@@ -19,7 +19,8 @@ class LoginScreenState extends State<LoginScreen> {
   final FocusNode emailFocusNode = FocusNode(); // Fokus untuk TextField email
   final FocusNode passwordFocusNode =
       FocusNode(); // Fokus untuk TextField password
-
+  String email = "";
+  String password = "";
   @override
   void initState() {
     super.initState();
@@ -189,8 +190,8 @@ class LoginScreenState extends State<LoginScreen> {
                   // Tombol Login
                   ElevatedButton(
                     onPressed: () {
-                      String email = emailController.text;
-                      String password = passwordController.text;
+                      email = emailController.text;
+                      password = passwordController.text;
 
                       // Navigasi ke halaman berikutnya jika login berhasil
                       Navigator.push(

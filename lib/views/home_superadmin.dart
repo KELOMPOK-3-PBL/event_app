@@ -1,5 +1,5 @@
 import 'package:event_proposal_app/models/category_model.dart';
-import 'package:event_proposal_app/uikit/ui_colors.dart';
+import 'package:event_proposal_app/models/ui_colors.dart';
 // import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uicons/uicons.dart';
@@ -74,11 +74,15 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
                 SizedBox(
                   height: 45,
                   child: TextField(
+                    maxLines: 1,
                     decoration: InputDecoration(
+                      isDense: true,
+                      alignLabelWithHint: true,
                       hintText: 'Search event..',
+                      contentPadding: const EdgeInsets.all(16),
                       hintStyle: const TextStyle(
                           color: UIColor.typoGray, height: 1.5, fontSize: 14),
-                      //! -- icon search --
+                      //! -- icon search
                       prefixIcon: Icon(
                         UIcons.regularRounded.search,
                         color: UIColor.typoBlack,
@@ -97,16 +101,17 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
                       filled: true,
                       fillColor: UIColor.bgSolidWhite,
                     ),
+                    // overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 const SizedBox(height: 4),
               ],
             ),
           ),
-          //! -- quick category
           const SizedBox(
-            height: 20,
+            height: 14,
           ),
+          //! -- quick category
           Column(
             children: [
               _categoriesSection(), //! call CATEGORIES SECTION
@@ -114,125 +119,62 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
           ),
         ],
       ),
-      // body: Container(
-      //   padding: const EdgeInsets.all(16),
-      //   child: Column(
-      //     children: [
-      //       Row(
-      //         children: [
-      //           Expanded(
-      //             child: ElevatedButton(
-      //               onPressed: () {},
-      //               style: ElevatedButton.styleFrom(
-      //                 backgroundColor: Colors.blue,
-      //                 padding: const EdgeInsets.symmetric(vertical: 16),
-      //                 shape: RoundedRectangleBorder(
-      //                   borderRadius: BorderRadius.circular(8),
-      //                 ),
-      //               ),
-      //               child: const Text('Proposed'),
-      //             ),
-      //           ),
-      //           const SizedBox(width: 16),
-      //           Expanded(
-      //             child: ElevatedButton(
-      //               onPressed: () {},
-      //               style: ElevatedButton.styleFrom(
-      //                 backgroundColor: Colors.orange,
-      //                 padding: const EdgeInsets.symmetric(vertical: 16),
-      //                 shape: RoundedRectangleBorder(
-      //                   borderRadius: BorderRadius.circular(8),
-      //                 ),
-      //               ),
-      //               child: const Text('Pending'),
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //       const SizedBox(height: 16),
-      //       Row(
-      //         children: [
-      //           Expanded(
-      //             child: ElevatedButton(
-      //               onPressed: () {},
-      //               style: ElevatedButton.styleFrom(
-      //                 backgroundColor: Colors.red,
-      //                 padding: const EdgeInsets.symmetric(vertical: 16),
-      //                 shape: RoundedRectangleBorder(
-      //                   borderRadius: BorderRadius.circular(8),
-      //                 ),
-      //               ),
-      //               child: const Text('Rejected'),
-      //             ),
-      //           ),
-      //           const SizedBox(width: 16),
-      //           Expanded(
-      //             child: ElevatedButton(
-      //               onPressed: () {},
-      //               style: ElevatedButton.styleFrom(
-      //                 backgroundColor: Colors.green,
-      //                 padding: const EdgeInsets.symmetric(vertical: 16),
-      //                 shape: RoundedRectangleBorder(
-      //                   borderRadius: BorderRadius.circular(8),
-      //                 ),
-      //               ),
-      //               child: const Text('Approved'),
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.fromLTRB(
-            10, 10, 10, 0), // Tambahkan padding untuk bagian atas
-        decoration: const BoxDecoration(
-          color: UIColor.bgSolidWhite, // Set warna background
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(14),
-            topRight: Radius.circular(14),
-          ), // Tambahkan radius untuk bagian atas
-        ),
-        child: BottomNavigationBar(
-          elevation: 0, // Hilangkan shadow
-          backgroundColor:
-              Colors.transparent, // Set warna background menjadi transparan
-          type: BottomNavigationBarType.fixed,
-          currentIndex: 0,
-          selectedFontSize: 13,
-          unselectedFontSize: 13,
-          selectedItemColor: UIColor.primary, // Set warna item selected
-          unselectedItemColor:
-              UIColor.typoGray2, // Set warna item tidak selected
-          // selectedIconTheme:
-          //     const IconThemeData(size: 28), // Set ukuran icon selected
-          // unselectedIconTheme:
-          //     const IconThemeData(size: 28), // Set ukuran icon tidak selected
-          showUnselectedLabels: true,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(UIcons.solidRounded.navigation),
-              label: 'Explore',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(UIcons.solidRounded.calendar),
-              label: 'Events',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(UIcons.solidRounded.cloud_check),
-              label: 'Approval',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(UIcons.solidRounded.users_alt),
-              label: 'Accounts',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(UIcons.solidRounded.user),
-              label: 'Profile',
-            ),
-          ],
-        ),
+
+      //! BOTTOM NAVBAR
+      bottomNavigationBar:
+          navBarSuperadmin(), // memanggil method bottom navbar superadmin
+    );
+  }
+
+  //! BOTTOM NAVBAR SUPERADMIN
+  Container navBarSuperadmin() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(
+          10, 10, 10, 0), // Tambahkan padding untuk bagian atas
+      decoration: const BoxDecoration(
+        color: UIColor.bgSolidWhite, // Set warna background
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(14),
+          topRight: Radius.circular(14),
+        ), // Tambahkan radius untuk bagian atas
+      ),
+      child: BottomNavigationBar(
+        elevation: 0, // Hilangkan shadow
+        backgroundColor:
+            Colors.transparent, // Set warna background menjadi transparan
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 0,
+        selectedFontSize: 13,
+        unselectedFontSize: 13,
+        selectedItemColor: UIColor.primary, // Set warna item selected
+        unselectedItemColor: UIColor.typoGray2, // Set warna item tidak selected
+        // selectedIconTheme:
+        //     const IconThemeData(size: 28), // Set ukuran icon selected
+        // unselectedIconTheme:
+        //     const IconThemeData(size: 28), // Set ukuran icon tidak selected
+        showUnselectedLabels: true,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(UIcons.solidRounded.navigation),
+            label: 'Explore',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(UIcons.solidRounded.calendar),
+            label: 'Events',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(UIcons.solidRounded.cloud_check),
+            label: 'Approval',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(UIcons.solidRounded.users_alt),
+            label: 'Accounts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(UIcons.solidRounded.user),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }
@@ -240,7 +182,7 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
   //! CATEGORIES SECTION
   SizedBox _categoriesSection() {
     return SizedBox(
-      height: 28,
+      height: 30,
       // color: UIColor.propose,
       child: ListView.separated(
         itemCount: categories
@@ -254,14 +196,14 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
         itemBuilder: (context, index) {
           return Container(
             // height: 50,
-            width: 83,
+            width: 90,
             decoration: BoxDecoration(
                 color: categories[index].boxColor,
                 borderRadius: BorderRadius.circular(8)),
             child: Text(categories[index].name,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: UIColor.bgSolidWhite, height: 2.3, fontSize: 12)),
+                    color: UIColor.bgSolidWhite, height: 2.5, fontSize: 12)),
           );
         },
       ),

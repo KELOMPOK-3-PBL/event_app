@@ -43,13 +43,15 @@ class SplashScreenState extends State<SplashScreen> {
 
       // Setelah 1 detik (animasi fade out selesai), navigasi ke WelcomeScreen
       Future.delayed(const Duration(seconds: 1), () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                const WelcomeScreen(), // Navigasi ke screen berikutnya
-          ),
-        );
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  const WelcomeScreen(), // Navigasi ke screen berikutnya
+            ),
+          );
+        }
       });
     });
   }

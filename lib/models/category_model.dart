@@ -1,4 +1,4 @@
-import 'package:event_proposal_app/uikit/ui_colors.dart';
+import 'package:event_proposal_app/models/ui_colors.dart';
 import 'package:flutter/material.dart';
 
 class CategoryModel {

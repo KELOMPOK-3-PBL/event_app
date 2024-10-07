@@ -1,14 +1,33 @@
+import 'package:event_proposal_app/models/category_model.dart';
 import 'package:event_proposal_app/uikit/ui_colors.dart';
 // import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:uicons/uicons.dart';
 import 'package:flutter/material.dart';
 
-class HomeSuperadmin extends StatelessWidget {
+class HomeSuperadmin extends StatefulWidget {
   const HomeSuperadmin({super.key});
 
   @override
+  State<HomeSuperadmin> createState() => _HomeSuperadminState();
+}
+
+class _HomeSuperadminState extends State<HomeSuperadmin> {
+  List<CategoryModel> categories = [];
+
+  void _getCategories() {
+    categories = CategoryModel.getCategories();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getCategories();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _getCategories(); // memanggil method dari folder models
     return Scaffold(
       body: Column(
         children: [
@@ -51,6 +70,7 @@ class HomeSuperadmin extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 63),
+                //! -- search
                 SizedBox(
                   height: 45,
                   child: TextField(
@@ -58,8 +78,15 @@ class HomeSuperadmin extends StatelessWidget {
                       hintText: 'Search event..',
                       hintStyle: const TextStyle(
                           color: UIColor.typoGray, height: 1.5, fontSize: 14),
+                      //! -- icon search --
                       prefixIcon: Icon(
                         UIcons.regularRounded.search,
+                        color: UIColor.typoBlack,
+                        size: 18,
+                      ),
+                      //! -- icon filter
+                      suffixIcon: Icon(
+                        UIcons.regularRounded.settings_sliders,
                         color: UIColor.typoBlack,
                         size: 18,
                       ),
@@ -68,13 +95,22 @@ class HomeSuperadmin extends StatelessWidget {
                         borderSide: BorderSide.none,
                       ),
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: UIColor.bgSolidWhite,
                     ),
                   ),
                 ),
                 const SizedBox(height: 4),
               ],
             ),
+          ),
+          //! -- quick category
+          const SizedBox(
+            height: 20,
+          ),
+          Column(
+            children: [
+              _categoriesSection(), //! call CATEGORIES SECTION
+            ],
           ),
         ],
       ),
@@ -197,6 +233,37 @@ class HomeSuperadmin extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  //! CATEGORIES SECTION
+  SizedBox _categoriesSection() {
+    return SizedBox(
+      height: 28,
+      // color: UIColor.propose,
+      child: ListView.separated(
+        itemCount: categories
+            .length, // memanggil categori sesuai dengan jumlah yg ada di models
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(left: 20, right: 20),
+        // membuat jarak diantara widget
+        separatorBuilder: (context, index) => const SizedBox(
+          width: 10,
+        ),
+        itemBuilder: (context, index) {
+          return Container(
+            // height: 50,
+            width: 83,
+            decoration: BoxDecoration(
+                color: categories[index].boxColor,
+                borderRadius: BorderRadius.circular(8)),
+            child: Text(categories[index].name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: UIColor.bgSolidWhite, height: 2.3, fontSize: 12)),
+          );
+        },
       ),
     );
   }

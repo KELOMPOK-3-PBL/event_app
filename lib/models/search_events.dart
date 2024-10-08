@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class SearchEvents {
   static SizedBox searchEvents() {
     return SizedBox(
-      // height: 45,
+      height: 45,
       child: TextField(
         maxLines: 1,
         minLines: 1,
@@ -13,9 +13,8 @@ class SearchEvents {
           isDense: true,
           alignLabelWithHint: true,
           hintText: 'Search event..',
-          contentPadding: const EdgeInsets.all(16),
-          hintStyle: const TextStyle(
-              color: UIColor.typoGray, height: 1.5, fontSize: 14),
+          contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+          hintStyle: const TextStyle(color: UIColor.typoGray, fontSize: 14),
           //! -- icon search
           prefixIcon: Icon(
             UIcons.regularRounded.search,

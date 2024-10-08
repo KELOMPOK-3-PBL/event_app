@@ -1,32 +1,32 @@
 import 'package:event_proposal_app/models/ui_colors.dart';
 import 'package:flutter/material.dart';
 
-class CategoryModel {
+class CategoryEvents {
   String name;
   Color boxColor;
 
-  CategoryModel({
+  CategoryEvents({
     required this.name,
     required this.boxColor,
   });
 
   //! Isi Category -- nama & warna --
-  static List<CategoryModel> getCategories() {
-    List<CategoryModel> categories = [];
+  static List<CategoryEvents> getCategories() {
+    List<CategoryEvents> categories = [];
 
-    categories.add(CategoryModel(
+    categories.add(CategoryEvents(
       name: 'Proposed',
       boxColor: UIColor.propose,
     ));
-    categories.add(CategoryModel(
+    categories.add(CategoryEvents(
       name: 'Pending',
       boxColor: UIColor.pending,
     ));
-    categories.add(CategoryModel(
+    categories.add(CategoryEvents(
       name: 'Rejected',
       boxColor: UIColor.rejected,
     ));
-    categories.add(CategoryModel(
+    categories.add(CategoryEvents(
       name: 'Approved',
       boxColor: UIColor.approved,
     ));
@@ -35,9 +35,9 @@ class CategoryModel {
   }
 
   //! model tampilan
-  static getCategoryModel() {
-    List<CategoryModel> categories = [];
-    categories = CategoryModel.getCategories();
+  static getCategoryEvents() {
+    List<CategoryEvents> categories = [];
+    categories = CategoryEvents.getCategories();
 
     return SizedBox(
       height: 30,

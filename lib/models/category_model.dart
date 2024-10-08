@@ -10,6 +10,7 @@ class CategoryModel {
     required this.boxColor,
   });
 
+  //! Isi Category -- nama & warna --
   static List<CategoryModel> getCategories() {
     List<CategoryModel> categories = [];
 
@@ -31,5 +32,39 @@ class CategoryModel {
     ));
 
     return categories;
+  }
+
+  //! model tampilan
+  static getCategoryModel() {
+    List<CategoryModel> categories = [];
+    categories = CategoryModel.getCategories();
+
+    return SizedBox(
+      height: 30,
+      // color: UIColor.propose,
+      child: ListView.separated(
+        itemCount: categories
+            .length, // memanggil categori sesuai dengan jumlah yg ada di models
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(left: 20, right: 20),
+        // membuat jarak diantara widget
+        separatorBuilder: (context, index) => const SizedBox(
+          width: 10,
+        ),
+        itemBuilder: (context, index) {
+          return Container(
+            // height: 50,
+            width: 90,
+            decoration: BoxDecoration(
+                color: categories[index].boxColor,
+                borderRadius: BorderRadius.circular(8)),
+            child: Text(categories[index].name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: UIColor.bgSolidWhite, height: 2.5, fontSize: 12)),
+          );
+        },
+      ),
+    );
   }
 }

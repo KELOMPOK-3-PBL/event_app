@@ -35,7 +35,7 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
             padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
             decoration: BoxDecoration(
               image: const DecorationImage(
-                image: AssetImage('assets/head_darken.png'),
+                image: AssetImage('assets/background.png'),
                 fit:
                     BoxFit.cover, // Set the image to cover the entire container
               ),

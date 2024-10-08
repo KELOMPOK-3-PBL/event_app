@@ -2,7 +2,6 @@ import 'package:event_proposal_app/models/ui_colors.dart';
 import 'package:event_proposal_app/views/login_screen.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void initState() {}
 
@@ -60,9 +59,9 @@ class WelcomeScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             // Keterangan aplikasi
-                            Text(
+                            const Text(
                               "Welcome to Polivent",
-                              style: GoogleFonts.inter(
+                              style: TextStyle(
                                 fontSize: 24.0,
                                 fontWeight: FontWeight.bold,
                                 color: UIColor.primary,
@@ -98,9 +97,9 @@ class WelcomeScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(30.0),
                                   ),
                                   backgroundColor: const Color(0xff1886EA)),
-                              child: Text(
+                              child: const Text(
                                 "Get Started",
-                                style: GoogleFonts.inter(
+                                style: TextStyle(
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.white,

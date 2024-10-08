@@ -1,7 +1,7 @@
 import 'package:event_proposal_app/models/category_model.dart';
 import 'package:event_proposal_app/models/ui_colors.dart';
 // import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:uicons/uicons.dart';
 import 'package:flutter/material.dart';
 
@@ -52,18 +52,18 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 16),
-                Text(
+                const Text(
                   'Hi, Fattur 👋',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
+                const Text(
                   'You are logged in as superadmin',
-                  style: GoogleFonts.inter(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: Colors.white,

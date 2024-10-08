@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:event_proposal_app/views/welcome_screen.dart';
-import 'package:google_fonts/google_fonts.dart'; // Pastikan path benar
+// Pastikan path benar
 
 void main() {
   runApp(const MyApp());
@@ -80,12 +80,12 @@ class SplashScreenState extends State<SplashScreen> {
                 height: 200,
               ),
               const SizedBox(height: 20), // Jarak antara logo dan teks
-              Text(
+              const Text(
                 'POLIVENT',
-                style: GoogleFonts.inter(
+                style: TextStyle(
                   fontSize: 36.0,
                   fontWeight: FontWeight.w700,
-                  color: const Color(0xff282A74),
+                  color: Color(0xff282A74),
                 ),
               ),
             ],

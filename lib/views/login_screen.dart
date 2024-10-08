@@ -2,7 +2,7 @@ import 'package:event_proposal_app/models/ui_colors.dart';
 import 'package:event_proposal_app/views/home_superadmin.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:uicons/uicons.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -62,20 +62,20 @@ class LoginScreenState extends State<LoginScreen> {
                     height: 100,
                   ),
                   const SizedBox(height: 2),
-                  Text(
+                  const Text(
                     "POLIVENT",
-                    style: GoogleFonts.inter(
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
-                      color: const Color(0xff282A74),
+                      color: Color(0xff282A74),
                     ),
                   ),
                   const SizedBox(height: 55),
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Sign in",
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         fontWeight: FontWeight.w500,
                         color: UIColor.typoBlack,
                         fontSize: 24,

@@ -2,7 +2,6 @@ import 'package:event_proposal_app/models/ui_colors.dart';
 import 'package:event_proposal_app/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -21,9 +20,9 @@ class MyApp extends StatelessWidget {
 
   ThemeData _buildTheme(Brightness brightness) {
     return ThemeData(
+      fontFamily: "Inter",
       brightness: brightness,
-      textTheme: GoogleFonts.interTextTheme(
-          ThemeData(brightness: brightness).textTheme),
+      textTheme: (ThemeData(brightness: brightness).textTheme),
       scaffoldBackgroundColor: UIColor.bgWhite,
     );
   }

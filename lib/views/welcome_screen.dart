@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+void initState() {}
+
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: UIColor.bgSolidWhite,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
@@ -24,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
                           // Gambar di bagian atas
                           Positioned.fill(
                             child: Image.asset(
-                              'assets/welcome_screen.jpg', // Ganti dengan path gambar Anda
+                              'assets/image_welcome.png', // Ganti dengan path gambar Anda
                               fit: BoxFit.cover,
                             ),
                           ),

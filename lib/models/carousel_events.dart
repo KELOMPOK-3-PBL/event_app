@@ -5,7 +5,7 @@ import 'package:uicons/uicons.dart';
 
 class CarouselEvents {
   String tittle;
-  int quota;
+  String quota;
   String posterUrl;
   String place;
   String location;
@@ -30,20 +30,20 @@ class CarouselEvents {
 
     events.add(CarouselEvents(
       tittle: 'Proposed',
-      quota: 12,
+      quota: '12',
       posterUrl:
           "https://cdn.pixabay.com/photo/2023/04/20/12/22/globe-7939725_1280.jpg",
       boxColor: UIColor.propose,
-      place: "",
+      place: "GKT II",
       location: "",
       dateStart: DateTime.utc(1989, 11, 9),
       status: "",
     ));
     events.add(CarouselEvents(
       tittle: 'Proposed',
-      quota: 12,
+      quota: '120',
       posterUrl:
-          "https://drive.google.com/open?id=1kwyK1vJeQwd1OFPWcQ0NLLeEbV9muFxB&usp=drive_fs",
+          "https://cdn.pixabay.com/photo/2023/11/02/05/23/woman-8359670_1280.png",
       boxColor: UIColor.propose,
       place: "",
       location: "",
@@ -52,7 +52,7 @@ class CarouselEvents {
     ));
     events.add(CarouselEvents(
       tittle: 'Proposed',
-      quota: 12,
+      quota: '20',
       posterUrl: "",
       boxColor: UIColor.propose,
       place: "",
@@ -60,17 +60,6 @@ class CarouselEvents {
       dateStart: DateTime.utc(1989, 11, 9),
       status: "",
     ));
-    events.add(CarouselEvents(
-      tittle: 'Proposed',
-      quota: 12,
-      posterUrl: "",
-      boxColor: UIColor.propose,
-      place: "",
-      location: "",
-      dateStart: DateTime.utc(1989, 11, 9),
-      status: "",
-    ));
-
     return events;
   }
 
@@ -146,8 +135,8 @@ class CarouselEvents {
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                const Text('120 Seat',
-                                    style: TextStyle(
+                                Text("${events[index].quota} people",
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
                                       color: UIColor.bgSolidWhite,
@@ -164,8 +153,26 @@ class CarouselEvents {
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                const Text('GKT Lt. 2',
-                                    style: TextStyle(
+                                Text(events[index].place,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: UIColor.bgSolidWhite,
+                                    ))
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  color: UIColor.bgSolidWhite,
+                                  UIcons.regularRounded.calendar,
+                                  size: 12,
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Text(events[index].dateStart.toIso8601String(),
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
                                       color: UIColor.bgSolidWhite,

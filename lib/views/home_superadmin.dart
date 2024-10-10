@@ -77,6 +77,7 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
             const SizedBox(
               height: 14,
             ),
+
             //! -- quick category
             CategoryEvents.getCategoryEvents(), //! memanggil model => category
             //! -- Newly Proposed Events

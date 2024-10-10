@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:event_proposal_app/models/ui_colors.dart';
 
 import 'package:uicons/uicons.dart';
+import 'package:intl/intl.dart';
 
 class CarouselEvents {
   String tittle;
@@ -9,9 +10,8 @@ class CarouselEvents {
   String posterUrl;
   String place;
   String location;
-  DateTime dateStart;
+  String dateStart;
   String status;
-  Color boxColor;
 
   CarouselEvents({
     required this.tittle,
@@ -21,11 +21,11 @@ class CarouselEvents {
     required this.location,
     required this.dateStart,
     required this.status,
-    required this.boxColor,
   });
 
   //! Isi Category -- nama & warna --
   static List<CarouselEvents> getEvents() {
+    DateTime now = DateTime.now();
     List<CarouselEvents> events = [];
 
     events.add(CarouselEvents(
@@ -33,10 +33,9 @@ class CarouselEvents {
       quota: '12',
       posterUrl:
           "https://cdn.pixabay.com/photo/2023/04/20/12/22/globe-7939725_1280.jpg",
-      boxColor: UIColor.propose,
       place: "GKT II",
-      location: "",
-      dateStart: DateTime.utc(1989, 11, 9),
+      location: "Semarang, Indonesia",
+      dateStart: DateFormat('E, d MMM yyy').format(now),
       status: "",
     ));
     events.add(CarouselEvents(
@@ -44,20 +43,18 @@ class CarouselEvents {
       quota: '120',
       posterUrl:
           "https://cdn.pixabay.com/photo/2023/11/02/05/23/woman-8359670_1280.png",
-      boxColor: UIColor.propose,
       place: "",
       location: "",
-      dateStart: DateTime.utc(1989, 11, 9),
+      dateStart: DateFormat('E, d MMM yyy').format(now),
       status: "",
     ));
     events.add(CarouselEvents(
       tittle: 'Proposed',
       quota: '20',
       posterUrl: "",
-      boxColor: UIColor.propose,
       place: "",
       location: "",
-      dateStart: DateTime.utc(1989, 11, 9),
+      dateStart: DateFormat('E, d MMM yyy').format(now),
       status: "",
     ));
     return events;
@@ -165,13 +162,31 @@ class CarouselEvents {
                               children: [
                                 Icon(
                                   color: UIColor.bgSolidWhite,
+                                  UIcons.regularRounded.location_alt,
+                                  size: 12,
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Text(events[index].location,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: UIColor.bgSolidWhite,
+                                    ))
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Icon(
+                                  color: UIColor.bgSolidWhite,
                                   UIcons.regularRounded.calendar,
                                   size: 12,
                                 ),
                                 const SizedBox(
                                   width: 8,
                                 ),
-                                Text(events[index].dateStart.toIso8601String(),
+                                Text(events[index].dateStart,
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,

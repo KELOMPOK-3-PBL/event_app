@@ -2,7 +2,7 @@ import 'package:event_proposal_app/models/category_events.dart';
 import 'package:event_proposal_app/models/carousel_events.dart';
 import 'package:event_proposal_app/models/bottom_navbar.dart';
 import 'package:event_proposal_app/models/search_events.dart';
-// import 'package:event_proposal_app/models/ui_colors.dart';
+import 'package:event_proposal_app/models/ui_colors.dart';
 // import 'package:flutter/services.dart';
 
 // import 'package:uicons/uicons.dart';
@@ -82,29 +82,29 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
             CategoryEvents.getCategoryEvents(), //! memanggil model => category
             //! -- Newly Proposed Events
             CarouselEvents.getCarouselEvents(),
-            // Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     const Padding(
-            //       padding: EdgeInsets.fromLTRB(20, 32, 20, 16),
-            //       child: Text(
-            //         'Newly Proposed Events',
-            //         textAlign: TextAlign.right,
-            //         style: TextStyle(
-            //             color: UIColor.typoBlack,
-            //             fontSize: 16,
-            //             fontWeight: FontWeight.w800),
-            //       ),
-            //     ),
-            //     Container(
-            //       height: 200,
-            //       color: UIColor.propose,
-            //       child: ListView.builder(itemBuilder: (context, index) {
-            //         return Container();
-            //       }),
-            //     ),
-            //   ],
-            // ),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(20, 16, 20, 16),
+                  child: Text(
+                    'Events Available',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                        color: UIColor.typoBlack,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800),
+                  ),
+                ),
+                // SizedBox(
+                //   height: 200,
+                //   child: ListView.builder(itemBuilder: (context, index) {
+                //     return Container();
+                //   }),
+                // ),
+              ],
+            ),
           ],
         ),
       ),

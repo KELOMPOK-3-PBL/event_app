@@ -226,9 +226,6 @@ class CarouselEvents {
           },
         ),
       ),
-      const SizedBox(
-        height: 20,
-      )
     ]);
   }
 }

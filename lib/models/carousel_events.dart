@@ -31,8 +31,7 @@ class CarouselEvents {
     events.add(CarouselEvents(
       tittle: 'Proposed',
       quota: '12',
-      posterUrl:
-          "https://cdn.pixabay.com/photo/2023/04/20/12/22/globe-7939725_1280.jpg",
+      posterUrl: "http://172.21.208.1/poster/IMG-20240206-WA0003.jpg",
       place: "GKT II",
       location: "Semarang, Indonesia",
       dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -41,8 +40,7 @@ class CarouselEvents {
     events.add(CarouselEvents(
       tittle: 'Proposed',
       quota: '120',
-      posterUrl:
-          "https://cdn.pixabay.com/photo/2023/11/02/05/23/woman-8359670_1280.png",
+      posterUrl: "http://172.21.208.1/poster/IMG-20231212-WA0025.jpg",
       place: "",
       location: "",
       dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -51,7 +49,7 @@ class CarouselEvents {
     events.add(CarouselEvents(
       tittle: 'Proposed',
       quota: '20',
-      posterUrl: "",
+      posterUrl: "http://172.21.208.1/poster/IMG-20231209-WA0006.jpg",
       place: "",
       location: "",
       dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -95,9 +93,9 @@ class CarouselEvents {
               width: MediaQuery.of(context).size.width - 40,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(events[index].posterUrl),
-                    fit: BoxFit.cover,
-                  ),
+                      image: NetworkImage(events[index].posterUrl),
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter),
                   // color: events[index].boxColor,
                   borderRadius: BorderRadius.circular(12)),
               child: Column(

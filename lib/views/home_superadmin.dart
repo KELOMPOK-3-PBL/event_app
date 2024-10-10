@@ -78,7 +78,7 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
               height: 14,
             ),
 
-            //! -- quick category
+            //! -- Quick Category
             CategoryEvents.getCategoryEvents(), //! memanggil model => category
             //! -- Newly Proposed Events
             CarouselEvents.getCarouselEvents(),
@@ -93,15 +93,16 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
                     fontWeight: FontWeight.w800),
               ),
             ),
+            //! -- Another Events
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Wrap(
                 // Wrap will automatically adjust the children horizontally and vertically
                 spacing: 10,
                 runSpacing: 10,
-                children: List.generate(8, (index) {
+                children: List.generate(4, (index) {
                   return Container(
-                    width: (MediaQuery.of(context).size.width - 52) /
+                    width: (MediaQuery.of(context).size.width - 44) /
                         2, // Adaptive width for two columns
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
@@ -133,20 +134,20 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(height: 8),
+                              // const SizedBox(height: 0),
                               Container(
                                 decoration: BoxDecoration(
                                   color: Colors.blue[300],
-                                  borderRadius: BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 4, horizontal: 8),
+                                    vertical: 0, horizontal: 10),
                                 child: const Text(
                                   'Proposed',
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
                               ),
@@ -154,7 +155,7 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
                               const Text(
                                 "Competition : Business Plan",
                                 style: TextStyle(
-                                  fontSize: 14,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black87,
                                 ),

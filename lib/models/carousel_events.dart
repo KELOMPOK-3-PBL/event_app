@@ -31,7 +31,7 @@ class CarouselEvents {
     events.add(CarouselEvents(
       tittle: 'Proposed',
       quota: '12',
-      posterUrl: "http://172.21.208.1/poster/IMG-20240206-WA0003.jpg",
+      posterUrl: "http://192.168.110.131/poster/IMG-20231209-WA0006.jpg",
       place: "GKT II",
       location: "Semarang, Indonesia",
       dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -40,7 +40,7 @@ class CarouselEvents {
     events.add(CarouselEvents(
       tittle: 'Proposed',
       quota: '120',
-      posterUrl: "http://172.21.208.1/poster/IMG-20231212-WA0025.jpg",
+      posterUrl: "http://192.168.110.131/poster/IMG-20240131-WA0001.jpg",
       place: "",
       location: "",
       dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -49,7 +49,7 @@ class CarouselEvents {
     events.add(CarouselEvents(
       tittle: 'Proposed',
       quota: '20',
-      posterUrl: "http://172.21.208.1/poster/IMG-20231209-WA0006.jpg",
+      posterUrl: "http://192.168.110.131/poster/IMG-20231209-WA0006.jpg",
       place: "",
       location: "",
       dateStart: DateFormat('E, d MMM yyy').format(now),

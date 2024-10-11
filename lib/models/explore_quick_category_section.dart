@@ -34,8 +34,8 @@ class CategoryEvents {
   }
 }
 
-class CategoryEventsWidget extends StatelessWidget {
-  const CategoryEventsWidget({super.key});
+class QuickCategorySection extends StatelessWidget {
+  const QuickCategorySection({super.key});
 
   @override
   Widget build(BuildContext context) {

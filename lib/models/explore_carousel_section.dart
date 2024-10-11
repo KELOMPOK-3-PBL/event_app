@@ -12,12 +12,12 @@ class CarouselSection extends StatefulWidget {
 }
 
 class _CarouselEventsState extends State<CarouselSection> {
-  List<CarouselEventsModel> _events = [];
+  List<CarouselEventsModel> _eventsCarousel = [];
 
   @override
   void initState() {
     super.initState();
-    _events = getEvents();
+    _eventsCarousel = getEventsCarousel();
   }
 
   @override
@@ -25,6 +25,7 @@ class _CarouselEventsState extends State<CarouselSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        //! Section Tittle
         const Padding(
           padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
           child: Text(
@@ -36,11 +37,12 @@ class _CarouselEventsState extends State<CarouselSection> {
                 fontWeight: FontWeight.w800),
           ),
         ),
+        //! Carousel Content
         SizedBox(
           height: (MediaQuery.of(context).size.width - 40) / 1.66,
           child: ListView.separated(
             shrinkWrap: true,
-            itemCount: _events.length,
+            itemCount: _eventsCarousel.length,
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.only(left: 20, right: 20),
             separatorBuilder: (context, index) => const SizedBox(
@@ -51,8 +53,8 @@ class _CarouselEventsState extends State<CarouselSection> {
                 width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage('assets/image_welcome.png'),
-                        // image: NetworkImage(_events[index].posterUrl),
+                        // image: AssetImage('assets/image_welcome.png'),
+                        image: NetworkImage(_eventsCarousel[index].posterUrl),
                         fit: BoxFit.cover,
                         alignment: Alignment.topCenter),
                     borderRadius: BorderRadius.circular(12)),
@@ -89,7 +91,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                   const SizedBox(
                                     width: 8,
                                   ),
-                                  Text("${_events[index].quota} people",
+                                  Text("${_eventsCarousel[index].quota} people",
                                       style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -107,7 +109,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                   const SizedBox(
                                     width: 8,
                                   ),
-                                  Text(_events[index].place,
+                                  Text(_eventsCarousel[index].place,
                                       style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -125,7 +127,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                   const SizedBox(
                                     width: 8,
                                   ),
-                                  Text(_events[index].location,
+                                  Text(_eventsCarousel[index].location,
                                       style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -143,7 +145,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                   const SizedBox(
                                     width: 8,
                                   ),
-                                  Text(_events[index].dateStart,
+                                  Text(_eventsCarousel[index].dateStart,
                                       style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w400,
@@ -187,14 +189,14 @@ class CarouselEventsModel {
   });
 }
 
-List<CarouselEventsModel> getEvents() {
+List<CarouselEventsModel> getEventsCarousel() {
   DateTime now = DateTime.now();
   List<CarouselEventsModel> events = [];
 
   events.add(CarouselEventsModel(
     tittle: 'Proposed',
     quota: '12',
-    posterUrl: "http://172.16.172.122/poster/IMG-20231209-WA0006.jpg",
+    posterUrl: "http://192.168.110.131/poster/IMG-20231209-WA0006.jpg",
     place: "GKT II",
     location: "Semarang, Indonesia",
     dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -203,7 +205,7 @@ List<CarouselEventsModel> getEvents() {
   events.add(CarouselEventsModel(
     tittle: 'Proposed',
     quota: '120',
-    posterUrl: "http://172.16.172.122/poster/IMG-20240131-WA0001.jpg",
+    posterUrl: "http://192.168.110.131/poster/IMG-20240131-WA0001.jpg",
     place: "GKT I",
     location: "Semarang, Indonesia",
     dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -212,7 +214,7 @@ List<CarouselEventsModel> getEvents() {
   events.add(CarouselEventsModel(
     tittle: 'Proposed',
     quota: '20',
-    posterUrl: "http://172.16.172.122/poster/IMG-20231209-WA0006.jpg",
+    posterUrl: "http://192.168.110.131/poster/IMG-20231209-WA0006.jpg",
     place: "GKT I",
     location: "Semarang, Indonesia",
     dateStart: DateFormat('E, d MMM yyy').format(now),

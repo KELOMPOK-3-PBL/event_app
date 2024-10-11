@@ -31,7 +31,7 @@ class CarouselEvents {
     events.add(CarouselEvents(
       tittle: 'Proposed',
       quota: '12',
-      posterUrl: "http://192.168.110.131/poster/IMG-20231209-WA0006.jpg",
+      posterUrl: "http://172.16.172.122/poster/IMG-20231209-WA0006.jpg",
       place: "GKT II",
       location: "Semarang, Indonesia",
       dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -40,7 +40,7 @@ class CarouselEvents {
     events.add(CarouselEvents(
       tittle: 'Proposed',
       quota: '120',
-      posterUrl: "http://192.168.110.131/poster/IMG-20240131-WA0001.jpg",
+      posterUrl: "http://172.16.172.122/poster/IMG-20240131-WA0001.jpg",
       place: "",
       location: "",
       dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -49,7 +49,7 @@ class CarouselEvents {
     events.add(CarouselEvents(
       tittle: 'Proposed',
       quota: '20',
-      posterUrl: "http://192.168.110.131/poster/IMG-20231209-WA0006.jpg",
+      posterUrl: "http://172.16.172.122/poster/IMG-20231209-WA0006.jpg",
       place: "",
       location: "",
       dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -109,8 +109,9 @@ class CarouselEvents {
                         // color: events[index].boxColor,
                         borderRadius: BorderRadius.circular(12)),
                     child: Card(
+                      // shadowColor: UIColor.bgCarousel,
                       color: UIColor.bgCarousel,
-                      elevation: 10,
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -123,7 +124,7 @@ class CarouselEvents {
                             Row(
                               children: [
                                 Icon(
-                                  color: UIColor.bgSolidWhite,
+                                  color: UIColor.typoBlack,
                                   UIcons.regularRounded.user,
                                   size: 12,
                                 ),
@@ -134,14 +135,14 @@ class CarouselEvents {
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
-                                      color: UIColor.bgSolidWhite,
+                                      color: UIColor.typoBlack,
                                     ))
                               ],
                             ),
                             Row(
                               children: [
                                 Icon(
-                                  color: UIColor.bgSolidWhite,
+                                  color: UIColor.typoBlack,
                                   UIcons.regularRounded.house_flood,
                                   size: 12,
                                 ),
@@ -152,14 +153,14 @@ class CarouselEvents {
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
-                                      color: UIColor.bgSolidWhite,
+                                      color: UIColor.typoBlack,
                                     ))
                               ],
                             ),
                             Row(
                               children: [
                                 Icon(
-                                  color: UIColor.bgSolidWhite,
+                                  color: UIColor.typoBlack,
                                   UIcons.regularRounded.location_alt,
                                   size: 12,
                                 ),
@@ -170,14 +171,14 @@ class CarouselEvents {
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
-                                      color: UIColor.bgSolidWhite,
+                                      color: UIColor.typoBlack,
                                     ))
                               ],
                             ),
                             Row(
                               children: [
                                 Icon(
-                                  color: UIColor.bgSolidWhite,
+                                  color: UIColor.typoBlack,
                                   UIcons.regularRounded.calendar,
                                   size: 12,
                                 ),
@@ -188,7 +189,7 @@ class CarouselEvents {
                                     style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w400,
-                                      color: UIColor.bgSolidWhite,
+                                      color: UIColor.typoBlack,
                                     ))
                               ],
                             ),

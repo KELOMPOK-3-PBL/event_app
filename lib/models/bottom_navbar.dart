@@ -20,7 +20,6 @@ class BottomNavbar {
         backgroundColor:
             Colors.transparent, // Set warna background menjadi transparan
         type: BottomNavigationBarType.fixed,
-        currentIndex: 0,
         selectedFontSize: 13,
         unselectedFontSize: 13,
         selectedItemColor: UIColor.primary, // Set warna item selected
@@ -52,6 +51,7 @@ class BottomNavbar {
             label: 'Profile',
           ),
         ],
+        currentIndex: 0,
       ),
     );
   }

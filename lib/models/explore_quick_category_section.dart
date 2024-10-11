@@ -10,7 +10,6 @@ class CategoryEvents {
     required this.boxColor,
   });
 
-  //! Isi Category -- nama & warna --
   static List<CategoryEvents> getCategories() {
     List<CategoryEvents> categories = [];
 
@@ -33,27 +32,26 @@ class CategoryEvents {
 
     return categories;
   }
+}
 
-  //! model tampilan
-  static getCategoryEvents() {
-    List<CategoryEvents> categories = [];
-    categories = CategoryEvents.getCategories();
+class CategoryEventsWidget extends StatelessWidget {
+  const CategoryEventsWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    List<CategoryEvents> categories = CategoryEvents.getCategories();
 
     return SizedBox(
       height: 30,
-      // color: UIColor.propose,
       child: ListView.separated(
-        itemCount: categories
-            .length, // memanggil categori sesuai dengan jumlah yg ada di models
+        itemCount: categories.length,
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.only(left: 20, right: 20),
-        // membuat jarak diantara widget
         separatorBuilder: (context, index) => const SizedBox(
           width: 10,
         ),
         itemBuilder: (context, index) {
           return Container(
-            // height: 50,
             width: 90,
             decoration: BoxDecoration(
                 color: categories[index].boxColor,

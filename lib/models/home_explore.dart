@@ -1,5 +1,5 @@
-import 'package:event_proposal_app/models/explore_quick_category.dart';
-import 'package:event_proposal_app/models/explore_carousel_events.dart';
+import 'package:event_proposal_app/models/explore_quick_category_section.dart';
+import 'package:event_proposal_app/models/explore_carousel_section.dart';
 import 'package:event_proposal_app/models/search_events.dart';
 import 'package:event_proposal_app/models/ui_colors.dart';
 // import 'package:flutter/services.dart';
@@ -7,9 +7,14 @@ import 'package:event_proposal_app/models/ui_colors.dart';
 import 'package:uicons/uicons.dart';
 import 'package:flutter/material.dart';
 
-class EventSection extends StatelessWidget {
+class EventSection extends StatefulWidget {
   const EventSection({super.key});
 
+  @override
+  State<EventSection> createState() => _EventSectionState();
+}
+
+class _EventSectionState extends State<EventSection> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -63,9 +68,9 @@ class EventSection extends StatelessWidget {
         ),
 
         //! -- Quick Category
-        CategoryEvents.getCategoryEvents(), //! memanggil model => category
+        const CategoryEventsWidget(), //! memanggil model => category
         //! -- Events Available
-        CarouselEvents.getCarouselEvents(),
+        const CarouselSection(), //! memanggil model => carousel events
         const Padding(
           padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
           child: Text(
@@ -104,9 +109,10 @@ class EventSection extends StatelessWidget {
                       ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(12),
-                        child: Image.network(
-                          'http://172.16.172.122/poster/IMG-20231209-WA0006.jpg',
-                          height: 100, // Adjust image size
+                        child: Image.asset(
+                          'assets/background.png',
+                          height: (MediaQuery.of(context).size.width - 44) /
+                              3, // Adjust image size
                           width: double.infinity,
                           alignment: Alignment.topCenter,
                           fit: BoxFit.cover,
@@ -140,7 +146,7 @@ class EventSection extends StatelessWidget {
                           const Text(
                             "Competition : Business Plan",
                             style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               fontWeight: FontWeight.bold,
                               color: Colors.black87,
                             ),

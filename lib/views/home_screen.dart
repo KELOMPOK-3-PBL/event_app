@@ -9,30 +9,15 @@ import 'package:event_proposal_app/models/home_explore.dart';
 // import 'package:uicons/uicons.dart';
 import 'package:flutter/material.dart';
 
-class HomeSuperadmin extends StatefulWidget {
+class HomeSuperadmin extends StatelessWidget {
   const HomeSuperadmin({super.key});
-
-  @override
-  State<HomeSuperadmin> createState() => _HomeSuperadminState();
-}
-
-class _HomeSuperadminState extends State<HomeSuperadmin> {
-  @override
-  void initState() {
-    super.initState();
-    // CategoryModel.getCategories();
-  }
 
   @override
   Widget build(BuildContext context) {
     // CategoryModel.getCategories();
     return Scaffold(
       body: const SingleChildScrollView(
-        child: Column(
-          children: [
-            EventSection(), // Use the EventSection widget here
-          ],
-        ),
+        child: EventSection(),
       ),
 
       //! BOTTOM NAVBAR

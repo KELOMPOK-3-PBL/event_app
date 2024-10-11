@@ -77,8 +77,10 @@ class _EventListWidgetState extends State<EventList> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: Image.asset(
-                            'assets/background.png',
+                          child:
+                              // Image.asset('assets/background.png',
+                              Image.network(
+                            _eventsMore[index].posterUrl,
                             height: (MediaQuery.of(context).size.width - 44) /
                                 3, // Adjust image size
                             width: double.infinity,
@@ -246,7 +248,7 @@ List<EventsMore> getEventsMore() {
     tittle: 'Electro Fest',
     category: 'Expo',
     quota: '100',
-    posterUrl: "http://192.168.110.131/poster/IMG-20231209-WA0006.jpg",
+    posterUrl: "http://192.168.110.131/poster/IMG-20240210-WA0014.jpg",
     place: "GKT I",
     location: "Semarang, Indonesia",
     dateStart: DateFormat('E, d MMM yyy').format(now),

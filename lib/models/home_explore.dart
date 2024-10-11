@@ -8,69 +8,72 @@ import 'package:event_proposal_app/models/search_events.dart';
 // import 'package:uicons/uicons.dart';
 import 'package:flutter/material.dart';
 
-class EventSection extends StatefulWidget {
-  const EventSection({super.key});
+class HomeExplore extends StatefulWidget {
+  const HomeExplore({super.key});
 
   @override
-  State<EventSection> createState() => _EventSectionState();
+  State<HomeExplore> createState() => _HomeExploreState();
 }
 
-class _EventSectionState extends State<EventSection> {
+class _HomeExploreState extends State<HomeExplore> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
-          decoration: BoxDecoration(
-            image: const DecorationImage(
-              image: AssetImage('assets/background.png'),
-              fit: BoxFit.cover, // Set the image to cover the entire container
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+            decoration: BoxDecoration(
+              image: const DecorationImage(
+                image: AssetImage('assets/background.png'),
+                fit:
+                    BoxFit.cover, // Set the image to cover the entire container
+              ),
+              border: Border.all(
+                color: Colors.blue, // Set the border color to white
+                width: 0, // Set the border width to 1
+              ),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(14),
+                bottomRight: Radius.circular(14),
+              ),
             ),
-            border: Border.all(
-              color: Colors.blue, // Set the border color to white
-              width: 0, // Set the border width to 1
-            ),
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(14),
-              bottomRight: Radius.circular(14),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 16),
+                Text(
+                  'Hi, Fattur 👋',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  'You are logged in as superadmin',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 63),
+                SearchEventsWidget(), //! memanggil model => search
+                SizedBox(height: 4),
+              ],
             ),
           ),
-          child: const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 16),
-              Text(
-                'Hi, Fattur 👋',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 4),
-              Text(
-                'You are logged in as superadmin',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 63),
-              SearchEventsWidget(), //! memanggil model => search
-              SizedBox(height: 4),
-            ],
+          const SizedBox(
+            height: 14,
           ),
-        ),
-        const SizedBox(
-          height: 14,
-        ),
-        const QuickCategorySection(), //! -- Quick Category
-        const CarouselSection(), //! -- Carousel Events
-        const EventList() //! -- Events Available
-      ],
+          const QuickCategorySection(), //! -- Quick Category
+          const CarouselSection(), //! -- Carousel Events
+          const EventList() //! -- Events Available
+        ],
+      ),
     );
   }
 }

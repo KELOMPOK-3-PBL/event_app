@@ -2,33 +2,47 @@ import 'package:event_proposal_app/models/ui_colors.dart';
 import 'package:uicons/uicons.dart';
 import 'package:flutter/material.dart';
 
-class BottomNavbar {
-  //! SUPERADMIN
-  static Container navBarSuperadmin() {
+class BottomNavbar extends StatefulWidget {
+  final ValueChanged<int> onItemSelected;
+
+  const BottomNavbar({super.key, required this.onItemSelected});
+
+  @override
+  BottomNavbarState createState() => BottomNavbarState();
+}
+
+class BottomNavbarState extends State<BottomNavbar> {
+  int _currentIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+    widget.onItemSelected(index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(
-          10, 10, 10, 0), // Tambahkan padding untuk bagian atas
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
       decoration: const BoxDecoration(
-        color: UIColor.bgSolidWhite, // Set warna background
+        color: UIColor.bgSolidWhite,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(14),
           topRight: Radius.circular(14),
-        ), // Tambahkan radius untuk bagian atas
+        ),
       ),
       child: BottomNavigationBar(
-        elevation: 0, // Hilangkan shadow
-        backgroundColor:
-            Colors.transparent, // Set warna background menjadi transparan
+        elevation: 0,
+        backgroundColor: Colors.transparent,
         type: BottomNavigationBarType.fixed,
         selectedFontSize: 13,
         unselectedFontSize: 13,
-        selectedItemColor: UIColor.primary, // Set warna item selected
-        unselectedItemColor: UIColor.typoGray2, // Set warna item tidak selected
-        // selectedIconTheme:
-        //     const IconThemeData(size: 28), // Set ukuran icon selected
-        // unselectedIconTheme:
-        //     const IconThemeData(size: 28), // Set ukuran icon tidak selected
+        selectedItemColor: UIColor.primary,
+        unselectedItemColor: UIColor.typoGray2,
         showUnselectedLabels: true,
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(UIcons.solidRounded.navigation),
@@ -51,7 +65,6 @@ class BottomNavbar {
             label: 'Profile',
           ),
         ],
-        currentIndex: 0,
       ),
     );
   }

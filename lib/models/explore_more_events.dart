@@ -21,6 +21,8 @@ class _EventListWidgetState extends State<EventList> {
 
   @override
   Widget build(BuildContext context) {
+    Color statusColor;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -43,6 +45,17 @@ class _EventListWidgetState extends State<EventList> {
             spacing: 10,
             runSpacing: 10,
             children: List.generate(_eventsMore.length, (index) {
+              //! COLORING STATUS BADGE
+              if (_eventsMore[index].status == "Proposed") {
+                statusColor = UIColor.propose;
+              } else if (_eventsMore[index].status == "Pending") {
+                statusColor = UIColor.pending;
+              } else if (_eventsMore[index].status == "Approved") {
+                statusColor = UIColor.approved;
+              } else {
+                statusColor = UIColor.rejected;
+              }
+
               return Container(
                 width: (MediaQuery.of(context).size.width - 44) /
                     2, // Adaptive width for two columns
@@ -54,6 +67,7 @@ class _EventListWidgetState extends State<EventList> {
                   crossAxisAlignment:
                       CrossAxisAlignment.start, // Align contents to the start
                   children: [
+                    //! Section Tittle
                     Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Card(
@@ -75,6 +89,7 @@ class _EventListWidgetState extends State<EventList> {
                       ),
                     ),
                     // const SizedBox(height: 4),
+                    //! Content
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Column(
@@ -83,7 +98,7 @@ class _EventListWidgetState extends State<EventList> {
                           // const SizedBox(height: 0),
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.blue[300],
+                              color: statusColor,
                               borderRadius: BorderRadius.circular(5),
                             ),
                             padding: const EdgeInsets.symmetric(
@@ -116,7 +131,7 @@ class _EventListWidgetState extends State<EventList> {
                               ),
                               const SizedBox(width: 4),
                               Text(
-                                _eventsMore[index].quota,
+                                '${_eventsMore[index].quota} people',
                                 style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400,
@@ -215,7 +230,7 @@ List<EventsMore> getEventsMore() {
     place: "GKT II",
     location: "Semarang, Indonesia",
     dateStart: DateFormat('E, d MMM yyy').format(now),
-    status: "Propose",
+    status: "Proposed",
   ));
   events.add(EventsMore(
     tittle: 'AI For Technology ',
@@ -225,7 +240,7 @@ List<EventsMore> getEventsMore() {
     place: "GKT I",
     location: "Semarang, Indonesia",
     dateStart: DateFormat('E, d MMM yyy').format(now),
-    status: "Approved",
+    status: "Pending",
   ));
   events.add(EventsMore(
     tittle: 'Electro Fest',
@@ -235,7 +250,7 @@ List<EventsMore> getEventsMore() {
     place: "GKT I",
     location: "Semarang, Indonesia",
     dateStart: DateFormat('E, d MMM yyy').format(now),
-    status: "Approved",
+    status: "Rejected",
   ));
   return events;
 }

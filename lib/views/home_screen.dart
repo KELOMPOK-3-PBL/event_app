@@ -3,7 +3,7 @@
 import 'package:event_proposal_app/models/bottom_navbar.dart';
 // import 'package:event_proposal_app/models/search_events.dart';
 // import 'package:event_proposal_app/models/ui_colors.dart';
-import 'package:event_proposal_app/models/explore_menu.dart';
+import 'package:event_proposal_app/models/home_explore.dart';
 
 // import 'package:flutter/services.dart';
 // import 'package:uicons/uicons.dart';

@@ -1,5 +1,5 @@
 import 'package:event_proposal_app/models/ui_colors.dart';
-import 'package:event_proposal_app/views/home_superadmin.dart';
+import 'package:event_proposal_app/views/home_screen.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 
@@ -217,52 +217,6 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 16.0),
-                  // const Text("OR",
-                  //     style: TextStyle(fontSize: 18, color: Colors.black38)),
-                  //const SizedBox(height: 16.0),
-                  // Sign In with Google button
-                  //ElevatedButton(
-                  //  onPressed: () {
-                  //    Navigator.push(
-                  //      context,
-                  //      MaterialPageRoute(builder: (context) => HomeScreen()),
-                  //    );
-                  //  },
-                  //  style: ElevatedButton.styleFrom(
-                  //    padding: const EdgeInsets.symmetric(
-                  //        horizontal: 20.0, vertical: 13.0),
-                  //    shape: RoundedRectangleBorder(
-                  //      borderRadius: BorderRadius.circular(30.0),
-                  //    ),
-                  //    backgroundColor: Colors.white70,
-                  //  ),
-                  //  child: Row(
-                  //    mainAxisAlignment: MainAxisAlignment.center,
-                  //    children: [
-                  //      Image.asset('assets/google_logo.png', height: 20),
-                  //      const SizedBox(width: 8.0),
-                  //      const Text("Sign In with Google",
-                  //          style:
-                  //              TextStyle(fontSize: 18.0, color: Colors.black)),
-                  //    ],
-                  //  ),
-                  //),
-                  // const SizedBox(height: 16.0),
-                  // // Link untuk pendaftaran
-                  // TextButton(
-                  //   onPressed: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(builder: (context) => SignupScreen()),
-                  //     );
-                  //   },
-                  //   child: const Text(
-                  //     "Don't have an account? Sign Up",
-                  //     style: TextStyle(
-                  //       color: Color(0xff1886EA),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),

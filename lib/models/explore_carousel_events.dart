@@ -65,7 +65,7 @@ class CarouselEvents {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       const Padding(
-        padding: EdgeInsets.fromLTRB(20, 32, 20, 16),
+        padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
         child: Text(
           'Newly Proposed Events',
           textAlign: TextAlign.right,

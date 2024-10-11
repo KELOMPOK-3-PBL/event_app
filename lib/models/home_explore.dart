@@ -1,5 +1,5 @@
-import 'package:event_proposal_app/models/category_events.dart';
-import 'package:event_proposal_app/models/carousel_events.dart';
+import 'package:event_proposal_app/models/explore_quick_category.dart';
+import 'package:event_proposal_app/models/explore_carousel_events.dart';
 import 'package:event_proposal_app/models/search_events.dart';
 import 'package:event_proposal_app/models/ui_colors.dart';
 // import 'package:flutter/services.dart';
@@ -67,7 +67,7 @@ class EventSection extends StatelessWidget {
         //! -- Events Available
         CarouselEvents.getCarouselEvents(),
         const Padding(
-          padding: EdgeInsets.fromLTRB(20, 16, 20, 0),
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
           child: Text(
             'Events Available',
             textAlign: TextAlign.right,

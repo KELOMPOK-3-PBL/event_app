@@ -22,27 +22,25 @@ class _HomeEventsState extends State<HomeEvents> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
-            child: SearchEventsWidget(),
-          ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
+          child: SearchEventsWidget(),
+        ),
+        Expanded(
+          child: ListView.builder(
+            physics: const AlwaysScrollableScrollPhysics(),
             itemCount: _events.length,
             itemBuilder: (context, index) {
               return Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 15, 15),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
                 child: _buildEventCard(_events[index]),
               );
             },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -58,7 +56,7 @@ class _HomeEventsState extends State<HomeEvents> {
           Padding(
             padding: const EdgeInsets.all(12),
             child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(12)),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
               child: Image.network(
                 event.posterUrl,
                 height: 120,

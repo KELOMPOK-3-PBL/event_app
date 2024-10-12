@@ -196,8 +196,7 @@ class LoginScreenState extends State<LoginScreen> {
                       // Navigasi ke halaman berikutnya jika login berhasil
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomeSuperadmin()),
+                        MaterialPageRoute(builder: (context) => const Home()),
                       );
                     },
                     style: ElevatedButton.styleFrom(

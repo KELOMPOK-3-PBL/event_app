@@ -41,14 +41,14 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
     //! List 3
     Center(
       child: Text(
-        'Index 2: Accounts',
+        'Index 3: Accounts',
         style: optionStyle,
       ),
     ),
     //! List 4
     Center(
       child: Text(
-        'Index 2: Profile',
+        'Index 4: Profile',
         style: optionStyle,
       ),
     ), // Add this

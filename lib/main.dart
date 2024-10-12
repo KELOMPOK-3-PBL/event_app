@@ -20,6 +20,10 @@ class MyApp extends StatelessWidget {
 
   ThemeData _buildTheme(Brightness brightness) {
     return ThemeData(
+      splashFactory: NoSplash
+          .splashFactory, //! Hilangkan splash effect  saat menekan navbar
+      highlightColor:
+          Colors.transparent, //! Hilangkan highlight color saat menekan navbar
       fontFamily: "Inter",
       brightness: brightness,
       textTheme: (ThemeData(brightness: brightness).textTheme),

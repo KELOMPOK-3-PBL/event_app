@@ -91,7 +91,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                               sigmaY: 12,
                               tileMode: TileMode.repeated),
                           child: Container(
-                            padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
+                            padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
                             color: UIColor.bgCarousel.withOpacity(0.2),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -181,7 +181,8 @@ class _CarouselEventsState extends State<CarouselSection> {
                                 ),
                                 Column(children: [
                                   Container(
-                                      width: 100,
+                                      width: 108,
+                                      height: 31,
                                       decoration: BoxDecoration(
                                           color: statusColor,
                                           borderRadius:

@@ -73,10 +73,10 @@ class _EventListWidgetState extends State<EventList> {
                       child: Card(
                         elevation: 0,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(6),
                           child:
                               // Image.asset('assets/background.png',
                               Image.network(
@@ -101,7 +101,7 @@ class _EventListWidgetState extends State<EventList> {
                           Container(
                             decoration: BoxDecoration(
                               color: statusColor,
-                              borderRadius: BorderRadius.circular(5),
+                              borderRadius: BorderRadius.circular(6),
                             ),
                             padding: const EdgeInsets.symmetric(
                                 vertical: 2, horizontal: 10),

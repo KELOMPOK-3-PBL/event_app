@@ -41,7 +41,7 @@ class SearchEventsWidgetState extends State<SearchEventsWidget> {
             borderSide: BorderSide.none,
           ),
           filled: true,
-          fillColor: UIColor.bgSolidWhite,
+          fillColor: UIColor.solidWhite,
         ),
       ),
     );

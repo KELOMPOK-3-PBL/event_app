@@ -26,7 +26,7 @@ class BottomNavbarState extends State<BottomNavbar> {
     return Container(
       padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
       decoration: const BoxDecoration(
-        color: UIColor.bgSolidWhite,
+        color: UIColor.solidWhite,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(14),
           topRight: Radius.circular(14),

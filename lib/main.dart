@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       fontFamily: "Inter",
       brightness: brightness,
       textTheme: (ThemeData(brightness: brightness).textTheme),
-      scaffoldBackgroundColor: UIColor.bgWhite,
+      scaffoldBackgroundColor: UIColor.white,
     );
   }
 

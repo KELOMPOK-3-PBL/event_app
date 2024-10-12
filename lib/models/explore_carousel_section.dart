@@ -66,6 +66,7 @@ class _CarouselEventsState extends State<CarouselSection> {
               return Container(
                 width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
+                    color: UIColor.solidWhite,
                     image: DecorationImage(
                         // image: AssetImage('assets/image_welcome.png'),
                         image: NetworkImage(_eventsCarousel[index].posterUrl),
@@ -88,11 +89,11 @@ class _CarouselEventsState extends State<CarouselSection> {
                           //! menambahkan efek blur
                           filter: ImageFilter.blur(
                               sigmaX: 4,
-                              sigmaY: 12,
+                              sigmaY: 4,
                               tileMode: TileMode.repeated),
                           child: Container(
                             padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-                            color: UIColor.bgCarousel.withOpacity(0.2),
+                            color: UIColor.bgCarousel.withOpacity(0.4),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -105,7 +106,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Icon(
-                                          color: UIColor.bgSolidWhite,
+                                          color: UIColor.solidWhite,
                                           UIconsPro.regularRounded.user,
                                           size: 12,
                                         ),
@@ -117,7 +118,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                           style: const TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w400,
-                                            color: UIColor.bgSolidWhite,
+                                            color: UIColor.solidWhite,
                                           ),
                                           textAlign: TextAlign.left,
                                         )
@@ -126,7 +127,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                     Row(
                                       children: [
                                         Icon(
-                                          color: UIColor.bgSolidWhite,
+                                          color: UIColor.solidWhite,
                                           UIconsPro
                                               .regularRounded.house_building,
                                           size: 12,
@@ -138,14 +139,14 @@ class _CarouselEventsState extends State<CarouselSection> {
                                             style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w400,
-                                              color: UIColor.bgSolidWhite,
+                                              color: UIColor.solidWhite,
                                             ))
                                       ],
                                     ),
                                     Row(
                                       children: [
                                         Icon(
-                                          color: UIColor.bgSolidWhite,
+                                          color: UIColor.solidWhite,
                                           UIconsPro.regularRounded.marker,
                                           size: 12,
                                         ),
@@ -156,14 +157,14 @@ class _CarouselEventsState extends State<CarouselSection> {
                                             style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w400,
-                                              color: UIColor.bgSolidWhite,
+                                              color: UIColor.solidWhite,
                                             ))
                                       ],
                                     ),
                                     Row(
                                       children: [
                                         Icon(
-                                          color: UIColor.bgSolidWhite,
+                                          color: UIColor.solidWhite,
                                           UIconsPro.regularRounded.calendar,
                                           size: 12,
                                         ),
@@ -174,7 +175,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                             style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w400,
-                                              color: UIColor.bgSolidWhite,
+                                              color: UIColor.solidWhite,
                                             ))
                                       ],
                                     ),
@@ -191,7 +192,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                       child: Text(_eventsCarousel[index].status,
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(
-                                              color: UIColor.bgSolidWhite,
+                                              color: UIColor.solidWhite,
                                               height: 2.5,
                                               fontWeight: FontWeight.w600,
                                               fontSize: 12)))

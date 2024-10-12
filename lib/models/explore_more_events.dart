@@ -61,7 +61,7 @@ class _EventListWidgetState extends State<EventList> {
                     2, // Adaptive width for two columns
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
+                  color: UIColor.white,
                 ),
                 child: Column(
                   crossAxisAlignment:
@@ -107,7 +107,7 @@ class _EventListWidgetState extends State<EventList> {
                             child: Text(
                               _eventsMore[index].status,
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: UIColor.solidWhite,
                                 fontSize: 10,
                                 fontWeight: FontWeight.w400,
                               ),

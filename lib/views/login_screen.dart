@@ -85,12 +85,12 @@ class LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 20),
                   // Field input untuk email
                   TextField(
-                    // style: const TextStyle(color: UIColor.bgSolidWhite),
+                    // style: const TextStyle(color: UIColor.solidWhite),
                     controller: emailController,
                     focusNode: emailFocusNode, // Mengaitkan FocusNode
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: UIColor.bgSolidWhite,
+                      fillColor: UIColor.solidWhite,
                       labelText: 'Email',
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: UIColor.primary),
@@ -120,7 +120,7 @@ class LoginScreenState extends State<LoginScreen> {
                     obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: UIColor.bgSolidWhite,
+                      fillColor: UIColor.solidWhite,
                       labelText: 'Password',
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: UIColor.primary),

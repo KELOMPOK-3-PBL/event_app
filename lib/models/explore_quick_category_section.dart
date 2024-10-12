@@ -59,7 +59,7 @@ class QuickCategorySection extends StatelessWidget {
             child: Text(categories[index].name,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    color: UIColor.bgSolidWhite, height: 2.5, fontSize: 12)),
+                    color: UIColor.solidWhite, height: 2.5, fontSize: 12)),
           );
         },
       ),

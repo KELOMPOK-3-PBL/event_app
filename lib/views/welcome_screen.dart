@@ -11,7 +11,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: UIColor.bgSolidWhite,
+      backgroundColor: UIColor.solidWhite,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(

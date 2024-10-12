@@ -7,8 +7,8 @@ class UIColor {
   static const Color typoGray = Color(0xff747688);
   static const Color typoGray2 = Color(0xcccccccc);
 
-  static const Color bgSolidWhite = Color(0xffffffff);
-  static const Color bgWhite = Color(0xfff6f6f6);
+  static const Color solidWhite = Color(0xffffffff);
+  static const Color white = Color(0xfff6f6f6);
 
   static const Color primary = Color(0xff1886ea);
   static const Color admin = Color(0xff5856d6);
@@ -20,5 +20,5 @@ class UIColor {
   static const Color pending = Color(0xfffaad14);
 
   // static const Color bgCarousel = Color.fromARGB(233, 250, 250, 250);
-  static const Color bgCarousel = Color.fromARGB(233, 55, 65, 114);
+  static const Color bgCarousel = Color.fromARGB(255, 0, 0, 0);
 }

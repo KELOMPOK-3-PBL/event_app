@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:event_proposal_app/models/ui_colors.dart';
 
-import 'package:uicons/uicons.dart';
+import 'package:uicons_pro/uicons_pro.dart';
 import 'package:intl/intl.dart';
 
 class CarouselSection extends StatefulWidget {
@@ -87,7 +87,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                           blendMode: BlendMode.src,
                           //! menambahkan efek blur
                           filter: ImageFilter.blur(
-                              sigmaX: 6,
+                              sigmaX: 4,
                               sigmaY: 12,
                               tileMode: TileMode.repeated),
                           child: Container(
@@ -106,7 +106,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                       children: [
                                         Icon(
                                           color: UIColor.bgSolidWhite,
-                                          UIcons.regularRounded.user,
+                                          UIconsPro.regularRounded.user,
                                           size: 12,
                                         ),
                                         const SizedBox(
@@ -127,7 +127,8 @@ class _CarouselEventsState extends State<CarouselSection> {
                                       children: [
                                         Icon(
                                           color: UIColor.bgSolidWhite,
-                                          UIcons.regularRounded.house_flood,
+                                          UIconsPro
+                                              .regularRounded.house_building,
                                           size: 12,
                                         ),
                                         const SizedBox(
@@ -145,7 +146,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                       children: [
                                         Icon(
                                           color: UIColor.bgSolidWhite,
-                                          UIcons.regularRounded.location_alt,
+                                          UIconsPro.regularRounded.marker,
                                           size: 12,
                                         ),
                                         const SizedBox(
@@ -163,7 +164,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                       children: [
                                         Icon(
                                           color: UIColor.bgSolidWhite,
-                                          UIcons.regularRounded.calendar,
+                                          UIconsPro.regularRounded.calendar,
                                           size: 12,
                                         ),
                                         const SizedBox(

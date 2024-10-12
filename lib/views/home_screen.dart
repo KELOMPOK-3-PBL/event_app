@@ -6,7 +6,7 @@ import 'package:event_proposal_app/models/bottom_navbar.dart';
 import 'package:event_proposal_app/models/home_explore.dart';
 
 // import 'package:flutter/services.dart';
-// import 'package:uicons/uicons.dart';
+// import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
 class HomeSuperadmin extends StatefulWidget {

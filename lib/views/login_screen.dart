@@ -3,7 +3,7 @@ import 'package:event_proposal_app/views/home_screen.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 
-import 'package:uicons/uicons.dart';
+import 'package:uicons_pro/uicons_pro.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -104,7 +104,7 @@ class LoginScreenState extends State<LoginScreen> {
                       floatingLabelStyle:
                           const TextStyle(color: UIColor.primary),
                       prefixIcon: Icon(
-                        UIcons.regularRounded.envelope,
+                        UIconsPro.regularRounded.envelope,
                         size: 20,
                         color: emailFocusNode.hasFocus
                             ? UIColor.primary // Warna saat fokus
@@ -135,7 +135,7 @@ class LoginScreenState extends State<LoginScreen> {
                       floatingLabelStyle:
                           const TextStyle(color: UIColor.primary),
                       prefixIcon: Icon(
-                        UIcons.regularRounded.lock,
+                        UIconsPro.regularRounded.lock,
                         size: 20,
                         color: passwordFocusNode.hasFocus
                             ? UIColor.primary // Warna saat fokus

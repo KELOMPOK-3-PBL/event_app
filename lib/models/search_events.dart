@@ -1,5 +1,5 @@
 import 'package:event_proposal_app/models/ui_colors.dart';
-import 'package:uicons/uicons.dart';
+import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
 class SearchEventsWidget extends StatefulWidget {
@@ -27,12 +27,12 @@ class SearchEventsWidgetState extends State<SearchEventsWidget> {
           contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
           hintStyle: const TextStyle(color: UIColor.typoGray, fontSize: 14),
           prefixIcon: Icon(
-            UIcons.regularRounded.search,
+            UIconsPro.regularRounded.search,
             color: UIColor.typoBlack,
             size: 18,
           ),
           suffixIcon: Icon(
-            UIcons.regularRounded.settings_sliders,
+            UIconsPro.regularRounded.settings_sliders,
             color: UIColor.typoBlack,
             size: 18,
           ),

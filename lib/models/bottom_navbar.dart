@@ -1,5 +1,5 @@
 import 'package:event_proposal_app/models/ui_colors.dart';
-import 'package:uicons/uicons.dart';
+import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
 class BottomNavbar extends StatefulWidget {
@@ -45,23 +45,23 @@ class BottomNavbarState extends State<BottomNavbar> {
         onTap: _onItemTapped,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(UIcons.solidRounded.navigation),
+            icon: Icon(UIconsPro.solidRounded.navigation),
             label: 'Explore',
           ),
           BottomNavigationBarItem(
-            icon: Icon(UIcons.solidRounded.calendar),
+            icon: Icon(UIconsPro.solidRounded.calendar),
             label: 'Events',
           ),
           BottomNavigationBarItem(
-            icon: Icon(UIcons.solidRounded.cloud_check),
+            icon: Icon(UIconsPro.solidRounded.cloud_check),
             label: 'Approval',
           ),
           BottomNavigationBarItem(
-            icon: Icon(UIcons.solidRounded.users_alt),
+            icon: Icon(UIconsPro.solidRounded.users_alt),
             label: 'Accounts',
           ),
           BottomNavigationBarItem(
-            icon: Icon(UIcons.solidRounded.user),
+            icon: Icon(UIconsPro.solidRounded.user),
             label: 'Profile',
           ),
         ],

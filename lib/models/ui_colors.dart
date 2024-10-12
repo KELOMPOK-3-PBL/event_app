@@ -19,5 +19,6 @@ class UIColor {
   static const Color rejected = Color(0xfff0635a);
   static const Color pending = Color(0xfffaad14);
 
-  static const Color bgCarousel = Color.fromARGB(233, 250, 250, 250);
+  // static const Color bgCarousel = Color.fromARGB(233, 250, 250, 250);
+  static const Color bgCarousel = Color.fromARGB(233, 55, 65, 114);
 }

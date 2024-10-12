@@ -1,6 +1,6 @@
 import 'package:event_proposal_app/models/ui_colors.dart';
 import 'package:intl/intl.dart';
-import 'package:uicons/uicons.dart';
+import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
 class EventList extends StatefulWidget {
@@ -90,7 +90,6 @@ class _EventListWidgetState extends State<EventList> {
                         ),
                       ),
                     ),
-                    // const SizedBox(height: 4),
                     //! Content
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -120,34 +119,53 @@ class _EventListWidgetState extends State<EventList> {
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black87,
+                              color: UIColor.typoBlack,
                             ),
-                          ),
-                          const SizedBox(height: 6),
-                          Row(
-                            children: [
-                              Icon(
-                                UIcons.regularRounded.user,
-                                color: Colors.black54,
-                                size: 10,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                '${_eventsMore[index].quota} people',
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black54,
-                                ),
-                              )
-                            ],
                           ),
                           const SizedBox(height: 4),
                           Row(
                             children: [
                               Icon(
-                                UIcons.regularRounded.location_alt,
-                                color: Colors.black54,
+                                UIconsPro.regularRounded.user_time,
+                                color: UIColor.typoGray,
+                                size: 10,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${_eventsMore[index].quota} participants',
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                  color: UIColor.typoBlack,
+                                ),
+                              )
+                            ],
+                          ),
+                          // const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Icon(
+                                UIconsPro.regularRounded.house_building,
+                                color: UIColor.typoGray,
+                                size: 10,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                _eventsMore[index].place,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400,
+                                  color: UIColor.typoBlack,
+                                ),
+                              )
+                            ],
+                          ),
+                          // const SizedBox(height: 4),
+                          Row(
+                            children: [
+                              Icon(
+                                UIconsPro.regularRounded.marker,
+                                color: UIColor.typoGray,
                                 size: 10,
                               ),
                               const SizedBox(width: 4),
@@ -156,17 +174,17 @@ class _EventListWidgetState extends State<EventList> {
                                 style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400,
-                                  color: Colors.black54,
+                                  color: UIColor.typoBlack,
                                 ),
                               )
                             ],
                           ),
-                          const SizedBox(height: 4),
+                          // const SizedBox(height: 4),
                           Row(
                             children: [
                               Icon(
-                                UIcons.regularRounded.calendar,
-                                color: Colors.black54,
+                                UIconsPro.regularRounded.calendar,
+                                color: UIColor.typoGray,
                                 size: 10,
                               ),
                               const SizedBox(width: 4),
@@ -175,7 +193,7 @@ class _EventListWidgetState extends State<EventList> {
                                 style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w400,
-                                  color: Colors.black54,
+                                  color: UIColor.typoBlack,
                                 ),
                               )
                             ],

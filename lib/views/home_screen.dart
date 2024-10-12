@@ -1,12 +1,7 @@
-// import 'package:event_proposal_app/models/category_events.dart';
-// import 'package:event_proposal_app/models/carousel_events.dart';
 import 'package:event_proposal_app/models/bottom_navbar.dart';
-// import 'package:event_proposal_app/models/search_events.dart';
-// import 'package:event_proposal_app/models/ui_colors.dart';
+import 'package:event_proposal_app/models/home_events.dart';
 import 'package:event_proposal_app/models/home_explore.dart';
-
-// import 'package:flutter/services.dart';
-// import 'package:uicons_pro/uicons_pro.dart';
+import 'package:event_proposal_app/models/ui_colors.dart';
 import 'package:flutter/material.dart';
 
 class HomeSuperadmin extends StatefulWidget {
@@ -16,43 +11,69 @@ class HomeSuperadmin extends StatefulWidget {
   State<HomeSuperadmin> createState() => _HomeSuperadminState();
 }
 
-TextStyle optionStyle =
-    const TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+TextStyle optionStyle = const TextStyle(
+    fontSize: 20, fontWeight: FontWeight.bold, color: UIColor.typoBlack);
 
 class _HomeSuperadminState extends State<HomeSuperadmin> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     //! List 0
     const HomeExplore(),
     //! List 1
-    Center(
-      child: Text(
-        'Index 1: Events',
-        style: optionStyle,
+    Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Events",
+          style: optionStyle,
+        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: UIColor.solidWhite,
+        // foregroundColor: UIColor.solidWhite,
+        centerTitle: true,
       ),
+      body: const HomeEvents(),
     ),
     //! List 2
-    Center(
-      child: Text(
-        'Index 2: Approval',
-        style: optionStyle,
+    Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Approval",
+          style: optionStyle,
+        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: UIColor.solidWhite,
+        centerTitle: true,
       ),
+      // body:
     ),
     //! List 3
-    Center(
-      child: Text(
-        'Index 3: Accounts',
-        style: optionStyle,
+    Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Accounts",
+          style: optionStyle,
+        ),
+        automaticallyImplyLeading: false,
+        backgroundColor: UIColor.solidWhite,
+        centerTitle: true,
       ),
+      // body:
     ),
     //! List 4
-    Center(
-      child: Text(
-        'Index 4: Profile',
-        style: optionStyle,
+    Scaffold(
+      appBar: AppBar(
+        title: Text("Profile", style: optionStyle),
+        automaticallyImplyLeading: false,
+        backgroundColor: UIColor.solidWhite,
+        centerTitle: true,
       ),
-    ), // Add this
-    // Add other widgets for other bottom navigation bar items
+      // body:
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -63,12 +84,10 @@ class _HomeSuperadminState extends State<HomeSuperadmin> {
 
   @override
   Widget build(BuildContext context) {
-    // CategoryModel.getCategories();
     return Scaffold(
-      appBar: _selectedIndex == 0 ? null : AppBar(),
-      body: _widgetOptions.elementAt(_selectedIndex), // Change this
+      body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavbar(
-        onItemSelected: _onItemTapped, // Change this
+        onItemSelected: _onItemTapped,
       ),
     );
   }

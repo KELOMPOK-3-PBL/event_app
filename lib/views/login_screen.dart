@@ -1,40 +1,113 @@
+import 'dart:convert';
 import 'package:event_proposal_app/models/ui_colors.dart';
-import 'package:event_proposal_app/views/home_screen.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences untuk "Remember Me"
 import 'package:uicons_pro/uicons_pro.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  LoginScreenState createState() => LoginScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class LoginScreenState extends State<LoginScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  bool rememberMe = false; // Variabel untuk slide button "Remember Me"
-  final FocusNode emailFocusNode = FocusNode(); // Fokus untuk TextField email
-  final FocusNode passwordFocusNode =
-      FocusNode(); // Fokus untuk TextField password
-  String email = "";
-  String password = "";
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool rememberMe = false;
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
-    emailFocusNode.addListener(() {
-      setState(() {}); // Memperbarui tampilan saat fokus berubah
+    _loadUserPreferences(); // Memuat email/password jika Remember Me diaktifkan sebelumnya
+  }
+
+  Future<void> _loadUserPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      rememberMe = prefs.getBool('rememberMe') ?? false;
+      if (rememberMe) {
+        _emailController.text = prefs.getString('email') ?? '';
+        _passwordController.text = prefs.getString('password') ?? '';
+      }
     });
-    passwordFocusNode.addListener(() {
-      setState(() {}); // Memperbarui tampilan saat fokus berubah
-    });
+  }
+
+  Future<void> _saveUserPreferences(String email, String password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (rememberMe) {
+      await prefs.setBool('rememberMe', true);
+      await prefs.setString('email', email);
+      await prefs.setString('password', password);
+    } else {
+      await prefs.remove('rememberMe');
+      await prefs.remove('email');
+      await prefs.remove('password');
+    }
+  }
+
+  Future<void> _login() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    // Menampilkan loading spinner saat proses login
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
+    try {
+      const url =
+          'http://192.168.110.131/polivent_api/routes/login'; // Ubah URL dengan yang sesuai
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'email': email, 'password': password}),
+      );
+
+      Navigator.of(context).pop(); // Menutup loading spinner
+
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        if (jsonData['status'] == 'success') {
+          // Simpan email/password jika Remember Me diaktifkan
+          await _saveUserPreferences(email, password);
+
+          // Berhasil login, arahkan ke home screen
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const Home()),
+          );
+        } else {
+          // Tampilkan pesan kesalahan dari response API
+          _showError(jsonData['message']);
+        }
+      } else {
+        _showError('Error: ${response.statusCode}');
+      }
+    } catch (error) {
+      Navigator.of(context).pop(); // Menutup loading spinner
+      _showError('Login failed. Please try again.');
+    }
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   @override
   void dispose() {
-    emailFocusNode.dispose(); // Bersihkan FocusNode saat tidak digunakan
+    emailFocusNode.dispose();
+    passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -42,12 +115,7 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
-        // Menggunakan CustomScrollView untuk dapat scroll
         slivers: [
-          // const SliverAppBar(
-          //   floating: false, // Membuat AppBar floating
-          //   pinned: true, // Menjaga AppBar tetap terlihat
-          // ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
@@ -83,11 +151,9 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // Field input untuk email
                   TextField(
-                    // style: const TextStyle(color: UIColor.solidWhite),
-                    controller: emailController,
-                    focusNode: emailFocusNode, // Mengaitkan FocusNode
+                    controller: _emailController,
+                    focusNode: emailFocusNode,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: UIColor.solidWhite,
@@ -97,26 +163,21 @@ class LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: UIColor.typoGray),
-                          borderRadius: BorderRadius.circular(12)),
-                      labelStyle: const TextStyle(
-                          color: UIColor.typoGray, fontSize: 14),
-                      floatingLabelStyle:
-                          const TextStyle(color: UIColor.primary),
+                        borderSide: const BorderSide(color: UIColor.typoGray),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
                       prefixIcon: Icon(
                         UIconsPro.regularRounded.envelope,
-                        size: 20,
                         color: emailFocusNode.hasFocus
-                            ? UIColor.primary // Warna saat fokus
-                            : UIColor.typoGray, // Warna saat tidak fokus
+                            ? UIColor.primary
+                            : UIColor.typoGray,
                       ),
                     ),
                   ),
                   const SizedBox(height: 16.0),
-                  // Field input untuk password
                   TextField(
-                    controller: passwordController,
-                    focusNode: passwordFocusNode, // Mengaitkan FocusNode
+                    controller: _passwordController,
+                    focusNode: passwordFocusNode,
                     obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
@@ -130,21 +191,15 @@ class LoginScreenState extends State<LoginScreen> {
                         borderSide: const BorderSide(color: UIColor.typoGray),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      labelStyle: const TextStyle(
-                          color: UIColor.typoGray, fontSize: 14),
-                      floatingLabelStyle:
-                          const TextStyle(color: UIColor.primary),
                       prefixIcon: Icon(
                         UIconsPro.regularRounded.lock,
-                        size: 20,
                         color: passwordFocusNode.hasFocus
-                            ? UIColor.primary // Warna saat fokus
-                            : UIColor.typoGray, // Warna saat tidak fokus
+                            ? UIColor.primary
+                            : UIColor.typoGray,
                       ),
                     ),
                   ),
                   const SizedBox(height: 8.0),
-                  // Slide button "Remember Me"
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -160,8 +215,6 @@ class LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-
-                  // Link "Forgot Password?"
                   TextButton(
                     onPressed: () {
                       showDialog(
@@ -183,22 +236,21 @@ class LoginScreenState extends State<LoginScreen> {
                         },
                       );
                     },
-                    child: const Text("Forgot Password?",
-                        style: TextStyle(color: Color(0xff1886EA))),
+                    child: const Text(
+                      "Forgot Password?",
+                      style: TextStyle(color: Color(0xff1886EA)),
+                    ),
                   ),
                   const SizedBox(height: 24.0),
-                  // Tombol Login
                   ElevatedButton(
                     onPressed: () {
-                      email = emailController.text;
-                      password = passwordController.text;
-
                       // Navigasi ke halaman berikutnya jika login berhasil
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const Home()),
                       );
                     },
+                    // _login, //! Untuk membuat  fungsi login email& password
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 13.0),
                       shape: RoundedRectangleBorder(
@@ -207,52 +259,19 @@ class LoginScreenState extends State<LoginScreen> {
                       backgroundColor: const Color(0xff1886EA),
                     ),
                     child: SizedBox(
-                      width: MediaQuery.of(context).size.width *
-                          0.90, // Set the width to 90% of the screen width
-                      child: const Text("Sign in",
-                          textAlign: TextAlign.center,
-                          style:
-                              TextStyle(fontSize: 18.0, color: Colors.white)),
+                      width: MediaQuery.of(context).size.width * 0.90,
+                      child: const Text(
+                        "Sign in",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 18.0, color: Colors.white),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 16.0),
                 ],
               ),
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-// class HomeScreen extends StatelessWidget {
-//   const HomeScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Home Screen'),
-//       ),
-//       body: const Center(
-//         child: Text('Welcome to the Home Screen!'),
-//       ),
-//     );
-//   }
-// }
-
-class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-      ),
-      body: const Center(
-        child: Text('This is the signup screen.'),
       ),
     );
   }

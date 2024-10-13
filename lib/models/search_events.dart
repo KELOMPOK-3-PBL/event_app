@@ -21,11 +21,17 @@ class SearchEventsWidgetState extends State<SearchEventsWidget> {
         maxLines: 1,
         minLines: 1,
         decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
           isDense: true,
           alignLabelWithHint: true,
           hintText: 'Search event..',
           contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
           hintStyle: const TextStyle(color: UIColor.typoGray, fontSize: 14),
+          filled: true,
+          fillColor: UIColor.solidWhite,
           prefixIcon: Icon(
             UIconsPro.regularRounded.search,
             color: UIColor.typoBlack,
@@ -36,12 +42,6 @@ class SearchEventsWidgetState extends State<SearchEventsWidget> {
             color: UIColor.typoBlack,
             size: 18,
           ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide.none,
-          ),
-          filled: true,
-          fillColor: UIColor.solidWhite,
         ),
       ),
     );

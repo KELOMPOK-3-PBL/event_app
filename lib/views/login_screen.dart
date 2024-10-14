@@ -10,10 +10,10 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  LoginScreenState createState() => LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool rememberMe = false;
@@ -71,8 +71,9 @@ class _LoginScreenState extends State<LoginScreen> {
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
-
-      Navigator.of(context).pop(); // Menutup loading spinner
+      if (mounted) {
+        Navigator.of(context).pop(); // Menutup loading spinner
+      }
 
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
@@ -81,20 +82,33 @@ class _LoginScreenState extends State<LoginScreen> {
           await _saveUserPreferences(email, password);
 
           // Berhasil login, arahkan ke home screen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const Home()),
-          );
+          if (mounted) {
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const Home(),
+                transitionDuration: const Duration(
+                    milliseconds: 500), // adjust the duration as needed
+              ),
+            );
+          }
         } else {
           // Tampilkan pesan kesalahan dari response API
-          _showError(jsonData['message']);
+          if (mounted) {
+            _showError(jsonData['message']);
+          }
         }
       } else {
-        _showError('Error: ${response.statusCode}');
+        if (mounted) {
+          _showError('Error: ${response.statusCode}');
+        }
       }
     } catch (error) {
-      Navigator.of(context).pop(); // Menutup loading spinner
-      _showError('Login failed. Please try again.');
+      if (mounted) {
+        Navigator.of(context).pop(); // Menutup loading spinner
+        _showError('Login failed. Please try again.');
+      }
     }
   }
 
@@ -243,13 +257,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 24.0),
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Home()),
-                      );
-                    },
-                    // _login, //! Untuk membuat  fungsi login email& password
+                    onPressed:
+                        // () {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(builder: (context) => const Home()),
+                        //   );
+                        // },
+                        _login, //! Untuk membuat  fungsi login email& password
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 13.0),
                       shape: RoundedRectangleBorder(

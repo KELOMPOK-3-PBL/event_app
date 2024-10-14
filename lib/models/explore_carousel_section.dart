@@ -241,7 +241,7 @@ List<CarouselEventsModel> getEventsCarousel() {
   events.add(CarouselEventsModel(
     tittle: '',
     quota: '12',
-    posterUrl: "http://172.16.165.109/poster/SemNasTechComFest2024.jpg",
+    posterUrl: "http://10.0.2.2:80/poster/SemNasTechComFest2024.jpg",
     place: "GKT II",
     location: "Semarang, Indonesia",
     dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -250,7 +250,7 @@ List<CarouselEventsModel> getEventsCarousel() {
   events.add(CarouselEventsModel(
     tittle: '',
     quota: '120',
-    posterUrl: "http://172.16.165.109/poster/SemNasTechComFest2024.jpg",
+    posterUrl: "http://10.0.2.2:80/poster/SemNasTechComFest2024.jpg",
     place: "GKT I",
     location: "Semarang, Indonesia",
     dateStart: DateFormat('E, d MMM yyy').format(now),
@@ -259,7 +259,7 @@ List<CarouselEventsModel> getEventsCarousel() {
   events.add(CarouselEventsModel(
     tittle: '',
     quota: '20',
-    posterUrl: "http://172.16.165.109/poster/SemNasTechComFest2024.jpg",
+    posterUrl: "http://10.0.2.2:80/poster/SemNasTechComFest2024.jpg",
     place: "GKT I",
     location: "Semarang, Indonesia",
     dateStart: DateFormat('E, d MMM yyy').format(now),

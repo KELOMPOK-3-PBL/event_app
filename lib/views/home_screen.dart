@@ -1,4 +1,5 @@
 import 'package:event_proposal_app/models/bottom_navbar.dart';
+import 'package:event_proposal_app/models/home_approval.dart';
 import 'package:event_proposal_app/models/home_events.dart';
 import 'package:event_proposal_app/models/home_explore.dart';
 import 'package:event_proposal_app/models/ui_colors.dart';
@@ -16,9 +17,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _widgetOptions = <Widget>[
     const HomeExplore(),
     const HomeEvents(),
-    Scaffold(
-      body: Container(), // Add your approval screen widget here
-    ),
+    const HomeApproval(),
     Scaffold(
       body: Container(), // Add your accounts screen widget here
     ),

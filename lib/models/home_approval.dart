@@ -4,14 +4,14 @@ import 'package:intl/intl.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
-class HomeEvents extends StatefulWidget {
-  const HomeEvents({super.key});
+class HomeApproval extends StatefulWidget {
+  const HomeApproval({super.key});
 
   @override
-  State<HomeEvents> createState() => _HomeEventsState();
+  State<HomeApproval> createState() => _HomeApprovalState();
 }
 
-class _HomeEventsState extends State<HomeEvents> {
+class _HomeApprovalState extends State<HomeApproval> {
   late List<Events> _events;
 
   @override
@@ -46,6 +46,17 @@ class _HomeEventsState extends State<HomeEvents> {
   }
 
   Widget _buildEventCard(Events event) {
+    Color statusColor;
+    //! COLORING STATUS BADGE
+    if (event.status == "Proposed") {
+      statusColor = UIColor.propose;
+    } else if (event.status == "Pending") {
+      statusColor = UIColor.pending;
+    } else if (event.status == "Approved") {
+      statusColor = UIColor.approved;
+    } else {
+      statusColor = UIColor.rejected;
+    }
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -68,7 +79,7 @@ class _HomeEventsState extends State<HomeEvents> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 12, 8, 4),
+              padding: const EdgeInsets.fromLTRB(0, 8, 8, 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -81,6 +92,23 @@ class _HomeEventsState extends State<HomeEvents> {
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: statusColor,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                    child: Text(
+                      event.status,
+                      style: const TextStyle(
+                        color: UIColor.solidWhite,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 8),
                   _buildInfoRow(UIconsPro.regularRounded.user_time,

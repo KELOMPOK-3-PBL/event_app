@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       const url =
-          'http://192.168.110.131/polivent_api/routes/login'; // Ubah URL dengan yang sesuai
+          'http://172.16.165.109/polivent_api/routes/authRoutes.php/login'; // Ubah URL dengan yang sesuai
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
@@ -244,7 +244,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 24.0),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigasi ke halaman berikutnya jika login berhasil
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const Home()),

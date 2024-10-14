@@ -65,12 +65,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       const url =
-          'http://192.168.110.131/polivent_api/routes/login'; // Ubah URL dengan yang sesuai
+          'http://192.168.1.73/pbl/backend/routes/authRoutes.php/login'; // Ubah URL dengan yang sesuai
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({'email': email, 'password': password}),
       );
+      
 
       Navigator.of(context).pop(); // Menutup loading spinner
 
@@ -244,6 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 24.0),
                   ElevatedButton(
                     onPressed: () {
+                      _login();
                       // Navigasi ke halaman berikutnya jika login berhasil
                       Navigator.push(
                         context,

@@ -24,6 +24,12 @@ class LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _loadUserPreferences(); // Memuat email/password jika Remember Me diaktifkan sebelumnya
+    emailFocusNode.addListener(() {
+      setState(() {}); // Memperbarui tampilan saat fokus berubah
+    });
+    passwordFocusNode.addListener(() {
+      setState(() {}); // Memperbarui tampilan saat fokus berubah
+    });
   }
 
   Future<void> _loadUserPreferences() async {
@@ -168,10 +174,12 @@ class LoginScreenState extends State<LoginScreen> {
                   TextField(
                     controller: _emailController,
                     focusNode: emailFocusNode,
+                    cursorColor: UIColor.primary,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: UIColor.solidWhite,
                       labelText: 'Email',
+                      floatingLabelStyle: TextStyle(color: UIColor.primary),
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: UIColor.primary),
                         borderRadius: BorderRadius.circular(12),
@@ -193,10 +201,12 @@ class LoginScreenState extends State<LoginScreen> {
                     controller: _passwordController,
                     focusNode: passwordFocusNode,
                     obscureText: true,
+                    cursorColor: UIColor.primary,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: UIColor.solidWhite,
                       labelText: 'Password',
+                      floatingLabelStyle: TextStyle(color: UIColor.primary),
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: UIColor.primary),
                         borderRadius: BorderRadius.circular(12),

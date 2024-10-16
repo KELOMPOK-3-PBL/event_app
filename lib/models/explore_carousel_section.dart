@@ -105,6 +105,21 @@ class _CarouselEventsState extends State<CarouselSection> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
+                                        Text(
+                                          "${_eventsCarousel[index].category} : ${_eventsCarousel[index].tittle}",
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold,
+                                            color: UIColor.solidWhite,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
                                         Icon(
                                           color: UIColor.solidWhite,
                                           UIconsPro.regularRounded.user,
@@ -216,6 +231,7 @@ class _CarouselEventsState extends State<CarouselSection> {
 
 class CarouselEventsModel {
   String tittle;
+  String category;
   String quota;
   String posterUrl;
   String place;
@@ -225,6 +241,7 @@ class CarouselEventsModel {
 
   CarouselEventsModel({
     required this.tittle,
+    required this.category,
     required this.quota,
     required this.posterUrl,
     required this.place,
@@ -239,7 +256,8 @@ List<CarouselEventsModel> getEventsCarousel() {
   List<CarouselEventsModel> events = [];
 
   events.add(CarouselEventsModel(
-    tittle: '',
+    tittle: 'Techcomfest',
+    category: 'Seminar',
     quota: '12',
     posterUrl: "http://10.0.2.2:80/poster/SemNasTechComFest2024.jpg",
     place: "GKT II",
@@ -249,6 +267,7 @@ List<CarouselEventsModel> getEventsCarousel() {
   ));
   events.add(CarouselEventsModel(
     tittle: '',
+    category: 'Seminar',
     quota: '120',
     posterUrl: "http://10.0.2.2:80/poster/SemNasTechComFest2024.jpg",
     place: "GKT I",
@@ -258,6 +277,7 @@ List<CarouselEventsModel> getEventsCarousel() {
   ));
   events.add(CarouselEventsModel(
     tittle: '',
+    category: 'Seminar',
     quota: '20',
     posterUrl: "http://10.0.2.2:80/poster/SemNasTechComFest2024.jpg",
     place: "GKT I",

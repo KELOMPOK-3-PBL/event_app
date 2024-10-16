@@ -267,14 +267,13 @@ class LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 24.0),
                   ElevatedButton(
-                    onPressed:
-                        // () {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(builder: (context) => const Home()),
-                        //   );
-                        // },
-                        _login, //! Untuk membuat  fungsi login email& password
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const Home()),
+                      );
+                    },
+                    // _login, //! Untuk membuat  fungsi login email& password
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 13.0),
                       shape: RoundedRectangleBorder(

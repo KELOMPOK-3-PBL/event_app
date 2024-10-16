@@ -40,6 +40,7 @@ class _HomeState extends State<Home> {
           //! membuat EXPLORE tidak memiliki appbar
           if (_currentIndex != 0)
             SliverAppBar(
+              floating: true,
               title: Text(
                 _getTitle(_currentIndex),
                 style: const TextStyle(
@@ -75,7 +76,7 @@ class _HomeState extends State<Home> {
       case 3:
         return "Accounts";
       case 4:
-        return "Profile";
+        return "My Profile";
       default:
         return "";
     }

@@ -71,7 +71,7 @@ class LoginScreenState extends State<LoginScreen> {
 
     try {
       const url =
-          'http://10.0.2.2:80/api_03/routes/authRoutes.php'; // Ubah URL dengan yang sesuai
+          'http://10.0.2.2:80/api-03/routes/authRoutes.php/login'; // Ubah URL dengan yang sesuai
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},

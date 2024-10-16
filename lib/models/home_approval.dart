@@ -71,8 +71,10 @@ class _HomeApprovalState extends State<HomeApproval> {
               borderRadius: const BorderRadius.all(Radius.circular(8)),
               child: Image.network(
                 event.posterUrl,
-                height: 120,
-                width: 90,
+                // height: 120,
+                // width: 90,
+                height: (MediaQuery.of(context).size.width / 3),
+                width: (MediaQuery.of(context).size.width / 4),
                 fit: BoxFit.cover,
               ),
             ),
@@ -119,6 +121,7 @@ class _HomeApprovalState extends State<HomeApproval> {
                       UIconsPro.regularRounded.marker, event.location),
                   _buildInfoRow(
                       UIconsPro.regularRounded.calendar, event.dateStart),
+                  const SizedBox(height: 8),
                 ],
               ),
             ),

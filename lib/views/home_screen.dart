@@ -51,10 +51,12 @@ class _HomeState extends State<Home> {
               ),
               automaticallyImplyLeading: false,
               backgroundColor: UIColor.solidWhite,
+              foregroundColor: UIColor.solidWhite,
               centerTitle: true,
               pinned: true, // This will keep the AppBar fixed
             ),
           SliverFillRemaining(
+            // hasScrollBody: false,
             child: _widgetOptions.elementAt(_currentIndex),
           ),
         ],

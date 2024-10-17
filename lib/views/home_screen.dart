@@ -2,6 +2,7 @@ import 'package:event_proposal_app/models/bottom_navbar.dart';
 import 'package:event_proposal_app/models/home_approval.dart';
 import 'package:event_proposal_app/models/home_events.dart';
 import 'package:event_proposal_app/models/home_explore.dart';
+import 'package:event_proposal_app/models/search_events.dart';
 import 'package:event_proposal_app/models/ui_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -35,12 +36,15 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          //! membuat EXPLORE tidak memiliki appbar
+      body: Column(
+        children: [
           if (_currentIndex != 0)
-            SliverAppBar(
-              floating: true,
+            AppBar(
+              automaticallyImplyLeading:
+                  false, // remove leading(left) back icon
+              centerTitle: true,
+              backgroundColor: UIColor.solidWhite,
+              scrolledUnderElevation: 0,
               title: Text(
                 _getTitle(_currentIndex),
                 style: const TextStyle(
@@ -49,14 +53,8 @@ class _HomeState extends State<Home> {
                   color: UIColor.typoBlack,
                 ),
               ),
-              automaticallyImplyLeading: false,
-              backgroundColor: UIColor.solidWhite,
-              foregroundColor: UIColor.solidWhite,
-              centerTitle: true,
-              pinned: true, // This will keep the AppBar fixed
             ),
-          SliverFillRemaining(
-            // hasScrollBody: false,
+          Expanded(
             child: _widgetOptions.elementAt(_currentIndex),
           ),
         ],
@@ -69,8 +67,6 @@ class _HomeState extends State<Home> {
 
   String _getTitle(int index) {
     switch (index) {
-      case 0:
-        return "Explore";
       case 1:
         return "Events";
       case 2:

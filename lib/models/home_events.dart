@@ -30,7 +30,6 @@ class _HomeEventsState extends State<HomeEvents> {
         ),
         Expanded(
           child: ListView.builder(
-            padding: EdgeInsets.zero,
             physics: const AlwaysScrollableScrollPhysics(),
             itemCount: _events.length,
             itemBuilder: (context, index) {

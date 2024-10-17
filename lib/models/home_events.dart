@@ -22,27 +22,44 @@ class _HomeEventsState extends State<HomeEvents> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
-          child: SearchEventsWidget(),
-        ),
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            physics: const AlwaysScrollableScrollPhysics(),
-            itemCount: _events.length,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-                child: _buildEventCard(_events[index]),
-              );
-            },
+    return Column(children: [
+      AppBar(
+        automaticallyImplyLeading: false, // remove leading(left) back icon
+        centerTitle: true,
+        backgroundColor: UIColor.solidWhite,
+        scrolledUnderElevation: 0,
+        title: Text(
+          "Events",
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: UIColor.typoBlack,
           ),
         ),
-      ],
-    );
+      ),
+      Expanded(
+          child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
+            child: SearchEventsWidget(),
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              physics: const AlwaysScrollableScrollPhysics(),
+              itemCount: _events.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                  child: _buildEventCard(_events[index]),
+                );
+              },
+            ),
+          ),
+        ],
+      ))
+    ]);
   }
 
   Widget _buildEventCard(Events event) {

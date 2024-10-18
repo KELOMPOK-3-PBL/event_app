@@ -98,10 +98,27 @@ class _HomeApprovalState extends State<HomeApproval> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 8, 8, 4),
+              padding: const EdgeInsets.fromLTRB(0, 12, 8, 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: statusColor,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                    child: Text(
+                      event.status,
+                      style: const TextStyle(
+                        color: UIColor.solidWhite,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  // const SizedBox(height: 8),
                   Text(
                     '${event.category}: ${event.tittle}',
                     style: const TextStyle(
@@ -113,23 +130,6 @@ class _HomeApprovalState extends State<HomeApproval> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: statusColor,
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-                    child: Text(
-                      event.status,
-                      style: const TextStyle(
-                        color: UIColor.solidWhite,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
                   _buildInfoRow(UIconsPro.regularRounded.user_time,
                       '${event.quota} participants'),
                   _buildInfoRow(

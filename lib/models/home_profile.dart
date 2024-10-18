@@ -12,12 +12,9 @@ class HomeProfile extends StatefulWidget {
 }
 
 class _HomeProfile extends State<HomeProfile> {
-  late List<Profie> _profile;
-
   @override
   void initState() {
     super.initState();
-    _profile = getAccount();
   }
 
   @override
@@ -38,60 +35,112 @@ class _HomeProfile extends State<HomeProfile> {
         ),
       ),
       Expanded(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
-        children: [
-          // const Padding(
-          //   padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
-          //   child: SearchEventsWidget(),
-          // ),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: _profile.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-                  child: _buildEventCard(_profile[index]),
-                );
-              },
-            ),
+            crossAxisAlignment:
+                CrossAxisAlignment.center, // Elemen lain tetap di tengah
+            children: [
+              SizedBox(height: 20),
+              CircleAvatar(
+                radius: 60, // Atur ukuran lingkaran di sini
+                backgroundColor: Colors.grey[300],
+                backgroundImage: NetworkImage(
+                    'images/fotopf.png'), // Ganti dengan URL gambar Anda
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Atsilla Arya',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 50),
+
+              // Bagian "About Me" dan "Interests" rata kiri
+              Align(
+                alignment: Alignment.centerLeft, // Rata kiri
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start, // Rata kiri
+                  children: [
+                    // Section "About Me"
+                    Text(
+                      'About Me',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'I am a student with a strong interest in mobile app development, '
+                      'UI/UX design, and gaming. I also enjoy competing in the fields '
+                      'of technology and design, constantly striving to improve my skills.',
+                      textAlign: TextAlign.left, // Teks rata kiri
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black54,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Read More',
+                        style: TextStyle(
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 24),
+
+                    // Section "Interests"
+                    Text(
+                      'Interests',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: [
+                        InterestChip(label: 'Music'),
+                        InterestChip(label: 'Workshop'),
+                        InterestChip(label: 'Art'),
+                        InterestChip(label: 'Sport'),
+                        InterestChip(label: 'Food'),
+                        InterestChip(label: 'Seminar'),
+                        InterestChip(label: 'E-Sport'),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ))
+        ),
+      )
     ]);
   }
+}
 
-  Widget _buildEventCard(Profie event) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: UIColor.solidWhite,
+class InterestChip extends StatelessWidget {
+  final String label;
+
+  InterestChip({required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      label: Text(
+        label,
+        style: TextStyle(color: Colors.white),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [],
-      ),
+      backgroundColor: Colors.blue, // Warna biru sesuai permintaan
     );
   }
-}
-
-class Profie {
-  String name;
-  String role;
-
-  Profie({
-    required this.name,
-    required this.role,
-  });
-}
-
-List<Profie> getAccount() {
-  List<Profie> profie = [];
-
-  profie.add(Profie(
-    name: 'Techcom Fest 2027',
-    role: 'Competition',
-  ));
-  return profie;
 }

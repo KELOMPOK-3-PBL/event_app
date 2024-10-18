@@ -1,5 +1,6 @@
 import 'package:event_proposal_app/models/search_events.dart';
 import 'package:event_proposal_app/models/ui_colors.dart';
+import 'package:event_proposal_app/views/detail_event_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
@@ -63,58 +64,66 @@ class _HomeEventsState extends State<HomeEvents> {
   }
 
   Widget _buildEventCard(Events event) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: UIColor.solidWhite,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              child: Image.network(
-                event.posterUrl,
-                // height: 120,
-                // width: 90,
-                height: (MediaQuery.of(context).size.width / 3),
-                width: (MediaQuery.of(context).size.width / 4),
-                fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DetailEventScreen()),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: UIColor.solidWhite,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                child: Image.network(
+                  event.posterUrl,
+                  // height: 120,
+                  // width: 90,
+                  height: (MediaQuery.of(context).size.width / 3),
+                  width: (MediaQuery.of(context).size.width / 4),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 12, 8, 4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${event.category}: ${event.tittle}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: UIColor.typoBlack,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 12, 8, 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${event.category}: ${event.tittle}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: UIColor.typoBlack,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  _buildInfoRow(UIconsPro.regularRounded.user_time,
-                      '${event.quota} participants'),
-                  _buildInfoRow(
-                      UIconsPro.regularRounded.house_building, event.place),
-                  _buildInfoRow(
-                      UIconsPro.regularRounded.marker, event.location),
-                  _buildInfoRow(
-                      UIconsPro.regularRounded.calendar, event.dateStart),
-                ],
+                    const SizedBox(height: 8),
+                    _buildInfoRow(UIconsPro.regularRounded.user_time,
+                        '${event.quota} participants'),
+                    _buildInfoRow(
+                        UIconsPro.regularRounded.house_building, event.place),
+                    _buildInfoRow(
+                        UIconsPro.regularRounded.marker, event.location),
+                    _buildInfoRow(
+                        UIconsPro.regularRounded.calendar, event.dateStart),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

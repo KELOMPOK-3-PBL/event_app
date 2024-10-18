@@ -17,6 +17,9 @@ class HomeExplore extends StatefulWidget {
 }
 
 class _HomeExploreState extends State<HomeExplore> {
+  final GlobalKey<SearchEventsWidgetState> _searchKey =
+      GlobalKey<SearchEventsWidgetState>();
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -40,11 +43,11 @@ class _HomeExploreState extends State<HomeExplore> {
                 bottomRight: Radius.circular(14),
               ),
             ),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 16),
-                Text(
+                const SizedBox(height: 16),
+                const Text(
                   'Hi, Fattur 👋',
                   style: TextStyle(
                     fontSize: 24,
@@ -52,8 +55,8 @@ class _HomeExploreState extends State<HomeExplore> {
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 4),
-                Text(
+                const SizedBox(height: 4),
+                const Text(
                   'You are logged in as superadmin',
                   style: TextStyle(
                     fontSize: 14,
@@ -61,9 +64,10 @@ class _HomeExploreState extends State<HomeExplore> {
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 63),
-                SearchEventsWidget(), //! memanggil model => search
-                SizedBox(height: 4),
+                const SizedBox(height: 63),
+                SearchEventsWidget(
+                    key: _searchKey), //! memanggil model => search
+                const SizedBox(height: 4),
               ],
             ),
           ),

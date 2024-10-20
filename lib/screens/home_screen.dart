@@ -1,9 +1,9 @@
-import 'package:event_proposal_app/models/bottom_navbar.dart';
-import 'package:event_proposal_app/models/home_accounts.dart';
-import 'package:event_proposal_app/models/home_approval.dart';
-import 'package:event_proposal_app/models/home_events.dart';
-import 'package:event_proposal_app/models/home_explore.dart';
-import 'package:event_proposal_app/models/home_profile.dart';
+import 'package:event_proposal_app/models_old/bottom_navbar.dart';
+import 'package:event_proposal_app/models_old/home_accounts.dart';
+import 'package:event_proposal_app/models_old/home_approval.dart';
+import 'package:event_proposal_app/models_old/home_events.dart';
+import 'package:event_proposal_app/models_old/home_explore.dart';
+import 'package:event_proposal_app/models_old/home_profile.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {

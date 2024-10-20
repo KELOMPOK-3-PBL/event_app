@@ -1,5 +1,5 @@
-import 'package:event_proposal_app/models/ui_colors.dart';
-import 'package:event_proposal_app/views/login_screen.dart';
+import 'package:event_proposal_app/models_old/ui_colors.dart';
+import 'package:event_proposal_app/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 
@@ -86,7 +86,7 @@ class WelcomeScreen extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        const LoginScreen(), // Ganti ke screen berikutnya
+                                        LoginScreen(), // Ganti ke screen berikutnya
                                   ),
                                 );
                               },

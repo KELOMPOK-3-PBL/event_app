@@ -1,7 +1,8 @@
 // import 'package:event_proposal_app/models/search_events.dart';
+import 'package:event_proposal_app/models/search_events.dart';
 import 'package:event_proposal_app/models/ui_colors.dart';
-import 'package:intl/intl.dart';
-import 'package:uicons_pro/uicons_pro.dart';
+// import 'package:intl/intl.dart';
+// import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
 class HomeAccounts extends StatefulWidget {
@@ -40,10 +41,10 @@ class _HomeAccountsState extends State<HomeAccounts> {
       Expanded(
           child: Column(
         children: [
-          // const Padding(
-          //   padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
-          //   child: SearchEventsWidget(),
-          // ),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
+            child: SearchEventsWidget(),
+          ),
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.zero,
@@ -51,7 +52,7 @@ class _HomeAccountsState extends State<HomeAccounts> {
               itemCount: _account.length,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
                   child: _buildEventCard(_account[index]),
                 );
               },
@@ -62,26 +63,75 @@ class _HomeAccountsState extends State<HomeAccounts> {
     ]);
   }
 
-  Widget _buildEventCard(Account event) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: UIColor.solidWhite,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [],
-      ),
+  Widget _buildEventCard(Account account) {
+    Color roleColor;
+    //! COLORING STATUS BADGE
+    if (account.role == "Superadmin") {
+      roleColor = UIColor.superadmin;
+    } else if (account.role == "Admin") {
+      roleColor = UIColor.admin;
+    } else if (account.role == "Propose") {
+      roleColor = UIColor.propose;
+    } else {
+      roleColor = UIColor.member;
+    }
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        CircleAvatar(
+          radius: 24,
+          backgroundImage: NetworkImage(
+            account.photo,
+          ),
+        ),
+        SizedBox(
+          width: 12,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              account.name,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: UIColor.typoBlack,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: roleColor,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+              child: Text(
+                account.role,
+                style: const TextStyle(
+                  color: UIColor.solidWhite,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
 
 class Account {
   String name;
+  String photo;
   String role;
 
   Account({
     required this.name,
+    required this.photo,
     required this.role,
   });
 }
@@ -90,57 +140,76 @@ List<Account> getAccount() {
   List<Account> account = [];
 
   account.add(Account(
-    name: 'Techcom Fest 2027',
-    role: 'Competition',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Mara',
+    role: 'Admin',
   ));
   account.add(Account(
-    name: 'AI For Technology ',
-    role: 'Seminar',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Sarah',
+    role: 'Admin',
   ));
   account.add(Account(
-    name: 'Electro Fest',
-    role: 'Expo',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Fafa',
+    role: 'Member',
   ));
   account.add(Account(
-    name: 'Electro Fest',
-    role: 'Expo',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Polytechnic Computer Club',
+    role: 'Propose',
   ));
   account.add(Account(
-    name: 'Electro Fest',
-    role: 'Expo',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Rafa Rara',
+    role: 'Member',
   ));
   account.add(Account(
-    name: 'Electro Fest',
-    role: 'Expo',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Rafa Rara',
+    role: 'Member',
   ));
   account.add(Account(
-    name: 'Electro Fest',
-    role: 'Expo',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Rafa Rara',
+    role: 'Member',
   ));
   account.add(Account(
-    name: 'Electro Fest',
-    role: 'Expo',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Rafa Rara',
+    role: 'Member',
   ));
   account.add(Account(
-    name: 'Electro Fest',
-    role: 'Expo',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Rafa Rara',
+    role: 'Member',
   ));
   account.add(Account(
-    name: 'Electro Fest',
-    role: 'Expo',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Rafa Rara',
+    role: 'Member',
   ));
   account.add(Account(
-    name: 'Electro Fest',
-    role: 'Expo',
-  ));
-
-  account.add(Account(
-    name: 'Electro Fest',
-    role: 'Expo',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Rafa Rara',
+    role: 'Member',
   ));
   account.add(Account(
-    name: 'Electro Fest',
-    role: 'Expo',
+    photo:
+        'https://cdn.pixabay.com/photo/2021/06/25/13/22/girl-6363743_1280.jpg',
+    name: 'Rafa Rara',
+    role: 'Member',
   ));
   return account;
 }

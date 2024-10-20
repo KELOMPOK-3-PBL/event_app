@@ -1,7 +1,7 @@
 // import 'package:event_proposal_app/models/search_events.dart';
 import 'package:event_proposal_app/models/ui_colors.dart';
-import 'package:intl/intl.dart';
-import 'package:uicons_pro/uicons_pro.dart';
+// import 'package:intl/intl.dart';
+// import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
 class HomeProfile extends StatefulWidget {

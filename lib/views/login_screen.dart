@@ -19,6 +19,7 @@ class LoginScreenState extends State<LoginScreen> {
   bool rememberMe = false;
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
+  bool securePassword = true;
 
   @override
   void initState() {
@@ -131,7 +132,12 @@ class LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  @override
+  showhide() {
+    setState(() {
+      securePassword = !securePassword;
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
@@ -206,7 +212,7 @@ class LoginScreenState extends State<LoginScreen> {
                   TextField(
                     controller: _passwordController,
                     focusNode: _passwordFocusNode,
-                    obscureText: true,
+                    obscureText: securePassword,
                     cursorColor: UIColor.primary,
                     decoration: InputDecoration(
                       filled: true,
@@ -233,6 +239,16 @@ class LoginScreenState extends State<LoginScreen> {
                             ? UIColor.primary
                             : UIColor.typoGray,
                       ),
+                      suffixIcon: IconButton(
+                          color: _passwordFocusNode.hasFocus
+                              ? UIColor.primary
+                              : UIColor.typoGray,
+                          onPressed: () {
+                            showhide();
+                          },
+                          icon: Icon(securePassword
+                              ? UIconsPro.solidRounded.eye_crossed
+                              : UIconsPro.solidRounded.eye)),
                     ),
                   ),
                   const SizedBox(height: 8.0),

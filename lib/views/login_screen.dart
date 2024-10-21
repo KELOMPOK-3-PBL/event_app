@@ -17,17 +17,17 @@ class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool rememberMe = false;
-  final FocusNode emailFocusNode = FocusNode();
-  final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     _loadUserPreferences(); // Memuat email/password jika Remember Me diaktifkan sebelumnya
-    emailFocusNode.addListener(() {
+    _emailFocusNode.addListener(() {
       setState(() {}); // Memperbarui tampilan saat fokus berubah
     });
-    passwordFocusNode.addListener(() {
+    _passwordFocusNode.addListener(() {
       setState(() {}); // Memperbarui tampilan saat fokus berubah
     });
   }
@@ -126,8 +126,8 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    emailFocusNode.dispose();
-    passwordFocusNode.dispose();
+    _emailFocusNode.dispose();
+    _passwordFocusNode.dispose();
     super.dispose();
   }
 
@@ -173,24 +173,30 @@ class LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 20),
                   TextField(
                     controller: _emailController,
-                    focusNode: emailFocusNode,
+                    focusNode: _emailFocusNode,
                     cursorColor: UIColor.primary,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: UIColor.solidWhite,
                       labelText: 'Email',
-                      floatingLabelStyle: TextStyle(color: UIColor.primary),
+                      floatingLabelStyle: TextStyle(
+                          color: _emailFocusNode.hasFocus
+                              ? UIColor.primary
+                              : UIColor.typoGray),
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: UIColor.primary),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: UIColor.typoGray),
+                        borderSide: BorderSide(
+                            color: _emailFocusNode.hasFocus
+                                ? UIColor.primary
+                                : UIColor.typoGray),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       prefixIcon: Icon(
                         UIconsPro.regularRounded.envelope,
-                        color: emailFocusNode.hasFocus
+                        color: _emailFocusNode.hasFocus
                             ? UIColor.primary
                             : UIColor.typoGray,
                       ),
@@ -199,25 +205,31 @@ class LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 16.0),
                   TextField(
                     controller: _passwordController,
-                    focusNode: passwordFocusNode,
+                    focusNode: _passwordFocusNode,
                     obscureText: true,
                     cursorColor: UIColor.primary,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: UIColor.solidWhite,
                       labelText: 'Password',
-                      floatingLabelStyle: TextStyle(color: UIColor.primary),
+                      floatingLabelStyle: TextStyle(
+                          color: _passwordFocusNode.hasFocus
+                              ? UIColor.primary
+                              : UIColor.typoGray),
                       focusedBorder: OutlineInputBorder(
                         borderSide: const BorderSide(color: UIColor.primary),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: UIColor.typoGray),
+                        borderSide: BorderSide(
+                            color: _passwordFocusNode.hasFocus
+                                ? UIColor.primary
+                                : UIColor.typoGray),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       prefixIcon: Icon(
                         UIconsPro.regularRounded.lock,
-                        color: passwordFocusNode.hasFocus
+                        color: _passwordFocusNode.hasFocus
                             ? UIColor.primary
                             : UIColor.typoGray,
                       ),

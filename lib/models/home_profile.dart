@@ -46,7 +46,7 @@ class _HomeProfile extends State<HomeProfile> {
                 radius: 60, // Atur ukuran lingkaran di sini
                 backgroundColor: Colors.grey[300],
                 backgroundImage: NetworkImage(
-                    'images/fotopf.png'), // Ganti dengan URL gambar Anda
+                    'https://cdn.pixabay.com/photo/2022/05/15/13/38/woman-7198072_960_720.jpg'), // Ganti dengan URL gambar Anda
               ),
               SizedBox(height: 16),
               Text(

@@ -1,9 +1,9 @@
 // import 'package:event_proposal_app/models/search_events.dart';
-import 'package:event_proposal_app/models_old/search_events.dart';
 import 'package:event_proposal_app/models_old/ui_colors.dart';
 // import 'package:intl/intl.dart';
 // import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:uicons_pro/uicons_pro.dart';
 
 class HomeAccounts extends StatefulWidget {
   const HomeAccounts({super.key});
@@ -41,9 +41,49 @@ class _HomeAccountsState extends State<HomeAccounts> {
       Expanded(
           child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
-            child: SearchEventsWidget(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+            child: SizedBox(
+              height: 45,
+              child: TextField(
+                textInputAction: TextInputAction.search,
+                // controller: _searchController,
+                maxLines: 1,
+                minLines: 1,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                  isDense: true,
+                  alignLabelWithHint: true,
+                  hintText: 'Search account...',
+                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
+                  hintStyle:
+                      const TextStyle(color: UIColor.typoGray, fontSize: 14),
+                  filled: true,
+                  fillColor: UIColor.solidWhite,
+                  prefixIcon: Icon(
+                    UIconsPro.regularRounded.search,
+                    color: UIColor.typoBlack,
+                    size: 18,
+                  ),
+                  suffixIcon: Icon(
+                    UIconsPro.regularRounded.settings_sliders,
+                    color: UIColor.typoBlack,
+                    size: 18,
+                  ),
+                ),
+                onSubmitted: (searchQuery) {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) =>
+                  //           SearchAccountResultScreen(searchQuery: searchQuery)),
+                  // );
+                },
+              ),
+            ),
           ),
           Expanded(
             child: ListView.builder(

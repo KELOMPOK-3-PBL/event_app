@@ -20,6 +20,8 @@ const Color primaryColor = Color(0xFF1886EA);
 const Color secondaryColor = Color(0xFFFAAD14);
 
 class PoliventApp extends StatelessWidget {
+  const PoliventApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,11 +37,13 @@ class PoliventApp extends StatelessWidget {
 }
 
 class DetailEventScreen extends StatefulWidget {
+  const DetailEventScreen({super.key});
+
   @override
-  _DetailEventScreenState createState() => _DetailEventScreenState();
+  DetailEventScreenState createState() => DetailEventScreenState();
 }
 
-class _DetailEventScreenState extends State<DetailEventScreen> {
+class DetailEventScreenState extends State<DetailEventScreen> {
   final String eventTitle = 'Seminar : Techcomfest';
   final String location = 'Gedung Kuliah Terpadu Lantai 2';
   final String dateTime = '12 Januari 2024 - 10:00 PM';
@@ -100,7 +104,7 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
                                       Navigator.of(context)
                                           .pop(); // Tutup dialog saat gambar di-tap lagi
                                     },
-                                    child: Container(
+                                    child: SizedBox(
                                       width: double.infinity,
                                       height: double.infinity,
                                       child: PhotoView(
@@ -488,11 +492,13 @@ class _DetailEventScreenState extends State<DetailEventScreen> {
 }
 
 class CommentSection extends StatefulWidget {
+  const CommentSection({super.key});
+
   @override
-  _CommentSectionState createState() => _CommentSectionState();
+  CommentSectionState createState() => CommentSectionState();
 }
 
-class _CommentSectionState extends State<CommentSection> {
+class CommentSectionState extends State<CommentSection> {
   final List<Map<String, dynamic>> comments = [
     {
       "user": "User1",
@@ -719,13 +725,16 @@ class _CommentSectionState extends State<CommentSection> {
                                             null
                                         ? NetworkImage(reply['userProfileUrl'])
                                         : null, // Load profile image from URL
-                                    backgroundColor:
-                                        const Color.fromRGBO(255, 191, 28, 1),
+                                    backgroundColor: const Color.fromRGBO(
+                                        255,
+                                        191,
+                                        28,
+                                        1), // Display placeholder if no URL
+                                    radius: 16,
                                     child: reply['userProfileUrl'] == null
                                         ? Icon(Icons.person,
                                             color: Colors.white)
-                                        : null, // Display placeholder if no URL
-                                    radius: 16,
+                                        : null,
                                   ),
                                   SizedBox(width: 8),
                                   Expanded(
@@ -762,7 +771,7 @@ class _CommentSectionState extends State<CommentSection> {
               ),
             ],
           );
-        }).toList(),
+        }),
 
         SizedBox(height: 16),
 

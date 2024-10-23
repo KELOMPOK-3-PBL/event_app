@@ -51,15 +51,21 @@ class QuickCategorySection extends StatelessWidget {
           width: 10,
         ),
         itemBuilder: (context, index) {
-          return Container(
-            width: 90,
-            decoration: BoxDecoration(
-                color: categories[index].boxColor,
-                borderRadius: BorderRadius.circular(8)),
-            child: Text(categories[index].name,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    color: UIColor.solidWhite, height: 2.5, fontSize: 12)),
+          return InkWell(
+            onTap: () {
+              // Handle the button tap action here
+              print('Tapped on ${categories[index].name}'); // Example action
+            },
+            child: Container(
+              width: 90,
+              decoration: BoxDecoration(
+                  color: categories[index].boxColor,
+                  borderRadius: BorderRadius.circular(8)),
+              child: Text(categories[index].name,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      color: UIColor.solidWhite, height: 2.5, fontSize: 12)),
+            ),
           );
         },
       ),

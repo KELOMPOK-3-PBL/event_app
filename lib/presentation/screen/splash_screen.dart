@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:event_proposal_app/presentation/screens/welcome_screen.dart';
+import 'package:event_proposal_app/presentation/screen/welcome_screen.dart';
 // Pastikan path benar
 
 void main() {

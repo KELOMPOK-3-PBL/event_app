@@ -1,7 +1,9 @@
-import 'package:event_proposal_app/presentation/widget/explore_more_events.dart';
-import 'package:event_proposal_app/presentation/widget/explore_quick_category_section.dart';
-import 'package:event_proposal_app/presentation/widget/explore_carousel_section.dart';
-import 'package:event_proposal_app/presentation/widget/search_events.dart';
+import 'package:event_proposal_app/presentation/page/section/explore_event_list_section.dart';
+import 'package:event_proposal_app/presentation/page/section/explore_quick_category_section.dart';
+import 'package:event_proposal_app/presentation/page/section/explore_carousel_section.dart';
+import 'package:event_proposal_app/presentation/screen/search_result_event_screen.dart';
+// import 'package:event_proposal_app/presentation/widget/search_events.dart';
+import 'package:event_proposal_app/presentation/widget/search_widget.dart';
 // import 'package:event_proposal_app/models/ui_colors.dart';
 // import 'package:event_proposal_app/models/ui_colors.dart';
 // import 'package:flutter/services.dart';
@@ -17,8 +19,8 @@ class HomeExplore extends StatefulWidget {
 }
 
 class _HomeExploreState extends State<HomeExplore> {
-  final GlobalKey<SearchEventsWidgetState> _searchKey =
-      GlobalKey<SearchEventsWidgetState>();
+  // final GlobalKey<SearchEventsWidgetState> _searchKey =
+  //     GlobalKey<SearchEventsWidgetState>();
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +67,21 @@ class _HomeExploreState extends State<HomeExplore> {
                   ),
                 ),
                 const SizedBox(height: 63),
-                SearchEventsWidget(
-                    key: _searchKey), //! memanggil model => search
+                SearchWidget(
+                  label: 'Search Event ...',
+                  onSubmittedKeyboard: (searchQuery) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SearchEventsResultScreen(
+                              searchQuery: searchQuery)),
+                    );
+                  },
+                  onPressedFilter: () {
+                    // Handle the button tap action here
+                    print('Tapped on FILTER ITEM-BUTTON');
+                  },
+                ), //! memanggil model => search
                 const SizedBox(height: 4),
               ],
             ),
@@ -76,7 +91,7 @@ class _HomeExploreState extends State<HomeExplore> {
           ),
           const QuickCategorySection(), //! -- Quick Category
           const CarouselSection(), //! -- Carousel Events
-          const EventList() //! -- Events Available
+          const EventListSection() //! -- Events Available
         ],
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
-import 'package:event_proposal_app/presentation/screens/search_result_event_screen.dart';
+import 'package:event_proposal_app/presentation/screen/search_result_event_screen.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 

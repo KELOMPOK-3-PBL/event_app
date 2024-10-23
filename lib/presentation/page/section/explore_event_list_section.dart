@@ -3,14 +3,14 @@ import 'package:intl/intl.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
-class EventList extends StatefulWidget {
-  const EventList({super.key});
+class EventListSection extends StatefulWidget {
+  const EventListSection({super.key});
 
   @override
-  State<EventList> createState() => _EventListWidgetState();
+  State<EventListSection> createState() => _EventListWidgetState();
 }
 
-class _EventListWidgetState extends State<EventList> {
+class _EventListWidgetState extends State<EventListSection> {
   List<EventsMore> _eventsMore = [];
 
   @override

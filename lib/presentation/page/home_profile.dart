@@ -131,7 +131,7 @@ class _HomeProfile extends State<HomeProfile> {
 class InterestChip extends StatelessWidget {
   final String label;
 
-  InterestChip({required this.label});
+  const InterestChip({super.key, required this.label});
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,5 @@
-import 'package:event_proposal_app/models_old/ui_colors.dart';
-import 'package:event_proposal_app/screens/splash_screen.dart';
+import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
+import 'package:event_proposal_app/presentation/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

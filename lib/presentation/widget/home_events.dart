@@ -1,17 +1,18 @@
-import 'package:event_proposal_app/models_old/search_events.dart';
-import 'package:event_proposal_app/models_old/ui_colors.dart';
+import 'package:event_proposal_app/presentation/widget/search_events.dart';
+import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
+import 'package:event_proposal_app/presentation/screens/detail_event_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
-class HomeApproval extends StatefulWidget {
-  const HomeApproval({super.key});
+class HomeEvents extends StatefulWidget {
+  const HomeEvents({super.key});
 
   @override
-  State<HomeApproval> createState() => _HomeApprovalState();
+  State<HomeEvents> createState() => _HomeEventsState();
 }
 
-class _HomeApprovalState extends State<HomeApproval> {
+class _HomeEventsState extends State<HomeEvents> {
   late List<Events> _events;
 
   @override
@@ -63,87 +64,66 @@ class _HomeApprovalState extends State<HomeApproval> {
   }
 
   Widget _buildEventCard(Events event) {
-    Color statusColor;
-    //! COLORING STATUS BADGE
-    if (event.status == "Proposed") {
-      statusColor = UIColor.propose;
-    } else if (event.status == "Pending") {
-      statusColor = UIColor.pending;
-    } else if (event.status == "Approved") {
-      statusColor = UIColor.approved;
-    } else {
-      statusColor = UIColor.rejected;
-    }
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: UIColor.solidWhite,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              child: Image.network(
-                event.posterUrl,
-                // height: 120,
-                // width: 90,
-                height: (MediaQuery.of(context).size.width / 3),
-                width: (MediaQuery.of(context).size.width / 4),
-                fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => DetailEventScreen()),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: UIColor.solidWhite,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                child: Image.network(
+                  event.posterUrl,
+                  // height: 120,
+                  // width: 90,
+                  height: (MediaQuery.of(context).size.width / 3),
+                  width: (MediaQuery.of(context).size.width / 4),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 12, 8, 4),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: statusColor,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-                    child: Text(
-                      event.status,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 12, 8, 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${event.category}: ${event.tittle}',
                       style: const TextStyle(
-                        color: UIColor.solidWhite,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: UIColor.typoBlack,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  // const SizedBox(height: 8),
-                  Text(
-                    '${event.category}: ${event.tittle}',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: UIColor.typoBlack,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  _buildInfoRow(UIconsPro.regularRounded.user_time,
-                      '${event.quota} participants'),
-                  _buildInfoRow(
-                      UIconsPro.regularRounded.house_building, event.place),
-                  _buildInfoRow(
-                      UIconsPro.regularRounded.marker, event.location),
-                  _buildInfoRow(
-                      UIconsPro.regularRounded.calendar, event.dateStart),
-                  const SizedBox(height: 8),
-                ],
+                    const SizedBox(height: 8),
+                    _buildInfoRow(UIconsPro.regularRounded.user_time,
+                        '${event.quota} participants'),
+                    _buildInfoRow(
+                        UIconsPro.regularRounded.house_building, event.place),
+                    _buildInfoRow(
+                        UIconsPro.regularRounded.marker, event.location),
+                    _buildInfoRow(
+                        UIconsPro.regularRounded.calendar, event.dateStart),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

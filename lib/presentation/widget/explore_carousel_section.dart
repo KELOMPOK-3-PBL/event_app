@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:event_proposal_app/models_old/ui_colors.dart';
+import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:intl/intl.dart';

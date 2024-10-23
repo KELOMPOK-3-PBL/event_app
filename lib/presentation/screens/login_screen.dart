@@ -1,11 +1,11 @@
-import 'package:event_proposal_app/models_old/ui_colors.dart';
-import 'package:event_proposal_app/screens/home_screen.dart';
+import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
+import 'package:event_proposal_app/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
-import '../blocs/login_bloc/login_bloc.dart';
-import '../blocs/login_bloc/login_event.dart';
-import '../blocs/login_bloc/login_state.dart';
+import '../../bloc/auth_bloc/login_bloc.dart';
+import '../../bloc/auth_bloc/login_event.dart';
+import '../../bloc/auth_bloc/login_state.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

@@ -1,7 +1,7 @@
-import 'package:event_proposal_app/models_old/explore_more_events.dart';
-import 'package:event_proposal_app/models_old/explore_quick_category_section.dart';
-import 'package:event_proposal_app/models_old/explore_carousel_section.dart';
-import 'package:event_proposal_app/models_old/search_events.dart';
+import 'package:event_proposal_app/presentation/widget/explore_more_events.dart';
+import 'package:event_proposal_app/presentation/widget/explore_quick_category_section.dart';
+import 'package:event_proposal_app/presentation/widget/explore_carousel_section.dart';
+import 'package:event_proposal_app/presentation/widget/search_events.dart';
 // import 'package:event_proposal_app/models/ui_colors.dart';
 // import 'package:event_proposal_app/models/ui_colors.dart';
 // import 'package:flutter/services.dart';

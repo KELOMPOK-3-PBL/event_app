@@ -221,8 +221,16 @@ class LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => BlocProvider(
-                              create: (context) => AuthBloc(),
+                            builder: (context) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider<AuthBloc>(
+                                    create: (context) => AuthBloc()),
+                                BlocProvider<CategoryBloc>(
+                                    create: (context) => CategoryBloc(
+                                        categoryRepository:
+                                            CategoryRepository())
+                                      ..add(CategoryReadData())),
+                              ],
                               child: HomeSuperadmin(),
                             ),
                           ),
@@ -248,7 +256,7 @@ class LoginScreenState extends State<LoginScreen> {
                         //         password: password,
                         //       ),
                         //     );
-                        //! UNTUK MENGABAIKAN AUTENTIKASI
+                        //! UNTUK MENGABAIKAN AUTENTIKASI - Route asli ada di BlocListener
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

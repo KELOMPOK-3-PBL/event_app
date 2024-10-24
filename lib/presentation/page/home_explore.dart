@@ -83,13 +83,7 @@ class _HomeExploreState extends State<HomeExplore> {
           const SizedBox(
             height: 14,
           ),
-          // BlocProvider(
-          //     create: (context) => CategoryBloc(CategoryRepository()),
-          //     child:
-          const QuickCategorySection(),
-          // ), //! memanggil model => category
-
-          // const QuickCategorySection(), //! -- Quick Category Section
+          const QuickCategorySection(), //! memanggil model => category
           const CarouselSection(), //! -- Carousel Events Section
           const EventListSection() //! -- Events Available Section
         ],

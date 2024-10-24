@@ -1,4 +1,5 @@
 import 'package:event_proposal_app/bloc/category_bloc/category_bloc.dart';
+import 'package:event_proposal_app/presentation/screen/search_result_event_screen.dart';
 import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -81,7 +82,34 @@ class QuickCategorySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CategoryBloc, CategoryState>(builder: (context, state) {
+    return BlocConsumer<CategoryBloc, CategoryState>(
+        listener: (context, state) {
+      if (state is CategoryLoading) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return const Center(child: CircularProgressIndicator());
+          },
+        );
+      } else if (state is CategorySubmited) {
+        Navigator.of(context).pop(); // Close loading spinner
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  SearchEventsResultScreen(searchQuery: state.nameCategory)),
+        );
+        //! Trigger CategoryBloc untuk memuat ulang data kategori
+        context.read<CategoryBloc>().add(CategoryReadData());
+      } else if (state is CategoryLoadded) {
+        Navigator.of(context).pop();
+
+        //} else if (state is CategoryLoadFailure) {
+        // Navigator.of(context).pop(); // Close loading spinner
+        // _showError(context, state.error);
+      }
+    }, builder: (context, state) {
       if (state is CategoryLoadded) {
         return SizedBox(
           height: 30,

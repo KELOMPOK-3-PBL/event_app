@@ -4,6 +4,7 @@ class CategoryModel {
   final String name;
   final Color boxColor;
 
+  // Constructor
   CategoryModel({required this.name, required this.boxColor});
 
   // Convert a JSON map to the CategoryModel object
@@ -14,11 +15,11 @@ class CategoryModel {
     );
   }
 
-  // Convert the CategoryModel object to a JSON map
-  Map<String, dynamic> toJson() {
-    return {
-      'name': name,
-      'colorHex': boxColor,
-    };
-  }
+  // // Convert the CategoryModel object to a JSON map
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     'name': name,
+  //     'colorHex': boxColor,
+  //   };
+  // }
 }

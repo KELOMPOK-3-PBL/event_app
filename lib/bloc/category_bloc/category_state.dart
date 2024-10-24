@@ -1,7 +1,7 @@
-import 'package:equatable/equatable.dart';
-import 'package:event_proposal_app/data/models/category_model.dart';
+// import 'package:equatable/equatable.dart';
+// import 'package:event_proposal_app/data/models/category_model.dart';
 
-// part of 'category_bloc.dart';
+part of 'category_bloc.dart';
 
 abstract class CategoryState extends Equatable {
   const CategoryState();
@@ -10,16 +10,18 @@ abstract class CategoryState extends Equatable {
   List<Object?> get props => [];
 }
 
-class CategoryInitial extends CategoryState {
+class CategoryInitial extends CategoryState {}
+
+class CategoryLoading extends CategoryState {}
+
+class CategoryLoadded extends CategoryState {
   final List<CategoryModel> category;
 
-  const CategoryInitial(this.category);
+  const CategoryLoadded(this.category);
 
   @override
   List<Object?> get props => [category];
 }
-
-class CategoryLoading extends CategoryState {}
 
 class CategorySubmited extends CategoryState {
   final String nameCategory;

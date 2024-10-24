@@ -252,17 +252,19 @@ class LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                // MultiBlocProvider(
-                                //   providers: [
-                                //     BlocProvider(create: (context) => AuthBloc()),
-                                //     // RepositoryProvider<CategoryRepository>(
-                                //     //     create: (context) => CategoryBloc()),
-                                //   ],
-                                // child:
-                                HomeSuperadmin(),
+                            builder: (context) => MultiBlocProvider(
+                              providers: [
+                                BlocProvider<AuthBloc>(
+                                    create: (context) => AuthBloc()),
+                                BlocProvider<CategoryBloc>(
+                                    create: (context) => CategoryBloc(
+                                        categoryRepository:
+                                            CategoryRepository())
+                                      ..add(CategoryReadData())),
+                              ],
+                              child: HomeSuperadmin(),
+                            ),
                           ),
-                          // ),
                         );
                       },
                       style: ElevatedButton.styleFrom(

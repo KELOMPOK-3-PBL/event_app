@@ -1,5 +1,7 @@
-import 'package:equatable/equatable.dart';
-import 'package:event_proposal_app/data/models/category_model.dart';
+// import 'package:equatable/equatable.dart';
+// import 'package:event_proposal_app/data/models/category_model.dart';
+
+part of 'category_bloc.dart';
 
 abstract class CategoryEvent extends Equatable {
   const CategoryEvent();
@@ -8,12 +10,12 @@ abstract class CategoryEvent extends Equatable {
 }
 
 class CategoryReadData extends CategoryEvent {
-  final List<CategoryModel> categories;
+  // final List<CategoryModel> categories;
 
-  const CategoryReadData(categoryModel, this.categories);
+  // const CategoryReadData(categoryModel, this.categories);
 
-  @override
-  List<Object?> get props => [categories];
+  // @override
+  // List<Object?> get props => [categories];
 }
 
 class CategoryButtonPressed extends CategoryEvent {

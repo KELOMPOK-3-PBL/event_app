@@ -1,4 +1,6 @@
-import 'package:event_proposal_app/bloc/auth_bloc/auth_event.dart';
+// import 'package:event_proposal_app/bloc/auth_bloc/auth_event.dart';
+import 'package:event_proposal_app/bloc/category_bloc/category_bloc.dart';
+import 'package:event_proposal_app/data/repositories/category_repository.dart';
 import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 import 'package:event_proposal_app/presentation/screen/home_superadmin_screen.dart';
 import 'package:flutter/material.dart';
@@ -219,7 +221,11 @@ class LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const HomeSuperadmin()),
+                            builder: (context) => BlocProvider(
+                              create: (context) => AuthBloc(),
+                              child: HomeSuperadmin(),
+                            ),
+                          ),
                         );
                       } else if (state is AuthFailure) {
                         Navigator.of(context).pop(); // Close loading spinner
@@ -228,20 +234,36 @@ class LoginScreenState extends State<LoginScreen> {
                     },
                     child: ElevatedButton(
                       onPressed: () {
-                        final email = _emailController.text.trim();
-                        final password = _passwordController.text.trim();
+                        // final email = _emailController.text.trim();
+                        // final password = _passwordController.text.trim();
 
-                        if (email.isEmpty || password.isEmpty) {
-                          _showError(
-                              context, "Email and password cannot be empty.");
-                          return;
-                        }
-                        context.read<AuthBloc>().add(
-                              SignInButtonPressed(
-                                email: email,
-                                password: password,
-                              ),
-                            );
+                        // if (email.isEmpty || password.isEmpty) {
+                        //   _showError(
+                        //       context, "Email and password cannot be empty.");
+                        //   return;
+                        // }
+                        // context.read<AuthBloc>().add(
+                        //       SignInButtonPressed(
+                        //         email: email,
+                        //         password: password,
+                        //       ),
+                        //     );
+                        //! UNTUK MENGABAIKAN AUTENTIKASI
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                // MultiBlocProvider(
+                                //   providers: [
+                                //     BlocProvider(create: (context) => AuthBloc()),
+                                //     // RepositoryProvider<CategoryRepository>(
+                                //     //     create: (context) => CategoryBloc()),
+                                //   ],
+                                // child:
+                                HomeSuperadmin(),
+                          ),
+                          // ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 13.0),

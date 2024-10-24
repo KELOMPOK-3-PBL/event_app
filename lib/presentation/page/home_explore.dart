@@ -1,3 +1,5 @@
+import 'package:event_proposal_app/bloc/category_bloc/category_bloc.dart';
+import 'package:event_proposal_app/data/repositories/category_repository.dart';
 import 'package:event_proposal_app/presentation/page/section/explore_event_list_section.dart';
 import 'package:event_proposal_app/presentation/page/section/explore_quick_category_section.dart';
 import 'package:event_proposal_app/presentation/page/section/explore_carousel_section.dart';
@@ -10,6 +12,7 @@ import 'package:event_proposal_app/presentation/widget/search_widget.dart';
 
 // import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeExplore extends StatefulWidget {
   const HomeExplore({super.key});
@@ -89,9 +92,14 @@ class _HomeExploreState extends State<HomeExplore> {
           const SizedBox(
             height: 14,
           ),
-          const QuickCategorySection(), //! -- Quick Category
-          const CarouselSection(), //! -- Carousel Events
-          const EventListSection() //! -- Events Available
+          BlocProvider(
+              create: (context) => CategoryBloc(CategoryRepository()),
+              child:
+                  const QuickCategorySection()), //! memanggil model => category
+
+          // const QuickCategorySection(), //! -- Quick Category Section
+          const CarouselSection(), //! -- Carousel Events Section
+          const EventListSection() //! -- Events Available Section
         ],
       ),
     );

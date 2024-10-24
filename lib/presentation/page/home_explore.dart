@@ -1,18 +1,9 @@
-import 'package:event_proposal_app/bloc/category_bloc/category_bloc.dart';
-import 'package:event_proposal_app/data/repositories/category_repository.dart';
 import 'package:event_proposal_app/presentation/page/section/explore_event_list_section.dart';
 import 'package:event_proposal_app/presentation/page/section/explore_quick_category_section.dart';
 import 'package:event_proposal_app/presentation/page/section/explore_carousel_section.dart';
 import 'package:event_proposal_app/presentation/screen/search_result_event_screen.dart';
-// import 'package:event_proposal_app/presentation/widget/search_events.dart';
 import 'package:event_proposal_app/presentation/widget/search_widget.dart';
-// import 'package:event_proposal_app/models/ui_colors.dart';
-// import 'package:event_proposal_app/models/ui_colors.dart';
-// import 'package:flutter/services.dart';
-
-// import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeExplore extends StatefulWidget {
   const HomeExplore({super.key});

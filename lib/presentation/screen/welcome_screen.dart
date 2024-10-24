@@ -1,6 +1,8 @@
+import 'package:event_proposal_app/bloc/auth_bloc/auth_bloc.dart';
 import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 import 'package:event_proposal_app/presentation/screen/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:flutter/services.dart';
 
 void initState() {}
@@ -85,8 +87,10 @@ class WelcomeScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        LoginScreen(), // Ganti ke screen berikutnya
+                                    builder: (context) => BlocProvider(
+                                      create: (context) => AuthBloc(),
+                                      child: LoginScreen(),
+                                    ), // Ganti ke screen berikutnya
                                   ),
                                 );
                               },

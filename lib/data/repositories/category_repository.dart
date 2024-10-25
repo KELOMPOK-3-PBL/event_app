@@ -3,7 +3,6 @@ import 'package:event_proposal_app/data/models/category_model.dart';
 import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 
 class CategoryRepository {
-  final dio = Dio(BaseOptions(baseUrl: 'http:10.0.2.2/'));
   // Simulasi data API atau database lokal
   Future<List<CategoryModel>> getCategoryData() async {
     await Future.delayed(Duration(seconds: 1)); // Simulate network delay

@@ -239,38 +239,38 @@ class LoginScreenState extends State<LoginScreen> {
                     },
                     child: ElevatedButton(
                       onPressed: () {
-                        // final email = _emailController.text.trim();
-                        // final password = _passwordController.text.trim();
+                        final email = _emailController.text.trim();
+                        final password = _passwordController.text.trim();
 
-                        // if (email.isEmpty || password.isEmpty) {
-                        //   _showError(
-                        //       context, "Email and password cannot be empty.");
-                        //   return;
-                        // }
-                        // context.read<AuthBloc>().add(
-                        //       SignInButtonPressed(
-                        //         email: email,
-                        //         password: password,
-                        //       ),
-                        //     );
+                        if (email.isEmpty || password.isEmpty) {
+                          _showError(
+                              context, "Email and password cannot be empty.");
+                          return;
+                        }
+                        context.read<AuthBloc>().add(
+                              SignInButtonPressed(
+                                  email: email,
+                                  password: password,
+                                  rememberMe: rememberMe),
+                            );
                         //! UNTUK MENGABAIKAN AUTENTIKASI - Route asli ada di BlocListener
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MultiBlocProvider(
-                              providers: [
-                                BlocProvider<AuthBloc>(
-                                    create: (context) => AuthBloc()),
-                                BlocProvider<CategoryBloc>(
-                                    create: (context) => CategoryBloc(
-                                        categoryRepository:
-                                            CategoryRepository())
-                                      ..add(CategoryReadData())),
-                              ],
-                              child: HomeSuperadmin(),
-                            ),
-                          ),
-                        );
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) => MultiBlocProvider(
+                        //       providers: [
+                        //         BlocProvider<AuthBloc>(
+                        //             create: (context) => AuthBloc()),
+                        //         BlocProvider<CategoryBloc>(
+                        //             create: (context) => CategoryBloc(
+                        //                 categoryRepository:
+                        //                     CategoryRepository())
+                        //               ..add(CategoryReadData())),
+                        //       ],
+                        //       child: HomeSuperadmin(),
+                        //     ),
+                        //   ),
+                        // );
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 13.0),

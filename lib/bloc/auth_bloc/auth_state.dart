@@ -18,11 +18,23 @@ class AuthSuccess extends AuthState {
   List<Object?> get props => [email];
 }
 
-class AuthFailure extends AuthState {
-  final String error;
+class AuthLoaded extends AuthState {
+  final String email;
+  final String password;
+  final bool rememberMe;
 
-  AuthFailure({required this.error});
+  AuthLoaded({
+    required this.email,
+    required this.password,
+    required this.rememberMe,
+  });
+}
+
+class AuthFailure extends AuthState {
+  final String message;
+
+  AuthFailure({required this.message});
 
   @override
-  List<Object?> get props => [error];
+  List<Object?> get props => [message];
 }

@@ -15,8 +15,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  late final TextEditingController _emailController = TextEditingController();
+  late final TextEditingController _passwordController =
+      TextEditingController();
 
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
@@ -44,6 +45,13 @@ class LoginScreenState extends State<LoginScreen> {
     _passwordController.addListener(() {
       setState(() {}); // Update the UI when text changes
     });
+    context.read<AuthBloc>().add(SignInLoadUserPreference());
+    final authState = context.read<AuthBloc>().state;
+    if (authState is AuthLoaded) {
+      rememberMe = authState.rememberMe;
+      _emailController.text = authState.email;
+      _passwordController.text = authState.password;
+    }
   }
 
   @override
@@ -234,7 +242,7 @@ class LoginScreenState extends State<LoginScreen> {
                         );
                       } else if (state is AuthFailure) {
                         Navigator.of(context).pop(); // Close loading spinner
-                        _showError(context, state.error);
+                        _showError(context, state.message);
                       }
                     },
                     child: ElevatedButton(

@@ -1,6 +1,3 @@
-// import 'package:equatable/equatable.dart';
-// import 'package:event_proposal_app/data/models/category_model.dart';
-
 part of 'category_bloc.dart';
 
 abstract class CategoryState extends Equatable {

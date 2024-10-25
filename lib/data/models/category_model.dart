@@ -1,25 +1,29 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-class CategoryModel {
+class CategoryModel extends Equatable {
   final String name;
   final Color boxColor;
 
   // Constructor
-  CategoryModel({required this.name, required this.boxColor});
+  const CategoryModel({required this.name, required this.boxColor});
 
   // Convert a JSON map to the CategoryModel object
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
     return CategoryModel(
       name: json['name'],
-      boxColor: json['colorHex'],
+      boxColor: Color(int.parse(json['colorHex'], radix: 16)).withOpacity(1.0),
     );
   }
 
-  // // Convert the CategoryModel object to a JSON map
+  // Convert the CategoryModel object to a JSON map
   // Map<String, dynamic> toJson() {
   //   return {
   //     'name': name,
-  //     'colorHex': boxColor,
+  //     'colorHex': boxColor.value.toRadixString(16),
   //   };
   // }
+
+  @override
+  List<Object?> get props => [name, boxColor];
 }

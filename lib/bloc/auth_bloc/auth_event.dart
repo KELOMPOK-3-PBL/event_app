@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of 'auth_bloc.dart';
 
 abstract class AuthEvent extends Equatable {
   @override
@@ -8,9 +8,11 @@ abstract class AuthEvent extends Equatable {
 class SignInButtonPressed extends AuthEvent {
   final String email;
   final String password;
+  final bool rememberMe;
 
-  SignInButtonPressed({required this.email, required this.password});
+  SignInButtonPressed(this.rememberMe,
+      {required this.email, required this.password});
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [email, password, rememberMe];
 }

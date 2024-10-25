@@ -1,14 +1,11 @@
-// import 'package:event_proposal_app/bloc/auth_bloc/auth_event.dart';
-import 'package:event_proposal_app/bloc/category_bloc/category_bloc.dart';
-import 'package:event_proposal_app/data/repositories/category_repository.dart';
+import 'package:event_proposal_app/bloc/bloc.dart';
+
+import 'package:event_proposal_app/data/repositories/repository.dart';
 import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 import 'package:event_proposal_app/presentation/screen/home_superadmin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
-
-import '../../bloc/auth_bloc/auth_bloc.dart';
-import '../../bloc/auth_bloc/auth_state.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

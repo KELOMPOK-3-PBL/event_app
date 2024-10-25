@@ -2,14 +2,12 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/repositories/category_repository.dart';
-import '../../data/models/category_model.dart';
+import '../../data/models/model.dart';
 
 part 'category_event.dart';
 part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
-  // final CategoryRepository category;
-
   final CategoryRepository categoryRepository;
 
   CategoryBloc({required this.categoryRepository}) : super(CategoryInitial()) {

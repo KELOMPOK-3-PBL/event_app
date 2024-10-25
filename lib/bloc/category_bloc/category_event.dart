@@ -9,14 +9,7 @@ abstract class CategoryEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class CategoryReadData extends CategoryEvent {
-  // final List<CategoryModel> categories;
-
-  // const CategoryReadData(categoryModel, this.categories);
-
-  // @override
-  // List<Object?> get props => [categories];
-}
+class CategoryReadData extends CategoryEvent {}
 
 class CategoryButtonPressed extends CategoryEvent {
   final String nameCategory;

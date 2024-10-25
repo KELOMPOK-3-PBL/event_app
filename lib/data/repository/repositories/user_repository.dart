@@ -1,21 +1,15 @@
-import 'dart:async';
-import 'package:dio/dio.dart';
+part of '../repository.dart';
 
-enum AuthStatus { unknown, authenticated, unauthenticated }
+enum UserStatus { unknown, authenticated, unauthenticated }
 
-class AuthRepository {
-  final _controller = StreamController<AuthStatus>();
-  final Dio dio;
-  final String apiUrl;
+class UserRepository {
+  final dio = getIt<Dio>();
 
-  AuthRepository({
-    required this.apiUrl,
-    Dio? dioClient,
-  }) : dio = dioClient ?? Dio();
+  final _controller = StreamController<UserStatus>();
 
-  Stream<AuthStatus> get status async* {
+  Stream<UserStatus> get status async* {
     await Future<void>.delayed(const Duration(seconds: 1));
-    yield AuthStatus.unauthenticated;
+    yield UserStatus.unauthenticated;
     yield* _controller.stream;
   }
 
@@ -24,16 +18,14 @@ class AuthRepository {
     required String password,
   }) async {
     try {
-      final response = await dio.post(
-        '$apiUrl/authenticate',
-        data: {'email': email, 'password': password},
-        options: Options(headers: {'Content-Type': 'application/json'}),
-      );
+      final response = await dio.post('/authRoutes.php/login',
+          options: Options(contentType: 'application/json'),
+          data: jsonEncode({'email': email, 'password': password}));
 
       if (response.statusCode == 200) {
         final data = response.data;
         if (data['status'] == 'success') {
-          _controller.add(AuthStatus.authenticated);
+          _controller.add(UserStatus.authenticated);
           return {
             'message': data['message'],
             'responseCode': response.statusCode,
@@ -41,21 +33,21 @@ class AuthRepository {
             'role': data['role'],
           };
         } else {
-          _controller.add(AuthStatus.unauthenticated);
+          _controller.add(UserStatus.unauthenticated);
           return {
-            'message': data['message'] ?? 'Authentication failed',
+            'message': data['message'] ?? 'Userentication failed',
             'responseCode': response.statusCode,
           };
         }
       } else {
-        _controller.add(AuthStatus.unauthenticated);
+        _controller.add(UserStatus.unauthenticated);
         return {
           'message': 'Failed to authenticate',
           'responseCode': response.statusCode,
         };
       }
     } on DioException catch (e) {
-      _controller.add(AuthStatus.unauthenticated);
+      _controller.add(UserStatus.unauthenticated);
       String errorMessage = e.response?.data['message'] ?? e.message;
       return {
         'message': 'Error: $errorMessage',
@@ -65,7 +57,7 @@ class AuthRepository {
   }
 
   void logOut() {
-    _controller.add(AuthStatus.unauthenticated);
+    _controller.add(UserStatus.unauthenticated);
   }
 
   void dispose() => _controller.close();

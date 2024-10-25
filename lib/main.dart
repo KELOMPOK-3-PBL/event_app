@@ -3,6 +3,8 @@ import 'package:event_proposal_app/presentation/screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'data/repository/repository.dart';
+
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.dark,
@@ -12,6 +14,7 @@ void main() {
         Colors.transparent, // Menetapkan warna navigation bar
     statusBarColor: Colors.transparent, // Set the status bar color
   ));
+  setupLocator();
   runApp(const MyApp());
 }
 

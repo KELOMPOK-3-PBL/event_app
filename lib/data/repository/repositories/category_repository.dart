@@ -1,10 +1,4 @@
-import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
-import 'package:event_proposal_app/data/model/model.dart';
-
-import 'dart:convert';
-import 'package:dio/dio.dart';
-
-import '../../../bloc/bloc.dart';
+part of '../repository.dart';
 
 class CategoryRepository {
   // Simulasi data API atau database lokal
@@ -23,7 +17,7 @@ class CategoryRepository {
 }
 
 class StatusRepository {
-  final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2/api-03/routes'));
+  final dio = getIt<Dio>();
 
   // Simulasi data API atau database lokal
   Future<List<CategoryModel>> getCategoryData(dynamic event) async {

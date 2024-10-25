@@ -92,7 +92,9 @@ class LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(
               builder: (context) => MultiBlocProvider(
                 providers: [
-                  BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+                  BlocProvider<AuthBloc>(
+                      create: (context) =>
+                          AuthBloc(authRepository: AuthRepository())),
                   BlocProvider<CategoryBloc>(
                       create: (context) =>
                           CategoryBloc(categoryRepository: CategoryRepository())

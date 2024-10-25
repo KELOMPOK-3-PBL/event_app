@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 // import 'package:event_proposal_app/data/models/model.dart';
@@ -20,17 +21,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoading());
     try {
       // final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2/api-03/routes'));
-      final dio =
-          Dio(BaseOptions(baseUrl: 'http://172.162.182.159/api-03/routes'));
+      final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2/api-03/routes'));
 
-      final response = await dio.post(
-        '/authRoutes.php/login',
-        options: Options(contentType: 'application/json'),
-        data: {
-          'email': event.email,
-          'password': event.password,
-        },
-      );
+      final response = await dio.post('/authRoutes.php/login',
+          options: Options(contentType: 'application/json'),
+          data: jsonEncode(
+            {
+              'email': event.email,
+              'password': event.password,
+            },
+          ));
 
       if (response.statusCode == 200) {
         final jsonData = response.data;

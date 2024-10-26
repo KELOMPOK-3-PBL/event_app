@@ -16,6 +16,7 @@ class UserRepository {
   Future<Map<String, dynamic>> logIn({
     required String email,
     required String password,
+    required bool rememberMe,
   }) async {
     try {
       final response = await dio.post('/authRoutes.php/login',
@@ -26,11 +27,17 @@ class UserRepository {
         final data = response.data;
         if (data['status'] == 'success') {
           _controller.add(UserStatus.authenticated);
+          if (rememberMe == true) {
+            saveUserPreferences(email, password);
+          }
           return {
-            'message': data['message'],
             'responseCode': response.statusCode,
+            'status': data['status'],
+            'message': data['message'],
+            'user_id': data['user_id'],
             'email': email,
-            'role': data['role'],
+            'username': data['username'],
+            'roles': data['roles'],
           };
         } else {
           _controller.add(UserStatus.unauthenticated);
@@ -54,6 +61,26 @@ class UserRepository {
         'responseCode': e.response?.statusCode ?? 500,
       };
     }
+  }
+
+  Future<void> saveUserPreferences(String email, String password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('rememberMe', true);
+    await prefs.setString('email', email);
+    await prefs.setString('password', password);
+  }
+
+  Future<UserPreferencesModel> loadUserPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? rememberMe = prefs.getBool('rememberMe');
+    String? email = prefs.getString('email');
+    String? password = prefs.getString('password');
+
+    return UserPreferencesModel(
+      email: email,
+      password: password,
+      rememberMe: rememberMe,
+    );
   }
 
   void logOut() {

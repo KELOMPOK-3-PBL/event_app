@@ -1,4 +1,5 @@
-import 'package:event_proposal_app/presentation/widget/search_events.dart';
+import 'package:event_proposal_app/presentation/screen/search_result_event_screen.dart';
+import 'package:event_proposal_app/presentation/widget/search_widget.dart';
 import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 import 'package:event_proposal_app/presentation/screen/detail_event_screen.dart';
 import 'package:intl/intl.dart';
@@ -41,9 +42,23 @@ class _HomeEventsState extends State<HomeEvents> {
       Expanded(
           child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
-            child: SearchEventsWidget(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+            child: SearchWidget(
+              label: 'Search Event ...',
+              onSubmittedKeyboard: (searchQuery) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SearchEventsResultScreen(searchQuery: searchQuery)),
+                );
+              },
+              onPressedFilter: () {
+                // Handle the button tap action here
+                print('Tapped on FILTER ITEM-BUTTON');
+              },
+            ), //! memanggil model => search,
           ),
           Expanded(
             child: ListView.builder(

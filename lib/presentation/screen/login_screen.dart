@@ -95,6 +95,10 @@ class LoginScreenState extends State<LoginScreen> {
                   BlocProvider<AuthBloc>(
                       create: (context) =>
                           AuthBloc(authRepository: AuthRepository())),
+                  BlocProvider<EventBloc>(
+                      create: (context) =>
+                          EventBloc(eventRepository: EventRepository())
+                            ..add(FetchEvent())),
                   BlocProvider<CategoryBloc>(
                       create: (context) =>
                           CategoryBloc(categoryRepository: CategoryRepository())

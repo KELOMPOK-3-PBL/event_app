@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+part of '../model.dart';
 
 class CategoryModel extends Equatable {
   final String name;

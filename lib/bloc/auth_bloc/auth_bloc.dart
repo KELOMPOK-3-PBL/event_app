@@ -19,16 +19,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onSignInButtonPressed(
-      SignInButtonPressed event, Emitter<AuthState> emit) async {
+      SignInButtonPressed user, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      final jsonData = await authRepository.login(event.email, event.password);
+      final jsonData = await authRepository.login(user.email, user.password);
 
       if (jsonData['status'] == 'success') {
-        if (event.rememberMe == true) {
-          await authRepository.saveUserPreferences(event.email, event.password);
+        if (user.rememberMe == true) {
+          await authRepository.saveUserPreferences(user.email, user.password);
         }
-        emit(AuthSuccess(event.email));
+        emit(AuthSuccess(user.email));
       } else {
         emit(AuthFailure(message: jsonData['message']));
       }

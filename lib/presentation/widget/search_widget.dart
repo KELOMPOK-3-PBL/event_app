@@ -57,8 +57,4 @@ class SearchWidget extends StatelessWidget {
       ),
     );
   }
-
-  String getSearchValue() {
-    return _searchController.text; // Now this returns the correct value
-  }
 }

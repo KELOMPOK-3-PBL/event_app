@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of '../model.dart';
 
 class AuthModel extends Equatable {
   final String name;

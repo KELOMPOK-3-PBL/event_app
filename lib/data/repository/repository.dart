@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +12,7 @@ import 'package:event_proposal_app/data/model/model.dart';
 part 'repositories/user_repository.dart';
 part 'repositories/category_repository.dart';
 part 'repositories/auth_repository.dart';
+part 'repositories/event_repository.dart';
 
 final GetIt getIt = GetIt.instance;
 

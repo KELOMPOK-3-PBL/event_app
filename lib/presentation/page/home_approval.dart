@@ -43,7 +43,7 @@ class HomeApproval extends StatelessWidget {
               backgroundColor: UIColor.solidWhite,
               scrolledUnderElevation: 0,
               title: Text(
-                "Events",
+                "Approval",
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

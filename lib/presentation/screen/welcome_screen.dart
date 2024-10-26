@@ -5,6 +5,7 @@ import 'package:event_proposal_app/presentation/screen/login_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:flutter/services.dart';
 
 void initState() {}

@@ -1,79 +1,39 @@
 part of '../repository.dart';
 
-// enum UserStatus { unknown, authenticated, unauthenticated }
+// Enum untuk status autentikasi
+enum UserStatus { unknown, authenticated, unauthenticated }
 
 class AuthRepository {
-  // final _controller = StreamController<UserStatus>();
-  // final authService = AuthService();
+  // final _controller = StreamController<UserStatus>.broadcast();
   final dio = getIt<Dio>();
+  // final sessionDuration = Duration(days: 1); // Durasi sesi 1 hari
 
-  // AuthRepository(this.authService);
+  // Timer? _sessionTimer;
+
+  // AuthRepository() {
+  //   loadSessionStatus();
+  // }
 
   // Stream<UserStatus> get status async* {
-  //   await Future<void>.delayed(const Duration(seconds: 1));
-  //   yield UserStatus.unauthenticated;
   //   yield* _controller.stream;
   // }
 
-  // Future<Map<String, dynamic>> signin(
-  //     String email, String password, bool rememberMe) async {
-  //   final response = await authService.login(email, password);
+  // Future<void> loadSessionStatus() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final lastLoginTime = prefs.getInt('lastLoginTime');
+  //   final currentTime = DateTime.now().millisecondsSinceEpoch;
 
-  //   if (rememberMe) {
-  //     saveUserPreferences(email, password);
-  //   }
-
-  //   return response;
-  // }
-
-  // Future<Map<String, dynamic>> logIn({
-  //   required String email,
-  //   required String password,
-  //   required bool rememberMe,
-  // }) async {
-  //   try {
-  //     await Future.delayed(Duration(seconds: 1));
-  //     final response = await dio.post('/authRoutes.php/login',
-  //         options: Options(contentType: 'application/json'),
-  //         data: jsonEncode({'email': email, 'password': password}));
-
-  //     if (response.statusCode == 200) {
-  //       final data = response.data;
-  //       if (data['status'] == 'success') {
-  //         _controller.add(UserStatus.authenticated);
-  //         if (rememberMe == true) {
-  //           saveUserPreferences(email, password);
-  //         }
-  //         return {
-  //           'responseCode': response.statusCode,
-  //           'status': data['status'],
-  //           'message': data['message'],
-  //           'user_id': data['user_id'],
-  //           'email': email,
-  //           'username': data['username'],
-  //           'roles': data['roles'],
-  //         };
-  //       } else {
-  //         _controller.add(UserStatus.unauthenticated);
-  //         return {
-  //           'message': data['message'] ?? 'Userentication failed',
-  //           'responseCode': response.statusCode,
-  //         };
-  //       }
+  //   if (lastLoginTime != null) {
+  //     final isSessionValid =
+  //         (currentTime - lastLoginTime) < sessionDuration.inMilliseconds;
+  //     if (isSessionValid) {
+  //       _controller.add(UserStatus.authenticated);
+  //       _startSessionCountdown();
   //     } else {
-  //       _controller.add(UserStatus.unauthenticated);
-  //       return {
-  //         'message': 'Failed to authenticate',
-  //         'responseCode': response.statusCode,
-  //       };
+  //       await logout();
   //     }
-  //   } on DioException catch (e) {
+  //   } else {
   //     _controller.add(UserStatus.unauthenticated);
-  //     String errorMessage = e.response?.data['message'] ?? e.message;
-  //     return {
-  //       'message': 'Error: $errorMessage',
-  //       'responseCode': e.response?.statusCode ?? 500,
-  //     };
   //   }
   // }
 
@@ -87,12 +47,22 @@ class AuthRepository {
             'email': email,
             'password': password,
           }));
-      final data = jsonDecode(response.data);
+      final data =
+          // jsonDecode(
+          response.data
+          // )
+          ;
 
       if (response.statusCode == 200 && data["status"] == 'success') {
-        if (rememberMe == true) {
-          saveUserPreferences(email, password);
-        }
+        //! Simpan waktu login dan waktu sesi berakhir
+        // await _saveLoginSession();
+        // _controller.add(UserStatus.authenticated);
+        // _startSessionCountdown();
+
+        // if (rememberMe == true) {
+        // _controller.add(UserStatus.unauthenticated);
+        saveUserPreferences(email, password, rememberMe);
+        // }
         return {
           'user_id': data['user_id'],
           'email': email,
@@ -102,8 +72,10 @@ class AuthRepository {
         };
         // return data;
       } else if (data["status"] == 'error') {
+        // _controller.add(UserStatus.unauthenticated);
         throw Exception("Error: ${data['message']}");
       } else {
+        // _controller.add(UserStatus.unauthenticated);
         throw Exception('Error: ${response.statusCode}');
       }
     } catch (error) {
@@ -111,11 +83,18 @@ class AuthRepository {
     }
   }
 
-  Future<void> saveUserPreferences(String email, String password) async {
+  Future<void> saveUserPreferences(
+      String email, String password, bool rememberMe) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('rememberMe', true);
-    await prefs.setString('email', email);
-    await prefs.setString('password', password);
+    if (rememberMe == true) {
+      await prefs.setBool('rememberMe', rememberMe);
+      await prefs.setString('email', email);
+      await prefs.setString('password', password);
+    } else {
+      await prefs.setBool('rememberMe', false);
+      await prefs.setString('email', '');
+      await prefs.setString('password', '');
+    }
   }
 
   Future<UserPreferencesModel> loadUserPreferences() async {
@@ -131,8 +110,28 @@ class AuthRepository {
     );
   }
 
-  // void logOut() {
+  // Future<void> logout() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   await prefs.clear();
   //   _controller.add(UserStatus.unauthenticated);
+  //   _stopSessionCountdown();
+  // }
+
+  // Future<void> _saveLoginSession() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   final currentTime = DateTime.now().millisecondsSinceEpoch;
+  //   await prefs.setInt('lastLoginTime', currentTime);
+  // }
+
+  // void _startSessionCountdown() {
+  //   _sessionTimer?.cancel();
+  //   _sessionTimer = Timer(sessionDuration, () async {
+  //     await logout(); // logout otomatis setelah durasi sesi habis
+  //   });
+  // }
+
+  // void _stopSessionCountdown() {
+  //   _sessionTimer?.cancel();
   // }
 
   // void dispose() => _controller.close();

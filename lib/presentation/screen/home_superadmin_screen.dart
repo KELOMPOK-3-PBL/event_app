@@ -5,15 +5,18 @@ import 'package:event_proposal_app/presentation/page/home_events.dart';
 import 'package:event_proposal_app/presentation/page/home_explore.dart';
 import 'package:event_proposal_app/presentation/page/home_profile.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HomeSuperadmin extends StatefulWidget {
-  const HomeSuperadmin({super.key});
+class HomeSuperadminScreen extends StatefulWidget {
+  const HomeSuperadminScreen({
+    super.key,
+  });
 
   @override
-  State<HomeSuperadmin> createState() => _HomeSuperadminState();
+  State<HomeSuperadminScreen> createState() => _HomeSuperadminScreenState();
 }
 
-class _HomeSuperadminState extends State<HomeSuperadmin> {
+class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
   int _currentIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     const HomeExplore(),

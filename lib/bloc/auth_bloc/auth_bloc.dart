@@ -13,9 +13,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository authRepository;
 
   AuthBloc({required this.authRepository}) : super(AuthInitial()) {
+    // on<AppStarted>(_onAppStarted);
     on<SignInLoadUserPreference>(_loadUserPreferences);
     on<SignInButtonPressed>(_onSignInButtonPressed);
+    // on<LogoutRequested>(_onLogoutRequested);
+    // on<SessionTimeout>(_onSessionTimeout);
   }
+
+  // void _onAppStarted(AppStarted event, Emitter<AuthState> emit) async {
+  //   final status = await authRepository.status.first;
+  //   if (status == UserStatus.authenticated) {
+  //     emit(AuthAuthenticated());
+  //   } else {
+  //     emit(AuthUnauthenticated("Session Expired"));
+  //   }
+  // }
 
   Future<void> _onSignInButtonPressed(
       SignInButtonPressed user, Emitter<AuthState> emit) async {
@@ -26,9 +38,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       //     email: user.email,
       //     password: user.password,
       //     rememberMe: user.rememberMe);
-      emit(AuthSuccess());
+      emit(AuthAuthenticated());
     } catch (error) {
-      emit(AuthFailure(error.toString()));
+      emit(AuthUnauthenticated(error.toString()));
     }
   }
 
@@ -36,7 +48,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       SignInLoadUserPreference user, Emitter<AuthState> emit) async {
     try {
       final preference = await authRepository.loadUserPreferences();
-      emit(AuthLoaded(
+      emit(AuthUserPrefenceLoaded(
         preference.email ?? '',
         preference.password ?? '',
         preference.rememberMe ?? false,
@@ -45,4 +57,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthInitial());
     }
   }
+
+  // void _onLogoutRequested(
+  //     LogoutRequested event, Emitter<AuthState> emit) async {
+  //   await authRepository.logout();
+  //   emit(AuthUnauthenticated("Loging Out Success"));
+  // }
+
+  // void _onSessionTimeout(SessionTimeout event, Emitter<AuthState> emit) async {
+  //   await authRepository.logout();
+  //   emit(AuthSessionExpired());
+  // }
 }

@@ -1,25 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:event_proposal_app/presentation/screen/welcome_screen.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+
+// import '../../bloc/bloc.dart';
 // Pastikan path benar
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const SplashScreen(), // Mulai dari SplashScreen
-    );
-  }
-}
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -64,6 +49,26 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // return
+    // BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+    //   Future.delayed(const Duration(seconds: 2), () {
+    //     setState(() {
+    //       _opacity = 0.0; // Mengubah opacity menjadi 0 (fade out)
+    //     });
+
+    //     // Setelah 1 detik (animasi fade out selesai), navigasi ke WelcomeScreen
+    //     Future.delayed(const Duration(seconds: 1), () {
+    //       if (mounted) {
+    //         Navigator.pushReplacement(
+    //           context,
+    //           MaterialPageRoute(
+    //             builder: (context) =>
+    //                 WelcomeScreen(), // Navigasi ke screen berikutnya
+    //           ),
+    //         );
+    //       }
+    //     });
+    //   });
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -93,5 +98,6 @@ class SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+    // });
   }
 }

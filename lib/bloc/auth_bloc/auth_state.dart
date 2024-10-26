@@ -11,25 +11,27 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class AuthSuccess extends AuthState {}
+class AuthAuthenticated extends AuthState {}
 
-class AuthLoaded extends AuthState {
+class AuthUserPrefenceLoaded extends AuthState {
   final String email;
   final String password;
   final bool rememberMe;
 
-  const AuthLoaded(
+  const AuthUserPrefenceLoaded(
     this.email,
     this.password,
     this.rememberMe,
   );
 }
 
-class AuthFailure extends AuthState {
+class AuthUnauthenticated extends AuthState {
   final String message;
 
-  const AuthFailure(this.message);
+  const AuthUnauthenticated(this.message);
 
   @override
   List<Object?> get props => [message];
 }
+
+class AuthSessionExpired extends AuthState {}

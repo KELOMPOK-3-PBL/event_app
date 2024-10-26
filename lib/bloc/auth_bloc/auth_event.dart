@@ -18,3 +18,9 @@ class SignInButtonPressed extends AuthEvent {
   @override
   List<Object> get props => [email, password, rememberMe];
 }
+
+class AppStarted extends AuthEvent {}
+
+class LogoutRequested extends AuthEvent {}
+
+class SessionTimeout extends AuthEvent {}

@@ -5,6 +5,7 @@ import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 import 'package:event_proposal_app/presentation/screen/home_superadmin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -47,7 +48,7 @@ class LoginScreenState extends State<LoginScreen> {
     context.read<AuthBloc>().add(SignInLoadUserPreference());
 
     final authState = context.read<AuthBloc>().state;
-    if (authState is AuthLoaded) {
+    if (authState is AuthUserPrefenceLoaded) {
       rememberMe = authState.rememberMe;
       _emailController.text = authState.email;
       _passwordController.text = authState.password;
@@ -81,11 +82,11 @@ class LoginScreenState extends State<LoginScreen> {
               return const Center(child: CircularProgressIndicator());
             },
           );
-        } else if (state is AuthLoaded) {
+        } else if (state is AuthUserPrefenceLoaded) {
           _emailController.text = state.email;
           _passwordController.text = state.password;
           setState(() => rememberMe = state.rememberMe);
-        } else if (state is AuthSuccess) {
+        } else if (state is AuthAuthenticated) {
           Navigator.of(context).pop(); // Close loading spinner
           Navigator.pushReplacement(
             context,
@@ -106,11 +107,11 @@ class LoginScreenState extends State<LoginScreen> {
                           CategoryBloc(categoryRepository: StatusRepository())
                             ..add(CategoryReadData())),
                 ],
-                child: HomeSuperadmin(),
+                child: HomeSuperadminScreen(),
               ),
             ),
           );
-        } else if (state is AuthFailure) {
+        } else if (state is AuthUnauthenticated) {
           Navigator.of(context).pop(); // Close loading spinner
           _showError(context, state.message);
         }

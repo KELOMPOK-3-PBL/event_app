@@ -19,24 +19,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onSignInButtonPressed(
       SignInButtonPressed user, Emitter<AuthState> emit) async {
-    // emit(AuthLoading());
-    // try {
-    //   await authRepository.login(user.email, user.password, user.rememberMe);
-    //   // await authRepository.logIn(
-    //   //     email: user.email,
-    //   //     password: user.password,
-    //   //     rememberMe: user.rememberMe);
-    //   emit(AuthSuccess());
-    // } catch (error) {
-    //   emit(AuthFailure(error.toString()));
-    // }
-    // Future<void> login(String email, String password, bool rememberMe) async {
     emit(AuthLoading());
     try {
-      await authRepository.signin(user.email, user.password, user.rememberMe);
+      await authRepository.login(user.email, user.password, user.rememberMe);
+      // await authRepository.logIn(
+      //     email: user.email,
+      //     password: user.password,
+      //     rememberMe: user.rememberMe);
       emit(AuthSuccess());
-    } catch (e) {
-      emit(AuthFailure(e.toString()));
+    } catch (error) {
+      emit(AuthFailure(error.toString()));
     }
   }
 

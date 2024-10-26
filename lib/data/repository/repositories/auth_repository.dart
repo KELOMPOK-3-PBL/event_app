@@ -1,29 +1,30 @@
 part of '../repository.dart';
 
-enum UserStatus { unknown, authenticated, unauthenticated }
+// enum UserStatus { unknown, authenticated, unauthenticated }
 
 class AuthRepository {
-  final _controller = StreamController<UserStatus>();
-  final authService = AuthService();
+  // final _controller = StreamController<UserStatus>();
+  // final authService = AuthService();
+  final dio = getIt<Dio>();
 
   // AuthRepository(this.authService);
 
-  Stream<UserStatus> get status async* {
-    await Future<void>.delayed(const Duration(seconds: 1));
-    yield UserStatus.unauthenticated;
-    yield* _controller.stream;
-  }
+  // Stream<UserStatus> get status async* {
+  //   await Future<void>.delayed(const Duration(seconds: 1));
+  //   yield UserStatus.unauthenticated;
+  //   yield* _controller.stream;
+  // }
 
-  Future<Map<String, dynamic>> signin(
-      String email, String password, bool rememberMe) async {
-    final response = await authService.login(email, password);
+  // Future<Map<String, dynamic>> signin(
+  //     String email, String password, bool rememberMe) async {
+  //   final response = await authService.login(email, password);
 
-    if (rememberMe) {
-      saveUserPreferences(email, password);
-    }
+  //   if (rememberMe) {
+  //     saveUserPreferences(email, password);
+  //   }
 
-    return response;
-  }
+  //   return response;
+  // }
 
   // Future<Map<String, dynamic>> logIn({
   //   required String email,
@@ -76,28 +77,39 @@ class AuthRepository {
   //   }
   // }
 
-  // Future<Map<String, dynamic>> login(
-  //     String email, String password, bool rememberMe) async {
-  //   // try {
-  //   await Future.delayed(Duration(seconds: 1)); // Simulate network delay
-  //   final response = await dio.post('/authRoutes.php/login',
-  //       options: Options(contentType: 'application/json'),
-  //       data: jsonEncode({
-  //         'email': email,
-  //         'password': password,
-  //       }));
-  //   if (response.statusCode == 200 && response.data["status"] == 'success') {
-  //     if (rememberMe == true) {
-  //       saveUserPreferences(email, password);
-  //     }
-  //     return response.data;
-  //   } else {
-  //     throw Exception('Error: ${response.statusCode}');
-  //   }
-  // } catch (error) {
-  //   throw Exception('API NOT FOUND');
-  // }
-// }
+  Future<Map<String, dynamic>> login(
+      String email, String password, bool rememberMe) async {
+    try {
+      await Future.delayed(Duration(seconds: 1)); // Simulate network delay
+      final response = await dio.post('/authRoutes.php/login',
+          options: Options(contentType: 'application/json'),
+          data: jsonEncode({
+            'email': email,
+            'password': password,
+          }));
+      final data = jsonDecode(response.data);
+
+      if (response.statusCode == 200 && data["status"] == 'success') {
+        if (rememberMe == true) {
+          saveUserPreferences(email, password);
+        }
+        return {
+          'user_id': data['user_id'],
+          'email': email,
+          'username': data['username'],
+          'roles': List<String>.from(
+              data['roles']), // Konversi roles ke List<String>
+        };
+        // return data;
+      } else if (data["status"] == 'error') {
+        throw Exception("Error: ${data['message']}");
+      } else {
+        throw Exception('Error: ${response.statusCode}');
+      }
+    } catch (error) {
+      throw Exception('Login Failed. Email or password not correct');
+    }
+  }
 
   Future<void> saveUserPreferences(String email, String password) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -119,9 +131,9 @@ class AuthRepository {
     );
   }
 
-  void logOut() {
-    _controller.add(UserStatus.unauthenticated);
-  }
+  // void logOut() {
+  //   _controller.add(UserStatus.unauthenticated);
+  // }
 
-  void dispose() => _controller.close();
+  // void dispose() => _controller.close();
 }

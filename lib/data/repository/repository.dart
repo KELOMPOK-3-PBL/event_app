@@ -9,9 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 import 'package:event_proposal_app/data/model/model.dart';
 
-part 'repositories/user_repository.dart';
-part 'repositories/category_repository.dart';
 part 'repositories/auth_repository.dart';
+part 'repositories/category_repository.dart';
 part 'repositories/event_repository.dart';
 
 final GetIt getIt = GetIt.instance;

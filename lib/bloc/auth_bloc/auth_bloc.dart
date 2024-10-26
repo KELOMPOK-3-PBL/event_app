@@ -21,7 +21,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       SignInButtonPressed user, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      await authRepository.login(user.email, user.password, user.rememberMe);
+      await authRepository.logIn(
+          email: user.email,
+          password: user.password,
+          rememberMe: user.rememberMe);
       emit(AuthSuccess());
     } catch (error) {
       emit(AuthFailure(error.toString()));

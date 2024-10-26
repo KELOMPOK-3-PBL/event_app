@@ -17,6 +17,8 @@ part 'repositories/event_repository.dart';
 final GetIt getIt = GetIt.instance;
 
 void setupLocator() {
-  getIt.registerLazySingleton<Dio>(
-      () => Dio(BaseOptions(baseUrl: 'http://10.0.2.2:80/api-03/routes')));
+  getIt.registerLazySingleton<Dio>(() => Dio(
+        BaseOptions(baseUrl: 'http://10.0.2.2:80/api-03/routes' //! set api link
+            ),
+      ));
 }

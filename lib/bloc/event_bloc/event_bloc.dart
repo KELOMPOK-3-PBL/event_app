@@ -3,14 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/repository/repository.dart';
 import '../../data/model/model.dart';
+import '../../bloc/bloc.dart';
 
 part 'event_event.dart';
 part 'event_state.dart';
 
 class EventBloc extends Bloc<EventEvent, EventState> {
   final EventRepository eventRepository;
+  final AuthBloc authBloc;
 
-  EventBloc({required this.eventRepository}) : super(EventInitial()) {
+  EventBloc({required this.eventRepository, required this.authBloc})
+      : super(EventInitial()) {
     // Trigger fetch event right when the bloc is created
     on<FetchEvent>(_onInitialEvent);
     on<EventCardPressed>(_onEventButtonPressed);

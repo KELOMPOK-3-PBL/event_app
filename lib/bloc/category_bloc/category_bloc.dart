@@ -8,7 +8,7 @@ part 'category_event.dart';
 part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
-  final CategoryRepository categoryRepository;
+  final StatusRepository categoryRepository;
 
   CategoryBloc({required this.categoryRepository}) : super(CategoryInitial()) {
     // Trigger fetch event right when the bloc is created
@@ -30,7 +30,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       CategoryReadData event, Emitter<CategoryState> emit) async {
     emit(CategoryLoading());
     try {
-      final categories = await categoryRepository.getCategoryData();
+      final categories = await categoryRepository.getEventsStatus();
       emit(CategoryLoadded(categories));
     } catch (e) {
       emit(CategoryLoadFailure("Failed to get categories data"));

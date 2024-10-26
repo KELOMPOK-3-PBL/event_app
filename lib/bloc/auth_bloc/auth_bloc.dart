@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
-// import 'package:event_proposal_app/data/models/model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/repository/repository.dart';
@@ -22,39 +21,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       SignInButtonPressed user, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      final jsonData = await authRepository.login(user.email, user.password);
-
-      if (jsonData['status'] == 'success') {
-        if (user.rememberMe == true) {
-          await authRepository.saveUserPreferences(user.email, user.password);
-        }
-        emit(AuthSuccess(user.email));
-      } else {
-        emit(AuthFailure(message: jsonData['message']));
-      }
+      await authRepository.login(user.email, user.password, user.rememberMe);
+      emit(AuthSuccess());
     } catch (error) {
-      emit(AuthFailure(message: error.toString()));
+      emit(AuthFailure(error.toString()));
     }
   }
 
   Future<void> _loadUserPreferences(
-      SignInLoadUserPreference event, Emitter<AuthState> emit) async {
+      SignInLoadUserPreference user, Emitter<AuthState> emit) async {
     try {
-      final prefs = await authRepository.loadUserPreferences();
-
-      if (prefs['rememberMe'] == true &&
-          prefs['email'] != null &&
-          prefs['password'] != null) {
-        emit(AuthLoaded(
-          email: prefs['email'],
-          password: prefs['password'],
-          rememberMe: prefs['rememberMe'],
-        ));
-      } else {
-        emit(AuthInitial());
-      }
+      final preference = await authRepository.loadUserPreferences();
+      emit(AuthLoaded(
+        preference.email ?? '',
+        preference.password ?? '',
+        preference.rememberMe ?? false,
+      ));
     } catch (e) {
-      emit(AuthFailure(message: "Failed to load preferences."));
+      emit(AuthInitial());
     }
   }
 }

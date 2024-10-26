@@ -1,14 +1,14 @@
-import 'package:event_proposal_app/presentation/navbar/custom_navbar_item.dart';
+import 'package:event_proposal_app/presentation/navigation/custom_navbar_item.dart';
 import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
-class BottomNavbarAdmin extends StatelessWidget {
+class BottomNavbarPropose extends StatelessWidget {
   final int currentIndex;
   final Function(int) onItemTapped;
 
-  const BottomNavbarAdmin({
+  const BottomNavbarPropose({
     super.key,
     required this.currentIndex,
     required this.onItemTapped,
@@ -35,7 +35,7 @@ class BottomNavbarAdmin extends StatelessWidget {
           items: <BottomNavigationBarItem>[
             customNavbarItem(UIconsPro.solidRounded.navigation, 'Explore'),
             customNavbarItem(UIconsPro.solidRounded.calendar, 'Events'),
-            customNavbarItem(UIconsPro.solidRounded.cloud_check, 'Approval'),
+            customNavbarItem(UIconsPro.solidRounded.database, 'Propose'),
             customNavbarItem(UIconsPro.solidRounded.user, 'Profile'),
           ],
         ));

@@ -1,8 +1,8 @@
 part of '../repository.dart';
 
-class CategoryRepository {
+class StatusRepository {
   // Simulasi data API atau database lokal
-  Future<List<CategoryModel>> getCategoryData() async {
+  Future<List<CategoryModel>> getEventsStatus() async {
     await Future.delayed(Duration(seconds: 1)); // Simulate network delay
 
     // Example data (normally fetched from API or database)
@@ -16,7 +16,7 @@ class CategoryRepository {
   }
 }
 
-class StatusRepository {
+class CategotyRepository {
   final dio = getIt<Dio>();
 
   // Simulasi data API atau database lokal
@@ -24,8 +24,6 @@ class StatusRepository {
     await Future.delayed(Duration(seconds: 1)); // Simulate network delay
 
     // try {
-    //   final dio = Dio(BaseOptions(baseUrl: 'http://10.0.2.2/api-03/routes'));
-
     //   final response = await dio.post('/authRoutes.php/login',
     //       options: Options(contentType: 'application/json'),
     //       data: jsonEncode(

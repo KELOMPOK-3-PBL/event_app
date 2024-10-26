@@ -5,22 +5,27 @@ class AuthRepository {
 
   // AuthRepository({required this.dio});
 
-  Future<Map<String, dynamic>> login(String email, String password) async {
+  Future<Map<String, dynamic>> login(
+      String email, String password, bool rememberMe) async {
     try {
+      await Future.delayed(Duration(seconds: 1)); // Simulate network delay
       final response = await dio.post('/authRoutes.php/login',
           options: Options(contentType: 'application/json'),
           data: jsonEncode({
             'email': email,
             'password': password,
           }));
-
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.data["status"] == 'success') {
+        if (rememberMe == true) {
+          saveUserPreferences(email, password);
+        }
         return response.data;
       } else {
-        throw Exception('Error: ${response.statusCode}');
+        throw Exception(
+            'Error: ${response.statusCode}: ${response.data["status"]} - ${response.data["message"]}');
       }
     } catch (error) {
-      throw Exception('Login failed. Please try again.');
+      throw Exception('API NOT FOUND');
     }
   }
 
@@ -31,16 +36,16 @@ class AuthRepository {
     await prefs.setString('password', password);
   }
 
-  Future<Map<String, dynamic>> loadUserPreferences() async {
+  Future<UserPreferencesModel> loadUserPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? rememberMe = prefs.getBool('rememberMe');
     String? email = prefs.getString('email');
     String? password = prefs.getString('password');
 
-    return {
-      'rememberMe': rememberMe,
-      'email': email,
-      'password': password,
-    };
+    return UserPreferencesModel(
+      email: email,
+      password: password,
+      rememberMe: rememberMe,
+    );
   }
 }

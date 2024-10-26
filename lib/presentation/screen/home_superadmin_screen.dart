@@ -1,4 +1,4 @@
-import 'package:event_proposal_app/presentation/navbar/bottom_navbar_superadmin.dart';
+import 'package:event_proposal_app/presentation/navigation/bottom_navbar_superadmin.dart';
 import 'package:event_proposal_app/presentation/page/home_accounts.dart';
 import 'package:event_proposal_app/presentation/page/home_approval.dart';
 import 'package:event_proposal_app/presentation/page/home_events.dart';

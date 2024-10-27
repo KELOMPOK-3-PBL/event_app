@@ -119,60 +119,66 @@ class _HomeApprovalState extends State<HomeApproval> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is EventLoaded) {
                       final events = state.event;
-                      if (state.hasReachedMax) {
-                        return const Center(child: Text('no more events'));
-                      } else {
-                        return ListView.builder(
-                          controller: _scrollController,
-                          padding: EdgeInsets.zero,
-                          physics: const AlwaysScrollableScrollPhysics(),
+                      // if (state.hasReachedMax) {
+                      //   return const Center(child: Text('no more events'));
+                      // } else {
+                      return ListView.builder(
+                        controller: _scrollController,
+                        padding: EdgeInsets.zero,
+                        physics: const AlwaysScrollableScrollPhysics(),
 
-                          //! builder card event approval menu with INDEX
-                          itemBuilder: (context, index) {
-                            final events = state.event;
-                            if (index >= events.length) {
-                              return const Center(
+                        //! builder card event approval menu with INDEX
+                        itemBuilder: (context, index) {
+                          final events = state.event;
+                          if (index >= events.length) {
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 20),
+                              child: const Center(
                                 child: CircularProgressIndicator(),
-                              );
-                            } else {
-                              //! card event
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 0, 20, 8),
-                                child: InkWell(
-                                  onTap: () {
-                                    print(
-                                        'Tapped on ${state.event[index].tittle}');
-                                    //! Isi dengan routing card tab
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            DetailEventScreen(),
-                                      ),
-                                    );
-                                  },
-                                  child: EventCardWithStatusWidget(
-                                    tittle: events[index].tittle,
-                                    category: events[index].category,
-                                    quota: events[index].quota,
-                                    posterUrl: events[index].posterUrl,
-                                    place: events[index].place,
-                                    location: events[index].location,
-                                    dateStart: events[index].dateStart,
-                                    status: events[index].status,
-                                  ),
+                              ),
+                            );
+                            // } else if (index.state.hasReachedMax) {
+                            //   return const Center(
+                            //     child: Text("No more events"),
+                            //   );
+                          } else {
+                            //! card event
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                              child: InkWell(
+                                onTap: () {
+                                  print(
+                                      'Tapped on ${state.event[index].tittle}');
+                                  //! Isi dengan routing card tab
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetailEventScreen(),
+                                    ),
+                                  );
+                                },
+                                child: EventCardWithStatusWidget(
+                                  tittle: events[index].tittle,
+                                  category: events[index].category,
+                                  quota: events[index].quota,
+                                  posterUrl: events[index].posterUrl,
+                                  place: events[index].place,
+                                  location: events[index].location,
+                                  dateStart: events[index].dateStart,
+                                  status: events[index].status,
                                 ),
-                              );
-                            }
-                          },
+                              ),
+                            );
+                          }
+                        },
 
-                          //! penambahan event
-                          itemCount: state.hasReachedMax
-                              ? events.length
-                              : events.length + 1,
-                        );
-                      }
+                        //! penambahan event
+                        itemCount: state.hasReachedMax
+                            ? events.length
+                            : events.length + 1,
+                      );
+                      // }
                     }
                     return SizedBox();
                   },

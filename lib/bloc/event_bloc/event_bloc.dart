@@ -42,26 +42,28 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     }
   }
 
-  Future<void> _onInitialEvent(
-      EventFetched event, Emitter<EventState> emit) async {
+  void _onInitialEvent(EventFetched event, Emitter<EventState> emit) async {
     if (state is EventLoaded) {
       final currentState = state as EventLoaded;
       // print("state ke-${currentState.event.length}");
       // Jika sudah mencapai batas data, tidak perlu memuat lebih lanjut
-      if (currentState.hasReachedMax == true) return;
+      if (currentState.hasReachedMax == true) {
+        // emit(EventLoadedMax());
+        return;
+      }
 
       try {
-        // Tampilkan loading kecil untuk paginated scroll
         final newEvents = await eventRepository.getEventData(
             startIndex: currentState.event.length);
         // Gabungkan data baru dengan yang sudah ada
         final events = currentState.event + newEvents;
 
-        if (currentState.event.isEmpty) {
-          return emit(currentState.copyWith(hasReachedMax: true));
+        if (newEvents.length < 4) {
+          return emit(
+              currentState.copyWith(event: events, hasReachedMax: true));
         }
 
-        emit(currentState.copyWith(event: events));
+        emit(currentState.copyWith(event: events, hasReachedMax: false));
       } catch (_) {
         emit(EventLoadError("Gagal Load Event"));
       }
@@ -70,7 +72,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       try {
         emit(EventLoading());
         final events = await eventRepository.getEventData(startIndex: 0);
-        emit(EventLoaded(event: events));
+        emit(EventLoaded(event: events, hasReachedMax: false));
       } catch (_) {
         emit(EventLoadError("Failed to load initial events"));
       }

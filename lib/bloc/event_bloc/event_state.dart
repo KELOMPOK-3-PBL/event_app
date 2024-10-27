@@ -11,7 +11,7 @@ class EventInitial extends EventState {}
 
 class EventLoading extends EventState {}
 
-class EventLoadedSuccess extends EventState {}
+class EventLoadedMax extends EventState {}
 
 class EventLoaded extends EventState {
   final List<EventModel> event;
@@ -19,7 +19,7 @@ class EventLoaded extends EventState {
 
   const EventLoaded({
     required this.event,
-    this.hasReachedMax = false,
+    required this.hasReachedMax,
   });
 
   EventLoaded copyWith({

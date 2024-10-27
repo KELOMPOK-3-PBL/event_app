@@ -11,28 +11,37 @@ class EventInitial extends EventState {}
 
 class EventLoading extends EventState {}
 
+class EventLoadedSuccess extends EventState {}
+
 class EventLoaded extends EventState {
   final List<EventModel> event;
+  final bool hasReachedMax;
 
-  const EventLoaded(this.event);
+  const EventLoaded({
+    required this.event,
+    this.hasReachedMax = false,
+  });
+
+  EventLoaded copyWith({
+    List<EventModel>? event,
+    bool? hasReachedMax,
+  }) {
+    return EventLoaded(
+      event: event ?? this.event,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    );
+  }
 
   @override
-  List<Object> get props => [event];
+  List<Object> get props => [event, hasReachedMax];
 }
 
-class EventSubmited extends EventState {
-  final List<EventModel> event;
+class EventSubmited extends EventState {}
 
-  const EventSubmited(this.event);
-
-  @override
-  List<Object> get props => [event];
-}
-
-class EventError extends EventState {
+class EventLoadError extends EventState {
   final String message;
 
-  const EventError(this.message);
+  const EventLoadError(this.message);
 
   @override
   List<Object> get props => [message];

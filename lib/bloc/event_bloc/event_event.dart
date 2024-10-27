@@ -7,7 +7,7 @@ abstract class EventEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchEvent extends EventEvent {}
+class EventFetched extends EventEvent {}
 
 class EventCardPressed extends EventEvent {
   final List<EventModel> event;

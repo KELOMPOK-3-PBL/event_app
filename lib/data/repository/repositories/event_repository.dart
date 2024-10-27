@@ -1,14 +1,22 @@
 part of '../repository.dart';
 
+const _postLimit = 5;
+
 class EventRepository {
   DateTime now = DateTime.now();
+  Future<List<EventModel>> getEventData({required int startIndex}) async {
+    final response =
+        await fetchPosts(startIndex: startIndex, limit: _postLimit);
+    return response;
+  }
 
   // Simulasi data API atau database lokal
-  Future<List<EventModel>> getEventData() async {
+  Future<List<EventModel>> fetchPosts(
+      {required int startIndex, required int limit}) async {
     await Future.delayed(Duration(seconds: 1)); // Simulate network delay
 
-    // Example data (normally fetched from API or database)
-    return [
+    // Data contoh (biasanya ini diambil dari API atau database)
+    final List<EventModel> allEvents = [
       EventModel(
         tittle: 'Techcom Fest 2027',
         category: 'Competition',
@@ -140,5 +148,13 @@ class EventRepository {
         status: "Rejected",
       ),
     ];
+
+    // Mengambil data sesuai dengan `startIndex` dan `limit`
+    final endIndex = (startIndex + limit) > allEvents.length
+        ? allEvents.length
+        : (startIndex + limit);
+
+    // Mengembalikan subset data dari `allEvents`
+    return allEvents.sublist(startIndex, endIndex);
   }
 }

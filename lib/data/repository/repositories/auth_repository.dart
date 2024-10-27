@@ -1,7 +1,7 @@
 part of '../repository.dart';
 
 // Enum untuk status autentikasi
-enum UserStatus { unknown, authenticated, unauthenticated }
+// enum UserStatus { unknown, authenticated, unauthenticated }
 
 class AuthRepository {
   // final _controller = StreamController<UserStatus>.broadcast();

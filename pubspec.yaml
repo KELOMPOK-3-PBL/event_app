@@ -48,7 +48,8 @@ dependencies:
   uuid: ^3.0.0
   dio: ^5.7.0
   get_it: ^7.0.0
-
+  stream_transform: ^2.1.0
+  bloc_concurrency: ^0.2.5
 dev_dependencies:
   flutter_test:
     sdk: flutter

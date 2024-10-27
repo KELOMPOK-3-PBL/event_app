@@ -3,27 +3,25 @@ part of '../model.dart';
 class UserModel extends Equatable {
   final String username;
   final String email;
-  final String password;
-  final String role;
+  final List<Role> roles;
   final String about;
   final String avatar;
 
   // Constructor
-  const UserModel(
-      {required this.username,
-      required this.email,
-      required this.password,
-      required this.role,
-      required this.about,
-      required this.avatar});
+  const UserModel({
+    required this.username,
+    required this.email,
+    required this.roles,
+    required this.about,
+    required this.avatar,
+  });
 
   // Convert a JSON map to the UserModel object
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       username: json['username'],
       email: json['email'],
-      password: json['password'],
-      role: json['role'],
+      roles: List.from(json['roles'].map((role) => Role.fromModel(role))),
       about: json['about'],
       avatar: json['avatar'],
     );
@@ -38,5 +36,5 @@ class UserModel extends Equatable {
   // }
 
   @override
-  List<Object?> get props => [username, email, password, role, about];
+  List<Object?> get props => [username, email, roles, about];
 }

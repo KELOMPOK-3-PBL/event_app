@@ -6,14 +6,13 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../provider/provider.dart';
 import '../../presentation/widget/ui_colors.dart';
 import '../../data/model/model.dart';
 // import '../../data/service/service.dart';
 
-part 'repositories/auth_repository.dart';
-part 'repositories/category_repository.dart';
-part 'repositories/event_repository.dart';
+part 'providers/auth_provider.dart';
+part 'providers/category_provider.dart';
+part 'providers/event_provider.dart';
 
 final GetIt getIt = GetIt.instance;
 

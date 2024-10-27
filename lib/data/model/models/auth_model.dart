@@ -1,31 +1,29 @@
 part of '../model.dart';
 
 class AuthModel extends Equatable {
-  final String username;
-  final String email;
-  final String password;
-  final String role;
-  final String about;
+  final String status;
+  final String message;
+  final String userId;
+  final String userName;
+  final List<Role> roles;
 
   // Constructor
   const AuthModel({
-    required this.username,
-    required this.email,
-    required this.password,
-    required this.role,
-    required this.about,
+    required this.status,
+    required this.message,
+    required this.userId,
+    required this.userName,
+    required this.roles,
   });
 
   // Convert a JSON map to the AuthModel object
-  factory AuthModel.fromJson(Map<String, dynamic> json) {
-    return AuthModel(
-      username: json['username'],
-      email: json['email'],
-      password: json['password'],
-      role: json['role'],
-      about: json['about'],
-    );
-  }
+  factory AuthModel.fromJson(Map<String, dynamic> json) => AuthModel(
+        status: json['status'],
+        message: json['message'],
+        userId: json['userId'],
+        userName: json['about'],
+        roles: List.from(json['roles'].map((role) => Role.fromModel(role))),
+      );
 
   // Convert the AuthModel object to a JSON map
   // Map<String, dynamic> toJson() {
@@ -36,12 +34,5 @@ class AuthModel extends Equatable {
   // }
 
   @override
-  List<Object?> get props => [username, email, password, role, about];
-}
-
-class Role {
-  final String role;
-  Role({required this.role});
-  factory Role.fromModel(Map<String, dynamic> json) =>
-      Role(role: json['roles']);
+  List<Object?> get props => [status, message, roles, roles, userId];
 }

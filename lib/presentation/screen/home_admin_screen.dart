@@ -1,5 +1,4 @@
-import 'package:event_proposal_app/presentation/navigation/bottom_navbar_superadmin.dart';
-import 'package:event_proposal_app/presentation/page/accounts_page.dart';
+import 'package:event_proposal_app/presentation/navigation/bottom_navbar_admin.dart';
 import 'package:event_proposal_app/presentation/page/approval_page.dart';
 import 'package:event_proposal_app/presentation/page/events_page.dart';
 import 'package:event_proposal_app/presentation/page/explore_page.dart';
@@ -21,7 +20,6 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
     const HomeExplore(),
     const HomeEvents(),
     const HomeApproval(),
-    const HomeAccounts(),
     const HomeProfile(),
   ];
 
@@ -35,7 +33,7 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _widgetOptions.elementAt(_currentIndex),
-      bottomNavigationBar: BottomNavbarSuperadmin(
+      bottomNavigationBar: BottomNavbarAdmin(
         currentIndex: _currentIndex,
         onItemTapped: _onItemTapped,
       ),

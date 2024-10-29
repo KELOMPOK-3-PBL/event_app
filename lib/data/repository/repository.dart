@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../provider/provider.dart';
 import '../../presentation/widget/ui_colors.dart';
 import '../../data/model/model.dart';
 // import '../../data/service/service.dart';

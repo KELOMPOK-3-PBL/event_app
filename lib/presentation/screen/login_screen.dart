@@ -93,14 +93,12 @@ class LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(
               builder: (context) => MultiBlocProvider(
                 providers: [
-                  BlocProvider<AuthBloc>(
-                      create: (context) =>
-                          AuthBloc(authRepository: AuthRepository())),
+                  BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
                   BlocProvider<EventBloc>(
                       //! memanggil AuthBloc di dalam bloc EventBloc
                       create: (context) => EventBloc(
                           eventRepository: EventRepository(),
-                          authBloc: AuthBloc(authRepository: AuthRepository()))
+                          authBloc: AuthBloc())
                         ..add(EventFetched())),
                   BlocProvider<CategoryBloc>(
                       create: (context) =>

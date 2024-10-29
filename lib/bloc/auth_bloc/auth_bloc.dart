@@ -10,9 +10,9 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthRepository authRepository;
+  final authRepository = AuthRepository();
 
-  AuthBloc({required this.authRepository}) : super(AuthInitial()) {
+  AuthBloc() : super(AuthInitial()) {
     // on<AppStarted>(_onAppStarted);
     on<SignInLoadUserPreference>(_loadUserPreferences);
     on<SignInButtonPressed>(_onSignInButtonPressed);
@@ -33,14 +33,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       SignInButtonPressed user, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
-      await authRepository.login(user.email, user.password, user.rememberMe);
+      final authData = await authRepository.login(
+          user.email, user.password, user.rememberMe);
       // await authRepository.logIn(
       //     email: user.email,
       //     password: user.password,
       //     rememberMe: user.rememberMe);
-      emit(AuthAuthenticated());
+      if (authData.token != null || authData.status == 'success') {
+        emit(AuthAuthenticated(token: authData.token));
+      } else {
+        emit(AuthUnauthenticated(message: authData.message));
+      }
     } catch (error) {
-      emit(AuthUnauthenticated(error.toString()));
+      emit(AuthUnauthenticated(message: error.toString()));
     }
   }
 

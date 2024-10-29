@@ -1,16 +1,9 @@
-import 'package:event_proposal_app/presentation/screen/splash_screen.dart';
-import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
-// import 'package:event_proposal_app/presentation/screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
-// import 'bloc/bloc.dart';
-import 'data/repository/repository.dart';
-// import 'presentation/screen/home_superadmin_screen.dart';
-// import 'presentation/screen/login_screen.dart';
-// import 'presentation/screen/welcome_screen.dart';
+import './data/provider/provider.dart';
+import './presentation/screen/splash_screen.dart';
+import './presentation/widget/ui_colors.dart';
 
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -21,6 +14,7 @@ Future<void> main() async {
         Colors.transparent, // Menetapkan warna navigation bar
     statusBarColor: Colors.transparent, // Set the status bar color
   ));
+
   setupLocator();
   // final authRepository = AuthRepository();
   // SharedPreferences prefs = await SharedPreferences.getInstance();

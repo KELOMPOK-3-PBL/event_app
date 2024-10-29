@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
+//! MODEL : Digunakan untuk menyimpan data yang diambil dari API
+
 part 'models/user_model.dart';
 part 'models/auth_model.dart';
 part 'models/event_model.dart';

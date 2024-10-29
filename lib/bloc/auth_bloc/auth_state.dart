@@ -11,7 +11,14 @@ class AuthInitial extends AuthState {}
 
 class AuthLoading extends AuthState {}
 
-class AuthAuthenticated extends AuthState {}
+class AuthAuthenticated extends AuthState {
+  final String? token;
+
+  const AuthAuthenticated({this.token});
+
+  @override
+  List<Object> get props => [];
+}
 
 class AuthUserPrefenceLoaded extends AuthState {
   final String email;
@@ -28,7 +35,7 @@ class AuthUserPrefenceLoaded extends AuthState {
 class AuthUnauthenticated extends AuthState {
   final String message;
 
-  const AuthUnauthenticated(this.message);
+  const AuthUnauthenticated({required this.message});
 
   @override
   List<Object?> get props => [message];

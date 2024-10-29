@@ -1,25 +1,31 @@
 part of '../model.dart';
 
 class AuthModel extends Equatable {
+  // final String? statusCode;
   final String status;
   final String message;
-  final String userId;
-  final String userName;
-  final List<Role> roles;
+  final String? token;
+  final String? userId;
+  final String? userName;
+  final List<Role>? roles;
 
   // Constructor
   const AuthModel({
+    // required this.statusCode,
     required this.status,
     required this.message,
-    required this.userId,
-    required this.userName,
-    required this.roles,
+    this.token,
+    this.userId,
+    this.userName,
+    this.roles,
   });
 
   // Convert a JSON map to the AuthModel object
   factory AuthModel.fromJson(Map<String, dynamic> json) => AuthModel(
+        // statusCode: '',
         status: json['status'],
         message: json['message'],
+        token: json['token'],
         userId: json['userId'],
         userName: json['about'],
         roles: List.from(json['roles'].map((role) => Role.fromModel(role))),
@@ -34,5 +40,5 @@ class AuthModel extends Equatable {
   // }
 
   @override
-  List<Object?> get props => [status, message, roles, roles, userId];
+  List<Object?> get props => [status, message, token, userId, userName, roles];
 }

@@ -1,12 +1,15 @@
 part of '../repository.dart';
 
 // Enum untuk status autentikasi
-// enum UserStatus { unknown, authenticated, unauthenticated }
+enum UserPrivilege { superadmin, admin, propose, member }
 
 class AuthRepository {
   // final _controller = StreamController<UserStatus>.broadcast();
-  final dio = getIt<Dio>();
+  // final dio = getIt<Dio>();
   // final sessionDuration = Duration(days: 1); // Durasi sesi 1 hari
+  final authProvider = AuthProvider();
+
+  // AuthRepository({required this.authProvider});
 
   // Timer? _sessionTimer;
 
@@ -37,21 +40,20 @@ class AuthRepository {
   //   }
   // }
 
-  Future<Map<String, dynamic>> login(
+  Future<AuthModel> login(
       String email, String password, bool rememberMe) async {
     try {
       // '/authRoutes.php/login'
-      final response = await dio.post('/auth',
-          options: Options(contentType: 'application/json'),
-          data: jsonEncode({
-            'email': email,
-            'password': password,
-          }));
-      final data =
-          // jsonDecode(
-          response.data
-          // )
-          ;
+      // final response = await dio.post('/auth',
+      //     options: Options(contentType: 'application/json'),
+      //     data: jsonEncode({
+      //       'email': email,
+      //       'password': password,
+      //     }));
+
+      final response = await authProvider.authRequest(email, password);
+
+      final data = response.data;
 
       if (response.statusCode == 200 && data["status"] == 'success') {
         //! Simpan waktu login dan waktu sesi berakhir
@@ -63,7 +65,14 @@ class AuthRepository {
         // _controller.add(UserStatus.unauthenticated);
         saveUserPreferences(email, password, rememberMe);
         // }
-        return data;
+        return AuthModel(
+            // statusCode: response.statusCode.toString(),
+            status: data['status'],
+            message: data['message'],
+            token: data['token'],
+            userId: data['user_id'],
+            userName: data['username'],
+            roles: data['roles']);
         // return {
         //   'user_id': data['user_id'],
         //   'email': email,
@@ -74,15 +83,25 @@ class AuthRepository {
         // return data;
       } else if (data["status"] == 'error') {
         // _controller.add(UserStatus.unauthenticated);
-        throw Exception("Error: ${data['message']}");
+        return AuthModel(
+          // statusCode: response.statusCode.toString(),
+          status: data['status'],
+          message: data['message'],
+        );
       } else {
         // _controller.add(UserStatus.unauthenticated);
         throw Exception('Error: ${response.statusCode}');
       }
     } catch (error) {
-      throw Exception('Login Failed. Email or password not correct');
+      throw Exception('API REQUEST FAILED');
     }
   }
+
+  // Future<String> login(String email, String password, bool rememberMe) async {
+  //   await authProvider.authData(email, password);
+
+  //   return data;
+  // }
 
   Future<void> saveUserPreferences(
       String email, String password, bool rememberMe) async {

@@ -40,8 +40,8 @@ class AuthRepository {
   Future<Map<String, dynamic>> login(
       String email, String password, bool rememberMe) async {
     try {
-      await Future.delayed(Duration(seconds: 1)); // Simulate network delay
-      final response = await dio.post('/authRoutes.php/login',
+      // '/authRoutes.php/login'
+      final response = await dio.post('/auth',
           options: Options(contentType: 'application/json'),
           data: jsonEncode({
             'email': email,
@@ -63,13 +63,14 @@ class AuthRepository {
         // _controller.add(UserStatus.unauthenticated);
         saveUserPreferences(email, password, rememberMe);
         // }
-        return {
-          'user_id': data['user_id'],
-          'email': email,
-          'username': data['username'],
-          'roles': List<String>.from(
-              data['roles']), // Konversi roles ke List<String>
-        };
+        return data;
+        // return {
+        //   'user_id': data['user_id'],
+        //   'email': email,
+        //   'username': data['username'],
+        //   'roles': List<String>.from(
+        //       data['roles']), // Konversi roles ke List<String>
+        // };
         // return data;
       } else if (data["status"] == 'error') {
         // _controller.add(UserStatus.unauthenticated);

@@ -273,22 +273,28 @@ class LoginScreenState extends State<LoginScreen> {
                             );
                         //! UNTUK MENGABAIKAN AUTENTIKASI - Route asli ada di BlocListener
                         // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => MultiBlocProvider(
-                        //       providers: [
-                        //         BlocProvider<AuthBloc>(
-                        //             create: (context) => AuthBloc()),
-                        //         BlocProvider<CategoryBloc>(
-                        //             create: (context) => CategoryBloc(
-                        //                 categoryRepository:
-                        //                     CategoryRepository())
-                        //               ..add(CategoryReadData())),
-                        //       ],
-                        //       child: HomeSuperadmin(),
-                        //     ),
+                        // context,
+                        // MaterialPageRoute(
+                        //   builder: (context) => MultiBlocProvider(
+                        //     providers: [
+                        //       BlocProvider<AuthBloc>(
+                        //           create: (context) => AuthBloc(
+                        //               authRepository: AuthRepository())),
+                        //       BlocProvider<EventBloc>(
+                        //           create: (context) => EventBloc(
+                        //               eventRepository: EventRepository(),
+                        //               authBloc: AuthBloc(
+                        //                   authRepository: AuthRepository()))
+                        //             ..add(EventFetched())),
+                        //       BlocProvider<CategoryBloc>(
+                        //           create: (context) => CategoryBloc(
+                        //               categoryRepository:
+                        //                   StatusRepository())
+                        //             ..add(CategoryReadData())),
+                        //     ],
+                        //     child: HomeSuperadminScreen(),
                         //   ),
-                        // );
+                        // ));
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 13.0),

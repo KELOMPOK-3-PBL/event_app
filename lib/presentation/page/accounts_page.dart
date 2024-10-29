@@ -104,17 +104,6 @@ class _HomeAccountsState extends State<HomeAccounts> {
   }
 
   Widget _buildEventCard(Account account) {
-    Color roleColor;
-    //! COLORING STATUS BADGE
-    if (account.role == "Superadmin") {
-      roleColor = UIColor.superadmin;
-    } else if (account.role == "Admin") {
-      roleColor = UIColor.admin;
-    } else if (account.role == "Propose") {
-      roleColor = UIColor.propose;
-    } else {
-      roleColor = UIColor.member;
-    }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -144,7 +133,7 @@ class _HomeAccountsState extends State<HomeAccounts> {
             ),
             Container(
               decoration: BoxDecoration(
-                color: roleColor,
+                color: UIColor.getRoleColor(account.role),
                 borderRadius: BorderRadius.circular(4),
               ),
               padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 12),

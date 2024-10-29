@@ -1,7 +1,7 @@
 import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 import 'package:flutter/widgets.dart';
 
-Widget buildInfoRow(IconData icon, String text) {
+Widget cardInfoRow(IconData icon, String text) {
   return Padding(
     padding: const EdgeInsets.only(bottom: 2),
     child: Row(

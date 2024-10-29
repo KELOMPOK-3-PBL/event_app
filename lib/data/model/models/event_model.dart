@@ -4,20 +4,22 @@ class EventModel extends Equatable {
   final String tittle;
   final String category;
   final String quota;
-  final String posterUrl;
+  final String? posterUrl;
   final String place;
-  final String location;
+  final String? location;
   final String dateStart;
+  final String? dateEnd;
   final String status;
 
   const EventModel({
     required this.tittle,
     required this.category,
     required this.quota,
-    required this.posterUrl,
+    this.posterUrl,
     required this.place,
-    required this.location,
+    this.location,
     required this.dateStart,
+    this.dateEnd,
     required this.status,
   });
 

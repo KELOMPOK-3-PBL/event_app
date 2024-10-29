@@ -1,7 +1,7 @@
 part of '../repository.dart';
 
 // Enum untuk status autentikasi
-enum UserPrivilege { superadmin, admin, propose, member }
+// enum UserPrivilege { superadmin, admin, propose, member }
 
 class AuthRepository {
   // final _controller = StreamController<UserStatus>.broadcast();
@@ -43,14 +43,6 @@ class AuthRepository {
   Future<AuthModel> login(
       String email, String password, bool rememberMe) async {
     try {
-      // '/authRoutes.php/login'
-      // final response = await dio.post('/auth',
-      //     options: Options(contentType: 'application/json'),
-      //     data: jsonEncode({
-      //       'email': email,
-      //       'password': password,
-      //     }));
-
       final response = await authProvider.authRequest(email, password);
 
       final data = response.data;
@@ -73,14 +65,6 @@ class AuthRepository {
             userId: data['user_id'],
             userName: data['username'],
             roles: data['roles']);
-        // return {
-        //   'user_id': data['user_id'],
-        //   'email': email,
-        //   'username': data['username'],
-        //   'roles': List<String>.from(
-        //       data['roles']), // Konversi roles ke List<String>
-        // };
-        // return data;
       } else if (data["status"] == 'error') {
         // _controller.add(UserStatus.unauthenticated);
         return AuthModel(
@@ -96,12 +80,6 @@ class AuthRepository {
       throw Exception('API REQUEST FAILED');
     }
   }
-
-  // Future<String> login(String email, String password, bool rememberMe) async {
-  //   await authProvider.authData(email, password);
-
-  //   return data;
-  // }
 
   Future<void> saveUserPreferences(
       String email, String password, bool rememberMe) async {

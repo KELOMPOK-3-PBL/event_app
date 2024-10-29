@@ -159,14 +159,15 @@ class _HomeProposeState extends State<HomePropose> {
                                   );
                                 },
                                 child: EventCardWithStatusWidget(
-                                  tittle: events[index].tittle,
-                                  category: events[index].category,
-                                  quota: events[index].quota,
-                                  posterUrl: events[index].posterUrl,
-                                  place: events[index].place,
-                                  location: events[index].location,
-                                  dateStart: events[index].dateStart,
-                                  status: events[index].status,
+                                  events: events[index],
+                                  // tittle: events[index].tittle,
+                                  // category: events[index].category,
+                                  // quota: events[index].quota,
+                                  // posterUrl: events[index].posterUrl ?? '',
+                                  // place: events[index].place,
+                                  // location: events[index].location ?? '',
+                                  // dateStart: events[index].dateStart,
+                                  // status: events[index].status,
                                 ),
                               ),
                             );

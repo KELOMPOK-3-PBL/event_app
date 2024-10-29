@@ -21,4 +21,32 @@ class UIColor {
 
   // static const Color bgCarousel = Color.fromARGB(233, 250, 250, 250);
   static const Color bgCarousel = Color.fromARGB(255, 0, 0, 0);
+
+  static Color getStatusColor(String status) {
+    if (status == "Proposed") {
+      return UIColor.propose;
+    } else if (status == "Pending") {
+      return UIColor.pending;
+    } else if (status == "Approved") {
+      return UIColor.approved;
+    } else if (status == "Rejected") {
+      return UIColor.rejected;
+    } else {
+      return UIColor.typoGray2;
+    }
+  }
+
+  static Color getRoleColor(String role) {
+    if (role == "Superadmin") {
+      return UIColor.superadmin;
+    } else if (role == "Admin") {
+      return UIColor.admin;
+    } else if (role == "Propose") {
+      return UIColor.propose;
+    } else if (role == "Member") {
+      return UIColor.member;
+    } else {
+      return UIColor.typoGray2;
+    }
+  }
 }

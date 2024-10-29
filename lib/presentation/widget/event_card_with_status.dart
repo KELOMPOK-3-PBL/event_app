@@ -1,46 +1,36 @@
-import 'package:event_proposal_app/presentation/widget/card_info_row.dart';
+import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
-import 'ui_colors.dart';
+import './card_info_row.dart';
+import './ui_colors.dart';
 
 class EventCardWithStatusWidget extends StatelessWidget {
-  // final List<EventRepository> events;
-  final String tittle;
-  final String category;
-  final String quota;
-  final String posterUrl;
-  final String place;
-  final String location;
-  final String dateStart;
-  final String status;
+  final EventModel events;
+  // final String tittle;
+  // final String category;
+  // final String quota;
+  // final String posterUrl;
+  // final String place;
+  // final String location;
+  // final String dateStart;
+  // final String status;
 
   const EventCardWithStatusWidget({
     super.key,
-    // required this.events,
-    required this.tittle,
-    required this.category,
-    required this.quota,
-    required this.posterUrl,
-    required this.place,
-    required this.location,
-    required this.dateStart,
-    required this.status,
+    required this.events,
+    // required this.tittle,
+    // required this.category,
+    // required this.quota,
+    // required this.posterUrl,
+    // required this.place,
+    // required this.location,
+    // required this.dateStart,
+    // required this.status,
   });
 
   @override
   Widget build(BuildContext context) {
-    Color statusColor;
-    //! COLORING STATUS BADGE
-    if (status == "Proposed") {
-      statusColor = UIColor.propose;
-    } else if (status == "Pending") {
-      statusColor = UIColor.pending;
-    } else if (status == "Approved") {
-      statusColor = UIColor.approved;
-    } else {
-      statusColor = UIColor.rejected;
-    }
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -54,7 +44,7 @@ class EventCardWithStatusWidget extends StatelessWidget {
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(8)),
               child: Image.network(
-                posterUrl,
+                events.posterUrl.toString(),
                 // height: 120,
                 // width: 90,
                 height: (MediaQuery.of(context).size.width / 3),
@@ -71,13 +61,13 @@ class EventCardWithStatusWidget extends StatelessWidget {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: statusColor,
+                      color: UIColor.getStatusColor(events.status),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     padding:
                         const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
                     child: Text(
-                      status,
+                      events.status,
                       style: const TextStyle(
                         color: UIColor.solidWhite,
                         fontSize: 10,
@@ -87,7 +77,7 @@ class EventCardWithStatusWidget extends StatelessWidget {
                   ),
                   // const SizedBox(height: 8),
                   Text(
-                    '$category: $tittle',
+                    '${events.category}: ${events.tittle}',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -97,11 +87,14 @@ class EventCardWithStatusWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
-                  buildInfoRow(UIconsPro.regularRounded.user_time,
-                      '$quota participants'),
-                  buildInfoRow(UIconsPro.regularRounded.house_building, place),
-                  buildInfoRow(UIconsPro.regularRounded.marker, location),
-                  buildInfoRow(UIconsPro.regularRounded.calendar, dateStart),
+                  cardInfoRow(UIconsPro.regularRounded.user_time,
+                      '${events.quota} participants'),
+                  cardInfoRow(
+                      UIconsPro.regularRounded.house_building, events.place),
+                  cardInfoRow(
+                      UIconsPro.regularRounded.marker, events.location ?? ''),
+                  cardInfoRow(
+                      UIconsPro.regularRounded.calendar, events.dateStart),
                   const SizedBox(height: 8),
                 ],
               ),

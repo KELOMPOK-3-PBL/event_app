@@ -21,8 +21,6 @@ class _EventListWidgetState extends State<EventListSection> {
 
   @override
   Widget build(BuildContext context) {
-    Color statusColor;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -45,17 +43,6 @@ class _EventListWidgetState extends State<EventListSection> {
             spacing: 10,
             runSpacing: 10,
             children: List.generate(_eventsMore.length, (index) {
-              //! COLORING STATUS BADGE
-              if (_eventsMore[index].status == "Proposed") {
-                statusColor = UIColor.propose;
-              } else if (_eventsMore[index].status == "Pending") {
-                statusColor = UIColor.pending;
-              } else if (_eventsMore[index].status == "Approved") {
-                statusColor = UIColor.approved;
-              } else {
-                statusColor = UIColor.rejected;
-              }
-
               return Container(
                 width: (MediaQuery.of(context).size.width - 44) /
                     2, // Adaptive width for two columns
@@ -99,7 +86,8 @@ class _EventListWidgetState extends State<EventListSection> {
                           // const SizedBox(height: 0),
                           Container(
                             decoration: BoxDecoration(
-                              color: statusColor,
+                              color: UIColor.getRoleColor(
+                                  _eventsMore[index].status),
                               borderRadius: BorderRadius.circular(6),
                             ),
                             padding: const EdgeInsets.symmetric(

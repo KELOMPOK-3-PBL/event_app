@@ -24,8 +24,6 @@ class _CarouselEventsState extends State<CarouselSection> {
 
   @override
   Widget build(BuildContext context) {
-    Color statusColor;
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -53,16 +51,6 @@ class _CarouselEventsState extends State<CarouselSection> {
               width: 10,
             ),
             itemBuilder: (context, index) {
-              //! COLORING STATUS BADGE
-              if (_eventsCarousel[index].status == "Proposed") {
-                statusColor = UIColor.propose;
-              } else if (_eventsCarousel[index].status == "Pending") {
-                statusColor = UIColor.pending;
-              } else if (_eventsCarousel[index].status == "Approved") {
-                statusColor = UIColor.approved;
-              } else {
-                statusColor = UIColor.rejected;
-              }
               return Container(
                 width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
@@ -201,7 +189,8 @@ class _CarouselEventsState extends State<CarouselSection> {
                                       width: 108,
                                       height: 31,
                                       decoration: BoxDecoration(
-                                          color: statusColor,
+                                          color: UIColor.getStatusColor(
+                                              _eventsCarousel[index].status),
                                           borderRadius:
                                               BorderRadius.circular(30)),
                                       child: Text(_eventsCarousel[index].status,

@@ -4,19 +4,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 import '../widget/ui_colors.dart';
 
-// import 'package:google_fonts/google_fonts.dart';
-
-void main() {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent, // Make the status bar transparent
-    systemNavigationBarColor:
-        Colors.transparent, // Make the navigation bar transparent
-    // statusBarIconBrightness:
-    //     Brightness.dark, // Change icon brightness (optional)
-  ));
-  runApp(PoliventApp());
-}
-
+// import 'package:google_fonts/google_fonts.dart'
 // Define primary color
 const Color primaryColor = Color(0xFF1886EA);
 const Color secondaryColor = Color(0xFFFAAD14);

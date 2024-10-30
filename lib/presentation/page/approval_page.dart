@@ -9,6 +9,8 @@ import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
+import '../screen/detail_event_approval_screen.dart';
+
 class HomeApproval extends StatefulWidget {
   const HomeApproval({super.key});
 
@@ -154,7 +156,8 @@ class _HomeApprovalState extends State<HomeApproval> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => DetailEventScreen(),
+                                      builder: (context) =>
+                                          DetailEventApprovalScreen(),
                                     ),
                                   );
                                 },

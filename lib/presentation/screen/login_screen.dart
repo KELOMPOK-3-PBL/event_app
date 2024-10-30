@@ -255,44 +255,42 @@ class LoginScreenState extends State<LoginScreen> {
                     //! BLOC LISTENER for Button SIGN IN
                     ElevatedButton(
                       onPressed: () {
-                        final email = _emailController.text.trim();
-                        final password = _passwordController.text.trim();
+                        // final email = _emailController.text.trim();
+                        // final password = _passwordController.text.trim();
 
-                        if (email.isEmpty || password.isEmpty) {
-                          _showError(
-                              context, "Email and password cannot be empty.");
-                          return;
-                        }
-                        context.read<AuthBloc>().add(
-                              SignInButtonPressed(
-                                  email: email,
-                                  password: password,
-                                  rememberMe: rememberMe),
-                            );
+                        // if (email.isEmpty || password.isEmpty) {
+                        //   _showError(
+                        //       context, "Email and password cannot be empty.");
+                        //   return;
+                        // }
+                        // context.read<AuthBloc>().add(
+                        //       SignInButtonPressed(
+                        //           email: email,
+                        //           password: password,
+                        //           rememberMe: rememberMe),
+                        //     );
                         //! UNTUK MENGABAIKAN AUTENTIKASI - Route asli ada di BlocListener
-                        // Navigator.pushReplacement(
-                        // context,
-                        // MaterialPageRoute(
-                        //   builder: (context) => MultiBlocProvider(
-                        //     providers: [
-                        //       BlocProvider<AuthBloc>(
-                        //           create: (context) => AuthBloc(
-                        //               authRepository: AuthRepository())),
-                        //       BlocProvider<EventBloc>(
-                        //           create: (context) => EventBloc(
-                        //               eventRepository: EventRepository(),
-                        //               authBloc: AuthBloc(
-                        //                   authRepository: AuthRepository()))
-                        //             ..add(EventFetched())),
-                        //       BlocProvider<CategoryBloc>(
-                        //           create: (context) => CategoryBloc(
-                        //               categoryRepository:
-                        //                   StatusRepository())
-                        //             ..add(CategoryReadData())),
-                        //     ],
-                        //     child: HomeSuperadminScreen(),
-                        //   ),
-                        // ));
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MultiBlocProvider(
+                                providers: [
+                                  BlocProvider<AuthBloc>(
+                                      create: (context) => AuthBloc()),
+                                  BlocProvider<EventBloc>(
+                                      create: (context) => EventBloc(
+                                          eventRepository: EventRepository(),
+                                          authBloc: AuthBloc())
+                                        ..add(EventFetched())),
+                                  BlocProvider<CategoryBloc>(
+                                      create: (context) => CategoryBloc(
+                                          categoryRepository:
+                                              StatusRepository())
+                                        ..add(CategoryReadData())),
+                                ],
+                                child: HomeSuperadminScreen(),
+                              ),
+                            ));
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 13.0),

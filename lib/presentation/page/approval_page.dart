@@ -1,10 +1,9 @@
-import 'package:event_proposal_app/bloc/bloc.dart';
-import 'package:event_proposal_app/presentation/screen/detail_event_screen.dart';
+import '../../bloc/bloc.dart';
 
-import 'package:event_proposal_app/presentation/screen/search_result_event_screen.dart';
-import 'package:event_proposal_app/presentation/widget/event_card_with_status.dart';
-import 'package:event_proposal_app/presentation/widget/search_widget.dart';
-import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
+import '../screen/search_result_event_screen.dart';
+import '../widget/event_card_with_status.dart';
+import '../widget/search_widget.dart';
+import '../widget/ui_colors.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';

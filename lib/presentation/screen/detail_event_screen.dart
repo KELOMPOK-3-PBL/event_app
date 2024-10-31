@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
+import '../widget/ui_colors.dart';
+
 // import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -359,13 +361,14 @@ class DetailEventScreenState extends State<DetailEventScreen> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.white,
-                        size: 18,
-                      ),
+                      color:
+                          // _isScrolled ?
+                          // UIColor.typoBlack,
+                          // :
+                          UIColor.solidWhite,
+                      icon: Icon(UIconsPro.regularRounded.angle_small_left),
                       onPressed: () {
-                        // Aksi tombol back
+                        Navigator.pop(context);
                       },
                     ),
                   ),

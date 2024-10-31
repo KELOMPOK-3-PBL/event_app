@@ -206,13 +206,15 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
             centerTitle: true,
             surfaceTintColor: UIColor.solidWhite,
             elevation: 0,
-            pinned: true,
-            expandedHeight: 400,
+            // pinned: true,
+            expandedHeight: MediaQuery.of(context).size.width /
+                1.2, //! Buat tinggi gambar berbanding dengan lebar layar
             leading: IconButton(
               color:
                   // _isScrolled ?
-                  UIColor.typoBlack,
-              // : UIColor.solidWhite,
+                  // UIColor.typoBlack,
+                  // :
+                  UIColor.solidWhite,
               icon: Icon(UIconsPro.regularRounded.angle_small_left),
               onPressed: () {
                 Navigator.pop(context);
@@ -226,8 +228,9 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                 fontWeight: FontWeight.bold,
                 color:
                     // _isScrolled ?
-                    UIColor.typoBlack,
-                // : UIColor.solidWhite,
+                    // UIColor.typoBlack,
+                    // :
+                    UIColor.solidWhite,
               ),
             ),
             flexibleSpace: FlexibleSpaceBar(
@@ -527,24 +530,30 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
               child: ElevatedButton(
                 onPressed: _changeStatus,
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      UIconsPro.regularRounded.key,
-                      color: Colors.white,
-                      size: 14,
-                    ),
-                    SizedBox(width: 6),
-                    Text(
-                      "Change Status",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: UIColor.solidWhite,
-                      ),
-                    ),
-                  ],
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    double fontSize = constraints.maxWidth *
+                        0.12; // Ukuran font disesuaikan dengan lebar tombol
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          UIconsPro.regularRounded.key,
+                          color: Colors.white,
+                          size: fontSize + 1,
+                        ),
+                        SizedBox(width: 6),
+                        Text(
+                          "Change Status",
+                          style: TextStyle(
+                            fontSize: fontSize,
+                            fontWeight: FontWeight.bold,
+                            color: UIColor.solidWhite,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -555,24 +564,35 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                 onPressed: _showEditNoteDialog,
                 style:
                     ElevatedButton.styleFrom(backgroundColor: secondaryColor),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      UIconsPro.regularRounded.edit,
-                      color: Colors.white,
-                      size: 14,
-                    ),
-                    SizedBox(width: 6),
-                    Text(
-                      "Edit Note",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: UIColor.solidWhite,
-                      ),
-                    ),
-                  ],
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    double fontSize;
+                    if (constraints.maxWidth <= 1080) {
+                      fontSize = constraints.maxWidth *
+                          0.16; // Ukuran font disesuaikan dengan lebar tombol
+                    } else {
+                      fontSize = 16;
+                    }
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          UIconsPro.regularRounded.edit,
+                          color: Colors.white,
+                          size: fontSize + 1,
+                        ),
+                        SizedBox(width: 6),
+                        Text(
+                          "Edit Note",
+                          style: TextStyle(
+                            fontSize: fontSize,
+                            fontWeight: FontWeight.bold,
+                            color: UIColor.solidWhite,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),

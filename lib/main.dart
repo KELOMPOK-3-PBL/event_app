@@ -8,6 +8,7 @@ import './presentation/widget/ui_colors.dart';
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarBrightness: Brightness.dark,
+    systemNavigationBarDividerColor: Colors.transparent,
     statusBarIconBrightness:
         Brightness.dark, // Menetapkan warna ikon status bar
     systemNavigationBarColor:

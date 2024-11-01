@@ -86,7 +86,7 @@ class _EventListWidgetState extends State<EventListSection> {
                           // const SizedBox(height: 0),
                           Container(
                             decoration: BoxDecoration(
-                              color: UIColor.getRoleColor(
+                              color: UIColor.getStatusColor(
                                   _eventsMore[index].status),
                               borderRadius: BorderRadius.circular(6),
                             ),

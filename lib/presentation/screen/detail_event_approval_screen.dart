@@ -343,7 +343,7 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 10,
-                                          fontWeight: FontWeight.w400),
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                   Text('Checked by: Sofia Trenia',
@@ -365,7 +365,19 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                             Text(attendees,
                                 style: TextStyle(
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w500,
+                                )),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(UIconsPro.regularRounded.house_building,
+                                color: UIColor.primary, size: 12),
+                            SizedBox(width: 8),
+                            Text(location,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
                                 )),
                           ],
                         ),
@@ -374,37 +386,84 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                             Icon(UIconsPro.regularRounded.marker,
                                 color: UIColor.primary, size: 12),
                             SizedBox(width: 8),
-                            Text(location,
+                            Text(city,
                                 style: TextStyle(
                                   fontSize: 12,
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.w500,
                                 )),
                           ],
                         ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(UIconsPro.regularRounded.calendar,
-                                color: UIColor.primary, size: 12),
-                            SizedBox(width: 8),
-                            Text(dateRange,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                )),
+                            Row(
+                              children: [
+                                Icon(UIconsPro.regularRounded.calendar,
+                                    color: UIColor.primary, size: 12),
+                                SizedBox(width: 8),
+                                Text(dateRange,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                    )),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Row(
+                              children: [
+                                Icon(UIconsPro.regularRounded.clock,
+                                    color: UIColor.primary, size: 12),
+                                SizedBox(width: 8),
+                                Text(
+                                  time,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Icon(UIconsPro.regularRounded.clock,
-                                color: UIColor.primary, size: 12),
-                            SizedBox(width: 8),
-                            Text(time,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                )),
-                          ],
-                        ),
+                        InkWell(
+                          onTap: () {
+                            //! ACTION FOR BUTTON
+                            print("Menuuju ke link jadwal");
+                            // Navigator.push(
+                            //   context,
+                            // );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(6),
+                              color: UIColor.admin,
+                            ),
+                            margin: EdgeInsets.only(top: 6),
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  size: 14,
+                                  UIconsPro.solidRounded.time_fast,
+                                  color: UIColor.solidWhite,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Click to Show Complete Schedule",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: UIColor.solidWhite,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),

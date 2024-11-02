@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../data/model/model.dart';
 import '../../data/repository/repository.dart';
 // import 'package:http/http.dart' as http;
 // import 'dart:convert';
@@ -14,8 +15,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc() : super(AuthInitial()) {
     // on<AppStarted>(_onAppStarted);
-    on<SignInLoadUserPreference>(_loadUserPreferences);
-    on<SignInButtonPressed>(_onSignInButtonPressed);
+    on<AuthLoadRememberMe>(_loadUserPreferences);
+    on<AuthButtonPressed>(_onSignInButtonPressed);
     // on<LogoutRequested>(_onLogoutRequested);
     // on<SessionTimeout>(_onSessionTimeout);
   }
@@ -30,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   // }
 
   Future<void> _onSignInButtonPressed(
-      SignInButtonPressed user, Emitter<AuthState> emit) async {
+      AuthButtonPressed user, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
       final authData = await authRepository.login(
@@ -39,8 +40,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       //     email: user.email,
       //     password: user.password,
       //     rememberMe: user.rememberMe);
-      if (authData.data != null || authData.status == 'success') {
-        emit(AuthAuthenticated(token: authData.data));
+      if (authData.status == 'success') {
+        emit(AuthAuthenticated(payload: authData.data));
       } else {
         emit(AuthUnauthenticated(message: authData.message));
       }
@@ -50,10 +51,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _loadUserPreferences(
-      SignInLoadUserPreference user, Emitter<AuthState> emit) async {
+      AuthLoadRememberMe user, Emitter<AuthState> emit) async {
     try {
       final preference = await authRepository.loadUserPreferences();
-      emit(AuthUserPrefenceLoaded(
+      emit(AuthRememberMeLoaded(
         preference.email ?? '',
         preference.password ?? '',
         preference.rememberMe ?? false,

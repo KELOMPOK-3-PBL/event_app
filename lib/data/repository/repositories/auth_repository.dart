@@ -1,44 +1,10 @@
 part of '../repository.dart';
 
-// Enum untuk status autentikasi
+// Enum untuk cek role
 // enum UserPrivilege { superadmin, admin, propose, member }
 
 class AuthRepository {
-  // final _controller = StreamController<UserStatus>.broadcast();
-  // final dio = getIt<Dio>();
-  // final sessionDuration = Duration(days: 1); // Durasi sesi 1 hari
   final authProvider = AuthProvider();
-
-  // AuthRepository({required this.authProvider});
-
-  // Timer? _sessionTimer;
-
-  // AuthRepository() {
-  //   loadSessionStatus();
-  // }
-
-  // Stream<UserStatus> get status async* {
-  //   yield* _controller.stream;
-  // }
-
-  // Future<void> loadSessionStatus() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final lastLoginTime = prefs.getInt('lastLoginTime');
-  //   final currentTime = DateTime.now().millisecondsSinceEpoch;
-
-  //   if (lastLoginTime != null) {
-  //     final isSessionValid =
-  //         (currentTime - lastLoginTime) < sessionDuration.inMilliseconds;
-  //     if (isSessionValid) {
-  //       _controller.add(UserStatus.authenticated);
-  //       _startSessionCountdown();
-  //     } else {
-  //       await logout();
-  //     }
-  //   } else {
-  //     _controller.add(UserStatus.unauthenticated);
-  //   }
-  // }
 
   Future<AuthModel> login(
       String email, String password, bool rememberMe) async {
@@ -49,27 +15,13 @@ class AuthRepository {
 
       if (response.statusCode == 200 && data["status"] == 'success') {
         //! Simpan waktu login dan waktu sesi berakhir
-        // _controller.add(UserStatus.authenticated);
         saveUserPreferences(email, password, rememberMe);
-        // }
-        return AuthModel(
-          // statusCode: response.statusCode.toString(),
-          status: data['status'],
-          message: data['message'],
-          data: data['token'] ?? '',
-          // userId: data['user_id'] ?? '',
-          // userName: data['username'] ?? '',
-          // roles: data['roles'] ?? '',
-        );
+        saveToken(data['data']['token']);
+        final payload = await decodeToken(data['data']['token']);
+        return AuthModel.fromJson(json: data, payload: payload);
       } else if (response.statusCode == 404 || data["status"] == 'error') {
-        // _controller.add(UserStatus.unauthenticated);
-        return AuthModel(
-          // statusCode: response.statusCode.toString(),
-          status: data['status'],
-          message: data['message'],
-        );
+        return AuthModel.fromJson(json: data);
       } else {
-        // _controller.add(UserStatus.unauthenticated);
         throw Exception('Error: ${response.statusCode}');
       }
     } catch (error) {
@@ -104,28 +56,43 @@ class AuthRepository {
     );
   }
 
+  Future<JwtPayloadModel> decodeToken(String token) async {
+    final jwt = JWT.verify(token, SecretKey('pblpolivent'));
+    final data = jwt.payload;
+
+    return JwtPayloadModel.fromJson(data);
+  }
+
+  Future<void> saveToken(String? token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('auth_token', token ?? '');
+  }
+
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('auth_token');
+  }
+
+  // Future<void> checkAuthentication() async {
+  //   final token = await getToken();
+  //   if (token != null) {
+  //     // Verifikasi atau decode token untuk memeriksa validitasnya
+  //     try {
+  //       final jwt = JWT.verify(token, SecretKey('pblpolivent'));
+  //       // Token valid, user bisa diarahkan ke home screen
+  //     } catch (e) {
+  //       // Token tidak valid, navigasikan ke login
+  //     }
+  //   } else {
+  //     // Token tidak ada, navigasikan ke login
+  //   }
+  // }
+
   // Future<void> logout() async {
   //   final prefs = await SharedPreferences.getInstance();
   //   await prefs.clear();
   //   _controller.add(UserStatus.unauthenticated);
   //   _stopSessionCountdown();
-  // }
-
-  // Future<void> _saveLoginSession() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final currentTime = DateTime.now().millisecondsSinceEpoch;
-  //   await prefs.setInt('lastLoginTime', currentTime);
-  // }
-
-  // void _startSessionCountdown() {
-  //   _sessionTimer?.cancel();
-  //   _sessionTimer = Timer(sessionDuration, () async {
-  //     await logout(); // logout otomatis setelah durasi sesi habis
-  //   });
-  // }
-
-  // void _stopSessionCountdown() {
-  //   _sessionTimer?.cancel();
   // }
 
   // void dispose() => _controller.close();

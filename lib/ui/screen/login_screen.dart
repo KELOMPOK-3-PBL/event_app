@@ -56,10 +56,10 @@ class LoginScreenState extends State<LoginScreen>
     _passwordController.addListener(() {
       setState(() {}); // Update the UI when text changes
     });
-    context.read<AuthBloc>().add(SignInLoadUserPreference());
+    context.read<AuthBloc>().add(AuthLoadRememberMe());
 
     final authState = context.read<AuthBloc>().state;
-    if (authState is AuthUserPrefenceLoaded) {
+    if (authState is AuthRememberMeLoaded) {
       rememberMe = authState.rememberMe;
       _emailController.text = authState.email;
       _passwordController.text = authState.password;
@@ -114,12 +114,14 @@ class LoginScreenState extends State<LoginScreen>
               return const Center(child: CircularProgressIndicator());
             },
           );
-        } else if (state is AuthUserPrefenceLoaded) {
+        } else if (state is AuthRememberMeLoaded) {
           _emailController.text = state.email;
           _passwordController.text = state.password;
           setState(() => rememberMe = state.rememberMe);
         } else if (state is AuthAuthenticated) {
           Navigator.of(context).pop(); // Close loading spinner
+          print(state.payload?.roles);
+          if (state.payload!.roles.isNotEmpty) {}
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -354,7 +356,7 @@ class LoginScreenState extends State<LoginScreen>
                                     }
 
                                     context.read<AuthBloc>().add(
-                                          SignInButtonPressed(
+                                          AuthButtonPressed(
                                               email: email,
                                               password: password,
                                               rememberMe: rememberMe),

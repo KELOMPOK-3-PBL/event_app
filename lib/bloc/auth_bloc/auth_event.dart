@@ -5,14 +5,20 @@ abstract class AuthEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SignInLoadUserPreference extends AuthEvent {}
+class AuthLoadRememberMe extends AuthEvent {}
 
-class SignInButtonPressed extends AuthEvent {
+class AuthCheckSession extends AuthEvent {
+  final String token;
+
+  AuthCheckSession(this.token);
+}
+
+class AuthButtonPressed extends AuthEvent {
   final String email;
   final String password;
   final bool rememberMe;
 
-  SignInButtonPressed(
+  AuthButtonPressed(
       {required this.email, required this.password, required this.rememberMe});
 
   @override

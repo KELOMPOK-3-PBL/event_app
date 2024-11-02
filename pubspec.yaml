@@ -50,6 +50,7 @@ dependencies:
   get_it: ^7.0.0
   stream_transform: ^2.1.0
   bloc_concurrency: ^0.2.5
+  dart_jsonwebtoken: ^2.14.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

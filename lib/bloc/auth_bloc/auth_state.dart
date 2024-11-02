@@ -41,4 +41,4 @@ class AuthUnauthenticated extends AuthState {
   List<Object?> get props => [message];
 }
 
-class AuthSessionExpired extends AuthState {}
+// class AuthSessionExpired extends AuthState {}

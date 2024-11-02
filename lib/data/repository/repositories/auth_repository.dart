@@ -61,10 +61,10 @@ class AuthRepository {
           // statusCode: response.statusCode.toString(),
           status: data['status'],
           message: data['message'],
-          token: data['token'] ?? '',
-          userId: data['user_id'] ?? '',
-          userName: data['username'] ?? '',
-          roles: data['roles'] ?? '',
+          data: data['token'] ?? '',
+          // userId: data['user_id'] ?? '',
+          // userName: data['username'] ?? '',
+          // roles: data['roles'] ?? '',
         );
       } else if (data["status"] == 'error') {
         // _controller.add(UserStatus.unauthenticated);

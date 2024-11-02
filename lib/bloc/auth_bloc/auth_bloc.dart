@@ -39,8 +39,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       //     email: user.email,
       //     password: user.password,
       //     rememberMe: user.rememberMe);
-      if (authData.token != null || authData.status == 'success') {
-        emit(AuthAuthenticated(token: authData.token));
+      if (authData.data != null || authData.status == 'success') {
+        emit(AuthAuthenticated(token: authData.data));
       } else {
         emit(AuthUnauthenticated(message: authData.message));
       }

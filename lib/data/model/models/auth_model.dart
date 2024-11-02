@@ -4,20 +4,20 @@ class AuthModel extends Equatable {
   // final String? statusCode;
   final String status;
   final String message;
-  final String? token;
-  final String? userId;
-  final String? userName;
-  final List<Role>? roles;
+  final String? data;
+  // final String? userId;
+  // final String? userName;
+  // final List<Role>? roles;
 
   // Constructor
   const AuthModel({
     // required this.statusCode,
     required this.status,
     required this.message,
-    this.token,
-    this.userId,
-    this.userName,
-    this.roles,
+    this.data,
+    // this.userId,
+    // this.userName,
+    // this.roles,
   });
 
   // Convert a JSON map to the AuthModel object
@@ -25,10 +25,10 @@ class AuthModel extends Equatable {
         // statusCode: '',
         status: json['status'],
         message: json['message'],
-        token: json['token'],
-        userId: json['userId'],
-        userName: json['about'],
-        roles: List.from(json['roles'].map((role) => Role.fromModel(role))),
+        data: json['data'],
+        // userId: json['userId'],
+        // userName: json['about'],
+        // roles: List.from(json['roles'].map((role) => Role.fromModel(role))),
       );
 
   // Convert the AuthModel object to a JSON map
@@ -40,5 +40,5 @@ class AuthModel extends Equatable {
   // }
 
   @override
-  List<Object?> get props => [status, message, token, userId, userName, roles];
+  List<Object?> get props => [status, message, data];
 }

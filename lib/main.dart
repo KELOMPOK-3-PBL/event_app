@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import './data/provider/provider.dart';
-import 'ui/screen/splash_screen.dart';
+import 'ui/router/router.dart';
+import 'ui/theme/app_theme.dart';
 import 'ui/widget/ui_colors.dart';
 
 Future<void> main() async {
@@ -36,45 +37,16 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  ThemeData _buildTheme(Brightness brightness) {
-    return ThemeData(
-      splashFactory: NoSplash
-          .splashFactory, //! Hilangkan splash effect  saat menekan navbar
-      highlightColor:
-          Colors.transparent, //! Hilangkan highlight color saat menekan navbar
-      fontFamily: "Inter",
-      brightness: brightness,
-      textTheme: (ThemeData(brightness: brightness).textTheme),
-      scaffoldBackgroundColor: UIColor.white,
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: _buildTheme(Brightness.light),
-        title: 'Polivent',
-        home: SplashScreen()
-        // BlocConsumer<AuthBloc, AuthState>(
-        //   listener: (context, state) {
-        //     if (state is AuthSessionExpired) {
-        //       // Tampilkan dialog atau arahkan ke halaman login saat sesi habis
-        //       Navigator.pushReplacement(
-        //         context,
-        //         MaterialPageRoute(builder: (context) => WelcomeScreen()),
-        //       );
-        //     }
-        //   },
-        //   builder: (context, state) {
-        //     if (state is AuthAuthenticated) {
-        //       return HomeSuperadminScreen();
-        //     } else if (state is AuthUnauthenticated) {
-        //       return LoginScreen();
-        //     }
-        //     return Center(child: CircularProgressIndicator());
-        //   },
-        // ),
-        );
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.buildTheme(Brightness.light),
+      title: 'Polivent',
+      routes: AppRoutes.routes,
+      initialRoute: '/splash',
+      // home: SplashScreen()
+    );
   }
 }

@@ -14,7 +14,7 @@ import '../screen/search_result_event_screen.dart';
 import '../screen/splash_screen.dart';
 import '../screen/welcome_screen.dart';
 
-// enum UserRole {
+// enum CurentUserRole {
 //   admin,
 //   superadmin,
 //   propose,
@@ -30,11 +30,14 @@ class AppRoutes {
           child: LoginScreen(),
         ),
     '/': (context) {
-      final authState = context.read<AuthBloc>().state;
+      // final authState = context.read<AuthBloc>().state;
 
-      if (!authState.isAuthenticated) {
-        return LoginScreen(); // Redirect to login if not authenticated
-      }
+      // if (authState is AuthUnauthenticated) {
+      //   BlocProvider<AuthBloc>(
+      //       create: (context) => AuthBloc(),
+      //       child: LoginScreen()); // Redirect to login if not authenticated
+      // }
+      final role = ModalRoute.of(context)?.settings.arguments as String?;
 
       return MultiBlocProvider(
         providers: [
@@ -52,7 +55,7 @@ class AppRoutes {
             )..add(CategoryReadData()),
           ),
         ],
-        child: getHomeScreen(authState.userRole), // Redirect based on role
+        child: getHomeScreen(role ?? ''), // Redirect based on role
       );
     },
     '/homeAdmin': (context) => MultiBlocProvider(
@@ -150,15 +153,15 @@ class AppRoutes {
   };
 }
 
-Widget getHomeScreen(UserRole role) {
+Widget getHomeScreen(String role) {
   switch (role) {
-    case UserRole.admin:
-      return HomeAdminScreen();
-    case UserRole.superadmin:
+    case "Superadmin":
       return HomeSuperadminScreen();
-    case UserRole.propose:
+    case "Admin":
+      return HomeAdminScreen();
+    case "Propose":
       return HomeProposeScreen();
-    case UserRole.member:
+    case "Member":
       return HomeScreen();
     default:
       return HomeScreen(); // Fallback

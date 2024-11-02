@@ -86,6 +86,34 @@ class LoginScreenState extends State<LoginScreen>
     return password.length >= 5;
   }
 
+  // Fungsi untuk mengubah menampilkan pilihan privilage
+  void _choosePrivilege(List<String> roles) {
+    if (roles.isNotEmpty && roles.length == 1) {
+      Navigator.of(context).pushNamed('/', arguments: roles);
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Choose Previlege"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: roles.map((role) {
+                return ListTile(
+                  title: Text(role), // Display the role name
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed('/', arguments: role); // Close the dialog
+                  },
+                );
+              }).toList(), // Convert the iterable to a list
+            ),
+          );
+        },
+      );
+    }
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -120,29 +148,32 @@ class LoginScreenState extends State<LoginScreen>
           setState(() => rememberMe = state.rememberMe);
         } else if (state is AuthAuthenticated) {
           Navigator.of(context).pop(); // Close loading spinner
+
+          _choosePrivilege(state.payload!.roles);
+
           print(state.payload?.roles);
           // if (state.payload!.roles.isNotEmpty) {}
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MultiBlocProvider(
-                providers: [
-                  BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-                  BlocProvider<EventBloc>(
-                      //! memanggil AuthBloc di dalam bloc EventBloc
-                      create: (context) => EventBloc(
-                          eventRepository: EventRepository(),
-                          authBloc: AuthBloc())
-                        ..add(EventFetched())),
-                  BlocProvider<CategoryBloc>(
-                      create: (context) =>
-                          CategoryBloc(categoryRepository: StatusRepository())
-                            ..add(CategoryReadData())),
-                ],
-                child: HomeSuperadminScreen(),
-              ),
-            ),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => MultiBlocProvider(
+          //       providers: [
+          //         BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+          //         BlocProvider<EventBloc>(
+          //             //! memanggil AuthBloc di dalam bloc EventBloc
+          //             create: (context) => EventBloc(
+          //                 eventRepository: EventRepository(),
+          //                 authBloc: AuthBloc())
+          //               ..add(EventFetched())),
+          //         BlocProvider<CategoryBloc>(
+          //             create: (context) =>
+          //                 CategoryBloc(categoryRepository: StatusRepository())
+          //                   ..add(CategoryReadData())),
+          //       ],
+          //       child: HomeSuperadminScreen(),
+          //     ),
+          //   ),
+          // );
         } else if (state is AuthUnauthenticated) {
           Navigator.of(context).pop(); // Close loading spinner
           _showError(context, state.message);

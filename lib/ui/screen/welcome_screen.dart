@@ -85,15 +85,19 @@ class WelcomeScreen extends StatelessWidget {
                             ElevatedButton(
                               onPressed: () {
                                 // Aksi ketika tombol ditekan
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => BlocProvider(
-                                      create: (context) => AuthBloc(),
-                                      child: LoginScreen(),
-                                    ), // Ganti ke screen berikutnya
-                                  ),
+                                Navigator.of(context).pushNamed(
+                                  '/login',
                                 );
+
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => BlocProvider(
+                                //       create: (context) => AuthBloc(),
+                                //       child: LoginScreen(),
+                                //     ), // Ganti ke screen berikutnya
+                                //   ),
+                                // );
                               },
                               style: ElevatedButton.styleFrom(
                                   padding: const EdgeInsets.symmetric(

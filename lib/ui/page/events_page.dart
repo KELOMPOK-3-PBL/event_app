@@ -51,7 +51,7 @@ class _HomeEventsState extends State<HomeEvents> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          SearchEventsResultScreen(searchQuery: searchQuery)),
+                          SearchResultEventsScreen(searchQuery: searchQuery)),
                 );
               },
               onPressedFilter: () {

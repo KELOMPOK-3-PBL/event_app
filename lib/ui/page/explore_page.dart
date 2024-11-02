@@ -68,7 +68,7 @@ class _HomeExploreState extends State<HomeExplore> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SearchEventsResultScreen(
+                          builder: (context) => SearchResultEventsScreen(
                               searchQuery: searchQuery)),
                     );
                   },

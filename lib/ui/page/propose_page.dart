@@ -100,7 +100,7 @@ class _HomeProposeState extends State<HomePropose> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SearchEventsResultScreen(
+                          builder: (context) => SearchResultEventsScreen(
                               searchQuery: searchQuery)),
                     );
                   },

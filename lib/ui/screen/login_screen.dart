@@ -121,7 +121,7 @@ class LoginScreenState extends State<LoginScreen>
         } else if (state is AuthAuthenticated) {
           Navigator.of(context).pop(); // Close loading spinner
           print(state.payload?.roles);
-          if (state.payload!.roles.isNotEmpty) {}
+          // if (state.payload!.roles.isNotEmpty) {}
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(

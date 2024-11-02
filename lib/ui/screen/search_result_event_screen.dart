@@ -3,10 +3,10 @@ import 'package:uicons_pro/uicons_pro.dart';
 
 import '../widget/ui_colors.dart';
 
-class SearchEventsResultScreen extends StatelessWidget {
+class SearchResultEventsScreen extends StatelessWidget {
   final String searchQuery;
 
-  const SearchEventsResultScreen({super.key, required this.searchQuery});
+  const SearchResultEventsScreen({super.key, required this.searchQuery});
 
   @override
   Widget build(BuildContext context) {

@@ -27,7 +27,7 @@ class QuickCategorySection extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  SearchEventsResultScreen(searchQuery: state.nameCategory)),
+                  SearchResultEventsScreen(searchQuery: state.nameCategory)),
         );
         //! Trigger CategoryBloc untuk memuat ulang data kategori
         context.read<CategoryBloc>().add(CategoryReadData());

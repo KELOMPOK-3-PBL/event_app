@@ -4,14 +4,20 @@ class AuthProvider {
   final dio = getIt<Dio>();
 
   Future<Response> authRequest(String email, String password) async {
-    final Response rawResponse = await dio.post('/auth.php',
-        // '/auth'
+    try {
+      final Response rawResponse = await dio.post(
+        '/auth.php',
         options: Options(contentType: 'application/json'),
         data: jsonEncode({
           'email': email,
           'password': password,
-        }));
-
-    return rawResponse;
+        }),
+      );
+      // print(rawResponse);
+      return rawResponse;
+    } on DioException catch (e) {
+      // print('Error response data: ${e.response}');
+      return e.response!;
+    }
   }
 }

@@ -49,12 +49,7 @@ class AuthRepository {
 
       if (response.statusCode == 200 && data["status"] == 'success') {
         //! Simpan waktu login dan waktu sesi berakhir
-        // await _saveLoginSession();
         // _controller.add(UserStatus.authenticated);
-        // _startSessionCountdown();
-
-        // if (rememberMe == true) {
-        // _controller.add(UserStatus.unauthenticated);
         saveUserPreferences(email, password, rememberMe);
         // }
         return AuthModel(
@@ -66,7 +61,7 @@ class AuthRepository {
           // userName: data['username'] ?? '',
           // roles: data['roles'] ?? '',
         );
-      } else if (data["status"] == 'error') {
+      } else if (response.statusCode == 404 || data["status"] == 'error') {
         // _controller.add(UserStatus.unauthenticated);
         return AuthModel(
           // statusCode: response.statusCode.toString(),

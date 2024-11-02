@@ -1,9 +1,6 @@
-import '../../bloc/auth_bloc/auth_bloc.dart';
-import '../widget/ui_colors.dart';
-import 'login_screen.dart';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../widget/ui_colors.dart';
 // import 'package:flutter/services.dart';
 
 void initState() {}

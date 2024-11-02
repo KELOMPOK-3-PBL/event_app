@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import './data/provider/provider.dart';
-import 'ui/router/router.dart';
-import 'ui/theme/app_theme.dart';
-import 'ui/widget/ui_colors.dart';
+import './ui/router/router.dart';
+import './ui/theme/app_theme.dart';
 
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

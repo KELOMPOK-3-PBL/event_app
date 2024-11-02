@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import './data/provider/provider.dart';
-import './presentation/screen/splash_screen.dart';
-import './presentation/widget/ui_colors.dart';
+import 'ui/screen/splash_screen.dart';
+import 'ui/widget/ui_colors.dart';
 
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(

@@ -1,6 +1,6 @@
-import 'package:event_proposal_app/bloc/auth_bloc/auth_bloc.dart';
-import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
-import 'package:event_proposal_app/presentation/screen/login_screen.dart';
+import '../../bloc/auth_bloc/auth_bloc.dart';
+import '../widget/ui_colors.dart';
+import 'login_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

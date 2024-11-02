@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:event_proposal_app/presentation/screen/welcome_screen.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
 
-// import '../../bloc/bloc.dart';
-// Pastikan path benar
+import 'welcome_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

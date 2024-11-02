@@ -1,9 +1,10 @@
-import 'package:event_proposal_app/presentation/page/section/explore_event_list_section.dart';
-import 'package:event_proposal_app/presentation/page/section/explore_quick_category_section.dart';
-import 'package:event_proposal_app/presentation/page/section/explore_carousel_section.dart';
-import 'package:event_proposal_app/presentation/screen/search_result_event_screen.dart';
-import 'package:event_proposal_app/presentation/widget/search_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../section/explore_event_list_section.dart';
+import '../section/explore_quick_category_section.dart';
+import '../section/explore_carousel_section.dart';
+import '../screen/search_result_event_screen.dart';
+import '../widget/search_widget.dart';
 
 class HomeExplore extends StatefulWidget {
   const HomeExplore({super.key});

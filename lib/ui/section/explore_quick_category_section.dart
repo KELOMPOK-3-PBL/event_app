@@ -1,7 +1,7 @@
 import 'package:event_proposal_app/bloc/bloc.dart';
 
-import 'package:event_proposal_app/presentation/screen/search_result_event_screen.dart';
-import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
+import 'package:event_proposal_app/ui/screen/search_result_event_screen.dart';
+import 'package:event_proposal_app/ui/widget/ui_colors.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';

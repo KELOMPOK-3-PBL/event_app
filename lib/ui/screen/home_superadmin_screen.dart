@@ -1,10 +1,11 @@
-import 'package:event_proposal_app/presentation/navigation/bottom_navbar_superadmin.dart';
-import 'package:event_proposal_app/presentation/page/accounts_page.dart';
-import 'package:event_proposal_app/presentation/page/approval_page.dart';
-import 'package:event_proposal_app/presentation/page/events_page.dart';
-import 'package:event_proposal_app/presentation/page/explore_page.dart';
-import 'package:event_proposal_app/presentation/page/profile_page.dart';
 import 'package:flutter/material.dart';
+
+import '../navigation/bottom_navbar_superadmin.dart';
+import '../page/accounts_page.dart';
+import '../page/approval_page.dart';
+import '../page/events_page.dart';
+import '../page/explore_page.dart';
+import '../page/profile_page.dart';
 
 class HomeSuperadminScreen extends StatefulWidget {
   const HomeSuperadminScreen({

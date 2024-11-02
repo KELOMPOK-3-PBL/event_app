@@ -1,7 +1,7 @@
-import 'package:event_proposal_app/presentation/screen/search_result_event_screen.dart';
-import 'package:event_proposal_app/presentation/widget/search_widget.dart';
-import 'package:event_proposal_app/presentation/widget/ui_colors.dart';
-import 'package:event_proposal_app/presentation/screen/detail_event_screen.dart';
+import 'package:event_proposal_app/ui/screen/search_result_event_screen.dart';
+import 'package:event_proposal_app/ui/widget/search_widget.dart';
+import 'package:event_proposal_app/ui/widget/ui_colors.dart';
+import 'package:event_proposal_app/ui/screen/detail_event_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';

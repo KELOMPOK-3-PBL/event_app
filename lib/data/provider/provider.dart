@@ -13,9 +13,12 @@ part 'providers/event_provider.dart';
 final GetIt getIt = GetIt.instance;
 
 void setupLocator() {
+  // getIt.registerLazySingleton<Dio>(() => Dio(
+  //       //! set api link
+  //       BaseOptions(baseUrl: 'https://polivent.my.id/api'),
+  //     ));
   getIt.registerLazySingleton<Dio>(() => Dio(
         //! set api link
-        // 'http://10.0.2.2:80/api-03/routes'
-        BaseOptions(baseUrl: 'https://polivent.my.id/api'),
+        BaseOptions(baseUrl: 'http://10.0.2.2:80/api-03/routes'),
       ));
 }

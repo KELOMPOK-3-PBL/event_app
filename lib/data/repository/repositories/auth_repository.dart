@@ -58,13 +58,14 @@ class AuthRepository {
         saveUserPreferences(email, password, rememberMe);
         // }
         return AuthModel(
-            // statusCode: response.statusCode.toString(),
-            status: data['status'],
-            message: data['message'],
-            token: data['token'],
-            userId: data['user_id'],
-            userName: data['username'],
-            roles: data['roles']);
+          // statusCode: response.statusCode.toString(),
+          status: data['status'],
+          message: data['message'],
+          token: data['token'] ?? '',
+          userId: data['user_id'] ?? '',
+          userName: data['username'] ?? '',
+          roles: data['roles'] ?? '',
+        );
       } else if (data["status"] == 'error') {
         // _controller.add(UserStatus.unauthenticated);
         return AuthModel(

@@ -30,13 +30,6 @@ class AppRoutes {
           child: LoginScreen(),
         ),
     '/': (context) {
-      // final authState = context.read<AuthBloc>().state;
-
-      // if (authState is AuthUnauthenticated) {
-      //   BlocProvider<AuthBloc>(
-      //       create: (context) => AuthBloc(),
-      //       child: LoginScreen()); // Redirect to login if not authenticated
-      // }
       final String role = ModalRoute.of(context)!.settings.arguments.toString();
 
       return MultiBlocProvider(
@@ -58,51 +51,6 @@ class AppRoutes {
         child: getHomeScreen(role), // Redirect based on role
       );
     },
-    '/homeAdmin': (context) => MultiBlocProvider(
-          providers: [
-            BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-            BlocProvider<EventBloc>(
-                //! memanggil AuthBloc di dalam bloc EventBloc
-                create: (context) => EventBloc(
-                    eventRepository: EventRepository(), authBloc: AuthBloc())
-                  ..add(EventFetched())),
-            BlocProvider<CategoryBloc>(
-                create: (context) =>
-                    CategoryBloc(categoryRepository: StatusRepository())
-                      ..add(CategoryReadData())),
-          ],
-          child: HomeAdminScreen(),
-        ),
-    '/homeSuperadmin': (context) => MultiBlocProvider(
-          providers: [
-            BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-            BlocProvider<EventBloc>(
-                //! memanggil AuthBloc di dalam bloc EventBloc
-                create: (context) => EventBloc(
-                    eventRepository: EventRepository(), authBloc: AuthBloc())
-                  ..add(EventFetched())),
-            BlocProvider<CategoryBloc>(
-                create: (context) =>
-                    CategoryBloc(categoryRepository: StatusRepository())
-                      ..add(CategoryReadData())),
-          ],
-          child: HomeSuperadminScreen(),
-        ),
-    '/homePropose': (context) => MultiBlocProvider(
-          providers: [
-            BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-            BlocProvider<EventBloc>(
-                //! memanggil AuthBloc di dalam bloc EventBloc
-                create: (context) => EventBloc(
-                    eventRepository: EventRepository(), authBloc: AuthBloc())
-                  ..add(EventFetched())),
-            BlocProvider<CategoryBloc>(
-                create: (context) =>
-                    CategoryBloc(categoryRepository: StatusRepository())
-                      ..add(CategoryReadData())),
-          ],
-          child: HomeProposeScreen(),
-        ),
     '/detailEvent': (context) => MultiBlocProvider(
           providers: [
             BlocProvider<AuthBloc>(create: (context) => AuthBloc()),

@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
+import '../model/model.dart';
+
 //! PROVIDER : Digunakan untuk mengirim dan menerima data raw(Belum Diolah) dari API
 
 part 'providers/auth_provider.dart';

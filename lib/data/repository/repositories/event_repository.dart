@@ -3,7 +3,14 @@ part of '../repository.dart';
 const _postLimit = 5;
 
 class EventRepository {
+  // Future<List<EventModel>> getEventData({required int startIndex}) async {
+  //   final response =
+  //       await getEvents();
+  //   return response;
+  // }
+
   DateTime now = DateTime.now();
+
   Future<List<EventModel>> getEventData({required int startIndex}) async {
     final response =
         await fetchPosts(startIndex: startIndex, limit: _postLimit);

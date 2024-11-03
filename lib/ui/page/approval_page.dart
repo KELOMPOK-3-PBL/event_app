@@ -10,14 +10,14 @@ import 'package:flutter/material.dart';
 
 import '../screen/detail_event_approval_screen.dart';
 
-class HomeApproval extends StatefulWidget {
-  const HomeApproval({super.key});
+class HomeApprovalPage extends StatefulWidget {
+  const HomeApprovalPage({super.key});
 
   @override
-  State<HomeApproval> createState() => _HomeApprovalState();
+  State<HomeApprovalPage> createState() => _HomeApprovalPageState();
 }
 
-class _HomeApprovalState extends State<HomeApproval> {
+class _HomeApprovalPageState extends State<HomeApprovalPage> {
   final ScrollController _scrollController = ScrollController();
 
   @override

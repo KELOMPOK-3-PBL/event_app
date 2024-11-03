@@ -18,10 +18,10 @@ class HomeAdminScreen extends StatefulWidget {
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
   int _currentIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
-    const HomeExplore(),
-    const HomeEvents(),
-    const HomeApproval(),
-    const HomeProfile(),
+    const HomeExplorePage(),
+    const HomeEventsPage(),
+    const HomeApprovalPage(),
+    const HomeProfilePage(),
   ];
 
   void _onItemTapped(int index) {

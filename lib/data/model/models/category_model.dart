@@ -2,10 +2,10 @@ part of '../model.dart';
 
 class CategoryModel extends Equatable {
   final String name;
-  final Color boxColor;
+  final Color? boxColor;
 
   // Constructor
-  const CategoryModel({required this.name, required this.boxColor});
+  const CategoryModel({required this.name, this.boxColor});
 
   // Convert a JSON map to the CategoryModel object
   factory CategoryModel.fromJson(Map<String, dynamic> json) {

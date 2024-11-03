@@ -1,14 +1,14 @@
 import 'package:event_proposal_app/ui/widget/ui_colors.dart';
 import 'package:flutter/material.dart';
 
-class HomeProfile extends StatefulWidget {
-  const HomeProfile({super.key});
+class HomeProfilePage extends StatefulWidget {
+  const HomeProfilePage({super.key});
 
   @override
-  State<HomeProfile> createState() => _HomeProfile();
+  State<HomeProfilePage> createState() => _HomeProfile();
 }
 
-class _HomeProfile extends State<HomeProfile> {
+class _HomeProfile extends State<HomeProfilePage> {
   @override
   void initState() {
     super.initState();

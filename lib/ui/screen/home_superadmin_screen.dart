@@ -19,11 +19,11 @@ class HomeSuperadminScreen extends StatefulWidget {
 class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
   int _currentIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
-    const HomeExplore(),
-    const HomeEvents(),
-    const HomeApproval(),
-    const HomeAccounts(),
-    const HomeProfile(),
+    const HomeExplorePage(),
+    const HomeEventsPage(),
+    const HomeApprovalPage(),
+    const HomeAccountsPage(),
+    const HomeProfilePage(),
   ];
 
   void _onItemTapped(int index) {

@@ -18,10 +18,10 @@ class HomeProposeScreen extends StatefulWidget {
 class _HomeProposeScreenState extends State<HomeProposeScreen> {
   int _currentIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
-    const HomeExplore(),
-    const HomeEvents(),
-    const HomePropose(),
-    const HomeProfile(),
+    const HomeExplorePage(),
+    const HomeEventsPage(),
+    const HomeProposePage(),
+    const HomeProfilePage(),
   ];
 
   void _onItemTapped(int index) {

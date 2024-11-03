@@ -5,14 +5,14 @@ import 'package:event_proposal_app/ui/widget/ui_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
-class HomeAccounts extends StatefulWidget {
-  const HomeAccounts({super.key});
+class HomeAccountsPage extends StatefulWidget {
+  const HomeAccountsPage({super.key});
 
   @override
-  State<HomeAccounts> createState() => _HomeAccountsState();
+  State<HomeAccountsPage> createState() => _HomeAccountsPageState();
 }
 
-class _HomeAccountsState extends State<HomeAccounts> {
+class _HomeAccountsPageState extends State<HomeAccountsPage> {
   late List<Account> _account;
 
   @override

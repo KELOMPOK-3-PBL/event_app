@@ -1,22 +1,23 @@
-import 'package:event_proposal_app/bloc/bloc.dart';
-import 'package:event_proposal_app/ui/screen/detail_event_screen.dart';
+import '../../bloc/bloc.dart';
 
-import 'package:event_proposal_app/ui/screen/search_result_event_screen.dart';
-import 'package:event_proposal_app/ui/widget/event_card_with_status.dart';
-import 'package:event_proposal_app/ui/widget/search_widget.dart';
-import 'package:event_proposal_app/ui/widget/ui_colors.dart';
+import '../screen/search_result_event_screen.dart';
+import '../widget/event_card_with_status.dart';
+import '../widget/search_widget.dart';
+import '../widget/ui_colors.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-class HomePropose extends StatefulWidget {
-  const HomePropose({super.key});
+import '../screen/detail_event_approval_screen.dart';
+
+class HomeProposePage extends StatefulWidget {
+  const HomeProposePage({super.key});
 
   @override
-  State<HomePropose> createState() => _HomeProposeState();
+  State<HomeProposePage> createState() => _HomeProposePageState();
 }
 
-class _HomeProposeState extends State<HomePropose> {
+class _HomeProposePageState extends State<HomeProposePage> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -154,7 +155,8 @@ class _HomeProposeState extends State<HomePropose> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => DetailEventScreen(),
+                                      builder: (context) =>
+                                          DetailEventApprovalScreen(),
                                     ),
                                   );
                                 },

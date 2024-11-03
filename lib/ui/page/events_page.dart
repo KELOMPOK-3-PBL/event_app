@@ -6,14 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
-class HomeEvents extends StatefulWidget {
-  const HomeEvents({super.key});
+class HomeEventsPage extends StatefulWidget {
+  const HomeEventsPage({super.key});
 
   @override
-  State<HomeEvents> createState() => _HomeEventsState();
+  State<HomeEventsPage> createState() => _HomeEventsPageState();
 }
 
-class _HomeEventsState extends State<HomeEvents> {
+class _HomeEventsPageState extends State<HomeEventsPage> {
   late List<Events> _events;
 
   @override

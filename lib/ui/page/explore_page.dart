@@ -6,14 +6,14 @@ import '../section/explore_carousel_section.dart';
 import '../screen/search_result_event_screen.dart';
 import '../widget/search_widget.dart';
 
-class HomeExplore extends StatefulWidget {
-  const HomeExplore({super.key});
+class HomeExplorePage extends StatefulWidget {
+  const HomeExplorePage({super.key});
 
   @override
-  State<HomeExplore> createState() => _HomeExploreState();
+  State<HomeExplorePage> createState() => _HomeExplorePageState();
 }
 
-class _HomeExploreState extends State<HomeExplore> {
+class _HomeExplorePageState extends State<HomeExplorePage> {
   // final GlobalKey<SearchEventsWidgetState> _searchKey =
   //     GlobalKey<SearchEventsWidgetState>();
 

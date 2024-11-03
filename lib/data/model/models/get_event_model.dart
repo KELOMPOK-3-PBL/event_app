@@ -25,18 +25,31 @@ class GetEventModel extends Equatable {
     this.sortOrder,
   });
 
-  // factory GetEventModel.fromJson(Map<String, dynamic> json) {
-  //   return GetEventModel(
-  //     tittle: json['title'],
-  //     category: json['category'],
-  //     quota: json['quota'],
-  //     posterUrl: json['posterUrl'],
-  //     place: json['place'],
-  //     location: json['location'],
-  //     dateStart: json['dateStart'],
-  //     status: json['status'],
-  //   );
-  // }
+  GetEventModel copyWith({
+    String? token,
+    String? currentIndex,
+    // String? postLimit,
+    String? status,
+    String? category,
+    String? dateFrom,
+    String? dateTo,
+    String? search,
+    String? sortBy,
+    String? sortOrder,
+  }) {
+    return GetEventModel(
+      token: token ?? this.token,
+      currentIndex: currentIndex ?? this.currentIndex,
+      // postLimit: postLimit,
+      status: status ?? this.status,
+      category: category ?? this.category,
+      dateFrom: dateFrom ?? this.dateFrom,
+      dateTo: dateTo ?? this.dateTo,
+      search: search ?? this.search,
+      sortBy: sortBy ?? this.sortBy,
+      sortOrder: sortOrder ?? this.sortOrder,
+    );
+  }
 
   @override
   List<Object?> get props => [

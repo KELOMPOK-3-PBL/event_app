@@ -14,7 +14,7 @@ class EventLoading extends EventState {}
 class EventLoadedMax extends EventState {}
 
 class EventLoaded extends EventState {
-  final List<EventModel> event;
+  final List<EventDataModel> event;
   final bool hasReachedMax;
 
   const EventLoaded({
@@ -23,7 +23,7 @@ class EventLoaded extends EventState {
   });
 
   EventLoaded copyWith({
-    List<EventModel>? event,
+    List<EventDataModel>? event,
     bool? hasReachedMax,
   }) {
     return EventLoaded(

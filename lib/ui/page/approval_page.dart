@@ -150,7 +150,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                               child: InkWell(
                                 onTap: () {
                                   print(
-                                      'Tapped on ${state.event[index].tittle}');
+                                      'Tapped on ${state.event[index].title}');
                                   //! Isi dengan routing card tab
                                   Navigator.push(
                                     context,

@@ -3,7 +3,7 @@ part of '../model.dart';
 class GetEventModel extends Equatable {
   final String token;
   final String currentIndex;
-  final String postLimit;
+  final String postLimit = '5';
   final String? status;
   final String? category;
   final String? dateFrom;
@@ -15,7 +15,7 @@ class GetEventModel extends Equatable {
   const GetEventModel({
     required this.token,
     required this.currentIndex,
-    required this.postLimit,
+    // required this.postLimit,
     this.status,
     this.category,
     this.dateFrom,

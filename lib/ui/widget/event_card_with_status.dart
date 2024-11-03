@@ -6,7 +6,7 @@ import 'card_info_row.dart';
 import 'ui_colors.dart';
 
 class EventCardWithStatusWidget extends StatelessWidget {
-  final EventModel events;
+  final EventDataModel events;
   // final String tittle;
   // final String category;
   // final String quota;
@@ -77,7 +77,7 @@ class EventCardWithStatusWidget extends StatelessWidget {
                   ),
                   // const SizedBox(height: 8),
                   Text(
-                    '${events.category}: ${events.tittle}',
+                    '${events.category}: ${events.title}',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,

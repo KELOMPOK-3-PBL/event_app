@@ -37,7 +37,7 @@ class AppRoutes {
       //       create: (context) => AuthBloc(),
       //       child: LoginScreen()); // Redirect to login if not authenticated
       // }
-      final role = ModalRoute.of(context)?.settings.arguments as String?;
+      final String role = ModalRoute.of(context)!.settings.arguments.toString();
 
       return MultiBlocProvider(
         providers: [
@@ -55,7 +55,7 @@ class AppRoutes {
             )..add(CategoryReadData()),
           ),
         ],
-        child: getHomeScreen(role ?? ''), // Redirect based on role
+        child: getHomeScreen(role), // Redirect based on role
       );
     },
     '/homeAdmin': (context) => MultiBlocProvider(

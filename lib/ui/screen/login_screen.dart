@@ -84,10 +84,14 @@ class LoginScreenState extends State<LoginScreen>
     return password.length >= 5;
   }
 
+  void _pushNamedWithRoles(String role) {
+    Navigator.of(context).pushNamed('/', arguments: role);
+  }
+
   // Fungsi untuk mengubah menampilkan pilihan privilage
   void _choosePrivilege(List<String> roles) {
     if (roles.isNotEmpty && roles.length == 1) {
-      Navigator.of(context).pushNamed('/', arguments: roles);
+      _pushNamedWithRoles(roles[0].toString());
     } else {
       showDialog(
         context: context,
@@ -100,8 +104,8 @@ class LoginScreenState extends State<LoginScreen>
                 return ListTile(
                   title: Text(role), // Display the role name
                   onTap: () {
-                    Navigator.of(context)
-                        .pushNamed('/', arguments: role); // Close the dialog
+                    // Close the dialog
+                    _pushNamedWithRoles(role.toString());
                   },
                 );
               }).toList(), // Convert the iterable to a list

@@ -12,11 +12,17 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthAuthenticated extends AuthState {
-  final JwtPayloadModel? payload;
+  final AuthModel authData;
+  // final String token;
+  // final JwtPayloadModel payload;
 
-  const AuthAuthenticated({required this.payload});
+  const AuthAuthenticated({
+    required this.authData,
+  });
+  // const AuthAuthenticated({required this.token, required this.payload});
+
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [authData];
 }
 
 class AuthRememberMeLoaded extends AuthState {

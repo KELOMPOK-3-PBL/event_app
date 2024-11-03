@@ -31,72 +31,24 @@ class AppRoutes {
         ),
     '/': (context) {
       final String role = ModalRoute.of(context)!.settings.arguments.toString();
-
-      return MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-          BlocProvider<EventBloc>(
+      // print("You are Login as: " + role);
+      return MultiBlocProvider(providers: [
+        BlocProvider(create: (context) => AuthBloc()),
+        BlocProvider(
+            create: (context) =>
+                CategoryBloc(categoryRepository: StatusRepository())
+                  ..add(CategoryReadData())),
+        BlocProvider(
             create: (context) => EventBloc(
-              eventRepository: EventRepository(),
-              authBloc: context
-                  .read<AuthBloc>(), // Use the existing AuthBloc instance
-            )..add(EventFetched()),
-          ),
-          BlocProvider<CategoryBloc>(
-            create: (context) => CategoryBloc(
-              categoryRepository: StatusRepository(),
-            )..add(CategoryReadData()),
-          ),
-        ],
-        child: getHomeScreen(role), // Redirect based on role
-      );
+                eventRepository: EventRepository(), authBloc: AuthBloc())
+              ..add(EventFetched()))
+      ], child: getHomeScreen(role));
+      // Redirect based on role
     },
-    '/detailEvent': (context) => MultiBlocProvider(
-          providers: [
-            BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-            BlocProvider<EventBloc>(
-                //! memanggil AuthBloc di dalam bloc EventBloc
-                create: (context) => EventBloc(
-                    eventRepository: EventRepository(), authBloc: AuthBloc())
-                  ..add(EventFetched())),
-            BlocProvider<CategoryBloc>(
-                create: (context) =>
-                    CategoryBloc(categoryRepository: StatusRepository())
-                      ..add(CategoryReadData())),
-          ],
-          child: DetailEventScreen(),
-        ),
-    '/detailEventApproval': (context) => MultiBlocProvider(
-          providers: [
-            BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-            BlocProvider<EventBloc>(
-                //! memanggil AuthBloc di dalam bloc EventBloc
-                create: (context) => EventBloc(
-                    eventRepository: EventRepository(), authBloc: AuthBloc())
-                  ..add(EventFetched())),
-            BlocProvider<CategoryBloc>(
-                create: (context) =>
-                    CategoryBloc(categoryRepository: StatusRepository())
-                      ..add(CategoryReadData())),
-          ],
-          child: DetailEventApprovalScreen(),
-        ),
-    '/searchResultEvent': (context) => MultiBlocProvider(
-          providers: [
-            BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-            BlocProvider<EventBloc>(
-                //! memanggil AuthBloc di dalam bloc EventBloc
-                create: (context) => EventBloc(
-                    eventRepository: EventRepository(), authBloc: AuthBloc())
-                  ..add(EventFetched())),
-            BlocProvider<CategoryBloc>(
-                create: (context) =>
-                    CategoryBloc(categoryRepository: StatusRepository())
-                      ..add(CategoryReadData())),
-          ],
-          child: SearchResultEventsScreen(
-            searchQuery: '',
-          ),
+    '/detailEvent': (context) => DetailEventScreen(),
+    '/detailEventApproval': (context) => DetailEventApprovalScreen(),
+    '/searchResultEvent': (context) => SearchResultEventsScreen(
+          searchQuery: '',
         ),
   };
 }

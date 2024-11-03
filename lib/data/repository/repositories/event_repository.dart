@@ -3,8 +3,7 @@ part of '../repository.dart';
 class EventRepository {
   final eventProvider = EventProvider();
 
-  Future<EventModel> getEventDataFromAPI(
-      GetEventModel requestEvent, EventModel eventData) async {
+  Future<EventModel> getEventDataFromAPI(GetEventModel requestEvent) async {
     try {
       final response = await eventProvider.getFilteredEvents(requestEvent);
 

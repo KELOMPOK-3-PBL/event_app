@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../section/explore_event_list_section.dart';
 import '../section/explore_quick_category_section.dart';
 import '../section/explore_carousel_section.dart';
@@ -84,6 +83,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
           const SizedBox(
             height: 14,
           ),
+
           const QuickCategorySection(), //! memanggil model => category
           const CarouselSection(), //! -- Carousel Events Section
           const EventListSection() //! -- Events Available Section

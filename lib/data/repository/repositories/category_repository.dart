@@ -16,7 +16,7 @@ class StatusRepository {
   }
 }
 
-class CategotyRepository {
+class CategoryRepository {
   final dio = getIt<Dio>();
 
   // Simulasi data API atau database lokal

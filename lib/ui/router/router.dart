@@ -27,6 +27,7 @@ class AppRoutes {
       // print("You are Login as: " + role);
       return MultiBlocProvider(providers: [
         BlocProvider(create: (context) => AuthBloc()),
+        BlocProvider.value(value: context.read<AuthBloc>()),
         BlocProvider(
             create: (context) =>
                 CategoryBloc(categoryRepository: StatusRepository())

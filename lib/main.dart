@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
       child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
         if (state is AuthAuthenticated) {
           print(state.authData.message);
+          print(state.authData.data!);
           return CustomMaterialApp(
             initialRoute: "/",
           );

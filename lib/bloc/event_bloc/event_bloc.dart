@@ -5,7 +5,6 @@ import 'package:stream_transform/stream_transform.dart';
 
 import '../../data/repository/repository.dart';
 import '../../data/model/model.dart';
-import '../../bloc/bloc.dart';
 
 part 'event_event.dart';
 part 'event_state.dart';

@@ -43,7 +43,7 @@ class AuthRepository {
     }
   }
 
-  Future<UserPreferencesModel> loadUserPreferences() async {
+  Future<UserPreferencesModel> getRememberMeUserPref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? rememberMe = prefs.getBool('rememberMe');
     String? email = prefs.getString('email');

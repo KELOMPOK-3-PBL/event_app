@@ -13,8 +13,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc() : super(AuthInitial()) {
     on<AuthAppStarted>(_onAppStarted);
-    on<AuthLoadRememberMe>(_loadUserPreferences);
-    on<AuthButtonPressed>(_onSignInButtonPressed);
+    on<AuthLoadRememberMe>(_onLoadRememberMeUserPref);
+    on<AuthButtonPressed>(_onAuthButtonPressed);
     // on<LogoutRequested>(_onLogoutRequested);
     // on<SessionTimeout>(_onSessionTimeout);
   }
@@ -28,7 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         // final payload = await decodeToken(data['data']['token']);
         final authData = AuthModel(
             status: 'success',
-            message: 'Load login data',
+            message: 'Login data with token done',
             token: token,
             data: payload);
         // if (payload.expiration.isAfter(DateTime.now())) {
@@ -50,16 +50,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // }
   }
 
-  Future<void> _onSignInButtonPressed(
+  Future<void> _onAuthButtonPressed(
       AuthButtonPressed user, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
       final authData = await authRepository.login(
           user.email, user.password, user.rememberMe);
-      // await authRepository.logIn(
-      //     email: user.email,
-      //     password: user.password,
-      //     rememberMe: user.rememberMe);
       if (authData.status == 'success') {
         emit(AuthAuthenticated(authData: authData));
       } else {
@@ -70,10 +66,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _loadUserPreferences(
+  Future<void> _onLoadRememberMeUserPref(
       AuthLoadRememberMe user, Emitter<AuthState> emit) async {
     try {
-      final preference = await authRepository.loadUserPreferences();
+      final preference = await authRepository.getRememberMeUserPref();
       emit(AuthRememberMeLoaded(
         preference.email ?? '',
         preference.password ?? '',
@@ -88,10 +84,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   //     LogoutRequested event, Emitter<AuthState> emit) async {
   //   await authRepository.logout();
   //   emit(AuthUnauthenticated("Loging Out Success"));
-  // }
-
-  // void _onSessionTimeout(SessionTimeout event, Emitter<AuthState> emit) async {
-  //   await authRepository.logout();
-  //   emit(AuthSessionExpired());
   // }
 }

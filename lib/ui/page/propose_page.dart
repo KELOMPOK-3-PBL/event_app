@@ -177,6 +177,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
                         },
 
                         //! penambahan event
+                        // itemCount: state is EventLoadedMax
                         itemCount: state.hasReachedMax
                             ? events.length
                             : events.length + 1,

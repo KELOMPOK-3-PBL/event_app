@@ -14,13 +14,6 @@ import '../screen/search_result_event_screen.dart';
 import '../screen/splash_screen.dart';
 import '../screen/welcome_screen.dart';
 
-// enum CurentUserRole {
-//   admin,
-//   superadmin,
-//   propose,
-//   member,
-// }
-
 class AppRoutes {
   static Map<String, WidgetBuilder> routes = {
     '/splash': (context) => SplashScreen(),
@@ -39,8 +32,12 @@ class AppRoutes {
                 CategoryBloc(categoryRepository: StatusRepository())
                   ..add(CategoryReadData())),
         BlocProvider(
-            create: (context) => EventBloc(
-                eventRepository: EventRepository(), authBloc: AuthBloc())
+            create: (context) => EventBloc()
+              // create: (context) => EventBloc(
+              //     authState: context.read<AuthBloc>().state)
+
+              // create: (context) => EventBloc(
+              //     eventRepository: EventRepository(), authBloc: AuthBloc())
               ..add(EventFetched()))
       ], child: getHomeScreen(role));
       // Redirect based on role

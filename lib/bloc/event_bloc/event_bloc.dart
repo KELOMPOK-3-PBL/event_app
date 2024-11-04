@@ -20,11 +20,13 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 }
 
 class EventBloc extends Bloc<EventEvent, EventState> {
-  final EventRepository eventRepository;
-  final AuthBloc authBloc;
+  // final EventRepository eventRepository;
+  final eventRepository = EventRepository();
+  // final AuthState authState;
 
-  EventBloc({required this.eventRepository, required this.authBloc})
-      : super(EventInitial()) {
+  // EventBloc({required this.eventRepository, required this.authBloc})
+  // EventBloc({required this.authState}) : super(EventInitial()) {
+  EventBloc() : super(EventInitial()) {
     on<EventFetched>(
       _onInitialEvent,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
@@ -43,11 +45,13 @@ class EventBloc extends Bloc<EventEvent, EventState> {
   }
 
   void _onInitialEvent(EventFetched event, Emitter<EventState> emit) async {
+    // if (authState is AuthAuthenticated) {
     if (state is EventLoaded) {
       final currentState = state as EventLoaded;
       // print("state ke-${currentState.event.length}");
       // Jika sudah mencapai batas data, tidak perlu memuat lebih lanjut
       if (currentState.hasReachedMax == true) {
+        // if (state is EventLoadedMax) {
         // emit(EventLoadedMax());
         return;
       }
@@ -55,14 +59,18 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       try {
         final newEvents = await eventRepository.getEventData(
             startIndex: currentState.event.length);
-        // Gabungkan data baru dengan yang sudah ada
+        //! Gabungkan data baru dengan yang sudah ada
         final events = currentState.event + newEvents;
 
         if (newEvents.length < 4) {
+          print("Event dikirim: " + newEvents.length.toString());
+          // emit(EventLoadedMax());
           return emit(
               currentState.copyWith(event: events, hasReachedMax: true));
+          // currentState.copyWith(event: events));
         }
 
+        // emit(currentState.copyWith(event: events));
         emit(currentState.copyWith(event: events, hasReachedMax: false));
       } catch (_) {
         emit(EventLoadError("Gagal Load Event"));
@@ -70,12 +78,15 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     } else {
       // Untuk keadaan EventInitial
       try {
-        emit(EventLoading());
+        emit(EventLoading()); //! Loading awal saat memuat event pertama kai
         final events = await eventRepository.getEventData(startIndex: 0);
         emit(EventLoaded(event: events, hasReachedMax: false));
       } catch (_) {
         emit(EventLoadError("Failed to load initial events"));
       }
     }
+    // } else {
+    //   emit(EventLoadError("You don't have access. You Must Login First"));
+    // }
   }
 }

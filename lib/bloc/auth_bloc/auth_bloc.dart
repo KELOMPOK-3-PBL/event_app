@@ -4,8 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/model/model.dart';
 import '../../data/repository/repository.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

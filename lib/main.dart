@@ -45,6 +45,7 @@ class MyApp extends StatelessWidget {
       title: 'Polivent',
       routes: AppRoutes.routes,
       initialRoute: '/splash',
+      // initialRoute: '/',
       // home: SplashScreen()
     );
   }

@@ -11,7 +11,7 @@ class EventInitial extends EventState {}
 
 class EventLoading extends EventState {}
 
-class EventLoadedMax extends EventState {}
+// class EventLoadedMax extends EventState {}
 
 class EventLoaded extends EventState {
   final List<EventDataModel> event;

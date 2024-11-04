@@ -8,8 +8,6 @@ import '../widget/ui_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-import '../screen/detail_event_approval_screen.dart';
-
 class HomeApprovalPage extends StatefulWidget {
   const HomeApprovalPage({super.key});
 
@@ -49,16 +47,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   Widget build(BuildContext context) {
     return BlocListener<EventBloc, EventState>(
       listener: (context, state) {
-        if (state is EventLoading) {
-          // Tampilkan loading spinner
-          // showDialog(
-          //   context: context,
-          //   barrierDismissible: false,
-          //   builder: (BuildContext context) {
-          //     return const Center(child: CircularProgressIndicator());
-          //   },
-          // );
-        } else if (state is EventSubmited) {
+        if (state is EventSubmited) {
           Navigator.of(context).pop(); // Close loading spinner
 
           //! Trigger CategoryBloc untuk memuat ulang data kategori
@@ -114,15 +103,10 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
               Expanded(
                 child: BlocBuilder<EventBloc, EventState>(
                   builder: (context, state) {
-                    if (state is EventLoadError) {
-                      return const Center(child: Text('failed to fetch posts'));
-                    } else if (state is EventInitial) {
+                    if (state is EventLoading) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is EventLoaded) {
                       final events = state.event;
-                      // if (state.hasReachedMax) {
-                      //   return const Center(child: Text('no more events'));
-                      // } else {
                       return ListView.builder(
                         controller: _scrollController,
                         padding: EdgeInsets.zero,
@@ -139,10 +123,6 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                                 child: CircularProgressIndicator(),
                               ),
                             );
-                            // } else if (index.state.hasReachedMax) {
-                            //   return const Center(
-                            //     child: Text("No more events"),
-                            //   );
                           } else {
                             //! card event
                             return Padding(
@@ -152,24 +132,11 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                                   print(
                                       'Tapped on ${state.event[index].title}');
                                   //! Isi dengan routing card tab
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          DetailEventApprovalScreen(),
-                                    ),
-                                  );
+                                  Navigator.pushNamed(
+                                      context, '/detailEventApproval');
                                 },
                                 child: EventCardWithStatusWidget(
                                   events: events[index],
-                                  // tittle: events[index].tittle,
-                                  // category: events[index].category,
-                                  // quota: events[index].quota,
-                                  // posterUrl: events[index].posterUrl ?? '',
-                                  // place: events[index].place,
-                                  // location: events[index].location ?? '',
-                                  // dateStart: events[index].dateStart,
-                                  // status: events[index].status,
                                 ),
                               ),
                             );
@@ -177,6 +144,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                         },
 
                         //! penambahan event
+                        // itemCount: state is EventLoadedMax
                         itemCount: state.hasReachedMax
                             ? events.length
                             : events.length + 1,

@@ -25,7 +25,7 @@ class AuthButtonPressed extends AuthEvent {
   List<Object> get props => [email, password, rememberMe];
 }
 
-// class AppStarted extends AuthEvent {}
+class AuthAppStarted extends AuthEvent {}
 
 // class LogoutRequested extends AuthEvent {}
 

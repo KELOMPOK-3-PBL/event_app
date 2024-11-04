@@ -12,21 +12,43 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final authRepository = AuthRepository();
 
   AuthBloc() : super(AuthInitial()) {
-    // on<AppStarted>(_onAppStarted);
+    on<AuthAppStarted>(_onAppStarted);
     on<AuthLoadRememberMe>(_loadUserPreferences);
     on<AuthButtonPressed>(_onSignInButtonPressed);
     // on<LogoutRequested>(_onLogoutRequested);
     // on<SessionTimeout>(_onSessionTimeout);
   }
 
-  // void _onAppStarted(AppStarted event, Emitter<AuthState> emit) async {
-  //   final status = await authRepository.status.first;
-  //   if (status == UserStatus.authenticated) {
-  //     emit(AuthAuthenticated());
-  //   } else {
-  //     emit(AuthUnauthenticated("Session Expired"));
-  //   }
-  // }
+  void _onAppStarted(AuthAppStarted event, Emitter<AuthState> emit) async {
+    final token = await authRepository.getToken();
+    if (token != null) {
+      try {
+        final token = await authRepository.getToken();
+        final payload = await authRepository.decodeToken(token!);
+        // final payload = await decodeToken(data['data']['token']);
+        final authData = AuthModel(
+            status: 'success',
+            message: 'Load login data',
+            token: token,
+            data: payload);
+        // if (payload.expiration.isAfter(DateTime.now())) {
+        emit(AuthAuthenticated(authData: authData));
+        // } else {
+        //   emit(AuthUnauthenticated(message: ''));
+        // }
+      } catch (e) {
+        emit(AuthUnauthenticated(message: 'Not login yet'));
+      }
+    } else {
+      emit(AuthUnauthenticated(message: ''));
+    }
+    // final status = await authRepository.status.first;
+    // if (status == UserStatus.authenticated) {
+    //   emit(AuthAuthenticated());
+    // } else {
+    //   emit(AuthUnauthenticated("Session Expired"));
+    // }
+  }
 
   Future<void> _onSignInButtonPressed(
       AuthButtonPressed user, Emitter<AuthState> emit) async {

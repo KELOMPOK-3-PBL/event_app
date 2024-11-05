@@ -29,9 +29,7 @@ class AppRoutes {
         BlocProvider(create: (context) => AuthBloc()),
         BlocProvider.value(value: context.read<AuthBloc>()),
         BlocProvider(
-            create: (context) =>
-                CategoryBloc(categoryRepository: CategoryRepository())
-                  ..add(StatusReadData())),
+            create: (context) => CategoryBloc()..add(StatusReadData())),
         BlocProvider(
             create: (context) => EventBloc()
               // create: (context) => EventBloc(

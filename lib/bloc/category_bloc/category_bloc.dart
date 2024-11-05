@@ -8,9 +8,9 @@ part 'category_event.dart';
 part 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
-  final CategoryRepository categoryRepository;
+  final categoryRepository = CategoryRepository();
 
-  CategoryBloc({required this.categoryRepository}) : super(CategoryInitial()) {
+  CategoryBloc() : super(CategoryInitial()) {
     // Trigger fetch event right when the bloc is created
     on<CategoryReadData>(_onInitialCategories);
     on<StatusReadData>(_onStatusReadData);

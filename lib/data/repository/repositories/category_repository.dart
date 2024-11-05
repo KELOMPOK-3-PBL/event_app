@@ -1,6 +1,6 @@
 part of '../repository.dart';
 
-class StatusRepository {
+class CategoryRepository {
   // Simulasi data API atau database lokal
   Future<List<CategoryModel>> getEventsStatus() async {
     await Future.delayed(Duration(seconds: 1)); // Simulate network delay
@@ -14,13 +14,9 @@ class StatusRepository {
       CategoryModel(name: 'Complete', boxColor: UIColor.typoGray),
     ];
   }
-}
-
-class CategoryRepository {
-  final dio = getIt<Dio>();
 
   // Simulasi data API atau database lokal
-  Future<List<CategoryModel>> getCategoryData(dynamic event) async {
+  Future<List<CategoryModel>> getCategoryData() async {
     await Future.delayed(Duration(seconds: 1)); // Simulate network delay
 
     // try {
@@ -38,12 +34,6 @@ class CategoryRepository {
     // }
 
     // Example data (normally fetched from API or database)
-    return [
-      CategoryModel(name: 'Proposed', boxColor: UIColor.propose),
-      CategoryModel(name: 'Pending', boxColor: UIColor.pending),
-      CategoryModel(name: 'Rejected', boxColor: UIColor.rejected),
-      CategoryModel(name: 'Approved', boxColor: UIColor.approved),
-      CategoryModel(name: 'Complete', boxColor: UIColor.typoGray),
-    ];
+    return [];
   }
 }

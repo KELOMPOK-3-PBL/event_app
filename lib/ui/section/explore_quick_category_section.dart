@@ -30,7 +30,7 @@ class QuickCategorySection extends StatelessWidget {
                   SearchResultEventsScreen(searchQuery: state.nameCategory)),
         );
         //! Trigger CategoryBloc untuk memuat ulang data kategori
-        context.read<CategoryBloc>().add(CategoryReadData());
+        context.read<CategoryBloc>().add(StatusReadData());
       } else if (state is CategoryLoadded) {
         Navigator.of(context).pop();
       }

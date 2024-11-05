@@ -11,6 +11,8 @@ abstract class CategoryEvent extends Equatable {
 
 class CategoryReadData extends CategoryEvent {}
 
+class StatusReadData extends CategoryEvent {}
+
 class CategoryButtonPressed extends CategoryEvent {
   final String nameCategory;
 

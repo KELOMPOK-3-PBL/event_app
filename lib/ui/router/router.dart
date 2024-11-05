@@ -58,8 +58,8 @@ Widget getHomeScreen(String role) {
     case "Propose":
       return HomeProposeScreen();
     case "Member":
-      return HomeScreen();
+      return HomeProposeScreen();
     default:
-      return HomeScreen(); // Fallback
+      return HomeProposeScreen(); // Fallback
   }
 }

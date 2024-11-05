@@ -22,6 +22,10 @@ import '../screen/search_result_event_screen.dart';
 import '../screen/splash_screen.dart';
 import '../screen/welcome_screen.dart';
 
+// final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _shellNavigatorKey =
+    GlobalKey<NavigatorState>();
+
 class AppGoRoutes {
   final GoRouter router = GoRouter(
     routes: [
@@ -53,9 +57,11 @@ class AppGoRoutes {
       ShellRoute(
         // name: "home",
         // path: "/",
+        navigatorKey: _shellNavigatorKey,
         builder: (context, state, child) {
           // final int indexNav;
-          return HomeScreen();
+          return HomeScreen(child: child);
+          // return BottomNavigationBarScaffold(child: child);
           // Scaffold(
           //   // body: ,
           //   bottomNavigationBar: BottomNavbar(
@@ -77,8 +83,22 @@ class AppGoRoutes {
           GoRoute(
             name: "explore",
             path: "/",
+            parentNavigatorKey: _shellNavigatorKey,
             builder: (context, state) {
-              return HomeExplorePage();
+              return MultiBlocProvider(providers: [
+                // BlocProvider(create: (context) => AuthBloc()),
+                // BlocProvider.value(value: context.read<AuthBloc>()),
+                BlocProvider(
+                    create: (context) => CategoryBloc()..add(StatusReadData())),
+                // BlocProvider(
+                //     create: (context) => EventBloc()
+                //       // create: (context) => EventBloc(
+                //       //     authState: context.read<AuthBloc>().state)
+
+                //       // create: (context) => EventBloc(
+                //       //     eventRepository: EventRepository(), authBloc: AuthBloc())
+                //       ..add(EventFetched()))
+              ], child: HomeExplorePage());
             },
             // routes: [
             //   GoRoute(
@@ -102,7 +122,8 @@ class AppGoRoutes {
           ),
           GoRoute(
             name: "events",
-            path: "/events",
+            path: "events",
+            // parentNavigatorKey: _shellNavigatorKey,
             builder: (context, state) {
               return HomeEventsPage();
             },
@@ -110,6 +131,7 @@ class AppGoRoutes {
               GoRoute(
                 name: "detail_event",
                 path: "/detail_event",
+                // parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) {
                   return DetailEventScreen();
                 },
@@ -117,6 +139,7 @@ class AppGoRoutes {
               GoRoute(
                 name: "search_result_events",
                 path: "search_result_events",
+                // parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) {
                   return SearchResultEventsScreen(
                     searchQuery:
@@ -128,7 +151,8 @@ class AppGoRoutes {
           ),
           GoRoute(
             name: "approval",
-            path: "/approval",
+            path: "approval",
+            // parentNavigatorKey: _shellNavigatorKey,
             builder: (context, state) {
               return HomeApprovalPage();
             },
@@ -136,6 +160,7 @@ class AppGoRoutes {
               GoRoute(
                 name: "detail_event_approval",
                 path: "/detail_event_approval",
+                // parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) {
                   return DetailEventApprovalScreen();
                 },
@@ -144,7 +169,8 @@ class AppGoRoutes {
           ),
           GoRoute(
             name: "accounts",
-            path: "/accounts",
+            path: "accounts",
+            // parentNavigatorKey: _shellNavigatorKey,
             builder: (context, state) {
               return HomeAccountsPage();
             },
@@ -152,6 +178,7 @@ class AppGoRoutes {
               GoRoute(
                 name: "detail_profile",
                 path: "detail_profile",
+                // parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) {
                   return HomeProfilePage();
                 },
@@ -160,7 +187,8 @@ class AppGoRoutes {
           ),
           GoRoute(
             name: "profile",
-            path: "/profile",
+            path: "profile",
+            // parentNavigatorKey: _shellNavigatorKey,
             builder: (context, state) {
               return HomeProfilePage();
             },

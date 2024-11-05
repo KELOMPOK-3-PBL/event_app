@@ -60,10 +60,8 @@ class MyApp extends StatelessWidget {
 
 //! Custom MaterialApp
 class CustomMaterialApp extends StatelessWidget {
-  final AppRoutes _appRouter = AppRoutes();
-
   final String initialRoute;
-  CustomMaterialApp({
+  const CustomMaterialApp({
     super.key,
     required this.initialRoute,
   });
@@ -75,7 +73,6 @@ class CustomMaterialApp extends StatelessWidget {
       theme: AppTheme.buildTheme(Brightness.light),
       title: 'Polivent',
       routes: AppRoutes.routes,
-      onGenerateRoute: _appRouter.onGenerateRoute,
       initialRoute: initialRoute,
     );
   }

@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<AuthBloc>(
       //! Pengecekan apakah pernah login
       create: (context) => AuthBloc()..add(AuthAppStarted()),
       child: BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
@@ -60,8 +60,10 @@ class MyApp extends StatelessWidget {
 
 //! Custom MaterialApp
 class CustomMaterialApp extends StatelessWidget {
+  final AppRoutes _appRouter = AppRoutes();
+
   final String initialRoute;
-  const CustomMaterialApp({
+  CustomMaterialApp({
     super.key,
     required this.initialRoute,
   });
@@ -73,6 +75,7 @@ class CustomMaterialApp extends StatelessWidget {
       theme: AppTheme.buildTheme(Brightness.light),
       title: 'Polivent',
       routes: AppRoutes.routes,
+      onGenerateRoute: _appRouter.onGenerateRoute,
       initialRoute: initialRoute,
     );
   }

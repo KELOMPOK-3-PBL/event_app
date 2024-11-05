@@ -15,6 +15,31 @@ import '../screen/splash_screen.dart';
 import '../screen/welcome_screen.dart';
 
 class AppRoutes {
+  Route? onGenerateRoute(RouteSettings routeSettings) {
+    switch (routeSettings.name) {
+      case '/':
+        return MaterialPageRoute(builder: (context) => HomeSuperadminScreen());
+      // break;
+      case '/splash':
+        return MaterialPageRoute(builder: (context) => SplashScreen());
+      case '/welcome':
+        return MaterialPageRoute(builder: (context) => WelcomeScreen());
+      case '/login':
+        return MaterialPageRoute(builder: (context) => LoginScreen());
+      case '/detailEvent':
+        return MaterialPageRoute(builder: (context) => DetailEventScreen());
+      case '/detailApproval':
+        return MaterialPageRoute(
+            builder: (context) => SearchResultEventsScreen(
+                  searchQuery: '',
+                ));
+      case '/searchResultEvents':
+        return MaterialPageRoute(builder: (context) => WelcomeScreen());
+      default:
+        return null;
+    }
+  }
+
   static Map<String, WidgetBuilder> routes = {
     '/splash': (context) => SplashScreen(),
     '/welcome': (context) => WelcomeScreen(),

@@ -122,7 +122,7 @@ class AppGoRoutes {
           ),
           GoRoute(
             name: "events",
-            path: "events",
+            path: "/events",
             // parentNavigatorKey: _shellNavigatorKey,
             builder: (context, state) {
               return HomeEventsPage();
@@ -130,7 +130,7 @@ class AppGoRoutes {
             routes: [
               GoRoute(
                 name: "detail_event",
-                path: "/detail_event",
+                path: "detail_event",
                 // parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) {
                   return DetailEventScreen();
@@ -141,6 +141,7 @@ class AppGoRoutes {
                 path: "search_result_events",
                 // parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) {
+                  debugPrint(state.pathParameters['searchQuery']);
                   return SearchResultEventsScreen(
                     searchQuery:
                         state.pathParameters['searchQuery'] ?? 'no query',
@@ -151,7 +152,7 @@ class AppGoRoutes {
           ),
           GoRoute(
             name: "approval",
-            path: "approval",
+            path: "/approval",
             // parentNavigatorKey: _shellNavigatorKey,
             builder: (context, state) {
               return HomeApprovalPage();
@@ -159,7 +160,7 @@ class AppGoRoutes {
             routes: [
               GoRoute(
                 name: "detail_event_approval",
-                path: "/detail_event_approval",
+                path: "detail_event_approval",
                 // parentNavigatorKey: _rootNavigatorKey,
                 builder: (context, state) {
                   return DetailEventApprovalScreen();
@@ -169,7 +170,7 @@ class AppGoRoutes {
           ),
           GoRoute(
             name: "accounts",
-            path: "accounts",
+            path: "/accounts",
             // parentNavigatorKey: _shellNavigatorKey,
             builder: (context, state) {
               return HomeAccountsPage();
@@ -187,7 +188,7 @@ class AppGoRoutes {
           ),
           GoRoute(
             name: "profile",
-            path: "profile",
+            path: "/profile",
             // parentNavigatorKey: _shellNavigatorKey,
             builder: (context, state) {
               return HomeProfilePage();

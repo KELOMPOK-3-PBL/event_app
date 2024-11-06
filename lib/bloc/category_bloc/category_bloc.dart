@@ -19,7 +19,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   void _onCategoryButtonPressed(
       CategoryButtonPressed event, Emitter<CategoryState> emit) async {
-    emit(CategoryLoading());
+    // emit(CategoryLoading());
     try {
       emit(CategorySubmited(event.nameCategory));
     } catch (e) {

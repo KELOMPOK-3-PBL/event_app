@@ -1,10 +1,12 @@
 import 'package:event_proposal_app/bloc/bloc.dart';
+import 'package:event_proposal_app/ui/router/go_router.dart';
 
 import 'package:event_proposal_app/ui/screen/search_result_event_screen.dart';
 import 'package:event_proposal_app/ui/widget/ui_colors.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class QuickCategorySection extends StatelessWidget {
   const QuickCategorySection({super.key});
@@ -22,17 +24,23 @@ class QuickCategorySection extends StatelessWidget {
           },
         );
       } else if (state is CategorySubmited) {
-        Navigator.of(context).pop(); // Close loading spinner
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  SearchResultEventsScreen(searchQuery: state.nameCategory)),
+        GoRouter.of(context).goNamed(
+          'search_result_events',
+          queryParameters: {'searchQuery': state.nameCategory},
         );
+        // GoRouter.of(context).pop();
+        // Navigator.of(context).pop(); // Close loading spinner
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) =>
+        //           SearchResultEventsScreen(searchQuery: state.nameCategory)),
+        // );
         //! Trigger CategoryBloc untuk memuat ulang data kategori
-        context.read<CategoryBloc>().add(StatusReadData());
+        // context.read<CategoryBloc>().add(StatusReadData());
       } else if (state is CategoryLoadded) {
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
+        context.pop();
       }
     }, builder: (context, state) {
       if (state is CategoryLoadded) {

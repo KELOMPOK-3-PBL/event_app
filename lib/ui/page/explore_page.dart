@@ -84,7 +84,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
             height: 14,
           ),
 
-          // const QuickCategorySection(), //! memanggil model => category
+          const QuickCategorySection(), //! memanggil model => category
           const CarouselSection(), //! -- Carousel Events Section
           const EventListSection() //! -- Events Available Section
         ],

@@ -13,9 +13,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc() : super(AuthInitial()) {
     on<AuthAppStarted>(_onAppStarted);
-    on<AuthLoadRememberMe>(_onLoadRememberMeUserPref);
-    on<AuthLoginRequest>(_onAuthButtonPressed);
-    on<AuthLogoutRequest>(_onLogoutRequested);
+    on<AuthLoadRememberMe>(_onAuthLoadRememberMe);
+    on<AuthLoginRequest>(_onAuthLoginRequest);
+    on<AuthLogoutRequest>(_onAuthLogoutRequest);
     // on<SessionTimeout>(_onSessionTimeout);
   }
 
@@ -28,9 +28,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _onAuthButtonPressed(
+  Future<void> _onAuthLoginRequest(
       AuthLoginRequest user, Emitter<AuthState> emit) async {
-    emit(AuthLoading());
+    // emit(AuthLoading());
     try {
       final authData = await authRepository.login(
           user.email, user.password, user.rememberMe);
@@ -44,7 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _onLoadRememberMeUserPref(
+  Future<void> _onAuthLoadRememberMe(
       AuthLoadRememberMe user, Emitter<AuthState> emit) async {
     try {
       final preference = await authRepository.getRememberMeUserPref();
@@ -58,9 +58,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _onLogoutRequested(
+  void _onAuthLogoutRequest(
       AuthLogoutRequest event, Emitter<AuthState> emit) async {
     await authRepository.logout();
     emit(AuthUnauthenticated(message: "Loging Out Success"));
+    await Future.delayed(
+        Duration(milliseconds: 1000)); // memastikan status diperbarui
+    emit(
+        AuthInitial()); // kembali ke state awal untuk menghindari masalah status di UI
   }
 }

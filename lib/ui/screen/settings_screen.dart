@@ -19,9 +19,9 @@ class SettingsScreen extends StatelessWidget {
           //     MaterialPageRoute(
           //         builder: (context) => const LoginScreen()),
           //     (Route<dynamic> route) => false);
-
-          Navigator.pushNamedAndRemoveUntil(
-              context, '/login', (Route<dynamic> route) => false);
+          debugPrint('logout');
+          Navigator.of(context).restorablePushNamedAndRemoveUntil(
+              '/login', (Route<dynamic> route) => false);
         }
       },
       child: Scaffold(

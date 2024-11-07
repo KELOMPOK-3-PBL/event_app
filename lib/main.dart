@@ -83,9 +83,10 @@ class MyApp extends StatelessWidget {
             // Jika belum login, arahkan ke halaman splash
             return CustomMaterialApp(initialRoute: "/welcome");
           }
+          return CustomMaterialApp(initialRoute: "/splash");
 
           // Menampilkan indikator loading saat menunggu status autentikasi
-          return Center(child: CircularProgressIndicator());
+          // return Center(child: CircularProgressIndicators());
         },
       ),
     );

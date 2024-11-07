@@ -87,7 +87,7 @@ class LoginScreenState extends State<LoginScreen>
   // Fungsi untuk mengubah menampilkan pilihan privilage
   void choosePrivilege(List<String> roles) {
     if (roles.isNotEmpty && roles.length == 1) {
-      Navigator.of(context).pushNamed('/', arguments: roles[0]);
+      Navigator.of(context).pushReplacementNamed('/', arguments: roles[0]);
     } else {
       showDialog(
         context: context,
@@ -100,8 +100,8 @@ class LoginScreenState extends State<LoginScreen>
                 return ListTile(
                   title: Text(role), // Display the role name
                   onTap: () {
-                    Navigator.of(context)
-                        .pushNamed('/', arguments: role); // Close the dialog
+                    Navigator.pushReplacementNamed(context, '/',
+                        arguments: role); // Close the dialog
                   },
                 );
               }).toList(), // Convert the iterable to a list
@@ -145,7 +145,7 @@ class LoginScreenState extends State<LoginScreen>
           _passwordController.text = state.password;
           setState(() => rememberMe = state.rememberMe);
         } else if (state is AuthAuthenticated) {
-          Navigator.of(context).pop(); // Close loading spinner
+          // Navigator.of(context).pop(); // Close loading spinner
 
           choosePrivilege(state.authData.data!.roles);
 
@@ -172,7 +172,7 @@ class LoginScreenState extends State<LoginScreen>
           //   ),
           // );
         } else if (state is AuthUnauthenticated) {
-          Navigator.of(context).pop(); // Close loading spinner
+          // Navigator.of(context).pop(); // Close loading spinner
           _showError(context, state.message);
         }
       },

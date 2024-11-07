@@ -7,18 +7,18 @@ abstract class AuthEvent extends Equatable {
 
 class AuthLoadRememberMe extends AuthEvent {}
 
-class AuthCheckSession extends AuthEvent {
-  final String token;
+// class AuthCheckSession extends AuthEvent {
+//   final String token;
 
-  AuthCheckSession(this.token);
-}
+//   AuthCheckSession(this.token);
+// }
 
-class AuthButtonPressed extends AuthEvent {
+class AuthLoginRequest extends AuthEvent {
   final String email;
   final String password;
   final bool rememberMe;
 
-  AuthButtonPressed(
+  AuthLoginRequest(
       {required this.email, required this.password, required this.rememberMe});
 
   @override
@@ -27,6 +27,6 @@ class AuthButtonPressed extends AuthEvent {
 
 class AuthAppStarted extends AuthEvent {}
 
-// class LogoutRequested extends AuthEvent {}
+class AuthLogoutRequest extends AuthEvent {}
 
 // class SessionTimeout extends AuthEvent {}

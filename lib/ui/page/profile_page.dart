@@ -1,5 +1,6 @@
 import 'package:event_proposal_app/ui/widget/ui_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:uicons_pro/uicons_pro.dart';
 
 class HomeProfilePage extends StatefulWidget {
   const HomeProfilePage({super.key});
@@ -18,6 +19,17 @@ class _HomeProfile extends State<HomeProfilePage> {
   Widget build(BuildContext context) {
     return Column(children: [
       AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(
+              UIconsPro.regularRounded.settings,
+              size: 17,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+            },
+          ),
+        ],
         automaticallyImplyLeading: false, // remove leading(left) back icon
         centerTitle: true,
         backgroundColor: UIColor.solidWhite,

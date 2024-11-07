@@ -73,27 +73,30 @@ class AuthRepository {
     return prefs.getString('auth_token');
   }
 
-  // Future<void> checkAuthentication() async {
-  //   final token = await getToken();
-  //   if (token != null) {
-  //     // Verifikasi atau decode token untuk memeriksa validitasnya
-  //     try {
-  //       final jwt = JWT.verify(token, SecretKey('pblpolivent'));
-  //       // Token valid, user bisa diarahkan ke home screen
-  //     } catch (e) {
-  //       // Token tidak valid, navigasikan ke login
-  //     }
-  //   } else {
-  //     // Token tidak ada, navigasikan ke login
-  //   }
-  // }
+  Future<AuthModel> checkAuthentication() async {
+    final token = await getToken();
+    // Verifikasi atau decode token untuk memeriksa validitasnya
+    try {
+      final data = await decodeToken(token!);
+      //! Buat pengecekan TOKEN disini (Belum Dibuat)
+      // if (token != '' && token masiih berlaku)
+      final authData = AuthModel(
+          status: "success",
+          message: "Login data with token succes",
+          token: token,
+          data: data);
+      return authData;
+      // } else {
+      //   return AuthModel(status: "error", message: "Token outdate");
+      // }
+    } catch (e) {
+      // Token tidak ada
+      return AuthModel(status: "error", message: "Token not found");
+    }
+  }
 
-  // Future<void> logout() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   await prefs.clear();
-  //   _controller.add(UserStatus.unauthenticated);
-  //   _stopSessionCountdown();
-  // }
-
-  // void dispose() => _controller.close();
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('auth_token', '');
+  }
 }

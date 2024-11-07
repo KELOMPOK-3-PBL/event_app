@@ -85,7 +85,7 @@ class LoginScreenState extends State<LoginScreen>
   }
 
   // Fungsi untuk mengubah menampilkan pilihan privilage
-  void _choosePrivilege(List<String> roles) {
+  void choosePrivilege(List<String> roles) {
     if (roles.isNotEmpty && roles.length == 1) {
       Navigator.of(context).pushNamed('/', arguments: roles[0]);
     } else {
@@ -147,7 +147,7 @@ class LoginScreenState extends State<LoginScreen>
         } else if (state is AuthAuthenticated) {
           Navigator.of(context).pop(); // Close loading spinner
 
-          _choosePrivilege(state.authData.data!.roles);
+          choosePrivilege(state.authData.data!.roles);
 
           // if (state.payload!.roles.isNotEmpty) {}
           // Navigator.pushReplacement(
@@ -384,7 +384,7 @@ class LoginScreenState extends State<LoginScreen>
                                     }
 
                                     context.read<AuthBloc>().add(
-                                          AuthButtonPressed(
+                                          AuthLoginRequest(
                                               email: email,
                                               password: password,
                                               rememberMe: rememberMe),

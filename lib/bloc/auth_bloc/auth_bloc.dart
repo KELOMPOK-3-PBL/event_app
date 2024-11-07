@@ -14,44 +14,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(AuthInitial()) {
     on<AuthAppStarted>(_onAppStarted);
     on<AuthLoadRememberMe>(_onLoadRememberMeUserPref);
-    on<AuthButtonPressed>(_onAuthButtonPressed);
-    // on<LogoutRequested>(_onLogoutRequested);
+    on<AuthLoginRequest>(_onAuthButtonPressed);
+    on<AuthLogoutRequest>(_onLogoutRequested);
     // on<SessionTimeout>(_onSessionTimeout);
   }
 
   void _onAppStarted(AuthAppStarted event, Emitter<AuthState> emit) async {
-    final token = await authRepository.getToken();
-    if (token != null) {
-      try {
-        final token = await authRepository.getToken();
-        final payload = await authRepository.decodeToken(token!);
-        // final payload = await decodeToken(data['data']['token']);
-        final authData = AuthModel(
-            status: 'success',
-            message: 'Login data with token done',
-            token: token,
-            data: payload);
-        // if (payload.expiration.isAfter(DateTime.now())) {
-        emit(AuthAuthenticated(authData: authData));
-        // } else {
-        //   emit(AuthUnauthenticated(message: ''));
-        // }
-      } catch (e) {
-        emit(AuthUnauthenticated(message: 'Not login yet'));
-      }
+    final authData = await authRepository.checkAuthentication();
+    if (authData.status == 'success') {
+      emit(AuthAuthenticated(authData: authData));
     } else {
-      emit(AuthUnauthenticated(message: ''));
+      emit(AuthUnauthenticated(message: authData.message));
     }
-    // final status = await authRepository.status.first;
-    // if (status == UserStatus.authenticated) {
-    //   emit(AuthAuthenticated());
-    // } else {
-    //   emit(AuthUnauthenticated("Session Expired"));
-    // }
   }
 
   Future<void> _onAuthButtonPressed(
-      AuthButtonPressed user, Emitter<AuthState> emit) async {
+      AuthLoginRequest user, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
       final authData = await authRepository.login(
@@ -80,9 +58,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  // void _onLogoutRequested(
-  //     LogoutRequested event, Emitter<AuthState> emit) async {
-  //   await authRepository.logout();
-  //   emit(AuthUnauthenticated("Loging Out Success"));
-  // }
+  void _onLogoutRequested(
+      AuthLogoutRequest event, Emitter<AuthState> emit) async {
+    await authRepository.logout();
+    emit(AuthUnauthenticated(message: "Loging Out Success"));
+  }
 }

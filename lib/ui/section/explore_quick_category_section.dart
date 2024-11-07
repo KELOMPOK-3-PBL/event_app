@@ -24,23 +24,28 @@ class QuickCategorySection extends StatelessWidget {
           },
         );
       } else if (state is CategorySubmited) {
-        GoRouter.of(context).goNamed(
-          'search_result_events',
-          queryParameters: {'searchQuery': state.nameCategory},
-        );
-        // GoRouter.of(context).pop();
-        // Navigator.of(context).pop(); // Close loading spinner
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //       builder: (context) =>
-        //           SearchResultEventsScreen(searchQuery: state.nameCategory)),
+        //! Go Router
+        // GoRouter.of(context).goNamed(
+        //   'search_result_events',
+        //   queryParameters: {'searchQuery': state.nameCategory},
         // );
+        // GoRouter.of(context).pop();
+        //! Router
+        // Navigator.of(context).pop(); // Close loading spinner
+        // Navigator.pushNamed(context, '/search_result_events',
+        //     arguments: state.nameCategory);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  SearchResultEventsScreen(searchQuery: state.nameCategory)),
+        );
         //! Trigger CategoryBloc untuk memuat ulang data kategori
-        // context.read<CategoryBloc>().add(StatusReadData());
+        context.read<CategoryBloc>().add(StatusReadData());
       } else if (state is CategoryLoadded) {
-        // Navigator.of(context).pop();
-        context.pop();
+        Navigator.of(context).pop();
+        // context.pop();
       }
     }, builder: (context, state) {
       if (state is CategoryLoadded) {

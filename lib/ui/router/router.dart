@@ -1,3 +1,4 @@
+import 'package:event_proposal_app/ui/screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,14 +20,15 @@ class AppRoutes {
     '/splash': (context) => SplashScreen(),
     '/welcome': (context) => WelcomeScreen(),
     '/login': (context) => BlocProvider(
-          create: (context) => AuthBloc(),
+          create: (context) => AuthBloc()..add(AuthLoadRememberMe()),
           child: LoginScreen(),
         ),
     '/': (context) {
-      final String role = ModalRoute.of(context)!.settings.arguments.toString();
+      final String role;
+      role = ModalRoute.of(context)!.settings.arguments.toString();
       // print("You are Login as: " + role);
       return MultiBlocProvider(providers: [
-        BlocProvider(create: (context) => AuthBloc()),
+        // BlocProvider(create: (context) => AuthBloc()),
         BlocProvider.value(value: context.read<AuthBloc>()),
         BlocProvider(
             create: (context) => CategoryBloc()..add(StatusReadData())),
@@ -42,6 +44,10 @@ class AppRoutes {
       // Redirect based on role
     },
     '/detailEvent': (context) => DetailEventScreen(),
+    '/settings': (context) => BlocProvider.value(
+          value: context.read<AuthBloc>(),
+          child: SettingsScreen(),
+        ),
     '/detailEventApproval': (context) => DetailEventApprovalScreen(),
     '/searchResultEvent': (context) => SearchResultEventsScreen(
           searchQuery: '',
@@ -60,6 +66,6 @@ Widget getHomeScreen(String role) {
     case "Member":
       return HomeProposeScreen();
     default:
-      return HomeProposeScreen(); // Fallback
+      return HomeSuperadminScreen(); // Fallback
   }
 }

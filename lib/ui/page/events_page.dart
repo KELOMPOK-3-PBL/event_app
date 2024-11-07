@@ -56,7 +56,7 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
               },
               onPressedFilter: () {
                 // Handle the button tap action here
-                print('Tapped on FILTER ITEM-BUTTON');
+                debugPrint('Tapped on FILTER ITEM-BUTTON');
               },
             ), //! memanggil model => search,
           ),

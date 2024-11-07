@@ -73,7 +73,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                   },
                   onPressedFilter: () {
                     // Handle the button tap action here
-                    print('Tapped on FILTER ITEM-BUTTON');
+                    debugPrint('Tapped on FILTER ITEM-BUTTON');
                   },
                 ), //! memanggil model => search
                 const SizedBox(height: 4),

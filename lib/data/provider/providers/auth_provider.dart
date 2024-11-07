@@ -13,10 +13,10 @@ class AuthProvider {
           'password': password,
         }),
       );
-      // print(rawResponse);
+      // debugPrint(rawResponse);
       return rawResponse;
     } on DioException catch (e) {
-      // print('Error response data: ${e.response}');
+      // debugPrint('Error response data: ${e.response}');
       return e.response!;
     }
   }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/bloc.dart';
+import '../widget/choose_privillege.dart';
 import '../widget/ui_colors.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -84,34 +85,6 @@ class LoginScreenState extends State<LoginScreen>
     return password.length >= 5;
   }
 
-  // Fungsi untuk mengubah menampilkan pilihan privilage
-  void choosePrivilege(List<String> roles) {
-    if (roles.isNotEmpty && roles.length == 1) {
-      Navigator.of(context).pushReplacementNamed('/', arguments: roles[0]);
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Choose Previlege"),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: roles.map((role) {
-                return ListTile(
-                  title: Text(role), // Display the role name
-                  onTap: () {
-                    Navigator.pushReplacementNamed(context, '/',
-                        arguments: role); // Close the dialog
-                  },
-                );
-              }).toList(), // Convert the iterable to a list
-            ),
-          );
-        },
-      );
-    }
-  }
-
   @override
   void dispose() {
     _animationController.dispose();
@@ -147,7 +120,7 @@ class LoginScreenState extends State<LoginScreen>
         } else if (state is AuthAuthenticated) {
           // Navigator.of(context).pop(); // Close loading spinner
 
-          choosePrivilege(state.authData.data!.roles);
+          choosePrivilege(context, state.authData.data!.roles);
 
           // if (state.payload!.roles.isNotEmpty) {}
           // Navigator.pushReplacement(

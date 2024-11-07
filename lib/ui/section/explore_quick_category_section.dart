@@ -1,12 +1,10 @@
 import 'package:event_proposal_app/bloc/bloc.dart';
-import 'package:event_proposal_app/ui/router/go_router.dart';
 
 import 'package:event_proposal_app/ui/screen/search_result_event_screen.dart';
 import 'package:event_proposal_app/ui/widget/ui_colors.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class QuickCategorySection extends StatelessWidget {
   const QuickCategorySection({super.key});
@@ -64,7 +62,7 @@ class QuickCategorySection extends StatelessWidget {
                   context
                       .read<CategoryBloc>()
                       .add(CategoryButtonPressed(state.category[index].name));
-                  print('Tapped on ${state.category[index].name}');
+                  debugPrint('Tapped on ${state.category[index].name}');
                 },
                 child: Container(
                   width: 90,

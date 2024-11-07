@@ -1,71 +1,72 @@
-import 'package:event_proposal_app/ui/screen/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/bloc.dart';
-import '../../data/repository/repository.dart';
+import '../../bloc/auth_bloc/auth_bloc.dart';
+import '../../bloc/category_bloc/category_bloc.dart';
+import '../../bloc/event_bloc/event_bloc.dart';
 import '../screen/detail_event_approval_screen.dart';
 import '../screen/detail_event_screen.dart';
 import '../screen/home_admin_screen.dart';
 import '../screen/home_propose_screen.dart';
-import '../screen/home_screen.dart';
 import '../screen/home_superadmin_screen.dart';
 import '../screen/login_screen.dart';
 import '../screen/search_result_event_screen.dart';
+import '../screen/settings_screen.dart';
 import '../screen/splash_screen.dart';
 import '../screen/welcome_screen.dart';
 
-class AppRoutes {
-  static Map<String, WidgetBuilder> routes = {
-    '/splash': (context) => SplashScreen(),
-    '/welcome': (context) => WelcomeScreen(),
-    '/login': (context) => BlocProvider(
-          create: (context) => AuthBloc()..add(AuthLoadRememberMe()),
-          child: LoginScreen(),
-        ),
-    '/': (context) {
-      final String role;
-      role = ModalRoute.of(context)!.settings.arguments.toString();
-      // print("You are Login as: " + role);
-      return MultiBlocProvider(providers: [
-        // BlocProvider(create: (context) => AuthBloc()),
-        BlocProvider.value(value: context.read<AuthBloc>()),
-        BlocProvider(
-            create: (context) => CategoryBloc()..add(StatusReadData())),
-        BlocProvider(
-            create: (context) => EventBloc()
-              // create: (context) => EventBloc(
-              //     authState: context.read<AuthBloc>().state)
+class AppRouter {
+  static const String splashRoute = '/splash';
+  static const String welcomeRoute = '/welcome';
+  static const String loginRoute = '/login';
+  static const String homeRoute = '/';
+  static const String detailEventRoute = '/detailEvent';
+  static const String settingsRoute = '/settings';
+  static const String detailEventApprovalRoute = '/detailEventApproval';
+  static const String searchResultEventRoute = '/searchResultEvent';
 
-              // create: (context) => EventBloc(
-              //     eventRepository: EventRepository(), authBloc: AuthBloc())
-              ..add(EventFetched()))
-      ], child: getHomeScreen(role));
-      // Redirect based on role
-    },
-    '/detailEvent': (context) => DetailEventScreen(),
-    '/settings': (context) => BlocProvider.value(
-          value: context.read<AuthBloc>(),
-          child: SettingsScreen(),
+  static Map<String, WidgetBuilder> routes = {
+    splashRoute: (context) => const SplashScreen(),
+    welcomeRoute: (context) => const WelcomeScreen(),
+    loginRoute: (context) => BlocProvider(
+          create: (context) => AuthBloc()..add(AuthLoadRememberMe()),
+          child: const LoginScreen(),
         ),
-    '/detailEventApproval': (context) => DetailEventApprovalScreen(),
-    '/searchResultEvent': (context) => SearchResultEventsScreen(
+    homeRoute: (context) {
+      final String role = ModalRoute.of(context)!.settings.arguments.toString();
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: context.read<AuthBloc>()),
+          BlocProvider(
+              create: (context) => CategoryBloc()..add(StatusReadData())),
+          BlocProvider(create: (context) => EventBloc()..add(EventFetched())),
+        ],
+        child: getHomeScreen(role),
+      );
+    },
+    detailEventRoute: (context) => const DetailEventScreen(),
+    settingsRoute: (context) => BlocProvider.value(
+          value: context.read<AuthBloc>(),
+          child: const SettingsScreen(),
+        ),
+    detailEventApprovalRoute: (context) => const DetailEventApprovalScreen(),
+    searchResultEventRoute: (context) => const SearchResultEventsScreen(
           searchQuery: '',
         ),
   };
-}
 
-Widget getHomeScreen(String role) {
-  switch (role) {
-    case "Superadmin":
-      return HomeSuperadminScreen();
-    case "Admin":
-      return HomeAdminScreen();
-    case "Propose":
-      return HomeProposeScreen();
-    case "Member":
-      return HomeProposeScreen();
-    default:
-      return HomeSuperadminScreen(); // Fallback
+  static Widget getHomeScreen(String role) {
+    switch (role) {
+      case 'Superadmin':
+        return const HomeSuperadminScreen();
+      case 'Admin':
+        return const HomeAdminScreen();
+      case 'Propose':
+        return const HomeProposeScreen();
+      case 'Member':
+        return const HomeProposeScreen();
+      default:
+        return const LoginScreen(); // Fallback
+    }
   }
 }

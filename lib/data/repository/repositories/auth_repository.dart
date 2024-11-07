@@ -10,7 +10,6 @@ class AuthRepository {
       String email, String password, bool rememberMe) async {
     try {
       final response = await authProvider.authRequest(email, password);
-
       final data = response.data;
 
       if (response.statusCode == 200 && data["status"] == 'success') {
@@ -19,7 +18,9 @@ class AuthRepository {
         saveToken(data['data']['token']);
         final payload = await decodeToken(data['data']['token']);
         return AuthModel.fromJson(json: data, payload: payload);
-      } else if (response.statusCode == 404 || data["status"] == 'error') {
+      } else if (response.statusCode == 404 ||
+          response.statusCode == 401 ||
+          data["status"] == 'error') {
         return AuthModel.fromJson(json: data);
       } else {
         throw Exception('Error: ${response.statusCode}');

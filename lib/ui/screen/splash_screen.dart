@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'welcome_screen.dart';
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -25,12 +23,10 @@ class SplashScreenState extends State<SplashScreen> {
       // Setelah 1 detik (animasi fade out selesai), navigasi ke WelcomeScreen
       Future.delayed(const Duration(seconds: 1), () {
         if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  const WelcomeScreen(), // Navigasi ke screen berikutnya
-            ),
+          // Navigator.of(context).restorablePushNamed('/welcome');
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            '/welcome',
+            (Route<dynamic> route) => false,
           );
         }
       });
@@ -45,26 +41,6 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // return
-    // BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-    //   Future.delayed(const Duration(seconds: 2), () {
-    //     setState(() {
-    //       _opacity = 0.0; // Mengubah opacity menjadi 0 (fade out)
-    //     });
-
-    //     // Setelah 1 detik (animasi fade out selesai), navigasi ke WelcomeScreen
-    //     Future.delayed(const Duration(seconds: 1), () {
-    //       if (mounted) {
-    //         Navigator.pushReplacement(
-    //           context,
-    //           MaterialPageRoute(
-    //             builder: (context) =>
-    //                 WelcomeScreen(), // Navigasi ke screen berikutnya
-    //           ),
-    //         );
-    //       }
-    //     });
-    //   });
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

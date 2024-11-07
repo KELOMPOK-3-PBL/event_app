@@ -107,7 +107,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
                   },
                   onPressedFilter: () {
                     // Handle the button tap action here
-                    print('Tapped on FILTER ITEM-BUTTON');
+                    debugPrint('Tapped on FILTER ITEM-BUTTON');
                   },
                 ), //! memanggil model => search,
               ),
@@ -149,7 +149,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
                               child: InkWell(
                                 onTap: () {
-                                  print(
+                                  debugPrint(
                                       'Tapped on ${state.event[index].title}');
                                   //! Isi dengan routing card tab
                                   Navigator.push(

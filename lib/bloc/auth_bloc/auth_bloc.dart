@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/model/model.dart';
@@ -9,7 +10,7 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final authRepository = AuthRepository();
+  final _authRepository = AuthRepository();
 
   AuthBloc() : super(AuthInitial()) {
     on<AuthAppStarted>(_onAppStarted);
@@ -20,7 +21,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onAppStarted(AuthAppStarted event, Emitter<AuthState> emit) async {
-    final authData = await authRepository.checkAuthentication();
+    final authData = await _authRepository.checkAuthentication();
+    // emit(AuthLoading());
+    debugPrint(authData.toString());
+
     if (authData.status == 'success') {
       emit(AuthAuthenticated(authData: authData));
     } else {
@@ -32,7 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthLoginRequest user, Emitter<AuthState> emit) async {
     // emit(AuthLoading());
     try {
-      final authData = await authRepository.login(
+      final authData = await _authRepository.login(
           user.email, user.password, user.rememberMe);
       if (authData.status == 'success') {
         emit(AuthAuthenticated(authData: authData));
@@ -47,7 +51,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onAuthLoadRememberMe(
       AuthLoadRememberMe user, Emitter<AuthState> emit) async {
     try {
-      final preference = await authRepository.getRememberMeUserPref();
+      final preference = await _authRepository.getRememberMeUserPref();
       emit(AuthRememberMeLoaded(
         preference.email ?? '',
         preference.password ?? '',
@@ -60,7 +64,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onAuthLogoutRequest(
       AuthLogoutRequest event, Emitter<AuthState> emit) async {
-    await authRepository.logout();
+    await _authRepository.logout();
     emit(AuthUnauthenticated(message: "Loging Out Success"));
     await Future.delayed(
         Duration(milliseconds: 1000)); // memastikan status diperbarui

@@ -24,7 +24,7 @@ Future<void> main() async {
 
   SystemChrome.setSystemUIOverlayStyle(customSystemUiOverlayStyle);
 
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   setupLocator();
 
@@ -46,8 +46,8 @@ class MyApp extends StatelessWidget {
 //       child: BlocListener<AuthBloc, AuthState>(
 //         listener: (context, state) {
 //           if (state is AuthAuthenticated) {
-//             print(state.authData.message);
-//             print(state.authData.data!);
+//             debugPrint(state.authData.message);
+//             debugPrint(state.authData.data!);
 
 //             AppGoRoutes().router.goNamed("explore");
 //           } else if (state is AuthUnauthenticated) {
@@ -71,44 +71,28 @@ class MyApp extends StatelessWidget {
   //! Route lama (jadi)
   @override
   Widget build(BuildContext context) {
+    String initialRoute = AppRouter.loginRoute;
     return BlocProvider<AuthBloc>(
       //! Pengecekan apakah pernah login
       create: (context) => AuthBloc()..add(AuthAppStarted()),
-      child: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
+      child: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
           if (state is AuthAuthenticated) {
-            // Jika sudah terautentikasi, arahkan ke halaman utama
-            return CustomMaterialApp(initialRoute: "/");
-          } else if (state is AuthUnauthenticated) {
-            // Jika belum login, arahkan ke halaman splash
-            return CustomMaterialApp(initialRoute: "/welcome");
+            debugPrint(state.authData.message);
+            debugPrint(state.authData.toString());
+            initialRoute = AppRouter.homeRoute;
+          } else {
+            initialRoute = AppRouter.splashRoute;
           }
-          return CustomMaterialApp(initialRoute: "/splash");
-
-          // Menampilkan indikator loading saat menunggu status autentikasi
-          // return Center(child: CircularProgressIndicators());
         },
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.buildTheme(Brightness.light),
+          title: 'Polivent',
+          routes: AppRouter.routes,
+          initialRoute: initialRoute,
+        ),
       ),
-    );
-  }
-}
-
-//! Custom MaterialApp
-class CustomMaterialApp extends StatelessWidget {
-  final String initialRoute;
-  const CustomMaterialApp({
-    super.key,
-    required this.initialRoute,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.buildTheme(Brightness.light),
-      title: 'Polivent',
-      routes: AppRoutes.routes,
-      initialRoute: initialRoute,
     );
   }
 }

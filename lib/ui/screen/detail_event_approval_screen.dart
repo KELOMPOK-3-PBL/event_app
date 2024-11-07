@@ -44,7 +44,7 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
     {"name": "Felix Roudger", "image": "assets/felix.jpg"},
   ];
 
-  TextEditingController _adminNoteController = TextEditingController(text: '-');
+  TextEditingController adminNoteController = TextEditingController(text: '-');
 
   // Fungsi untuk memperbarui warna berdasarkan status
   void _updateStatusColor() {
@@ -162,7 +162,7 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
         return AlertDialog(
           title: Text("Edit Admin Note"),
           content: TextField(
-            controller: _adminNoteController,
+            controller: adminNoteController,
             maxLines: 4,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -290,7 +290,7 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w800)),
                         Text(
-                          _adminNoteController.text,
+                          adminNoteController.text,
                           style:
                               TextStyle(fontSize: 14, color: Colors.grey[800]),
                         ),
@@ -428,7 +428,7 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                         InkWell(
                           onTap: () {
                             //! ACTION FOR BUTTON
-                            print("Menuuju ke link jadwal");
+                            debugPrint("Menuuju ke link jadwal");
                             // Navigator.push(
                             //   context,
                             // );

@@ -5,7 +5,6 @@ import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/auth_bloc/auth_bloc.dart';
 import '../widget/ui_colors.dart';
-import './login_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});

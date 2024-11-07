@@ -1,5 +1,6 @@
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stream_transform/stream_transform.dart';
 
@@ -47,7 +48,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     // if (authState is AuthAuthenticated) {
     if (state is EventLoaded) {
       final currentState = state as EventLoaded;
-      // print("state ke-${currentState.event.length}");
+      // debugPrint("state ke-${currentState.event.length}");
       // Jika sudah mencapai batas data, tidak perlu memuat lebih lanjut
       if (currentState.hasReachedMax == true) {
         // if (state is EventLoadedMax) {
@@ -62,7 +63,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         final events = currentState.event + newEvents;
 
         if (newEvents.length < 4) {
-          print("Event dikirim: " + newEvents.length.toString());
+          debugPrint("Event dikirim: ${newEvents.length}");
           // emit(EventLoadedMax());
           return emit(
               currentState.copyWith(event: events, hasReachedMax: true));

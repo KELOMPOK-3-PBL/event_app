@@ -63,16 +63,13 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
         debugPrint("get");
         debugPrint("Token: $token");
 
-        //! Inisialisasi permintaan awal
-        requestEvent =
-            RequestFilteredEventModel(token: token, currentIndex: '0');
-
         if (state is EventInitial) {
           debugPrint("Initial fetch event");
 
-          context
-              .read<EventBloc>()
-              .add(EventFetchData(requestEvent: requestEvent));
+          //! Inisialisasi permintaan awal
+          context.read<EventBloc>().add(EventFetchData(
+              requestEvent:
+                  RequestFilteredEventModel(token: token, currentIndex: '0')));
         } else if (state is EventSubmited) {
           debugPrint("event submited");
 

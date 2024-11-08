@@ -1,7 +1,8 @@
+import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-// import '../../bloc/bloc.dart';
+import '../../bloc/bloc.dart';
 import '../navigation/bottom_navbar_superadmin.dart';
 import '../page/accounts_page.dart';
 import '../page/approval_page.dart';
@@ -10,29 +11,28 @@ import '../page/explore_page.dart';
 import '../page/profile_page.dart';
 
 class HomeSuperadminScreen extends StatefulWidget {
-  // final AuthBloc auth;
-  const HomeSuperadminScreen({
-    super.key,
-    // required this.auth,
-  });
+  const HomeSuperadminScreen({super.key});
 
   @override
   State<HomeSuperadminScreen> createState() => _HomeSuperadminScreenState();
 }
 
 class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
+  String token = "";
   int _currentIndex = 0;
-  final List<Widget> _widgetOptions = <Widget>[
-    const HomeExplorePage(),
-    const HomeEventsPage(),
-    // BlocProvider(
-    //   create: (context) => context.read<EventBloc>(),
-    //   child:
-    const HomeApprovalPage(),
-    // ),
-    const HomeAccountsPage(),
-    const HomeProfilePage(),
-  ];
+
+  @override
+  void initState() {
+    super.initState();
+    final authState = context.read<AuthBloc>().state;
+
+    if (authState is AuthAuthenticated) {
+      token = authState.authData.token!;
+    } else {
+      token = '';
+      debugPrint("User is not authenticated.");
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -40,10 +40,34 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
     });
   }
 
+  List<Widget> _buildWidgetOptions(String token) {
+    return [
+      const HomeExplorePage(),
+      const HomeEventsPage(),
+      BlocProvider(
+        create: (context) => context.read<EventBloc>()
+          ..add(EventFetchData(
+              requestEvent:
+                  RequestFilteredEventModel(token: token, currentIndex: '0'))),
+        child: const HomeApprovalPage(),
+      ),
+      const HomeAccountsPage(),
+      const HomeProfilePage(),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (token.isEmpty) {
+      return Scaffold(
+        body: Center(
+          child: Text("User is not authenticated. Please log in."),
+        ),
+      );
+    }
+
     return Scaffold(
-      body: _widgetOptions.elementAt(_currentIndex),
+      body: _buildWidgetOptions(token).elementAt(_currentIndex),
       bottomNavigationBar: BottomNavbarSuperadmin(
         currentIndex: _currentIndex,
         onItemTapped: _onItemTapped,

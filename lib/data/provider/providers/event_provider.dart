@@ -3,7 +3,8 @@ part of '../provider.dart';
 class EventProvider {
   final dio = getIt<Dio>();
 
-  Future<Response> getFilteredEvents(GetEventModel requestEvent) async {
+  Future<Response> getFilteredEvents(
+      RequestFilteredEventModel requestEvent) async {
     try {
       // Menyusun parameter query string
       final queryParameters = {

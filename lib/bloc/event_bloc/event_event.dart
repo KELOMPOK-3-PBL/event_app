@@ -7,7 +7,14 @@ abstract class EventEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class EventFetched extends EventEvent {}
+class EventFetchData extends EventEvent {
+  // final RequestFilteredEventModel request;
+
+  // const EventFetchData({required this.request});
+
+  // @override
+  // List<Object> get props => [request];
+}
 
 class EventCardPressed extends EventEvent {
   final List<EventModel> event;

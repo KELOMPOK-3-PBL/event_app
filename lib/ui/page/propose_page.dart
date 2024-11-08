@@ -35,7 +35,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
 
   void _onScroll() {
     if (_isBottom) {
-      context.read<EventBloc>().add(EventFetched());
+      context.read<EventBloc>().add(EventFetchData());
     }
   }
 
@@ -62,7 +62,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
           Navigator.of(context).pop(); // Close loading spinner
 
           //! Trigger CategoryBloc untuk memuat ulang data kategori
-          context.read<EventBloc>().add(EventFetched());
+          context.read<EventBloc>().add(EventFetchData());
           // } else if (state is EventLoaded) {
           Navigator.of(context).pop();
         } else if (state is EventLoadError) {

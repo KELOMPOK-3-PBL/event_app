@@ -39,7 +39,7 @@ class AppRouter {
           BlocProvider.value(value: context.read<AuthBloc>()),
           BlocProvider(
               create: (context) => CategoryBloc()..add(StatusReadData())),
-          BlocProvider(create: (context) => EventBloc()..add(EventFetched())),
+          BlocProvider(create: (context) => EventBloc()..add(EventFetchData())),
         ],
         child: getHomeScreen(role),
       );

@@ -27,7 +27,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
   // EventBloc({required this.eventRepository, required this.authBloc})
   // EventBloc({required this.authState}) : super(EventInitial()) {
   EventBloc() : super(EventInitial()) {
-    on<EventFetched>(
+    on<EventFetchData>(
       _onInitialEvent,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     );
@@ -44,7 +44,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     }
   }
 
-  void _onInitialEvent(EventFetched event, Emitter<EventState> emit) async {
+  void _onInitialEvent(EventFetchData event, Emitter<EventState> emit) async {
     // if (authState is AuthAuthenticated) {
     if (state is EventLoaded) {
       final currentState = state as EventLoaded;

@@ -1,6 +1,6 @@
 part of '../model.dart';
 
-class GetEventModel extends Equatable {
+class RequestFilteredEventModel extends Equatable {
   final String token;
   final String currentIndex;
   final String postLimit = '5';
@@ -12,7 +12,7 @@ class GetEventModel extends Equatable {
   final String? sortBy;
   final String? sortOrder;
 
-  const GetEventModel({
+  const RequestFilteredEventModel({
     required this.token,
     required this.currentIndex,
     // required this.postLimit,
@@ -25,7 +25,7 @@ class GetEventModel extends Equatable {
     this.sortOrder,
   });
 
-  GetEventModel copyWith({
+  RequestFilteredEventModel copyWith({
     String? token,
     String? currentIndex,
     // String? postLimit,
@@ -37,7 +37,7 @@ class GetEventModel extends Equatable {
     String? sortBy,
     String? sortOrder,
   }) {
-    return GetEventModel(
+    return RequestFilteredEventModel(
       token: token ?? this.token,
       currentIndex: currentIndex ?? this.currentIndex,
       // postLimit: postLimit,

@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
   //! Route lama (jadi)
   @override
   Widget build(BuildContext context) {
-    String initialRoute = AppRouter.loginRoute;
+    String initialRoute = AppRouter.welcomeRoute;
     return BlocProvider<AuthBloc>(
       //! Pengecekan apakah pernah login
       create: (context) => AuthBloc()..add(AuthAppStarted()),

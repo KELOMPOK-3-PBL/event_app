@@ -21,14 +21,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onAppStarted(AuthAppStarted event, Emitter<AuthState> emit) async {
-    final authData = await _authRepository.checkAuthentication();
-    // emit(AuthLoading());
-    debugPrint(authData.toString());
-
-    if (authData.status == 'success') {
-      emit(AuthAuthenticated(authData: authData));
-    } else {
-      emit(AuthUnauthenticated(message: authData.message));
+    try {
+      final authData = await _authRepository.checkAuthentication();
+      // emit(AuthLoading());
+      debugPrint(authData.toString());
+      if (authData?.status == 'success') {
+        emit(AuthAuthenticated(authData: authData!));
+      } else {
+        emit(AuthUnauthenticated(message: authData!.message));
+        // emit(AuthInitial());
+      }
+    } catch (error) {
+      emit(AuthInitial());
     }
   }
 

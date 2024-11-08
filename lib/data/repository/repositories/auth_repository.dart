@@ -74,7 +74,7 @@ class AuthRepository {
     return prefs.getString('auth_token');
   }
 
-  Future<AuthModel> checkAuthentication() async {
+  Future<AuthModel?> checkAuthentication() async {
     final token = await getToken();
     // Verifikasi atau decode token untuk memeriksa validitasnya
     try {
@@ -88,11 +88,13 @@ class AuthRepository {
           data: data);
       return authData;
       // } else {
+      //! Nanti buat else mengembalikan token kadaluarsa
       //   return AuthModel(status: "error", message: "Token outdate");
       // }
     } catch (e) {
-      // Token tidak ada
-      return AuthModel(status: "error", message: "Token not found");
+      //! Nanti buat catch mengembalikan Excemtion not found
+      Exception("Token Not Found");
+      return null;
     }
   }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 
+// import '../../bloc/bloc.dart';
 import '../navigation/bottom_navbar_superadmin.dart';
 import '../page/accounts_page.dart';
 import '../page/approval_page.dart';
@@ -23,7 +25,11 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
   final List<Widget> _widgetOptions = <Widget>[
     const HomeExplorePage(),
     const HomeEventsPage(),
+    // BlocProvider(
+    //   create: (context) => context.read<EventBloc>(),
+    //   child:
     const HomeApprovalPage(),
+    // ),
     const HomeAccountsPage(),
     const HomeProfilePage(),
   ];

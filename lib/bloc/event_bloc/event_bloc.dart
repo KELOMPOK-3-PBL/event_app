@@ -20,12 +20,8 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 }
 
 class EventBloc extends Bloc<EventEvent, EventState> {
-  // final EventRepository eventRepository;
   final eventRepository = EventRepository();
-  // final AuthState authState;
 
-  // EventBloc({required this.eventRepository, required this.authBloc})
-  // EventBloc({required this.authState}) : super(EventInitial()) {
   EventBloc() : super(EventInitial()) {
     on<EventFetchData>(
       _onInitialEvent,
@@ -45,14 +41,9 @@ class EventBloc extends Bloc<EventEvent, EventState> {
   }
 
   void _onInitialEvent(EventFetchData event, Emitter<EventState> emit) async {
-    // if (authState is AuthAuthenticated) {
     if (state is EventLoaded) {
       final currentState = state as EventLoaded;
-      // debugPrint("state ke-${currentState.event.length}");
-      // Jika sudah mencapai batas data, tidak perlu memuat lebih lanjut
       if (currentState.hasReachedMax == true) {
-        // if (state is EventLoadedMax) {
-        // emit(EventLoadedMax());
         return;
       }
 
@@ -81,7 +72,9 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       } catch (_) {
         emit(EventLoadError("Gagal Load Event"));
       }
-    } else if (state is EventInitial) {
+    } else
+    // else if (state is EventInitial)
+    {
       // Untuk keadaan EventInitial
       try {
         emit(EventLoading()); //! Loading awal saat memuat event pertama kai
@@ -94,8 +87,8 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       } catch (_) {
         emit(EventLoadError("Failed to load initial events"));
       }
-    } else {
-      emit(EventLoadError("You don't have access. You Must Login First"));
+      // } else {
+      //   emit(EventLoadError("You don't have access. You Must Login First"));
     }
   }
 }

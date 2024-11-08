@@ -24,7 +24,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   late String token;
 
   //! Updated request
-  late final RequestFilteredEventModel requestEvent;
+  late RequestFilteredEventModel requestEvent;
 
   @override
   void initState() {
@@ -60,10 +60,11 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
         //! Mengambil token
         final authState = context.read<AuthBloc>().state;
         token = (authState as AuthAuthenticated).authData.token!;
-        debugPrint(token);
+        debugPrint("get");
+        debugPrint("Token: $token");
 
         //! Inisialisasi permintaan awal
-        final requestEvent =
+        requestEvent =
             RequestFilteredEventModel(token: token, currentIndex: '0');
 
         if (state is EventInitial) {
@@ -131,9 +132,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
               Expanded(
                 child: BlocBuilder<EventBloc, EventState>(
                   builder: (context, state) {
-                    if (state is EventInitial) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (state is EventLoading) {
+                    if (state is EventLoading) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is EventLoaded) {
                       final events = state.event;

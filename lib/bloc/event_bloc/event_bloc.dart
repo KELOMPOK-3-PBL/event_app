@@ -83,9 +83,10 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         //! Mengambil data awal berdasarkan request pada UI ke API
         final events = await eventRepository.getEventDataFromAPI(
             requestEvent: event.requestEvent);
+        debugPrint(events.toString());
         emit(EventLoaded(event: events.data!, hasReachedMax: false));
-      } catch (_) {
-        emit(EventLoadError("Failed to load initial events"));
+      } catch (e) {
+        emit(EventLoadError(e.toString()));
       }
       // } else {
       //   emit(EventLoadError("You don't have access. You Must Login First"));

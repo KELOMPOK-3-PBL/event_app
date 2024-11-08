@@ -42,7 +42,10 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
 
   List<Widget> _buildWidgetOptions(String token) {
     return [
-      const HomeExplorePage(),
+      BlocProvider(
+        create: (context) => EventBloc(),
+        child: const HomeExplorePage(),
+      ),
       const HomeEventsPage(),
       BlocProvider(
         create: (context) => context.read<EventBloc>()

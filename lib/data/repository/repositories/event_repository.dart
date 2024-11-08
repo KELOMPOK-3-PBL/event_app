@@ -7,7 +7,7 @@ class EventRepository {
       {required RequestFilteredEventModel requestEvent}) async {
     try {
       final response = await eventProvider.getFilteredEvents(requestEvent);
-      debugPrint(response.toString());
+      debugPrint("Response events: ${response.data.toString()}");
 
       final data = response.data;
       if (response.statusCode == 200 && data["status"] == 'success') {

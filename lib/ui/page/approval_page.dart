@@ -1,8 +1,11 @@
+import 'package:event_proposal_app/data/model/model.dart';
+
 import '../../bloc/bloc.dart';
 
 import '../screen/search_result_event_screen.dart';
 import '../widget/event_card_with_status.dart';
 import '../widget/search_widget.dart';
+import '../widget/show_error.dart';
 import '../widget/ui_colors.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +20,11 @@ class HomeApprovalPage extends StatefulWidget {
 
 class _HomeApprovalPageState extends State<HomeApprovalPage> {
   final ScrollController _scrollController = ScrollController();
+
+  late String token;
+
+  //! Updated request
+  late final RequestFilteredEventModel requestEvent;
 
   @override
   void initState() {
@@ -33,7 +41,9 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
 
   void _onScroll() {
     if (_isBottom) {
-      context.read<EventBloc>().add(EventFetchData());
+      //! mengatasi perubahan request ketika di scroll
+      // requestEvent.copyWith();
+      context.read<EventBloc>().add(EventFetchData(requestEvent: requestEvent));
     }
   }
 
@@ -47,17 +57,35 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   Widget build(BuildContext context) {
     return BlocListener<EventBloc, EventState>(
       listener: (context, state) {
-        if (state is EventSubmited) {
+        //! Mengambil token
+        final authState = context.read<AuthBloc>().state;
+        token = (authState as AuthAuthenticated).authData.token!;
+        debugPrint(token);
+
+        //! Inisialisasi permintaan awal
+        final requestEvent =
+            RequestFilteredEventModel(token: token, currentIndex: '0');
+
+        if (state is EventInitial) {
+          debugPrint("Initial fetch event");
+
+          context
+              .read<EventBloc>()
+              .add(EventFetchData(requestEvent: requestEvent));
+        } else if (state is EventSubmited) {
+          debugPrint("event submited");
+
           Navigator.of(context).pop(); // Close loading spinner
 
           //! Trigger CategoryBloc untuk memuat ulang data kategori
-          context.read<EventBloc>().add(EventFetchData());
+          context
+              .read<EventBloc>()
+              .add(EventFetchData(requestEvent: requestEvent));
           // } else if (state is EventLoaded) {
           Navigator.of(context).pop();
         } else if (state is EventLoadError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Error loading events")),
-          );
+          debugPrint("load error");
+          showError(context, state.message);
         }
       },
       // builder: (context, state) {
@@ -103,7 +131,9 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
               Expanded(
                 child: BlocBuilder<EventBloc, EventState>(
                   builder: (context, state) {
-                    if (state is EventLoading) {
+                    if (state is EventInitial) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (state is EventLoading) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is EventLoaded) {
                       final events = state.event;

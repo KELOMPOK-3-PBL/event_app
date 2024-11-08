@@ -4,12 +4,12 @@ class EventRepository {
   final eventProvider = EventProvider();
 
   Future<EventModel> getEventDataFromAPI(
-      RequestFilteredEventModel requestEvent) async {
+      {required RequestFilteredEventModel requestEvent}) async {
     try {
       final response = await eventProvider.getFilteredEvents(requestEvent);
+      debugPrint(response.toString());
 
       final data = response.data;
-
       if (response.statusCode == 200 && data["status"] == 'success') {
         return EventModel.fromJson(json: data);
         // } else if (response.statusCode == 404 || data["status"] == 'error') {

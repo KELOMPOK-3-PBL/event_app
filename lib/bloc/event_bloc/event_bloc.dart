@@ -57,13 +57,19 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       }
 
       try {
-        final newEvents = await eventRepository.getEventData(
-            startIndex: currentState.event.length);
+        //! Mengambil dan menambah dari data statis
+        // final newEvents = await eventRepository.getEventData(
+        //     startIndex: currentState.event.length);
+        //! Mengambil dan menambah data berdasarkan request pada UI ke API
+        // Mengganti currentIndex untuk permintaan
+        final newEvents = await eventRepository.getEventDataFromAPI(
+            requestEvent: event.requestEvent
+                .copyWith(currentIndex: currentState.event.length.toString()));
         //! Gabungkan data baru dengan yang sudah ada
-        final events = currentState.event + newEvents;
+        final events = currentState.event + newEvents.data!;
 
-        if (newEvents.length < 4) {
-          debugPrint("Event dikirim: ${newEvents.length}");
+        if (newEvents.data!.isNotEmpty && newEvents.data!.length < 4) {
+          debugPrint("Event dikirim: ${newEvents.data!.length}");
           // emit(EventLoadedMax());
           return emit(
               currentState.copyWith(event: events, hasReachedMax: true));
@@ -75,18 +81,21 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       } catch (_) {
         emit(EventLoadError("Gagal Load Event"));
       }
-    } else {
+    } else if (state is EventInitial) {
       // Untuk keadaan EventInitial
       try {
         emit(EventLoading()); //! Loading awal saat memuat event pertama kai
-        final events = await eventRepository.getEventData(startIndex: 0);
-        emit(EventLoaded(event: events, hasReachedMax: false));
+        //! Mengambil data awal dari data statis
+        // final events = await eventRepository.getEventData(startIndex: 0);
+        //! Mengambil data awal berdasarkan request pada UI ke API
+        final events = await eventRepository.getEventDataFromAPI(
+            requestEvent: event.requestEvent);
+        emit(EventLoaded(event: events.data!, hasReachedMax: false));
       } catch (_) {
         emit(EventLoadError("Failed to load initial events"));
       }
+    } else {
+      emit(EventLoadError("You don't have access. You Must Login First"));
     }
-    // } else {
-    //   emit(EventLoadError("You don't have access. You Must Login First"));
-    // }
   }
 }

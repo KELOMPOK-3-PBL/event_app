@@ -30,7 +30,7 @@ class EventProvider {
 
       // Melakukan permintaan GET dengan query parameters
       final Response rawResponse = await dio.get(
-        '/events',
+        '/events.php',
         options: options,
         queryParameters: queryParameters,
       );

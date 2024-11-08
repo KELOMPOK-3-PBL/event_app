@@ -8,12 +8,12 @@ abstract class EventEvent extends Equatable {
 }
 
 class EventFetchData extends EventEvent {
-  // final RequestFilteredEventModel request;
+  final RequestFilteredEventModel requestEvent;
 
-  // const EventFetchData({required this.request});
+  const EventFetchData({required this.requestEvent});
 
-  // @override
-  // List<Object> get props => [request];
+  @override
+  List<Object> get props => [requestEvent];
 }
 
 class EventCardPressed extends EventEvent {

@@ -4,6 +4,7 @@ import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/bloc.dart';
 import '../widget/choose_privillege.dart';
+import '../widget/show_error.dart';
 import '../widget/ui_colors.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -146,7 +147,7 @@ class LoginScreenState extends State<LoginScreen>
           // );
         } else if (state is AuthUnauthenticated) {
           // Navigator.of(context).pop(); // Close loading spinner
-          _showError(context, state.message);
+          showError(context, state.message);
         }
       },
       child: Scaffold(
@@ -334,7 +335,7 @@ class LoginScreenState extends State<LoginScreen>
                                         _passwordController.text.trim();
 
                                     if (email.isEmpty || password.isEmpty) {
-                                      _showError(context,
+                                      showError(context,
                                           "Email and password cannot be empty.");
                                       return;
                                     }
@@ -421,12 +422,6 @@ class LoginScreenState extends State<LoginScreen>
           ],
         ),
       ),
-    );
-  }
-
-  void _showError(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
     );
   }
 

@@ -1,3 +1,5 @@
+import 'package:event_proposal_app/data/model/model.dart';
+
 import '../../bloc/bloc.dart';
 
 import '../screen/search_result_event_screen.dart';
@@ -8,8 +10,6 @@ import '../widget/ui_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-import '../screen/detail_event_approval_screen.dart';
-
 class HomeProposePage extends StatefulWidget {
   const HomeProposePage({super.key});
 
@@ -19,6 +19,11 @@ class HomeProposePage extends StatefulWidget {
 
 class _HomeProposePageState extends State<HomeProposePage> {
   final ScrollController _scrollController = ScrollController();
+
+  late String token;
+
+  //! Updated request
+  late final RequestFilteredEventModel requestEvent;
 
   @override
   void initState() {
@@ -35,7 +40,9 @@ class _HomeProposePageState extends State<HomeProposePage> {
 
   void _onScroll() {
     if (_isBottom) {
-      context.read<EventBloc>().add(EventFetchData());
+      //! mengatasi perubahan request ketika di scroll
+      // requestEvent.copyWith();
+      context.read<EventBloc>().add(EventFetchData(requestEvent: requestEvent));
     }
   }
 
@@ -49,20 +56,26 @@ class _HomeProposePageState extends State<HomeProposePage> {
   Widget build(BuildContext context) {
     return BlocListener<EventBloc, EventState>(
       listener: (context, state) {
-        if (state is EventLoading) {
-          // Tampilkan loading spinner
-          // showDialog(
-          //   context: context,
-          //   barrierDismissible: false,
-          //   builder: (BuildContext context) {
-          //     return const Center(child: CircularProgressIndicator());
-          //   },
-          // );
+        //! Mengambil token
+        final authState = context.read<AuthBloc>().state;
+        token = (authState as AuthAuthenticated).authData.token!;
+
+        //! Inisialisasi permintaan awal
+        final requestEvent =
+            RequestFilteredEventModel(token: token, currentIndex: '0');
+
+        if (state is EventInitial) {
+          debugPrint("Initial fetch event");
+          context
+              .read<EventBloc>()
+              .add(EventFetchData(requestEvent: requestEvent));
         } else if (state is EventSubmited) {
           Navigator.of(context).pop(); // Close loading spinner
 
           //! Trigger CategoryBloc untuk memuat ulang data kategori
-          context.read<EventBloc>().add(EventFetchData());
+          context
+              .read<EventBloc>()
+              .add(EventFetchData(requestEvent: requestEvent));
           // } else if (state is EventLoaded) {
           Navigator.of(context).pop();
         } else if (state is EventLoadError) {
@@ -81,7 +94,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
             backgroundColor: UIColor.solidWhite,
             scrolledUnderElevation: 0,
             title: Text(
-              "Approval",
+              "Propose",
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -114,15 +127,10 @@ class _HomeProposePageState extends State<HomeProposePage> {
               Expanded(
                 child: BlocBuilder<EventBloc, EventState>(
                   builder: (context, state) {
-                    if (state is EventLoadError) {
-                      return const Center(child: Text('failed to fetch posts'));
-                    } else if (state is EventInitial) {
+                    if (state is EventLoading) {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is EventLoaded) {
                       final events = state.event;
-                      // if (state.hasReachedMax) {
-                      //   return const Center(child: Text('no more events'));
-                      // } else {
                       return ListView.builder(
                         controller: _scrollController,
                         padding: EdgeInsets.zero,
@@ -139,10 +147,6 @@ class _HomeProposePageState extends State<HomeProposePage> {
                                 child: CircularProgressIndicator(),
                               ),
                             );
-                            // } else if (index.state.hasReachedMax) {
-                            //   return const Center(
-                            //     child: Text("No more events"),
-                            //   );
                           } else {
                             //! card event
                             return Padding(
@@ -152,24 +156,11 @@ class _HomeProposePageState extends State<HomeProposePage> {
                                   debugPrint(
                                       'Tapped on ${state.event[index].title}');
                                   //! Isi dengan routing card tab
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          DetailEventApprovalScreen(),
-                                    ),
-                                  );
+                                  Navigator.pushNamed(
+                                      context, '/detailEventApproval');
                                 },
                                 child: EventCardWithStatusWidget(
                                   events: events[index],
-                                  // tittle: events[index].tittle,
-                                  // category: events[index].category,
-                                  // quota: events[index].quota,
-                                  // posterUrl: events[index].posterUrl ?? '',
-                                  // place: events[index].place,
-                                  // location: events[index].location ?? '',
-                                  // dateStart: events[index].dateStart,
-                                  // status: events[index].status,
                                 ),
                               ),
                             );

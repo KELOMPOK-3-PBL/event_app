@@ -32,11 +32,11 @@ class EventCardWithStatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
-            arguments: events);
-      },
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: UIColor.solidWhite,
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

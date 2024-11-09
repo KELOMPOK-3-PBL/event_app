@@ -20,6 +20,7 @@ class AppRouter {
   static const String homeRoute = '/';
   static const String detailEventRoute = '/detailEvent';
   static const String settingsRoute = '/settings';
+  static const String detailEventProposeRoute = '/detailEventPropose';
   static const String detailEventApprovalRoute = '/detailEventApproval';
   static const String searchResultEventRoute = '/searchResultEvent';
 
@@ -43,6 +44,7 @@ class AppRouter {
           child: const SettingsScreen(),
         ),
     detailEventApprovalRoute: (context) => const DetailEventApprovalScreen(),
+    detailEventProposeRoute: (context) => const DetailEventApprovalScreen(),
     searchResultEventRoute: (context) => const SearchResultEventsScreen(
           searchQuery: '',
         ),

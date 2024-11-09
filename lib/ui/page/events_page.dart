@@ -4,7 +4,7 @@ import 'package:event_proposal_app/data/provider/provider.dart';
 import '../../bloc/bloc.dart';
 
 import '../screen/search_result_event_screen.dart';
-import '../widget/event_card_with_status.dart';
+import '../widget/event_card.dart';
 import '../widget/search_widget.dart';
 import '../widget/show_error.dart';
 import '../widget/ui_colors.dart';
@@ -158,7 +158,7 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
                             //! card event
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-                              child: EventCardWithStatusWidget(
+                              child: EventCard(
                                 events: events[index],
                               ),
                             );

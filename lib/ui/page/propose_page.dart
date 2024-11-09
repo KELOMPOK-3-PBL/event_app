@@ -3,6 +3,7 @@ import 'package:event_proposal_app/data/provider/provider.dart';
 
 import '../../bloc/bloc.dart';
 
+import '../router/router.dart';
 import '../screen/search_result_event_screen.dart';
 import '../widget/event_card_with_status.dart';
 import '../widget/search_widget.dart';
@@ -158,8 +159,15 @@ class _HomeProposePageState extends State<HomeProposePage> {
                             //! card event
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-                              child: EventCardWithStatusWidget(
-                                events: events[index],
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(context,
+                                      AppRouter.detailEventProposeRoute,
+                                      arguments: events);
+                                },
+                                child: EventCardWithStatusWidget(
+                                  events: events[index],
+                                ),
                               ),
                             );
                           }

@@ -47,13 +47,20 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
         create: (context) => CategoryBloc()..add(StatusReadData()),
         child: const HomeExplorePage(),
       ),
-      const HomeEventsPage(),
+      BlocProvider(
+        create: (context) => EventBloc()
+          ..add(EventFetchData(
+              requestEvent:
+                  RequestFilteredEventModel(token: token, currentIndex: '0'),
+              pathRequest: PathRequestEvents.approvedEvents)),
+        child: const HomeEventsPage(),
+      ),
       BlocProvider(
         create: (context) => context.read<EventBloc>()
           ..add(EventFetchData(
               requestEvent:
                   RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.approvedEvents)),
+              pathRequest: PathRequestEvents.allEvents)),
         child: const HomeApprovalPage(),
       ),
       const HomeAccountsPage(),

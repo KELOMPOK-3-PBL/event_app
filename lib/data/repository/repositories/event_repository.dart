@@ -4,11 +4,12 @@ class EventRepository {
   final eventProvider = EventProvider();
 
   Future<EventModel> getEventsFromAPI(
-      {required RequestFilteredEventModel requestEvent}) async {
+      {required RequestFilteredEventModel requestEvent,
+      required PathRequestEvents pathRequest}) async {
     try {
       // final response = await eventProvider.getFilteredAllEvents(requestEvent);
       final response =
-          await eventProvider.getFilteredApprovedEvents(requestEvent);
+          await eventProvider.getFilteredEvents(requestEvent, pathRequest);
       // debugPrint("Response data: ${response.data}");
 
       final data = response.data;

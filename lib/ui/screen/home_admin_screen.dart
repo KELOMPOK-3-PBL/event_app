@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/bloc.dart';
+import '../../data/provider/provider.dart';
 import '../navigation/bottom_navbar_admin.dart';
 import '../page/approval_page.dart';
 import '../page/events_page.dart';
@@ -51,7 +52,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         create: (context) => EventBloc()
           ..add(EventFetchData(
               requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'))),
+                  RequestFilteredEventModel(token: token, currentIndex: '0'),
+              pathRequest: PathRequestEvents.approvedEvents)),
         child: const HomeApprovalPage(),
       ),
       const HomeProfilePage(),

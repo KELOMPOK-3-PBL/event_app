@@ -2,6 +2,7 @@ import 'package:event_proposal_app/data/model/model.dart';
 
 import '../../bloc/bloc.dart';
 
+import '../../data/provider/provider.dart';
 import '../screen/search_result_event_screen.dart';
 import '../widget/event_card_with_status.dart';
 import '../widget/search_widget.dart';
@@ -42,7 +43,9 @@ class _HomeProposePageState extends State<HomeProposePage> {
     if (_isBottom) {
       //! mengatasi perubahan request ketika di scroll
       // requestEvent.copyWith();
-      context.read<EventBloc>().add(EventFetchData(requestEvent: requestEvent));
+      context.read<EventBloc>().add(EventFetchData(
+          requestEvent: requestEvent,
+          pathRequest: PathRequestEvents.approvedEvents));
     }
   }
 
@@ -66,16 +69,16 @@ class _HomeProposePageState extends State<HomeProposePage> {
 
         if (state is EventInitial) {
           debugPrint("Initial fetch event");
-          context
-              .read<EventBloc>()
-              .add(EventFetchData(requestEvent: requestEvent));
+          context.read<EventBloc>().add(EventFetchData(
+              requestEvent: requestEvent,
+              pathRequest: PathRequestEvents.approvedEvents));
         } else if (state is EventSubmited) {
           Navigator.of(context).pop(); // Close loading spinner
 
           //! Trigger CategoryBloc untuk memuat ulang data kategori
-          context
-              .read<EventBloc>()
-              .add(EventFetchData(requestEvent: requestEvent));
+          context.read<EventBloc>().add(EventFetchData(
+              requestEvent: requestEvent,
+              pathRequest: PathRequestEvents.approvedEvents));
           // } else if (state is EventLoaded) {
           Navigator.of(context).pop();
         } else if (state is EventLoadError) {

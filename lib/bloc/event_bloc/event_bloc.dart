@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stream_transform/stream_transform.dart';
 
+import '../../data/provider/provider.dart';
 import '../../data/repository/repository.dart';
 import '../../data/model/model.dart';
 
@@ -52,7 +53,8 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         // Memuat data tambahan dari API berdasarkan request dengan currentIndex
         final newEvents = await eventRepository.getEventsFromAPI(
             requestEvent: event.requestEvent
-                .copyWith(currentIndex: currentState.event.length.toString()));
+                .copyWith(currentIndex: currentState.event.length.toString()),
+            pathRequest: event.pathRequest);
 
         // Gabungkan data yang sudah ada dengan data baru jika tidak null
         final combinedEvents = currentState.event + (newEvents.data ?? []);
@@ -70,7 +72,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
 
         // Memuat data awal dari API
         final EventModel initialEvents = await eventRepository.getEventsFromAPI(
-            requestEvent: event.requestEvent);
+            requestEvent: event.requestEvent, pathRequest: event.pathRequest);
 
         debugPrint("Initial Event Load: ${initialEvents.toString()}");
 

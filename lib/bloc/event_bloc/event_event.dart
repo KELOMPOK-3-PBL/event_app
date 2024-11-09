@@ -9,8 +9,9 @@ abstract class EventEvent extends Equatable {
 
 class EventFetchData extends EventEvent {
   final RequestFilteredEventModel requestEvent;
+  final PathRequestEvents pathRequest;
 
-  const EventFetchData({required this.requestEvent});
+  const EventFetchData({required this.requestEvent, required this.pathRequest});
 
   @override
   List<Object> get props => [requestEvent];

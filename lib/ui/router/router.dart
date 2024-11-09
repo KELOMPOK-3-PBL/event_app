@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/auth_bloc/auth_bloc.dart';
-import '../../bloc/category_bloc/category_bloc.dart';
-import '../../bloc/event_bloc/event_bloc.dart';
 import '../screen/detail_event_approval_screen.dart';
 import '../screen/detail_event_screen.dart';
 import '../screen/home_admin_screen.dart';
@@ -28,22 +26,14 @@ class AppRouter {
   static Map<String, WidgetBuilder> routes = {
     splashRoute: (context) => const SplashScreen(),
     welcomeRoute: (context) => const WelcomeScreen(),
-    loginRoute: (context) => BlocProvider(
-          create: (context) => AuthBloc()..add(AuthLoadRememberMe()),
+    loginRoute: (context) => BlocProvider.value(
+          value: context.read<AuthBloc>()..add(AuthLoadRememberMe()),
           child: const LoginScreen(),
         ),
     homeRoute: (context) {
       final String role = ModalRoute.of(context)!.settings.arguments.toString();
-      return MultiBlocProvider(
-        providers: [
-          BlocProvider.value(value: context.read<AuthBloc>()),
-          // BlocProvider(create: (context) => CategoryBloc()
-          //     // ..add(StatusReadData())
-          //     ),
-          // BlocProvider(create: (context) => EventBloc()
-          //     // ..add(EventFetchData(requestEvent: RequestFilteredEventModel(token: token, currentIndex: currentIndex)))
-          //     ),
-        ],
+      return BlocProvider.value(
+        value: context.read<AuthBloc>(),
         child: getHomeScreen(role),
       );
     },

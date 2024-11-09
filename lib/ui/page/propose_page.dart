@@ -1,11 +1,12 @@
 import 'package:event_proposal_app/data/model/model.dart';
+import 'package:event_proposal_app/data/provider/provider.dart';
 
 import '../../bloc/bloc.dart';
 
-import '../../data/provider/provider.dart';
 import '../screen/search_result_event_screen.dart';
 import '../widget/event_card_with_status.dart';
 import '../widget/search_widget.dart';
+import '../widget/show_error.dart';
 import '../widget/ui_colors.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
   late String token;
 
   //! Updated request
-  late final RequestFilteredEventModel requestEvent;
+  late RequestFilteredEventModel requestEvent;
 
   @override
   void initState() {
@@ -62,17 +63,20 @@ class _HomeProposePageState extends State<HomeProposePage> {
         //! Mengambil token
         final authState = context.read<AuthBloc>().state;
         token = (authState as AuthAuthenticated).authData.token!;
-
-        //! Inisialisasi permintaan awal
-        final requestEvent =
-            RequestFilteredEventModel(token: token, currentIndex: '0');
+        debugPrint("get");
+        debugPrint("Token: $token");
 
         if (state is EventInitial) {
           debugPrint("Initial fetch event");
+
+          //! Inisialisasi permintaan awal
           context.read<EventBloc>().add(EventFetchData(
-              requestEvent: requestEvent,
+              requestEvent:
+                  RequestFilteredEventModel(token: token, currentIndex: '0'),
               pathRequest: PathRequestEvents.approvedEvents));
         } else if (state is EventSubmited) {
+          debugPrint("event submited");
+
           Navigator.of(context).pop(); // Close loading spinner
 
           //! Trigger CategoryBloc untuk memuat ulang data kategori
@@ -82,9 +86,8 @@ class _HomeProposePageState extends State<HomeProposePage> {
           // } else if (state is EventLoaded) {
           Navigator.of(context).pop();
         } else if (state is EventLoadError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Error loading events")),
-          );
+          debugPrint("load error");
+          showError(context, state.message);
         }
       },
       // builder: (context, state) {
@@ -134,6 +137,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is EventLoaded) {
                       final events = state.event;
+                      debugPrint("List data: $events");
                       return ListView.builder(
                         controller: _scrollController,
                         padding: EdgeInsets.zero,

@@ -48,12 +48,13 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         child: const HomeExplorePage(),
       ),
       const HomeEventsPage(),
+      //! Ganti Request Propose By UserId
       BlocProvider(
         create: (context) => EventBloc()
           ..add(EventFetchData(
               requestEvent:
                   RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.approvedEvents)),
+              pathRequest: PathRequestEvents.allEvents)),
         child: const HomeApprovalPage(),
       ),
       const HomeProfilePage(),

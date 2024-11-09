@@ -46,7 +46,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
       // requestEvent.copyWith();
       context.read<EventBloc>().add(EventFetchData(
           requestEvent: requestEvent,
-          pathRequest: PathRequestEvents.approvedEvents));
+          pathRequest: PathRequestEvents.allEvents));
     }
   }
 
@@ -73,7 +73,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
           context.read<EventBloc>().add(EventFetchData(
               requestEvent:
                   RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.approvedEvents));
+              pathRequest: PathRequestEvents.allEvents));
         } else if (state is EventSubmited) {
           debugPrint("event submited");
 
@@ -82,7 +82,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
           //! Trigger CategoryBloc untuk memuat ulang data kategori
           context.read<EventBloc>().add(EventFetchData(
               requestEvent: requestEvent,
-              pathRequest: PathRequestEvents.approvedEvents));
+              pathRequest: PathRequestEvents.allEvents));
           // } else if (state is EventLoaded) {
           Navigator.of(context).pop();
         } else if (state is EventLoadError) {

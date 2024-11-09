@@ -6,7 +6,7 @@ import '../router/router.dart';
 import 'card_info_row.dart';
 import 'ui_colors.dart';
 
-class EventCardWithStatusWidget extends StatelessWidget {
+class EventCard extends StatelessWidget {
   final EventDataModel events;
   // final String tittle;
   // final String category;
@@ -17,7 +17,7 @@ class EventCardWithStatusWidget extends StatelessWidget {
   // final String dateStart;
   // final String status;
 
-  const EventCardWithStatusWidget({
+  const EventCard({
     super.key,
     required this.events,
     // required this.tittle,
@@ -34,7 +34,7 @@ class EventCardWithStatusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
+        Navigator.pushNamed(context, AppRouter.detailEventRoute,
             arguments: events);
       },
       child: Row(
@@ -60,23 +60,6 @@ class EventCardWithStatusWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: UIColor.getStatusColor(events.status),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-                    child: Text(
-                      events.status,
-                      style: const TextStyle(
-                        color: UIColor.solidWhite,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                  // const SizedBox(height: 8),
                   Text(
                     '${events.category}: ${events.title}',
                     style: const TextStyle(

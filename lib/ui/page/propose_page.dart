@@ -158,17 +158,8 @@ class _HomeProposePageState extends State<HomeProposePage> {
                             //! card event
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-                              child: InkWell(
-                                onTap: () {
-                                  debugPrint(
-                                      'Tapped on ${state.event[index].title}');
-                                  //! Isi dengan routing card tab
-                                  Navigator.pushNamed(
-                                      context, '/detailEventApproval');
-                                },
-                                child: EventCardWithStatusWidget(
-                                  events: events[index],
-                                ),
+                              child: EventCardWithStatusWidget(
+                                events: events[index],
                               ),
                             );
                           }

@@ -17,7 +17,10 @@ class EventModel extends Equatable {
       EventModel(
         status: json['status'],
         message: json['message'],
-        data: json['data'],
+        data: (json['data'] as List<dynamic>?)
+            ?.map(
+                (item) => EventDataModel.fromJson(item as Map<String, dynamic>))
+            .toList(),
       );
 
   @override
@@ -65,7 +68,7 @@ class EventDataModel extends Equatable {
 
   factory EventDataModel.fromJson(Map<String, dynamic> json) {
     return EventDataModel(
-      eventId: json['event_id'],
+      eventId: json['event_id'].toString(),
       title: json['title'],
       dateAdd: json['date_add'],
       proposeUsername: json['propose_user'],
@@ -74,7 +77,7 @@ class EventDataModel extends Equatable {
       posterUrl: json['poster'],
       location: json['location'],
       place: json['place'],
-      quota: json['quota'],
+      quota: json['quota'].toString(),
       dateStart: json['date_start'],
       dateEnd: json['date_end'],
       schedule: json['schedule'],

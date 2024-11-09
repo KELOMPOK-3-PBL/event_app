@@ -3,7 +3,7 @@ part of '../model.dart';
 class RequestFilteredEventModel extends Equatable {
   final String token;
   final String currentIndex;
-  final String postLimit = '5';
+  static const String postLimit = "5";
   final String? status;
   final String? category;
   final String? dateFrom;
@@ -15,7 +15,7 @@ class RequestFilteredEventModel extends Equatable {
   const RequestFilteredEventModel({
     required this.token,
     required this.currentIndex,
-    // required this.postLimit,
+    // this.postLimit,
     this.status,
     this.category,
     this.dateFrom,
@@ -40,7 +40,7 @@ class RequestFilteredEventModel extends Equatable {
     return RequestFilteredEventModel(
       token: token ?? this.token,
       currentIndex: currentIndex ?? this.currentIndex,
-      // postLimit: postLimit,
+      // postLimit: postLimit ?? this.postLimit,
       status: status ?? this.status,
       category: category ?? this.category,
       dateFrom: dateFrom ?? this.dateFrom,
@@ -49,6 +49,21 @@ class RequestFilteredEventModel extends Equatable {
       sortBy: sortBy ?? this.sortBy,
       sortOrder: sortOrder ?? this.sortOrder,
     );
+  }
+
+  // Convert the CategoryModel object to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'page': currentIndex,
+      'limit': postLimit,
+      'status': status,
+      'category': category,
+      'date_from': dateFrom,
+      'date_to': dateTo,
+      'search': search,
+      'sortBy': sortBy,
+      'sort_order': sortOrder,
+    };
   }
 
   @override

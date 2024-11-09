@@ -37,12 +37,12 @@ class AppRouter {
       return MultiBlocProvider(
         providers: [
           BlocProvider.value(value: context.read<AuthBloc>()),
-          BlocProvider(create: (context) => CategoryBloc()
-              // ..add(StatusReadData())
-              ),
-          BlocProvider(create: (context) => EventBloc()
-              // ..add(EventFetchData(requestEvent: RequestFilteredEventModel(token: token, currentIndex: currentIndex)))
-              ),
+          // BlocProvider(create: (context) => CategoryBloc()
+          //     // ..add(StatusReadData())
+          //     ),
+          // BlocProvider(create: (context) => EventBloc()
+          //     // ..add(EventFetchData(requestEvent: RequestFilteredEventModel(token: token, currentIndex: currentIndex)))
+          //     ),
         ],
         child: getHomeScreen(role),
       );

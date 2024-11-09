@@ -3,11 +3,13 @@ part of '../repository.dart';
 class EventRepository {
   final eventProvider = EventProvider();
 
-  Future<EventModel> getEventDataFromAPI(
+  Future<EventModel> getEventsFromAPI(
       {required RequestFilteredEventModel requestEvent}) async {
     try {
-      final response = await eventProvider.getFilteredEvents(requestEvent);
-      debugPrint(response.toString());
+      // final response = await eventProvider.getFilteredAllEvents(requestEvent);
+      final response =
+          await eventProvider.getFilteredApprovedEvents(requestEvent);
+      // debugPrint("Response data: ${response.data}");
 
       final data = response.data;
       if (response.statusCode == 200 && data["status"] == 'success') {

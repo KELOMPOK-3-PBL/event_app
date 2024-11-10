@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/auth_bloc/auth_bloc.dart';
 import '../screen/detail_event_approval_screen.dart';
 import '../screen/detail_event_screen.dart';
+import '../screen/form_propose_event.dart';
 import '../screen/home_admin_screen.dart';
 import '../screen/home_propose_screen.dart';
 import '../screen/home_superadmin_screen.dart';
@@ -18,11 +19,12 @@ class AppRouter {
   static const String welcomeRoute = '/welcome';
   static const String loginRoute = '/login';
   static const String homeRoute = '/';
-  static const String detailEventRoute = '/detailEvent';
+  static const String detailEventRoute = '/detail_event';
   static const String settingsRoute = '/settings';
-  static const String detailEventProposeRoute = '/detailEventPropose';
-  static const String detailEventApprovalRoute = '/detailEventApproval';
-  static const String searchResultEventRoute = '/searchResultEvent';
+  static const String detailEventProposeRoute = '/detail_event_propose';
+  static const String detailEventApprovalRoute = '/detail_event_approval';
+  static const String searchResultEventRoute = '/search_result_event';
+  static const String formProposeEventRoute = '/form_propose_event';
 
   static Map<String, WidgetBuilder> routes = {
     splashRoute: (context) => const SplashScreen(),
@@ -48,6 +50,7 @@ class AppRouter {
     searchResultEventRoute: (context) => const SearchResultEventsScreen(
           searchQuery: '',
         ),
+    formProposeEventRoute: (context) => const FormProposeEvent(),
   };
 
   static Widget getHomeScreen(String role) {

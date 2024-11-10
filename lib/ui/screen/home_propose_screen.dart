@@ -1,6 +1,9 @@
 import 'package:event_proposal_app/data/model/model.dart';
+import 'package:event_proposal_app/ui/router/router.dart';
+import 'package:event_proposal_app/ui/widget/ui_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/bloc.dart';
 import '../../data/provider/provider.dart';
@@ -79,6 +82,20 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
 
     return Scaffold(
       body: _buildWidgetOptions(token).elementAt(_currentIndex),
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(right: 13),
+        decoration: BoxDecoration(
+            color: UIColor.propose,
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        child: IconButton(
+          onPressed: () =>
+              Navigator.pushNamed(context, AppRouter.formProposeEventRoute),
+          icon: Icon(
+            UIconsPro.solidRounded.file_upload,
+            color: UIColor.solidWhite,
+          ),
+        ),
+      ),
       bottomNavigationBar: BottomNavbarPropose(
         currentIndex: _currentIndex,
         onItemTapped: _onItemTapped,

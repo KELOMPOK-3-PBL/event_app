@@ -36,7 +36,11 @@ class EventLoaded extends EventState {
   List<Object> get props => [event, hasReachedMax];
 }
 
-class EventSubmited extends EventState {}
+class EventSubmited extends EventState {
+  final EventDataModel event;
+
+  const EventSubmited(this.event);
+}
 
 class EventLoadError extends EventState {
   final String message;

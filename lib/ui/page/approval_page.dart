@@ -23,15 +23,37 @@ class HomeApprovalPage extends StatefulWidget {
 class _HomeApprovalPageState extends State<HomeApprovalPage> {
   final ScrollController _scrollController = ScrollController();
 
-  late String token;
+  late final String token;
 
   //! Updated request
-  late RequestFilteredEventModel requestEvent;
+
+  late final RequestFilteredEventModel requestFilteredEvent;
+
+  late final EventFetchAllData event;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+
+    token =
+        (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
+
+    requestFilteredEvent = RequestFilteredEventModel(
+      token: token,
+      currentIndex: '0',
+      status: '',
+      category: '',
+      dateFrom: '',
+      dateTo: '',
+      search: '',
+      sortBy: '',
+      sortOrder: '',
+    );
+
+    //! mengambil data dari event EventFetchData untuk diperbarui
+    // requestEvent = context.read<EventFetchData>().requestEvent;
+    // event = context.read<EventFetchData>();
   }
 
   bool get _isBottom {
@@ -42,13 +64,19 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   }
 
   void _onScroll() {
-    if (_isBottom) {
-      //! mengatasi perubahan request ketika di scroll
-      // requestEvent.copyWith();
-      context.read<EventBloc>().add(EventFetchData(
-          requestEvent: requestEvent,
-          pathRequest: PathRequestEvents.allEvents));
+    if (_isBottom &&
+        !(context.read<EventBloc>().state as EventLoaded).hasReachedMax) {
+      context.read<EventBloc>().add(EventFetchAllData(
+            requestEvent: requestFilteredEvent,
+          ));
     }
+    // if (_isBottom) {
+    //   //! mengatasi perubahan request ketika di scroll
+    //   // requestEvent.copyWith();
+    //   context
+    //       .read<EventBloc>()
+    //       .add(event.copyWith(requestEvent: requestEvent.copyWith()));
+    // }
   }
 
   @override
@@ -62,30 +90,22 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
     return BlocListener<EventBloc, EventState>(
       listener: (context, state) {
         //! Mengambil token
-        final authState = context.read<AuthBloc>().state;
-        token = (authState as AuthAuthenticated).authData.token!;
-        debugPrint("get");
-        debugPrint("Token: $token");
+        // final authState = context.read<AuthBloc>().state;
+        // token = (authState as AuthAuthenticated).authData.token!;
+        // debugPrint("get");
+        // debugPrint("Token: $token");
 
-        if (state is EventInitial) {
-          debugPrint("Initial fetch event");
+        if (state is EventSubmited) {
+          // debugPrint("event submited");
+          Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
+              arguments: state.event);
 
-          //! Inisialisasi permintaan awal
-          context.read<EventBloc>().add(EventFetchData(
-              requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.allEvents));
-        } else if (state is EventSubmited) {
-          debugPrint("event submited");
-
-          Navigator.of(context).pop(); // Close loading spinner
-
-          //! Trigger CategoryBloc untuk memuat ulang data kategori
-          context.read<EventBloc>().add(EventFetchData(
-              requestEvent: requestEvent,
-              pathRequest: PathRequestEvents.allEvents));
+          // Navigator.of(context).pop(); // Close loading spinner
+          // // context
+          //     .read<EventBloc>()
+          //     .add(EventCardPressed(event));
           // } else if (state is EventLoaded) {
-          Navigator.of(context).pop();
+          // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
           debugPrint("load error");
           showError(context, state.message);
@@ -161,6 +181,9 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
                               child: GestureDetector(
                                 onTap: () {
+                                  context
+                                      .read<EventBloc>()
+                                      .add(EventCardPressed(events[index]));
                                   Navigator.pushNamed(context,
                                       AppRouter.detailEventApprovalRoute,
                                       arguments: events);

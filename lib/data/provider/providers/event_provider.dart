@@ -6,16 +6,15 @@ class EventProvider {
   final dio = getIt<Dio>();
 
   // Inisialisasi path
-  static const String allEvents = '/events.php';
-  static const String approvedEvents = '/available_events.php';
+  static const String event = '/events.php';
+  static const String availableEvent = '/available_events.php';
 
   Future<Response> getFilteredEvents(RequestFilteredEventModel pathRequest,
       PathRequestEvents getAction) async {
     try {
       // Pengecekan path request dari parameter
-      final String path = (getAction == PathRequestEvents.allEvents)
-          ? allEvents
-          : approvedEvents;
+      final String path =
+          (getAction == PathRequestEvents.allEvents) ? event : availableEvent;
       // String path = approvedEvents;
       // if (getAction == PathRequestEvents.allEvents) {
       //   path = allEvents;
@@ -40,11 +39,46 @@ class EventProvider {
         options: options,
         queryParameters: queryParameters,
       );
-      // debugPrint('Success Response data: ${rawResponse.toString()}');
+      debugPrint('Success Response data: ${rawResponse.toString()}');
 
       return rawResponse;
     } on DioException catch (e) {
-      // debugPrint('Error response data: ${e.response.toString()}');
+      debugPrint('Error response data: ${e.response.toString()}');
+      return e.response!;
+    }
+  }
+
+  Future<Response> getFilteredEventsByUID(
+      RequestFilteredEventModel pathRequest, String uId) async {
+    try {
+      // Menyusun parameter query string
+      final queryParameters = pathRequest.toJson() // Menyederhanakan fungsi
+        ..removeWhere((key, value) =>
+            value == null); // Menghapus parameter yang bernilai null
+
+      // Add the user_id parameter
+      queryParameters['user_id'] = uId;
+
+      // Mengatur header dengan token untuk autentikasi
+      final options = Options(
+        contentType: 'application/json',
+        headers: {
+          'Authorization': 'Bearer ${pathRequest.token}',
+        },
+      );
+
+      // Melakukan permintaan GET dengan query parameters
+      final Response rawResponse = await dio.get(
+        event,
+        options: options,
+        queryParameters: queryParameters,
+      );
+
+      debugPrint('Success Response data: ${rawResponse.toString()}');
+
+      return rawResponse;
+    } on DioException catch (e) {
+      debugPrint('Error response data: ${e.response.toString()}');
       return e.response!;
     }
   }

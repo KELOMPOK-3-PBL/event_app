@@ -49,18 +49,18 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
       ),
       BlocProvider(
         create: (context) => EventBloc()
-          ..add(EventFetchData(
-              requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.approvedEvents)),
+          ..add(EventFetchProposedDataByUID(
+            requestEvent:
+                RequestFilteredEventModel(token: token, currentIndex: '0'),
+          )),
         child: const HomeEventsPage(),
       ),
       BlocProvider(
         create: (context) => EventBloc()
-          ..add(EventFetchData(
-              requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.approvedEvents)),
+          ..add(EventFetchProposedDataByUID(
+            requestEvent:
+                RequestFilteredEventModel(token: token, currentIndex: '0'),
+          )),
         child: const HomeProposePage(),
       ),
       const HomeProfilePage(),

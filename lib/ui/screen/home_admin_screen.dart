@@ -47,21 +47,28 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         create: (context) => CategoryBloc()..add(StatusReadData()),
         child: const HomeExplorePage(),
       ),
-      BlocProvider(
-        create: (context) => EventBloc()
-          ..add(EventFetchData(
-              requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.approvedEvents)),
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => EventBloc(),
+            // ..add(EventFetchData(
+            //     requestEvent:
+            //         RequestFilteredEventModel(token: token, currentIndex: '0'),
+            //     pathRequest: PathRequestEvents.approvedEvents)),
+          ),
+          BlocProvider.value(
+            value: context.read<AuthBloc>(),
+          ),
+        ],
         child: const HomeEventsPage(),
       ),
       //! Ganti Request Propose By UserId
       BlocProvider(
         create: (context) => EventBloc()
-          ..add(EventFetchData(
-              requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.allEvents)),
+          ..add(EventFetchAllData(
+            requestEvent:
+                RequestFilteredEventModel(token: token, currentIndex: '0'),
+          )),
         child: const HomeApprovalPage(),
       ),
       const HomeProfilePage(),
@@ -78,11 +85,14 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       );
     }
 
-    return Scaffold(
-      body: _buildWidgetOptions(token).elementAt(_currentIndex),
-      bottomNavigationBar: BottomNavbarAdmin(
-        currentIndex: _currentIndex,
-        onItemTapped: _onItemTapped,
+    return BlocProvider.value(
+      value: context.read<AuthBloc>(),
+      child: Scaffold(
+        body: _buildWidgetOptions(token).elementAt(_currentIndex),
+        bottomNavigationBar: BottomNavbarAdmin(
+          currentIndex: _currentIndex,
+          onItemTapped: _onItemTapped,
+        ),
       ),
     );
   }

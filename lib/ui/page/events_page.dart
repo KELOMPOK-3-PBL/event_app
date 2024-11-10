@@ -44,9 +44,9 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
     if (_isBottom) {
       //! mengatasi perubahan request ketika di scroll
       // requestEvent.copyWith();
-      context.read<EventBloc>().add(EventFetchData(
-          requestEvent: requestEvent,
-          pathRequest: PathRequestEvents.approvedEvents));
+      context.read<EventBloc>().add(EventFetchApprovedData(
+            requestEvent: requestEvent,
+          ));
     }
   }
 
@@ -63,26 +63,17 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
         //! Mengambil token
         final authState = context.read<AuthBloc>().state;
         token = (authState as AuthAuthenticated).authData.token!;
-        debugPrint("get");
         debugPrint("Token: $token");
 
-        if (state is EventInitial) {
-          debugPrint("Initial fetch event");
-
-          //! Inisialisasi permintaan awal
-          context.read<EventBloc>().add(EventFetchData(
-              requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.approvedEvents));
-        } else if (state is EventSubmited) {
+        if (state is EventSubmited) {
           debugPrint("event submited");
 
           Navigator.of(context).pop(); // Close loading spinner
 
           //! Trigger CategoryBloc untuk memuat ulang data kategori
-          context.read<EventBloc>().add(EventFetchData(
-              requestEvent: requestEvent,
-              pathRequest: PathRequestEvents.approvedEvents));
+          context.read<EventBloc>().add(EventFetchApprovedData(
+                requestEvent: requestEvent,
+              ));
           // } else if (state is EventLoaded) {
           Navigator.of(context).pop();
         } else if (state is EventLoadError) {

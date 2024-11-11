@@ -2,6 +2,7 @@ import 'package:event_proposal_app/data/model/model.dart';
 
 import '../../bloc/bloc.dart';
 
+import '../../data/provider/provider.dart';
 import '../router/router.dart';
 import '../screen/search_result_event_screen.dart';
 import '../widget/event_card_with_status.dart';
@@ -35,17 +36,15 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
     token =
         (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
 
-    requestFilteredEvent.copyWith(
+    requestFilteredEvent = RequestFilteredEventModel(
       token: token,
-      // currentIndex: '0',
-      status: '',
-      category: '',
-      dateFrom: '',
-      dateTo: '',
-      search: '',
-      sortBy: '',
-      sortOrder: '',
+      currentIndex: '0',
     );
+
+    context.read<EventBloc>().add(EventFetchData(
+          requestEvent: requestFilteredEvent,
+          pathRequest: PathRequestEvents.allEvents,
+        ));
 
     //! mengambil data dari event EventFetchData untuk diperbarui
     // requestEvent = context.read<EventFetchData>().requestEvent;
@@ -62,19 +61,18 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   void _onScroll() {
     if (_isBottom &&
         !(context.read<EventBloc>().state as EventLoaded).hasReachedMax) {
+      //! mengatasi perubahan request ketika di scroll
+      // mengambil request yang sudah diubah current statenya
+      requestFilteredEvent =
+          (context.read<EventBloc>().state as EventLoaded).requestEvent;
+      // requestEvent.copyWith();
       context.read<EventBloc>().add(
-            EventFetchAllData(
+            EventFetchData(
               requestEvent: requestFilteredEvent,
+              pathRequest: PathRequestEvents.allEvents,
             ),
           );
     }
-    // if (_isBottom) {
-    //   //! mengatasi perubahan request ketika di scroll
-    //   // requestEvent.copyWith();
-    //   context
-    //       .read<EventBloc>()
-    //       .add(event.copyWith(requestEvent: requestEvent.copyWith()));
-    // }
   }
 
   @override
@@ -182,9 +180,6 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                                   context
                                       .read<EventBloc>()
                                       .add(EventCardPressed(events[index]));
-                                  Navigator.pushNamed(context,
-                                      AppRouter.detailEventApprovalRoute,
-                                      arguments: events);
                                 },
                                 child: EventCardWithStatusWidget(
                                   events: events[index],

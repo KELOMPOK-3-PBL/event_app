@@ -59,7 +59,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
     if (_isBottom &&
         !(context.read<EventBloc>().state as EventLoaded).hasReachedMax) {
       context.read<EventBloc>().add(
-            EventFetchAllData(
+            EventFetchProposedDataByUID(
               requestEvent: requestFilteredEvent,
             ),
           );
@@ -94,7 +94,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
           // Navigator.of(context).pop(); // Close loading spinner
 
           //! Trigger CategoryBloc untuk memuat ulang data kategori
-          context.read<EventBloc>().add(EventFetchAllData(
+          context.read<EventBloc>().add(EventFetchProposedDataByUID(
                 requestEvent: requestFilteredEvent,
               ));
           // } else if (state is EventLoaded) {

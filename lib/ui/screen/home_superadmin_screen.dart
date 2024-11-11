@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/bloc.dart';
+import '../../data/provider/provider.dart';
 import '../navigation/bottom_navbar_superadmin.dart';
 import '../page/accounts_page.dart';
 import '../page/approval_page.dart';
@@ -48,17 +49,19 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
       ),
       BlocProvider(
         create: (context) => EventBloc()
-          ..add(EventFetchAllData(
+          ..add(EventFetchData(
             requestEvent:
                 RequestFilteredEventModel(token: token, currentIndex: '0'),
+            pathRequest: PathRequestEvents.approvedEvents,
           )),
         child: const HomeEventsPage(),
       ),
       BlocProvider(
         create: (context) => context.read<EventBloc>()
-          ..add(EventFetchAllData(
+          ..add(EventFetchData(
             requestEvent:
                 RequestFilteredEventModel(token: token, currentIndex: '0'),
+            pathRequest: PathRequestEvents.allEvents,
           )),
         child: const HomeApprovalPage(),
       ),

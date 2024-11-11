@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/bloc.dart';
+import '../../data/provider/provider.dart';
 import '../navigation/bottom_navbar_admin.dart';
 import '../page/approval_page.dart';
 import '../page/events_page.dart';
@@ -64,9 +65,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       //! Ganti Request Propose By UserId
       BlocProvider(
         create: (context) => EventBloc()
-          ..add(EventFetchAllData(
+          ..add(EventFetchData(
             requestEvent:
                 RequestFilteredEventModel(token: token, currentIndex: '0'),
+            pathRequest: PathRequestEvents.allEvents,
           )),
         child: const HomeApprovalPage(),
       ),

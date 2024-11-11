@@ -7,34 +7,34 @@ abstract class EventEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class EventFetchAllData extends EventEvent {
+class EventFetchData extends EventEvent {
   final RequestFilteredEventModel requestEvent;
-  final PathRequestEvents pathRequest = PathRequestEvents.allEvents;
+  final PathRequestEvents pathRequest;
+  // final PathRequestEvents pathRequest = PathRequestEvents.approvedEvents;
 
-  const EventFetchAllData({required this.requestEvent});
+  const EventFetchData({required this.pathRequest, required this.requestEvent});
 
   @override
   List<Object> get props => [requestEvent, pathRequest];
 }
 
-class EventFetchApprovedData extends EventEvent {
-  final RequestFilteredEventModel requestEvent;
-  final PathRequestEvents pathRequest = PathRequestEvents.approvedEvents;
+// class EventFetchApprovedData extends EventEvent {
+//   final RequestFilteredEventModel requestEvent;
+//   final PathRequestEvents pathRequest = PathRequestEvents.approvedEvents;
 
-  const EventFetchApprovedData({required this.requestEvent});
+//   const EventFetchApprovedData({required this.requestEvent});
 
-  @override
-  List<Object> get props => [requestEvent, pathRequest];
-}
+//   @override
+//   List<Object> get props => [requestEvent, pathRequest];
+// }
 
 class EventFetchProposedDataByUID extends EventEvent {
   final RequestFilteredEventModel requestEvent;
-  final PathRequestEvents pathRequest = PathRequestEvents.approvedEvents;
 
   const EventFetchProposedDataByUID({required this.requestEvent});
 
   @override
-  List<Object> get props => [requestEvent, pathRequest];
+  List<Object> get props => [requestEvent];
 }
 
 class EventFilterApply extends EventEvent {}

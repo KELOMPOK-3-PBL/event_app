@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/model/model.dart';
@@ -24,7 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final authData = await _authRepository.checkAuthentication();
       // emit(AuthLoading());
-      debugPrint(authData.toString());
+      // debugPrint(authData.toString());
       if (authData?.status == 'success') {
         emit(AuthAuthenticated(authData: authData!));
       } else {

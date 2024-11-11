@@ -2,6 +2,8 @@ import 'package:event_proposal_app/data/model/model.dart';
 
 import '../../bloc/bloc.dart';
 
+import '../../data/provider/provider.dart';
+import '../router/router.dart';
 import '../screen/search_result_event_screen.dart';
 import '../widget/event_card.dart';
 import '../widget/search_widget.dart';
@@ -33,21 +35,15 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
 
     token =
         (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
-    requestFilteredEvent = RequestFilteredEventModel(
-      token: token,
-      currentIndex: '0',
-      status: '',
-      category: '',
-      dateFrom: '',
-      dateTo: '',
-      search: '',
-      sortBy: '',
-      sortOrder: '',
-    );
 
-    context.read<EventBloc>().add(EventFetchAllData(
-          requestEvent: requestFilteredEvent,
-        ));
+    // requestFilteredEvent = RequestFilteredEventModel(
+    //   token: token,
+    //   currentIndex: '0',
+    // );
+
+    // context.read<EventBloc>().add(EventFetchAllData(
+    //       requestEvent: requestFilteredEvent,
+    //     ));
   }
 
   bool get _isBottom {
@@ -58,12 +54,18 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
   }
 
   void _onScroll() {
-    if (_isBottom) {
+    // if (_isBottom) {
+    if (_isBottom &&
+        !(context.read<EventBloc>().state as EventLoaded).hasReachedMax) {
       //! mengatasi perubahan request ketika di scroll
+      // mengambil request yang sudah diubah current statenya
+      requestFilteredEvent =
+          (context.read<EventBloc>().state as EventLoaded).requestEvent;
       // requestEvent.copyWith();
       context.read<EventBloc>().add(
-            EventFetchAllData(
-              requestEvent: requestFilteredEvent.copyWith(),
+            EventFetchData(
+              requestEvent: requestFilteredEvent,
+              pathRequest: PathRequestEvents.approvedEvents,
             ),
           );
     }
@@ -88,6 +90,8 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
           // debugPrint("event submited");
 
           // Navigator.of(context).pop(); // Close loading spinner
+          Navigator.pushNamed(context, AppRouter.detailEventRoute,
+              arguments: state.event);
 
           //! Trigger CategoryBloc untuk memuat ulang data kategori
           // context.read<EventBloc>().add(EventFetchApprovedData(
@@ -157,6 +161,7 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
                         itemBuilder: (context, index) {
                           final events = state.event;
                           if (index >= events.length) {
+                            //! Loader ditampilkan hanya ketika belum mencapai batas maksimum data
                             return Padding(
                               padding:
                                   const EdgeInsets.only(top: 10, bottom: 20),
@@ -168,8 +173,15 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
                             //! card event
                             return Padding(
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-                              child: EventCard(
-                                events: events[index],
+                              child: GestureDetector(
+                                onTap: () {
+                                  context
+                                      .read<EventBloc>()
+                                      .add(EventCardPressed(events[index]));
+                                },
+                                child: EventCard(
+                                  events: events[index],
+                                ),
                               ),
                             );
                           }

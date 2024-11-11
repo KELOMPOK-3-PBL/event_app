@@ -15,19 +15,23 @@ class EventLoading extends EventState {}
 
 class EventLoaded extends EventState {
   final List<EventDataModel> event;
+  final RequestFilteredEventModel requestEvent;
   final bool hasReachedMax;
 
   const EventLoaded({
     required this.event,
+    required this.requestEvent,
     required this.hasReachedMax,
   });
 
   EventLoaded copyWith({
     List<EventDataModel>? event,
+    RequestFilteredEventModel? requestEvent,
     bool? hasReachedMax,
   }) {
     return EventLoaded(
       event: event ?? this.event,
+      requestEvent: requestEvent ?? this.requestEvent,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
     );
   }

@@ -78,7 +78,6 @@ class MyApp extends StatelessWidget {
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            debugPrint(state.authData.message);
             debugPrint(state.authData.toString());
             initialRoute = AppRouter.homeRoute;
           } else {

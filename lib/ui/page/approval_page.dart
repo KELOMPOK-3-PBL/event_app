@@ -1,5 +1,4 @@
 import 'package:event_proposal_app/data/model/model.dart';
-import 'package:event_proposal_app/data/provider/provider.dart';
 
 import '../../bloc/bloc.dart';
 
@@ -26,10 +25,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   late final String token;
 
   //! Updated request
-
   late final RequestFilteredEventModel requestFilteredEvent;
-
-  late final EventFetchAllData event;
 
   @override
   void initState() {
@@ -39,9 +35,9 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
     token =
         (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
 
-    requestFilteredEvent = RequestFilteredEventModel(
+    requestFilteredEvent.copyWith(
       token: token,
-      currentIndex: '0',
+      // currentIndex: '0',
       status: '',
       category: '',
       dateFrom: '',
@@ -66,9 +62,11 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   void _onScroll() {
     if (_isBottom &&
         !(context.read<EventBloc>().state as EventLoaded).hasReachedMax) {
-      context.read<EventBloc>().add(EventFetchAllData(
-            requestEvent: requestFilteredEvent,
-          ));
+      context.read<EventBloc>().add(
+            EventFetchAllData(
+              requestEvent: requestFilteredEvent,
+            ),
+          );
     }
     // if (_isBottom) {
     //   //! mengatasi perubahan request ketika di scroll

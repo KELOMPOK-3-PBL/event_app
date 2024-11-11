@@ -12,26 +12,30 @@ class EventProvider {
   Future<Response> getFilteredEvents(RequestFilteredEventModel pathRequest,
       PathRequestEvents getAction) async {
     try {
-      // Pengecekan path request dari parameter
-      final String path =
-          (getAction == PathRequestEvents.allEvents) ? event : availableEvent;
+      String path = availableEvent;
+      // final String path =
+      //     (getAction == PathRequestEvents.allEvents) ? event : availableEvent;
       // String path = approvedEvents;
-      // if (getAction == PathRequestEvents.allEvents) {
-      //   path = allEvents;
-      // }
+
+      var options = Options(
+        contentType: 'application/json',
+      );
+
+      if (getAction == PathRequestEvents.allEvents) {
+        path = event;
+        // Mengatur header dengan token untuk autentikasi
+        options = Options(
+          contentType: 'application/json',
+          headers: {
+            'Authorization': "Bearer ${pathRequest.token}",
+          },
+        );
+      }
 
       // Menyusun parameter query string
       final queryParameters = pathRequest.toJson() // Menyederhanakan fungsi
         ..removeWhere((key, value) =>
             value == null); // Menghapus parameter yang bernilai null
-
-      // Mengatur header dengan token untuk autentikasi
-      final options = Options(
-        contentType: 'application/json',
-        headers: {
-          'Authorization': 'Bearer ${pathRequest.token}',
-        },
-      );
 
       // Melakukan permintaan GET dengan query parameters
       final Response rawResponse = await dio.get(
@@ -63,7 +67,7 @@ class EventProvider {
       final options = Options(
         contentType: 'application/json',
         headers: {
-          'Authorization': 'Bearer ${pathRequest.token}',
+          'Authorization': pathRequest.token,
         },
       );
 

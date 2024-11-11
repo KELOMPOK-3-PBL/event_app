@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:photo_view/photo_view.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
-import '../navigation/bottom_button_approval.dart';
 import '../widget/ui_colors.dart';
 
 class FormProposeEvent extends StatefulWidget {
@@ -15,23 +13,9 @@ class FormProposeEvent extends StatefulWidget {
 class FormProposeEventState extends State<FormProposeEvent> {
   TextEditingController adminNoteController = TextEditingController(text: '-');
 
-  // late ScrollController _scrollController;
-  // bool _isScrolled = false;
-
   @override
   void initState() {
     super.initState();
-    // _scrollController = ScrollController();
-    // _scrollController.addListener(() {
-    //   if (_scrollController.hasClients) {
-    //     final isScrolled = _scrollController.offset > 200;
-    //     if (isScrolled != _isScrolled) {
-    //       setState(() {
-    //         _isScrolled = isScrolled;
-    //       });
-    //     }
-    //   }
-    // });
   }
 
   @override
@@ -39,68 +23,6 @@ class FormProposeEventState extends State<FormProposeEvent> {
     // _scrollController.removeListener(_scrollListener);
     // _scrollController.dispose();
     super.dispose();
-  }
-
-  // void _scrollListener() {
-  //   if (_scrollController.offset > 200 && !_isScrolled) {
-  //     setState(() {
-  //       _isScrolled = true;
-  //     });
-  //   } else if (_scrollController.offset <= 200 && _isScrolled) {
-  //     setState(() {
-  //       _isScrolled = false;
-  //     });
-  //   }
-  // }
-
-  // Fungsi untuk mengubah status
-  void _changeStatus() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog();
-      },
-    );
-  }
-
-  // Fungsi untuk menampilkan dialog pengeditan
-  void _showEditNoteDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Edit Admin Note"),
-          content: TextField(
-            controller: adminNoteController,
-            maxLines: 4,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: "Enter new admin note...",
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("Cancel"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  // Update admin note dengan teks baru dari controller
-                });
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-              ),
-              child: Text("Save"),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -159,16 +81,6 @@ class FormProposeEventState extends State<FormProposeEvent> {
                           color: UIColor.typoBlack),
                     ),
                   ),
-                  // Container(
-                  //   // margin: EdgeInsetsDirectional.only(bottom: 4),
-                  //   width: double.infinity,
-                  //   padding: EdgeInsets.symmetric(vertical: 12, horizontal: 14),
-                  //   decoration: BoxDecoration(
-                  //     color: UIColor.solidWhite,
-                  //     borderRadius: BorderRadius.circular(12),
-                  //     // border: Border.all(color: Colors.grey[300]!),
-                  //   ),
-                  // child:
                   TextFormField(
                     expands: false,
                     // controller: _passwordController,
@@ -231,8 +143,6 @@ class FormProposeEventState extends State<FormProposeEvent> {
           ),
         ],
       ),
-      // bottomNavigationBar: BottomButtonApproval(
-      //     changeStatus: _changeStatus, showEditNoteDialog: _showEditNoteDialog),
     );
   }
 }

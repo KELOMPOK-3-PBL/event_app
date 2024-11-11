@@ -28,6 +28,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       _onEventFetchData,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     );
+    // on<EventFetchApprovedData>(_onEventFetchApprovedData);
     on<EventCardPressed>(_onEventButtonPressed);
   }
 
@@ -101,23 +102,24 @@ class EventBloc extends Bloc<EventEvent, EventState> {
 
       try {
         //! Mengambil dan menambah dari data statis
-        final newEvents = await eventRepository.getEventData(
-            startIndex: currentState.event.length);
+        // final newEvents = await eventRepository.getEventData(
+        //     startIndex: currentState.event.length);
         //! Mengambil dan menambah data berdasarkan request pada UI ke API
         // Mengganti currentIndex untuk permintaan
-        // final newEvents = await eventRepository.getEventsFromAPI(
-        //     requestEvent: event.requestEvent
-        //         .copyWith(currentIndex: currentState.event.length.toString()));
+        final newEvents = await eventRepository.getEventsFromAPI(
+            requestEvent: event.requestEvent
+                .copyWith(currentIndex: currentState.event.length.toString()),
+            pathRequest: event.pathRequest);
         //! Gabungkan data baru dengan yang sudah ada
-        final events = currentState.event + newEvents;
+        final events = currentState.event + newEvents.data!;
 
         debugPrint("Fetch Event: ${events.toString()}");
-        if (newEvents.isNotEmpty && newEvents.length < 4) {
-          debugPrint("Event baru dikirim: ${newEvents.length}");
+        if (newEvents.data!.isNotEmpty && newEvents.data!.length < 4) {
+          debugPrint("Event baru dikirim: ${newEvents.data!.length}");
           // emit(EventLoadedMax());
           emit(currentState.copyWith(event: events, hasReachedMax: true));
           // currentState.copyWith(event: events));
-        } else if (newEvents.isEmpty) {
+        } else if (newEvents.data!.isEmpty) {
           emit(currentState.copyWith(hasReachedMax: true));
         } else {
           // emit(currentState.copyWith(event: events));
@@ -133,13 +135,13 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       try {
         emit(EventLoading()); //! Loading awal saat memuat event pertama kai
         //! Mengambil data awal dari data statis
-        final events = await eventRepository.getEventData(startIndex: 0);
+        // final events = await eventRepository.getEventData(startIndex: 0);
         //! Mengambil data awal berdasarkan request pada UI ke API
-        // final EventModel events = await eventRepository.getEventsFromAPI(
-        //     requestEvent: event.requestEvent);
+        final EventModel events = await eventRepository.getEventsFromAPI(
+            requestEvent: event.requestEvent, pathRequest: event.pathRequest);
         debugPrint("Event dikirim: ${events.toString()}");
 
-        emit(EventLoaded(event: events, hasReachedMax: false));
+        emit(EventLoaded(event: events.data!, hasReachedMax: false));
       } catch (_) {
         emit(EventLoadError("Failed to load initial events"));
       }

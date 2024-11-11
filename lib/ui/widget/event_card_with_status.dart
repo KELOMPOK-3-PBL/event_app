@@ -2,7 +2,6 @@ import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
-import '../router/router.dart';
 import 'card_info_row.dart';
 import 'ui_colors.dart';
 

@@ -1,5 +1,4 @@
 import 'package:event_proposal_app/data/model/model.dart';
-import 'package:event_proposal_app/data/provider/provider.dart';
 
 import '../../bloc/bloc.dart';
 
@@ -25,12 +24,30 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
   late String token;
 
   //! Updated request
-  late RequestFilteredEventModel requestEvent;
+  late RequestFilteredEventModel requestFilteredEvent;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+
+    token =
+        (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
+    requestFilteredEvent = RequestFilteredEventModel(
+      token: token,
+      currentIndex: '0',
+      status: '',
+      category: '',
+      dateFrom: '',
+      dateTo: '',
+      search: '',
+      sortBy: '',
+      sortOrder: '',
+    );
+
+    context.read<EventBloc>().add(EventFetchAllData(
+          requestEvent: requestFilteredEvent,
+        ));
   }
 
   bool get _isBottom {
@@ -44,9 +61,11 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
     if (_isBottom) {
       //! mengatasi perubahan request ketika di scroll
       // requestEvent.copyWith();
-      context.read<EventBloc>().add(EventFetchApprovedData(
-            requestEvent: requestEvent,
-          ));
+      context.read<EventBloc>().add(
+            EventFetchAllData(
+              requestEvent: requestFilteredEvent.copyWith(),
+            ),
+          );
     }
   }
 
@@ -61,21 +80,21 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
     return BlocListener<EventBloc, EventState>(
       listener: (context, state) {
         //! Mengambil token
-        final authState = context.read<AuthBloc>().state;
-        token = (authState as AuthAuthenticated).authData.token!;
-        debugPrint("Token: $token");
+        // final authState = context.read<AuthBloc>().state;
+        // token = (authState as AuthAuthenticated).authData.token!;
+        // debugPrint("Token: $token");
 
         if (state is EventSubmited) {
-          debugPrint("event submited");
+          // debugPrint("event submited");
 
-          Navigator.of(context).pop(); // Close loading spinner
+          // Navigator.of(context).pop(); // Close loading spinner
 
           //! Trigger CategoryBloc untuk memuat ulang data kategori
-          context.read<EventBloc>().add(EventFetchApprovedData(
-                requestEvent: requestEvent,
-              ));
+          // context.read<EventBloc>().add(EventFetchApprovedData(
+          //       requestEvent: requestFilteredEvent,
+          //     ));
           // } else if (state is EventLoaded) {
-          Navigator.of(context).pop();
+          // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
           debugPrint("load error");
           showError(context, state.message);

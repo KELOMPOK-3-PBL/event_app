@@ -2,7 +2,6 @@ import 'package:event_proposal_app/data/model/model.dart';
 
 import '../../bloc/bloc.dart';
 
-import '../../data/provider/provider.dart';
 import '../router/router.dart';
 import '../screen/search_result_event_screen.dart';
 import '../widget/event_card_with_status.dart';

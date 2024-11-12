@@ -57,9 +57,10 @@ class _HomeProposePageState extends State<HomeProposePage> {
 
   void _onScroll() {
     if (_isBottom &&
-        !(context.read<EventBloc>().state as EventLoaded).hasReachedMax) {
+        !(context.read<EventBloc>().state as EventApprovedLoaded)
+            .hasReachedMax) {
       context.read<EventBloc>().add(
-            EventFetchProposedDataByUID(
+            EventFetchProposedDataByProposeUID(
               requestEvent: requestFilteredEvent,
             ),
           );
@@ -94,7 +95,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
           // Navigator.of(context).pop(); // Close loading spinner
 
           //! Trigger CategoryBloc untuk memuat ulang data kategori
-          context.read<EventBloc>().add(EventFetchProposedDataByUID(
+          context.read<EventBloc>().add(EventFetchProposedDataByProposeUID(
                 requestEvent: requestFilteredEvent,
               ));
           // } else if (state is EventLoaded) {
@@ -149,7 +150,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
                   builder: (context, state) {
                     if (state is EventLoading) {
                       return const Center(child: CircularProgressIndicator());
-                    } else if (state is EventLoaded) {
+                    } else if (state is EventApprovedLoaded) {
                       final events = state.event;
                       debugPrint("List data: $events");
                       return ListView.builder(

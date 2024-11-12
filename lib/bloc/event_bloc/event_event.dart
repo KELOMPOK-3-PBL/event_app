@@ -7,37 +7,48 @@ abstract class EventEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class EventFetchData extends EventEvent {
+class EventFetchApprovedData extends EventEvent {
   final RequestFilteredEventModel requestEvent;
-  final PathRequestEvents pathRequest;
-  // final PathRequestEvents pathRequest = PathRequestEvents.approvedEvents;
+  // final PathRequestEvents pathRequest;
+  final PathRequestEvents pathRequest = PathRequestEvents.approvedEvents;
 
-  const EventFetchData({required this.pathRequest, required this.requestEvent});
+  const EventFetchApprovedData({required this.requestEvent});
 
   @override
   List<Object> get props => [requestEvent, pathRequest];
 }
 
-// class EventFetchApprovedData extends EventEvent {
-//   final RequestFilteredEventModel requestEvent;
-//   final PathRequestEvents pathRequest = PathRequestEvents.approvedEvents;
-
-//   const EventFetchApprovedData({required this.requestEvent});
-
-//   @override
-//   List<Object> get props => [requestEvent, pathRequest];
-// }
-
-class EventFetchProposedDataByUID extends EventEvent {
+class EventFetchAllData extends EventEvent {
   final RequestFilteredEventModel requestEvent;
+  final PathRequestEvents pathRequest = PathRequestEvents.allEvents;
 
-  const EventFetchProposedDataByUID({required this.requestEvent});
+  const EventFetchAllData({required this.requestEvent});
+
+  @override
+  List<Object> get props => [requestEvent, pathRequest];
+}
+
+class EventFetchProposedDataByProposeUID extends EventEvent {
+  final RequestFilteredEventModel requestEvent;
+  final PathRequestEvents pathRequest = PathRequestEvents.allEvents;
+
+  const EventFetchProposedDataByProposeUID({required this.requestEvent});
 
   @override
   List<Object> get props => [requestEvent];
 }
 
-class EventFilterApply extends EventEvent {}
+class EventFetchApprovalDataByAdminUID extends EventEvent {
+  final RequestFilteredEventModel requestEvent;
+  final PathRequestEvents pathRequest = PathRequestEvents.allEvents;
+
+  const EventFetchApprovalDataByAdminUID({required this.requestEvent});
+
+  @override
+  List<Object> get props => [requestEvent];
+}
+
+// class EventFilterApply extends EventEvent {}
 
 class EventCardPressed extends EventEvent {
   final EventDataModel event;

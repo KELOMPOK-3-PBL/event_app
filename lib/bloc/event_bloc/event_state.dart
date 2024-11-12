@@ -13,23 +13,23 @@ class EventLoading extends EventState {}
 
 // class EventLoadedMax extends EventState {}
 
-class EventLoaded extends EventState {
+class EventApprovedLoaded extends EventState {
   final List<EventDataModel> event;
   final RequestFilteredEventModel requestEvent;
   final bool hasReachedMax;
 
-  const EventLoaded({
+  const EventApprovedLoaded({
     required this.event,
     required this.requestEvent,
     required this.hasReachedMax,
   });
 
-  EventLoaded copyWith({
+  EventApprovedLoaded copyWith({
     List<EventDataModel>? event,
     RequestFilteredEventModel? requestEvent,
     bool? hasReachedMax,
   }) {
-    return EventLoaded(
+    return EventApprovedLoaded(
       event: event ?? this.event,
       requestEvent: requestEvent ?? this.requestEvent,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
@@ -37,7 +37,88 @@ class EventLoaded extends EventState {
   }
 
   @override
-  List<Object> get props => [event, hasReachedMax];
+  List<Object> get props => [event, requestEvent, hasReachedMax];
+}
+
+class EventProposedByProposeUIDLoaded extends EventState {
+  final List<EventDataModel> event;
+  final RequestFilteredEventModel requestEvent;
+  final bool hasReachedMax;
+
+  const EventProposedByProposeUIDLoaded({
+    required this.event,
+    required this.requestEvent,
+    required this.hasReachedMax,
+  });
+
+  EventProposedByProposeUIDLoaded copyWith({
+    List<EventDataModel>? event,
+    RequestFilteredEventModel? requestEvent,
+    bool? hasReachedMax,
+  }) {
+    return EventProposedByProposeUIDLoaded(
+      event: event ?? this.event,
+      requestEvent: requestEvent ?? this.requestEvent,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    );
+  }
+
+  @override
+  List<Object> get props => [event, requestEvent, hasReachedMax];
+}
+
+class EventApprovalByAdminUIDLoaded extends EventState {
+  final List<EventDataModel> event;
+  final RequestFilteredEventModel requestEvent;
+  final bool hasReachedMax;
+
+  const EventApprovalByAdminUIDLoaded({
+    required this.event,
+    required this.requestEvent,
+    required this.hasReachedMax,
+  });
+
+  EventApprovalByAdminUIDLoaded copyWith({
+    List<EventDataModel>? event,
+    RequestFilteredEventModel? requestEvent,
+    bool? hasReachedMax,
+  }) {
+    return EventApprovalByAdminUIDLoaded(
+      event: event ?? this.event,
+      requestEvent: requestEvent ?? this.requestEvent,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    );
+  }
+
+  @override
+  List<Object> get props => [event, requestEvent, hasReachedMax];
+}
+
+class EventAllLoaded extends EventState {
+  final List<EventDataModel> event;
+  final RequestFilteredEventModel requestEvent;
+  final bool hasReachedMax;
+
+  const EventAllLoaded({
+    required this.event,
+    required this.requestEvent,
+    required this.hasReachedMax,
+  });
+
+  EventAllLoaded copyWith({
+    List<EventDataModel>? event,
+    RequestFilteredEventModel? requestEvent,
+    bool? hasReachedMax,
+  }) {
+    return EventAllLoaded(
+      event: event ?? this.event,
+      requestEvent: requestEvent ?? this.requestEvent,
+      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    );
+  }
+
+  @override
+  List<Object> get props => [event, requestEvent, hasReachedMax];
 }
 
 class EventSubmited extends EventState {

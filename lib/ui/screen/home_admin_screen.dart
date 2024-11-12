@@ -1,9 +1,7 @@
-import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/bloc.dart';
-import '../../data/provider/provider.dart';
 import '../navigation/bottom_navbar_admin.dart';
 import '../page/approval_page.dart';
 import '../page/events_page.dart';
@@ -43,35 +41,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   List<Widget> _buildWidgetOptions(String token) {
     return [
-      BlocProvider(
-        create: (context) => CategoryBloc()..add(StatusReadData()),
-        child: const HomeExplorePage(),
-      ),
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => EventBloc(),
-            // ..add(EventFetchData(
-            //     requestEvent:
-            //         RequestFilteredEventModel(token: token, currentIndex: '0'),
-            //     pathRequest: PathRequestEvents.approvedEvents)),
-          ),
-          BlocProvider.value(
-            value: context.read<AuthBloc>(),
-          ),
-        ],
-        child: const HomeEventsPage(),
-      ),
-      //! Ganti Request Propose By UserId
-      BlocProvider(
-        create: (context) => EventBloc()
-          ..add(EventFetchData(
-            requestEvent:
-                RequestFilteredEventModel(token: token, currentIndex: '0'),
-            pathRequest: PathRequestEvents.allEvents,
-          )),
-        child: const HomeApprovalPage(),
-      ),
+      const HomeExplorePage(),
+      const HomeEventsPage(),
+      const HomeApprovalPage(),
       const HomeProfilePage(),
     ];
   }
@@ -86,8 +58,18 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       );
     }
 
-    return BlocProvider.value(
-      value: context.read<AuthBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: context.read<AuthBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => EventBloc(),
+        ),
+        BlocProvider(
+          create: (context) => CategoryBloc()..add(StatusReadData()),
+        ),
+      ],
       child: Scaffold(
         body: _buildWidgetOptions(token).elementAt(_currentIndex),
         bottomNavigationBar: BottomNavbarAdmin(

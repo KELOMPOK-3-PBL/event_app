@@ -41,9 +41,8 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
       currentIndex: '0',
     );
 
-    context.read<EventBloc>().add(EventFetchData(
+    context.read<EventBloc>().add(EventFetchApprovedData(
           requestEvent: requestFilteredEvent,
-          pathRequest: PathRequestEvents.allEvents,
         ));
 
     //! mengambil data dari event EventFetchData untuk diperbarui
@@ -60,16 +59,16 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
 
   void _onScroll() {
     if (_isBottom &&
-        !(context.read<EventBloc>().state as EventLoaded).hasReachedMax) {
+        !(context.read<EventBloc>().state as EventApprovedLoaded)
+            .hasReachedMax) {
       //! mengatasi perubahan request ketika di scroll
       // mengambil request yang sudah diubah current statenya
       // requestFilteredEvent =
       //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
       // requestEvent.copyWith();
       context.read<EventBloc>().add(
-            EventFetchData(
+            EventFetchApprovedData(
               requestEvent: requestFilteredEvent,
-              pathRequest: PathRequestEvents.allEvents,
             ),
           );
     }
@@ -97,11 +96,10 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
               arguments: state.event);
 
           // Navigator.of(context).pop(); // Close loading spinner
-          context.read<EventBloc>().add(EventFetchData(
+          context.read<EventBloc>().add(EventFetchApprovedData(
                 requestEvent: requestFilteredEvent,
-                pathRequest: PathRequestEvents.allEvents,
               ));
-        } else if (state is EventLoaded) {
+        } else if (state is EventApprovedLoaded) {
           requestFilteredEvent = state.requestEvent;
           // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
@@ -154,7 +152,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                   builder: (context, state) {
                     if (state is EventLoading) {
                       return const Center(child: CircularProgressIndicator());
-                    } else if (state is EventLoaded) {
+                    } else if (state is EventApprovedLoaded) {
                       final events = state.event;
                       debugPrint("List data: $events");
                       return ListView.builder(

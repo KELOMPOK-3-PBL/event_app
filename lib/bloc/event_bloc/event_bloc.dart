@@ -11,7 +11,6 @@ import '../../data/model/model.dart';
 part 'event_event.dart';
 part 'event_state.dart';
 
-// const _limit = 5;
 const throttleDuration = Duration(milliseconds: 100);
 
 EventTransformer<E> throttleDroppable<E>(Duration duration) {
@@ -24,15 +23,26 @@ class EventBloc extends Bloc<EventEvent, EventState> {
   final eventRepository = EventRepository();
 
   EventBloc() : super(EventInitial()) {
-    on<EventFetchData>(
-      _onEventFetchData,
+    on<EventFetchApprovedData>(
+      _onEventFetchApprovedData,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     );
-    // on<EventFetchApprovedData>(_onEventFetchApprovedData);
-    on<EventCardPressed>(_onEventButtonPressed);
+    on<EventFetchAllData>(
+      _onEventFetchAllData,
+      transformer: throttleDroppable(throttleDuration),
+    );
+    on<EventFetchApprovalDataByAdminUID>(
+      _onEventFetchApprovalDataByAdminUID,
+      transformer: throttleDroppable(throttleDuration),
+    );
+    on<EventFetchProposedDataByProposeUID>(
+      _onEventFetchProposedDataByProposeUID,
+      transformer: throttleDroppable(throttleDuration),
+    );
+    on<EventCardPressed>(_onEventCardPressed);
   }
 
-  void _onEventButtonPressed(
+  void _onEventCardPressed(
       EventCardPressed event, Emitter<EventState> emit) async {
     emit(EventLoading());
     try {
@@ -42,60 +52,11 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     }
   }
 
-  // void _onEventFetchData(
-  //     EventFetchAllData event, Emitter<EventState> emit) async {
-  //   try {
-  //     // Kondisi jika state adalah EventLoaded, berarti data sudah ada dan ingin ditambahkan
-  //     if (state is EventLoaded) {
-  //       final currentState = state as EventLoaded;
-
-  //       debugPrint("Index ke-${currentState.event.length}");
-
-  //       // Jika sudah mencapai batas maksimum, keluar dari fungsi tanpa memuat lagi
-  //       if (currentState.hasReachedMax) return;
-
-  //       // Memuat data tambahan dari API berdasarkan request dengan currentIndex
-  //       final newEvents = await eventRepository.getEventsFromAPI(
-  //           requestEvent: event.requestEvent
-  //               .copyWith(currentIndex: currentState.event.length.toString()),
-  //           pathRequest: event.pathRequest);
-
-  //       // Gabungkan data yang sudah ada dengan data baru jika tidak null
-  //       final combinedEvents = currentState.event + (newEvents.data ?? []);
-
-  //       debugPrint("Fetch Event: ${combinedEvents.toString()}");
-
-  //       // Cek apakah data baru kosong atau kurang dari batas (misal 4)
-  //       final reachedMax = newEvents.data == null || newEvents.length < 4;
-  //       emit(currentState.copyWith(
-  //           event: combinedEvents, hasReachedMax: reachedMax));
-  //     }
-  //     // Kondisi jika state adalah EventInitial, berarti ini pemuatan data awal
-  //     else {
-  //       emit(EventLoading());
-
-  //       // Memuat data awal dari API
-  //       final EventModel initialEvents = await eventRepository.getEventsFromAPI(
-  //           requestEvent: event.requestEvent, pathRequest: event.pathRequest);
-
-  //       debugPrint("Initial Event Load: ${initialEvents.toString()}");
-
-  //       // Jika data awal kosong, langsung set hasReachedMax ke true
-  //       if (initialEvents.data == null || initialEvents.isEmpty) {
-  //         emit(EventLoaded(event: [], hasReachedMax: true));
-  //       } else {
-  //         emit(EventLoaded(event: initialEvents, hasReachedMax: false));
-  //       }
-  //     }
-  //   } catch (error) {
-  //     emit(EventLoadError("Gagal Load Event: ${error.toString()}"));
-  //   }
-  // }
-
-  void _onEventFetchData(EventFetchData event, Emitter<EventState> emit) async {
-    if (state is EventLoaded) {
+  void _onEventFetchApprovedData(
+      EventFetchApprovedData event, Emitter<EventState> emit) async {
+    if (state is EventApprovedLoaded) {
       try {
-        final currentState = state as EventLoaded;
+        final currentState = state as EventApprovedLoaded;
         if (currentState.hasReachedMax) {
           debugPrint("Max Loaded");
           return;
@@ -110,16 +71,18 @@ class EventBloc extends Bloc<EventEvent, EventState> {
                 .copyWith(currentIndex: currentState.event.length.toString()),
             pathRequest: event.pathRequest);
         //! Gabungkan data baru dengan yang sudah ada
-        final events = currentState.event + newEvents.data!;
+        final combinedEvents = currentState.event + newEvents.data!;
 
-        debugPrint("Event baru dikirim: ${events.toString()}");
+        debugPrint("Event baru dikirim: ${combinedEvents.toString()}");
         if (newEvents.data!.length < 4) {
           debugPrint("Jumlah Event baru dikirim: ${newEvents.data!.length}");
-          emit(currentState.copyWith(event: events, hasReachedMax: true));
+          emit(currentState.copyWith(
+              event: combinedEvents, hasReachedMax: true));
         } else if (newEvents.data!.isEmpty) {
           emit(currentState.copyWith(hasReachedMax: true));
         } else {
-          emit(currentState.copyWith(event: events, hasReachedMax: false));
+          emit(currentState.copyWith(
+              event: combinedEvents, hasReachedMax: false));
         }
       } catch (_) {
         emit(EventLoadError("Gagal Load Event"));
@@ -136,14 +99,14 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         debugPrint("Event dikirim: ${events.toString()}");
         debugPrint("Jumlah Event dikirim: ${events.data!.length}");
         if (events.data!.length < 4) {
-          emit(EventLoaded(
+          emit(EventApprovedLoaded(
               event: events.data!,
               hasReachedMax: true,
               requestEvent: event.requestEvent));
         } else if (events.data!.isEmpty) {
           emit(EventLoadError("No events data"));
         } else {
-          emit(EventLoaded(
+          emit(EventApprovedLoaded(
               event: events.data!,
               hasReachedMax: false,
               requestEvent: event.requestEvent));
@@ -151,8 +114,140 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       } catch (_) {
         emit(EventLoadError("Failed to load initial events"));
       }
-      // } else {
-      //   emit(EventLoadError("You don't have access. You Must Login First"));
     }
   }
+
+  void _onEventFetchAllData(
+      EventFetchAllData event, Emitter<EventState> emit) async {
+    if (state is EventAllLoaded) {
+      try {
+        final currentState = state as EventAllLoaded;
+        if (currentState.hasReachedMax) {
+          debugPrint("Max Loaded");
+          return;
+        }
+        //! Mengambil dan menambah dari data statis
+        // final newEvents = await eventRepository.getEventData(
+        //     startIndex: currentState.event.length);
+        //! Mengambil dan menambah data berdasarkan request pada UI ke API
+        // Mengganti currentIndex untuk permintaan
+        final newEvents = await eventRepository.getEventsFromAPI(
+            requestEvent: event.requestEvent
+                .copyWith(currentIndex: currentState.event.length.toString()),
+            pathRequest: event.pathRequest);
+        //! Gabungkan data baru dengan yang sudah ada
+        final combinedEvents = currentState.event + newEvents.data!;
+
+        debugPrint("Event baru dikirim: ${combinedEvents.toString()}");
+        if (newEvents.data!.length < 4) {
+          debugPrint("Jumlah Event baru dikirim: ${newEvents.data!.length}");
+          emit(currentState.copyWith(
+              event: combinedEvents, hasReachedMax: true));
+        } else if (newEvents.data!.isEmpty) {
+          emit(currentState.copyWith(hasReachedMax: true));
+        } else {
+          emit(currentState.copyWith(
+              event: combinedEvents, hasReachedMax: false));
+        }
+      } catch (_) {
+        emit(EventLoadError("Gagal Load Event"));
+      }
+    } else {
+      // Untuk keadaan EventInitial
+      try {
+        emit(EventLoading()); //! Loading awal saat memuat event pertama kai
+        //! Mengambil data awal dari data statis
+        // final events = await eventRepository.getEventData(startIndex: 0);
+        //! Mengambil data awal berdasarkan request pada UI ke API
+        final EventModel events = await eventRepository.getEventsFromAPI(
+            requestEvent: event.requestEvent, pathRequest: event.pathRequest);
+        debugPrint("Event dikirim: ${events.toString()}");
+        debugPrint("Jumlah Event dikirim: ${events.data!.length}");
+        if (events.data!.length < 4) {
+          emit(EventAllLoaded(
+              event: events.data!,
+              hasReachedMax: true,
+              requestEvent: event.requestEvent));
+        } else if (events.data!.isEmpty) {
+          emit(EventLoadError("No events data"));
+        } else {
+          emit(EventAllLoaded(
+              event: events.data!,
+              hasReachedMax: false,
+              requestEvent: event.requestEvent));
+        }
+      } catch (_) {
+        emit(EventLoadError("Failed to load initial events"));
+      }
+    }
+  }
+
+  void _onEventFetchApprovalDataByAdminUID(
+      EventFetchApprovalDataByAdminUID event, Emitter<EventState> emit) async {
+    if (state is EventApprovalByAdminUIDLoaded) {
+      try {
+        final currentState = state as EventApprovalByAdminUIDLoaded;
+        if (currentState.hasReachedMax) {
+          debugPrint("Max Loaded");
+          return;
+        }
+        //! Mengambil dan menambah dari data statis
+        // final newEvents = await eventRepository.getEventData(
+        //     startIndex: currentState.event.length);
+        //! Mengambil dan menambah data berdasarkan request pada UI ke API
+        // Mengganti currentIndex untuk permintaan
+        final newEvents = await eventRepository.getEventsFromAPI(
+            requestEvent: event.requestEvent
+                .copyWith(currentIndex: currentState.event.length.toString()),
+            pathRequest: event.pathRequest);
+        //! Gabungkan data baru dengan yang sudah ada
+        final combinedEvents = currentState.event + newEvents.data!;
+
+        debugPrint("Event baru dikirim: ${combinedEvents.toString()}");
+        if (newEvents.data!.length < 4) {
+          debugPrint("Jumlah Event baru dikirim: ${newEvents.data!.length}");
+          emit(currentState.copyWith(
+              event: combinedEvents, hasReachedMax: true));
+        } else if (newEvents.data!.isEmpty) {
+          emit(currentState.copyWith(hasReachedMax: true));
+        } else {
+          emit(currentState.copyWith(
+              event: combinedEvents, hasReachedMax: false));
+        }
+      } catch (_) {
+        emit(EventLoadError("Gagal Load Event"));
+      }
+    } else {
+      // Untuk keadaan EventInitial
+      try {
+        emit(EventLoading()); //! Loading awal saat memuat event pertama kai
+        //! Mengambil data awal dari data statis
+        // final events = await eventRepository.getEventData(startIndex: 0);
+        //! Mengambil data awal berdasarkan request pada UI ke API
+        final EventModel events = await eventRepository.getEventsFromAPI(
+            requestEvent: event.requestEvent, pathRequest: event.pathRequest);
+        debugPrint("Event dikirim: ${events.toString()}");
+        debugPrint("Jumlah Event dikirim: ${events.data!.length}");
+        if (events.data!.length < 4) {
+          emit(EventApprovalByAdminUIDLoaded(
+              event: events.data!,
+              hasReachedMax: true,
+              requestEvent: event.requestEvent));
+        } else if (events.data!.isEmpty) {
+          emit(EventLoadError("No events data"));
+        } else {
+          emit(EventApprovalByAdminUIDLoaded(
+              event: events.data!,
+              hasReachedMax: false,
+              requestEvent: event.requestEvent));
+        }
+      } catch (_) {
+        emit(EventLoadError("Failed to load initial events"));
+      }
+    }
+  }
+
+  void _onEventFetchProposedDataByProposeUID(
+      EventFetchProposedDataByProposeUID event,
+      Emitter<EventState> emit) async {}
 }

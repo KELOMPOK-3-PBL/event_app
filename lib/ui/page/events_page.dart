@@ -20,7 +20,12 @@ class HomeEventsPage extends StatefulWidget {
   State<HomeEventsPage> createState() => _HomeEventsPageState();
 }
 
-class _HomeEventsPageState extends State<HomeEventsPage> {
+class _HomeEventsPageState extends State<HomeEventsPage>
+// with AutomaticKeepAliveClientMixin
+{
+  // @override
+  // bool get wantKeepAlive => true;
+
   final ScrollController _scrollController = ScrollController();
 
   late String token;
@@ -36,14 +41,16 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
     token =
         (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
 
-    // requestFilteredEvent = RequestFilteredEventModel(
-    //   token: token,
-    //   currentIndex: '0',
-    // );
+    //! Inisiasi request pertama
+    requestFilteredEvent = RequestFilteredEventModel(
+      token: token,
+      currentIndex: '0',
+    );
 
-    // context.read<EventBloc>().add(EventFetchAllData(
-    //       requestEvent: requestFilteredEvent,
-    //     ));
+    context.read<EventBloc>().add(EventFetchData(
+          requestEvent: requestFilteredEvent,
+          pathRequest: PathRequestEvents.approvedEvents,
+        ));
   }
 
   bool get _isBottom {
@@ -59,8 +66,8 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
         !(context.read<EventBloc>().state as EventLoaded).hasReachedMax) {
       //! mengatasi perubahan request ketika di scroll
       // mengambil request yang sudah diubah current statenya
-      requestFilteredEvent =
-          (context.read<EventBloc>().state as EventLoaded).requestEvent;
+      // requestFilteredEvent =
+      //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
       // requestEvent.copyWith();
       context.read<EventBloc>().add(
             EventFetchData(
@@ -90,14 +97,16 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
           // debugPrint("event submited");
 
           // Navigator.of(context).pop(); // Close loading spinner
-          Navigator.pushNamed(context, AppRouter.detailEventRoute,
-              arguments: state.event);
+          Navigator.of(context)
+              .pushNamed(AppRouter.detailEventRoute, arguments: state.event);
 
-          //! Trigger CategoryBloc untuk memuat ulang data kategori
-          // context.read<EventBloc>().add(EventFetchApprovedData(
-          //       requestEvent: requestFilteredEvent,
-          //     ));
-          // } else if (state is EventLoaded) {
+          //! Trigger CategoryBloc untuk memuat ulang data
+          context.read<EventBloc>().add(EventFetchData(
+                requestEvent: requestFilteredEvent,
+                pathRequest: PathRequestEvents.approvedEvents,
+              ));
+        } else if (state is EventLoaded) {
+          requestFilteredEvent = state.requestEvent;
           // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
           debugPrint("load error");
@@ -205,5 +214,6 @@ class _HomeEventsPageState extends State<HomeEventsPage> {
       ),
     );
   }
+
   // return SizedBox();
 }

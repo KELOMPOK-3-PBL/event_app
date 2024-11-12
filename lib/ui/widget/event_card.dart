@@ -42,16 +42,25 @@ class EventCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(12),
             child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              child: Image.network(
-                events.posterUrl.toString(),
-                // height: 120,
-                // width: 90,
-                height: (MediaQuery.of(context).size.width / 3),
-                width: (MediaQuery.of(context).size.width / 4),
-                fit: BoxFit.cover,
-              ),
-            ),
+                borderRadius: const BorderRadius.all(Radius.circular(8)),
+                child: Image.network(
+                  events.posterUrl.toString(),
+                  // height: 120,
+                  // width: 90,
+                  height: (MediaQuery.of(context).size.width / 3),
+                  width: (MediaQuery.of(context).size.width / 4),
+                  fit: BoxFit.cover,
+                  errorBuilder: (BuildContext context, Object error,
+                      StackTrace? stackTrace) {
+                    // Menampilkan gambar error jika gambar gagal dimuat
+                    return Image.asset(
+                      'assets/image_not_found.png',
+                      height: (MediaQuery.of(context).size.width / 3),
+                      width: (MediaQuery.of(context).size.width / 4),
+                      fit: BoxFit.cover,
+                    );
+                  },
+                )),
           ),
           Expanded(
             child: Padding(

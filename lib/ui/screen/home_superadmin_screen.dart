@@ -43,28 +43,9 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
 
   List<Widget> _buildWidgetOptions(String token) {
     return [
-      BlocProvider(
-        create: (context) => CategoryBloc()..add(StatusReadData()),
-        child: const HomeExplorePage(),
-      ),
-      BlocProvider(
-        create: (context) => EventBloc()
-          ..add(EventFetchData(
-            requestEvent:
-                RequestFilteredEventModel(token: token, currentIndex: '0'),
-            pathRequest: PathRequestEvents.approvedEvents,
-          )),
-        child: const HomeEventsPage(),
-      ),
-      BlocProvider(
-        create: (context) => context.read<EventBloc>()
-          ..add(EventFetchData(
-            requestEvent:
-                RequestFilteredEventModel(token: token, currentIndex: '0'),
-            pathRequest: PathRequestEvents.allEvents,
-          )),
-        child: const HomeApprovalPage(),
-      ),
+      const HomeExplorePage(),
+      const HomeEventsPage(),
+      const HomeApprovalPage(),
       const HomeAccountsPage(),
       const HomeProfilePage(),
     ];
@@ -80,11 +61,24 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
       );
     }
 
-    return Scaffold(
-      body: _buildWidgetOptions(token).elementAt(_currentIndex),
-      bottomNavigationBar: BottomNavbarSuperadmin(
-        currentIndex: _currentIndex,
-        onItemTapped: _onItemTapped,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: context.read<AuthBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => EventBloc(),
+        ),
+        BlocProvider(
+          create: (context) => CategoryBloc()..add(StatusReadData()),
+        ),
+      ],
+      child: Scaffold(
+        body: _buildWidgetOptions(token).elementAt(_currentIndex),
+        bottomNavigationBar: BottomNavbarSuperadmin(
+          currentIndex: _currentIndex,
+          onItemTapped: _onItemTapped,
+        ),
       ),
     );
   }

@@ -63,8 +63,8 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
         !(context.read<EventBloc>().state as EventLoaded).hasReachedMax) {
       //! mengatasi perubahan request ketika di scroll
       // mengambil request yang sudah diubah current statenya
-      requestFilteredEvent =
-          (context.read<EventBloc>().state as EventLoaded).requestEvent;
+      // requestFilteredEvent =
+      //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
       // requestEvent.copyWith();
       context.read<EventBloc>().add(
             EventFetchData(
@@ -97,10 +97,12 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
               arguments: state.event);
 
           // Navigator.of(context).pop(); // Close loading spinner
-          // // context
-          //     .read<EventBloc>()
-          //     .add(EventCardPressed(event));
-          // } else if (state is EventLoaded) {
+          context.read<EventBloc>().add(EventFetchData(
+                requestEvent: requestFilteredEvent,
+                pathRequest: PathRequestEvents.allEvents,
+              ));
+        } else if (state is EventLoaded) {
+          requestFilteredEvent = state.requestEvent;
           // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
           debugPrint("load error");

@@ -151,7 +151,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is EventApprovedLoaded) {
                       final events = state.event;
-                      debugPrint("List data: $events");
+
                       return ListView.builder(
                         controller: _scrollController,
                         padding: EdgeInsets.zero,

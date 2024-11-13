@@ -119,6 +119,8 @@ class EventBloc extends Bloc<EventEvent, EventState> {
 
   void _onEventFetchAllData(
       EventFetchAllData event, Emitter<EventState> emit) async {
+    final request = event.requestEvent;
+    debugPrint("Request: ${request.toString()}");
     if (state is EventAllLoaded) {
       try {
         final currentState = state as EventAllLoaded;
@@ -131,13 +133,16 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         //     startIndex: currentState.event.length);
         //! Mengambil dan menambah data berdasarkan request pada UI ke API
         // Mengganti currentIndex untuk permintaan
+        final currentIndex = currentState.event.length.toString();
+
         final newEvents = await eventRepository.getEventsFromAPI(
-            requestEvent: event.requestEvent
-                .copyWith(currentIndex: currentState.event.length.toString()),
+            requestEvent:
+                event.requestEvent.copyWith(currentIndex: currentIndex),
             pathRequest: event.pathRequest);
         //! Gabungkan data baru dengan yang sudah ada
         final combinedEvents = currentState.event + newEvents.data!;
 
+        debugPrint("Index Sekarang: ${currentState.event.length.toString()}");
         debugPrint("Event baru dikirim: ${combinedEvents.toString()}");
         if (newEvents.data!.length < 4) {
           debugPrint("Jumlah Event baru dikirim: ${newEvents.data!.length}");
@@ -147,7 +152,10 @@ class EventBloc extends Bloc<EventEvent, EventState> {
           emit(currentState.copyWith(hasReachedMax: true));
         } else {
           emit(currentState.copyWith(
-              event: combinedEvents, hasReachedMax: false));
+              event: combinedEvents,
+              hasReachedMax: false,
+              requestEvent: event.requestEvent.copyWith(
+                  currentIndex: currentState.event.length.toString())));
         }
       } catch (_) {
         emit(EventLoadError("Gagal Load Event"));
@@ -174,7 +182,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
           emit(EventAllLoaded(
               event: events.data!,
               hasReachedMax: false,
-              requestEvent: event.requestEvent));
+              requestEvent: request));
         }
       } catch (_) {
         emit(EventLoadError("Failed to load initial events"));
@@ -203,7 +211,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         //! Gabungkan data baru dengan yang sudah ada
         final combinedEvents = currentState.event + newEvents.data!;
 
-        debugPrint("Event baru dikirim: ${combinedEvents.toString()}");
+        debugPrint("Event baru dikirim: ${newEvents.toString()}");
         if (newEvents.data!.length < 4) {
           debugPrint("Jumlah Event baru dikirim: ${newEvents.data!.length}");
           emit(currentState.copyWith(

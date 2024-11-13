@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/bloc.dart';
+import '../../data/model/model.dart';
 import '../navigation/bottom_navbar_superadmin.dart';
 import '../page/accounts_page.dart';
 import '../page/approval_page.dart';
@@ -64,9 +65,11 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
         BlocProvider.value(
           value: context.read<AuthBloc>(),
         ),
-        BlocProvider(
-          create: (context) => EventBloc(),
-        ),
+        BlocProvider(create: (context) => EventBloc()
+            // ..add(EventFetchAllData(
+            //     requestEvent: RequestFilteredEventModel(
+            //         token: token, currentIndex: 'currentIndex'))),
+            ),
         BlocProvider(
           create: (context) => CategoryBloc()..add(StatusReadData()),
         ),

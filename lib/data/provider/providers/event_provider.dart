@@ -27,7 +27,8 @@ class EventProvider {
         options = Options(
           contentType: 'application/json',
           headers: {
-            'Authorization': "Bearer ${pathRequest.token}",
+            // 'Authorization': 'Bearer ${pathRequest.token}',
+            'Cookie': 'jwt=${pathRequest.token}',
           },
         );
       }
@@ -43,11 +44,14 @@ class EventProvider {
         options: options,
         queryParameters: queryParameters,
       );
-      debugPrint('Success Response data: ${rawResponse.toString()}');
+      // debugPrint('path: $path');
+      // debugPrint('token: ${pathRequest.token}');
+      debugPrint('queryParameters: $queryParameters');
+      // debugPrint('Success Response data: ${rawResponse.toString()}');
 
       return rawResponse;
     } on DioException catch (e) {
-      debugPrint('Error response data: ${e.response.toString()}');
+      // debugPrint('Error response data: ${e.response.toString()}');
       return e.response!;
     }
   }

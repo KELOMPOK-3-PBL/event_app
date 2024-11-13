@@ -25,7 +25,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   late final String token;
 
   //! Updated request
-  late final RequestFilteredEventModel requestFilteredEvent;
+  late RequestFilteredEventModel requestFilteredEvent;
 
   @override
   void initState() {
@@ -40,7 +40,8 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
       currentIndex: '0',
     );
 
-    context.read<EventBloc>().add(EventFetchApprovedData(
+    debugPrint("Initiial Request: $requestFilteredEvent");
+    context.read<EventBloc>().add(EventFetchAllData(
           requestEvent: requestFilteredEvent,
         ));
 
@@ -57,16 +58,16 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   }
 
   void _onScroll() {
-    if (_isBottom &&
-        !(context.read<EventBloc>().state as EventApprovedLoaded)
-            .hasReachedMax) {
+    if (_isBottom
+        // && !(context.read<EventBloc>().state as EventAllLoaded).hasReachedMax
+        ) {
       //! mengatasi perubahan request ketika di scroll
       // mengambil request yang sudah diubah current statenya
       // requestFilteredEvent =
       //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
       // requestEvent.copyWith();
       context.read<EventBloc>().add(
-            EventFetchApprovedData(
+            EventFetchAllData(
               requestEvent: requestFilteredEvent,
             ),
           );
@@ -95,11 +96,25 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
               arguments: state.event);
 
           // Navigator.of(context).pop(); // Close loading spinner
-          context.read<EventBloc>().add(EventFetchApprovedData(
+          context.read<EventBloc>().add(EventFetchAllData(
                 requestEvent: requestFilteredEvent,
               ));
-        } else if (state is EventApprovedLoaded) {
+        } else if (state is EventAllLoaded) {
+          // token = (context.read<AuthBloc>().state as AuthAuthenticated)
+          //     .authData
+          //     .token!;
+
+          // requestFilteredEvent = RequestFilteredEventModel(
+          //   token: token,
+          //   currentIndex: '0',
+          // );
+
+          // context.read<EventBloc>().add(EventFetchAllData(
+          //       requestEvent: requestFilteredEvent,
+          //     ));
+
           requestFilteredEvent = state.requestEvent;
+          debugPrint("New Request: ${requestFilteredEvent.toString()}");
           // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
           debugPrint("load error");
@@ -151,9 +166,9 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                   builder: (context, state) {
                     if (state is EventLoading) {
                       return const Center(child: CircularProgressIndicator());
-                    } else if (state is EventApprovedLoaded) {
+                    } else if (state is EventAllLoaded) {
                       final events = state.event;
-                      debugPrint("List data: $events");
+
                       return ListView.builder(
                         controller: _scrollController,
                         padding: EdgeInsets.zero,

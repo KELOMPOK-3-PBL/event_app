@@ -54,7 +54,7 @@ class RequestFilteredEventModel extends Equatable {
   // Convert the CategoryModel object to a JSON map
   Map<String, dynamic> toJson() {
     return {
-      'page': currentIndex,
+      'offset': currentIndex,
       'limit': postLimit,
       'status': status,
       'category': category,

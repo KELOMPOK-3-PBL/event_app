@@ -52,7 +52,7 @@ class SplashScreenState extends State<SplashScreen> {
             children: [
               // Logo
               Image.asset(
-                'assets/logo.png', // Pastikan path gambar logo benar
+                'assets/images/logo.png', // Pastikan path gambar logo benar
                 width: 200, // Ukuran logo
                 height: 200,
               ),

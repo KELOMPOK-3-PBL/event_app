@@ -142,7 +142,7 @@ class DetailEventScreenState extends State<DetailEventScreen> {
                     // child: Stack(
                     //   children: [
                     //     Image.asset(
-                    //       'assets/images/Image_Here.png',
+                    //       'assets/images/images/Image_Here.png',
                     //       fit: BoxFit.cover,
                     //       height: 300,
                     //       width: double.infinity,

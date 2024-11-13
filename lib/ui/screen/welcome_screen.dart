@@ -26,7 +26,7 @@ class WelcomeScreen extends StatelessWidget {
                           // Gambar di bagian atas
                           Positioned.fill(
                             child: Image.asset(
-                              'assets/image_welcome.png', // Ganti dengan path gambar Anda
+                              'assets/images/image_welcome.png', // Ganti dengan path gambar Anda
                               fit: BoxFit.cover,
                             ),
                           ),

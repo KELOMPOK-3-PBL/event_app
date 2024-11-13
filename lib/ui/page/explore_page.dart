@@ -26,7 +26,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
             padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
             decoration: BoxDecoration(
               image: const DecorationImage(
-                image: AssetImage('assets/background.png'),
+                image: AssetImage('assets/images/background.png'),
                 fit:
                     BoxFit.cover, // Set the image to cover the entire container
               ),

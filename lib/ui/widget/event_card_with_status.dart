@@ -54,7 +54,7 @@ class EventCardWithStatusWidget extends StatelessWidget {
                     StackTrace? stackTrace) {
                   // Menampilkan gambar error jika gambar gagal dimuat
                   return Image.asset(
-                    'assets/image_not_found.png',
+                    'assets/images/image_not_found.png',
                     height: (MediaQuery.of(context).size.width / 3),
                     width: (MediaQuery.of(context).size.width / 4),
                     fit: BoxFit.cover,

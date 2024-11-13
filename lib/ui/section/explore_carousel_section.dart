@@ -56,7 +56,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                 decoration: BoxDecoration(
                     color: UIColor.solidWhite,
                     image: DecorationImage(
-                        // image: AssetImage('assets/image_welcome.png'),
+                        // image: AssetImage('assets/images/image_welcome.png'),
                         image: NetworkImage(_eventsCarousel[index].posterUrl),
                         fit: BoxFit.cover,
                         alignment: Alignment.topCenter),

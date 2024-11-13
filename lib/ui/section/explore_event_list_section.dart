@@ -65,7 +65,7 @@ class _EventListWidgetState extends State<EventListSection> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(6),
                           child:
-                              // Image.asset('assets/background.png',
+                              // Image.asset('assets/images/background.png',
                               Image.network(
                             _eventsMore[index].posterUrl,
                             height: (MediaQuery.of(context).size.width - 44) /

@@ -157,7 +157,7 @@ class LoginScreenState extends State<LoginScreen>
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
-                      'assets/background_login.png'), // Add a background image
+                      'assets/images/background_login.png'), // Add a background image
                   fit: BoxFit.cover,
                 ),
               ),
@@ -175,7 +175,7 @@ class LoginScreenState extends State<LoginScreen>
                         children: [
                           const SizedBox(height: 100),
                           Image.asset(
-                            'assets/logo.png',
+                            'assets/images/logo.png',
                             width: 100,
                             height: 100,
                           ),

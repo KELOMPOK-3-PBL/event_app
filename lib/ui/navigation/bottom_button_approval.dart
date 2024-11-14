@@ -1,7 +1,7 @@
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 
-import '../widget/ui_colors.dart';
+import '../theme/ui_colors.dart';
 
 class BottomButtonApproval extends StatelessWidget {
   final VoidCallback changeStatus;
@@ -57,7 +57,8 @@ class BottomButtonApproval extends StatelessWidget {
             flex: 4,
             child: ElevatedButton(
               onPressed: showEditNoteDialog,
-              style: ElevatedButton.styleFrom(backgroundColor: UIColor.pending),
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: UIColor.reviewing),
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   double fontSize;

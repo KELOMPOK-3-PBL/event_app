@@ -5,7 +5,7 @@ import 'package:uicons_pro/uicons_pro.dart';
 import '../../bloc/bloc.dart';
 import '../widget/choose_privillege.dart';
 import '../widget/show_error.dart';
-import '../widget/ui_colors.dart';
+import '../theme/ui_colors.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

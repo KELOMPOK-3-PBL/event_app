@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
-import '../widget/ui_colors.dart';
+import '../theme/ui_colors.dart';
 
 // import 'package:google_fonts/google_fonts.dart';
 

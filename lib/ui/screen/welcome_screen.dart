@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widget/ui_colors.dart';
+import '../theme/ui_colors.dart';
 // import 'package:flutter/services.dart';
 
 void initState() {}

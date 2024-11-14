@@ -3,7 +3,7 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../ui/widget/ui_colors.dart';
+import '../../ui/theme/ui_colors.dart';
 import '../../data/provider/provider.dart';
 import '../../data/model/model.dart';
 

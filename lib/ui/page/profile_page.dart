@@ -1,4 +1,4 @@
-import 'package:event_proposal_app/ui/widget/ui_colors.dart';
+import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 

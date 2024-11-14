@@ -7,7 +7,7 @@ import '../screen/search_result_event_screen.dart';
 import '../widget/event_card_with_status.dart';
 import '../widget/search_widget.dart';
 import '../widget/show_error.dart';
-import '../widget/ui_colors.dart';
+import '../theme/ui_colors.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';

@@ -17,7 +17,8 @@ class UIColor {
   static const Color superadmin = Color(0xffaf52de);
   static const Color approved = Color(0xff34c759);
   static const Color rejected = Color(0xfff0635a);
-  static const Color pending = Color(0xfffaad14);
+  static const Color pending = Color(0xffff7D2D);
+  static const Color reviewing = Color(0xfffaad14);
 
   // static const Color bgCarousel = Color.fromARGB(233, 250, 250, 250);
   static const Color bgCarousel = Color.fromARGB(255, 0, 0, 0);
@@ -27,6 +28,8 @@ class UIColor {
       return UIColor.propose;
     } else if (status == "Pending") {
       return UIColor.pending;
+    } else if (status == "Reviewing") {
+      return UIColor.reviewing;
     } else if (status == "Approved") {
       return UIColor.approved;
     } else if (status == "Rejected") {

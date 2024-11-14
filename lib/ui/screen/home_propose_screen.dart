@@ -1,5 +1,5 @@
 import 'package:event_proposal_app/ui/router/router.dart';
-import 'package:event_proposal_app/ui/widget/ui_colors.dart';
+import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';

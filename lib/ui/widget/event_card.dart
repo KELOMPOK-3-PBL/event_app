@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
 import 'card_info_row.dart';
-import 'ui_colors.dart';
+import '../theme/ui_colors.dart';
 
 class EventCard extends StatelessWidget {
   final EventDataModel events;

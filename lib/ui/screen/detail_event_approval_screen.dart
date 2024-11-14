@@ -3,7 +3,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
 import '../navigation/bottom_button_approval.dart';
-import '../widget/ui_colors.dart';
+import '../theme/ui_colors.dart';
 
 class DetailEventApprovalScreen extends StatefulWidget {
   const DetailEventApprovalScreen({super.key});
@@ -314,7 +314,7 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                                     fontSize: 10, color: UIColor.primary)),
                             Text('Updated: 12/12/2024 08:00',
                                 style: TextStyle(
-                                    fontSize: 10, color: UIColor.pending)),
+                                    fontSize: 10, color: UIColor.reviewing)),
                           ],
                         ),
                         Container(

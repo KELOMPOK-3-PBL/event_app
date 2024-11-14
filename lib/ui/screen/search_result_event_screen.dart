@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
-import '../widget/ui_colors.dart';
+import '../theme/ui_colors.dart';
 
 class SearchResultEventsScreen extends StatelessWidget {
   final String searchQuery;

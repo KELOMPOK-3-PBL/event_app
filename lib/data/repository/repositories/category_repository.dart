@@ -8,10 +8,11 @@ class CategoryRepository {
     // Example data (normally fetched from API or database)
     return [
       CategoryModel(name: 'Proposed', boxColor: UIColor.propose),
+      CategoryModel(name: 'Reviewing', boxColor: UIColor.reviewing),
       CategoryModel(name: 'Pending', boxColor: UIColor.pending),
       CategoryModel(name: 'Rejected', boxColor: UIColor.rejected),
       CategoryModel(name: 'Approved', boxColor: UIColor.approved),
-      CategoryModel(name: 'Complete', boxColor: UIColor.typoGray),
+      CategoryModel(name: 'Complete', boxColor: UIColor.admin),
     ];
   }
 

@@ -27,8 +27,8 @@ class EventProvider {
         options = Options(
           contentType: 'application/json',
           headers: {
-            // 'Authorization': 'Bearer ${pathRequest.token}',
             'Cookie': 'jwt=${pathRequest.token}',
+            'Authorization': 'Bearer ${pathRequest.token}',
           },
         );
       }

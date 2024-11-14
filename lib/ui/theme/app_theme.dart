@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widget/ui_colors.dart'; // Adjust the import based on your project structure
+import 'ui_colors.dart'; // Adjust the import based on your project structure
 
 class AppTheme {
   static ThemeData buildTheme(Brightness brightness) {

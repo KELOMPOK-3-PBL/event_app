@@ -1,4 +1,4 @@
-import 'package:event_proposal_app/ui/widget/ui_colors.dart';
+import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter/widgets.dart';
 
 Widget cardInfoRow(IconData icon, String text) {

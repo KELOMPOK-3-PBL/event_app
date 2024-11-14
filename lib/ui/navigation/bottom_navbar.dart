@@ -1,5 +1,5 @@
 import 'custom_navbar_item.dart';
-import '../widget/ui_colors.dart';
+import '../theme/ui_colors.dart';
 
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';

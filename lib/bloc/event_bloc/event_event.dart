@@ -28,21 +28,11 @@ class EventFetchAllData extends EventEvent {
   List<Object> get props => [requestEvent, pathRequest];
 }
 
-class EventFetchProposedDataByProposeUID extends EventEvent {
+class EventFetchDataByProposeOrAdminUserID extends EventEvent {
   final RequestFilteredEventModel requestEvent;
   final PathRequestEvents pathRequest = PathRequestEvents.allEvents;
 
-  const EventFetchProposedDataByProposeUID({required this.requestEvent});
-
-  @override
-  List<Object> get props => [requestEvent];
-}
-
-class EventFetchApprovalDataByAdminUID extends EventEvent {
-  final RequestFilteredEventModel requestEvent;
-  final PathRequestEvents pathRequest = PathRequestEvents.allEvents;
-
-  const EventFetchApprovalDataByAdminUID({required this.requestEvent});
+  const EventFetchDataByProposeOrAdminUserID({required this.requestEvent});
 
   @override
   List<Object> get props => [requestEvent];

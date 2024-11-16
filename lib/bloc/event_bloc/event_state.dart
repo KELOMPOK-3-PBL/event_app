@@ -40,50 +40,23 @@ class EventApprovedLoaded extends EventState {
   List<Object> get props => [event, requestEvent, hasReachedMax];
 }
 
-class EventProposedByProposeUIDLoaded extends EventState {
+class EventDataByProposeOrAdminUserIDLoaded extends EventState {
   final List<EventDataModel> event;
   final RequestFilteredEventModel requestEvent;
   final bool hasReachedMax;
 
-  const EventProposedByProposeUIDLoaded({
+  const EventDataByProposeOrAdminUserIDLoaded({
     required this.event,
     required this.requestEvent,
     required this.hasReachedMax,
   });
 
-  EventProposedByProposeUIDLoaded copyWith({
+  EventDataByProposeOrAdminUserIDLoaded copyWith({
     List<EventDataModel>? event,
     RequestFilteredEventModel? requestEvent,
     bool? hasReachedMax,
   }) {
-    return EventProposedByProposeUIDLoaded(
-      event: event ?? this.event,
-      requestEvent: requestEvent ?? this.requestEvent,
-      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-    );
-  }
-
-  @override
-  List<Object> get props => [event, requestEvent, hasReachedMax];
-}
-
-class EventApprovalByAdminUIDLoaded extends EventState {
-  final List<EventDataModel> event;
-  final RequestFilteredEventModel requestEvent;
-  final bool hasReachedMax;
-
-  const EventApprovalByAdminUIDLoaded({
-    required this.event,
-    required this.requestEvent,
-    required this.hasReachedMax,
-  });
-
-  EventApprovalByAdminUIDLoaded copyWith({
-    List<EventDataModel>? event,
-    RequestFilteredEventModel? requestEvent,
-    bool? hasReachedMax,
-  }) {
-    return EventApprovalByAdminUIDLoaded(
+    return EventDataByProposeOrAdminUserIDLoaded(
       event: event ?? this.event,
       requestEvent: requestEvent ?? this.requestEvent,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,

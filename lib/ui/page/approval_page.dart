@@ -22,7 +22,7 @@ class HomeApprovalPage extends StatefulWidget {
 class _HomeApprovalPageState extends State<HomeApprovalPage> {
   final ScrollController _scrollController = ScrollController();
 
-  late final String token;
+  // late final String token;
 
   //! Updated request
   late RequestFilteredEventModel requestFilteredEvent;
@@ -32,18 +32,18 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
     super.initState();
     _scrollController.addListener(_onScroll);
 
-    token =
-        (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
+    // token =
+    //     (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
 
-    requestFilteredEvent = RequestFilteredEventModel(
-      token: token,
-      currentIndex: '0',
-    );
+    // requestFilteredEvent = RequestFilteredEventModel(
+    //   token: token,
+    //   currentIndex: '0',
+    // );
 
-    debugPrint("Initiial Request: $requestFilteredEvent");
-    context.read<EventBloc>().add(EventFetchAllData(
-          requestEvent: requestFilteredEvent,
-        ));
+    // debugPrint("Initiial Request: $requestFilteredEvent");
+    // context.read<EventBloc>().add(EventFetchAllData(
+    //       requestEvent: requestFilteredEvent,
+    //     ));
 
     //! mengambil data dari event EventFetchData untuk diperbarui
     // requestEvent = context.read<EventFetchData>().requestEvent;

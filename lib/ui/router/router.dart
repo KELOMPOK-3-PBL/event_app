@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/auth_bloc/auth_bloc.dart';
+import '../../bloc/bloc.dart';
 import '../screen/detail_event_approval_screen.dart';
 import '../screen/detail_event_screen.dart';
 import '../screen/form_propose_event.dart';
@@ -45,7 +45,12 @@ class AppRouter {
           value: context.read<AuthBloc>(),
           child: const SettingsScreen(),
         ),
-    detailEventApprovalRoute: (context) => const DetailEventApprovalScreen(),
+    detailEventApprovalRoute: (context) =>
+        // BlocProvider.value(
+        //       value: context.read<EventBloc>(),
+        // child:
+        const DetailEventApprovalScreen(),
+    // ),
     detailEventProposeRoute: (context) => const DetailEventApprovalScreen(),
     searchResultEventRoute: (context) => const SearchResultEventsScreen(
           searchQuery: '',

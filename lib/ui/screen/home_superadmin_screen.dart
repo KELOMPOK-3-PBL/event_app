@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/bloc.dart';
+import '../../data/model/model.dart';
 import '../navigation/bottom_navbar_superadmin.dart';
 import '../page/accounts_page.dart';
 import '../page/approval_page.dart';
@@ -41,9 +42,37 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
 
   List<Widget> _buildWidgetOptions(String token) {
     return [
-      const HomeExplorePage(),
-      const HomeEventsPage(),
-      const HomeApprovalPage(),
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => EventBloc(),
+          ),
+          BlocProvider(
+            create: (context) => CategoryBloc()..add(StatusReadData()),
+          ),
+        ],
+        child: const HomeExplorePage(),
+      ),
+      BlocProvider(
+        create: (context) => EventBloc()
+          ..add(
+            EventFetchApprovedData(
+              requestEvent:
+                  RequestFilteredEventModel(token: token, currentIndex: '0'),
+            ),
+          ),
+        child: const HomeEventsPage(),
+      ),
+      BlocProvider(
+        create: (context) => EventBloc()
+          ..add(
+            EventFetchAllData(
+              requestEvent:
+                  RequestFilteredEventModel(token: token, currentIndex: '0'),
+            ),
+          ),
+        child: const HomeApprovalPage(),
+      ),
       const HomeAccountsPage(),
       const HomeProfilePage(),
     ];
@@ -59,22 +88,14 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
       );
     }
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(
-          value: context.read<AuthBloc>(),
-        ),
-        BlocProvider(create: (context) => EventBloc()
-            // ..add(EventFetchAllData(
-            //     requestEvent: RequestFilteredEventModel(
-            //         token: token, currentIndex: 'currentIndex'))),
-            ),
-        BlocProvider(
-          create: (context) => CategoryBloc()..add(StatusReadData()),
-        ),
-      ],
+    return BlocProvider.value(
+      value: context.read<AuthBloc>(),
       child: Scaffold(
-        body: _buildWidgetOptions(token).elementAt(_currentIndex),
+        body: IndexedStack(
+          index: _currentIndex,
+          children: _buildWidgetOptions(token),
+        ),
+        // _buildWidgetOptions(token).elementAt(_currentIndex),
         bottomNavigationBar: BottomNavbarSuperadmin(
           currentIndex: _currentIndex,
           onItemTapped: _onItemTapped,

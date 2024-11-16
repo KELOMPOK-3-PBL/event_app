@@ -75,6 +75,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider<AuthBloc>(
       //! Pengecekan apakah pernah login
       create: (context) => AuthBloc()..add(AuthAppStarted()),
+
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {

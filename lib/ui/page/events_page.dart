@@ -27,7 +27,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
 
   final ScrollController _scrollController = ScrollController();
 
-  late String token;
+  // late String token;
 
   //! Updated request
   late RequestFilteredEventModel requestFilteredEvent;
@@ -37,18 +37,18 @@ class _HomeEventsPageState extends State<HomeEventsPage>
     super.initState();
     _scrollController.addListener(_onScroll);
 
-    token =
-        (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
+    // token =
+    //     (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
 
     //! Inisiasi request pertama
-    requestFilteredEvent = RequestFilteredEventModel(
-      token: token,
-      currentIndex: '0',
-    );
+    // requestFilteredEvent = RequestFilteredEventModel(
+    //   token: token,
+    //   currentIndex: '0',
+    // );
 
-    context.read<EventBloc>().add(EventFetchApprovedData(
-          requestEvent: requestFilteredEvent,
-        ));
+    // context.read<EventBloc>().add(EventFetchApprovedData(
+    //       requestEvent: requestFilteredEvent,
+    //     ));
   }
 
   bool get _isBottom {

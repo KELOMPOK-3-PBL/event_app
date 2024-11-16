@@ -4,6 +4,7 @@ class RequestFilteredEventModel extends Equatable {
   final String token;
   final String currentIndex;
   static const String postLimit = "5";
+  final String? eventId;
   final String? status;
   final String? category;
   final String? dateFrom;
@@ -16,6 +17,7 @@ class RequestFilteredEventModel extends Equatable {
     required this.token,
     required this.currentIndex,
     // this.postLimit,
+    this.eventId,
     this.status,
     this.category,
     this.dateFrom,
@@ -29,6 +31,7 @@ class RequestFilteredEventModel extends Equatable {
     String? token,
     String? currentIndex,
     // String? postLimit,
+    String? eventId,
     String? status,
     String? category,
     String? dateFrom,
@@ -41,6 +44,7 @@ class RequestFilteredEventModel extends Equatable {
       token: token ?? this.token,
       currentIndex: currentIndex ?? this.currentIndex,
       // postLimit: postLimit ?? this.postLimit,
+      eventId: eventId ?? this.eventId,
       status: status ?? this.status,
       category: category ?? this.category,
       dateFrom: dateFrom ?? this.dateFrom,

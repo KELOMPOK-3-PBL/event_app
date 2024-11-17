@@ -94,6 +94,12 @@ class EventAllLoaded extends EventState {
   List<Object> get props => [event, requestEvent, hasReachedMax];
 }
 
+class EventCarouselLoaded extends EventState {
+  final List<EventDataModel> event;
+
+  const EventCarouselLoaded(this.event);
+}
+
 class EventSubmited extends EventState {
   final EventDataModel event;
 

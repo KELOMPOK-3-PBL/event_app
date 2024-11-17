@@ -38,6 +38,16 @@ class EventFetchDataByProposeOrAdminUserID extends EventEvent {
   List<Object> get props => [requestEvent];
 }
 
+class EventFetchCarousel extends EventEvent {
+  final RequestFilteredEventModel requestEvent;
+  final PathRequestEvents pathRequest;
+
+  const EventFetchCarousel(
+      {required this.requestEvent, required this.pathRequest});
+
+  @override
+  List<Object> get props => [requestEvent];
+}
 // class EventFilterApply extends EventEvent {}
 
 class EventCardPressed extends EventEvent {

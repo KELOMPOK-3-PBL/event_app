@@ -1,13 +1,15 @@
 import 'dart:ui';
 
+import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:uicons_pro/uicons_pro.dart';
-import 'package:intl/intl.dart';
 
 import '../../bloc/bloc.dart';
+import '../router/router.dart';
+import '../widget/card_info_row.dart';
 
 class CarouselSection extends StatefulWidget {
   const CarouselSection({super.key});
@@ -17,58 +19,118 @@ class CarouselSection extends StatefulWidget {
 }
 
 class _CarouselEventsState extends State<CarouselSection> {
-  List<CarouselEventsModel> _eventsCarousel = [];
+  // List<CarouselEventsModel> _eventsCarousel = [];
 
   @override
   void initState() {
     super.initState();
-    _eventsCarousel = getEventsCarousel();
+    // eventData = getEventsCarousel();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EventBloc, EventState>(
+    return BlocConsumer<EventBloc, EventState>(
       builder: (context, state) {
         if (state is EventCarouselLoaded) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //! Section Tittle
-              const Padding(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
-                child: Text(
-                  'Newly Proposed Events',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                      color: UIColor.typoBlack,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800),
-                ),
-              ),
-              //! Carousel Content
-              SizedBox(
-                height: (MediaQuery.of(context).size.width - 40) / 1.66,
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  itemCount: _eventsCarousel.length,
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    width: 10,
-                  ),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: MediaQuery.of(context).size.width - 40,
-                      decoration: BoxDecoration(
-                          color: UIColor.solidWhite,
-                          image: DecorationImage(
-                              // image: AssetImage('assets/images/image_welcome.png'),
-                              image: NetworkImage(
-                                  _eventsCarousel[index].posterUrl),
-                              fit: BoxFit.cover,
-                              alignment: Alignment.topCenter),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Column(
+          if (state.event.isEmpty) {
+            return Center();
+          }
+          return ExploreCarousel(eventData: state.event);
+        } else {
+          return Center(
+            child: Text("No Proposed Events"),
+          );
+        }
+      },
+      listener: (BuildContext context, EventState state) {
+        if (state is EventSubmited) {
+          // debugPrint("event submited");
+          Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
+              arguments: state.event);
+
+          // Navigator.of(context).pop(); // Close loading spinner
+          // context.read<EventBloc>().add(EventFetchAllData(
+          //       requestEvent: ,requestFilteredEvent
+          //     ));
+        }
+      },
+    );
+  }
+}
+
+class ExploreCarousel extends StatelessWidget {
+  final List<EventDataModel> eventData;
+  const ExploreCarousel({
+    super.key,
+    required this.eventData,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        //! Section Tittle
+        const Padding(
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
+          child: Text(
+            'Newly Proposed Events',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+                color: UIColor.typoBlack,
+                fontSize: 16,
+                fontWeight: FontWeight.w800),
+          ),
+        ),
+        //! Carousel Content
+        // Stack(
+        //   children: [
+        //     ClipRRect(
+        //       borderRadius: BorderRadius.circular(12),
+        //       child: Image.network(
+        //         "eventData[index].posterUrl!",
+        //         fit: BoxFit.cover,
+        //         alignment: Alignment.topCenter,
+        //         errorBuilder: (context, error, stackTrace) {
+        //           return Image.asset(
+        //             'assets/images/image_not_found.png',
+        //             fit: BoxFit.cover,
+        //           );
+        //         },
+        //       ),
+        //     ),
+        //   ],
+        // ),
+        SizedBox(
+          height: (MediaQuery.of(context).size.width - 40) / 1.66,
+          child: ListView.separated(
+            shrinkWrap: true,
+            itemCount: eventData.length,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            separatorBuilder: (context, index) => const SizedBox(
+              width: 10,
+            ),
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                onTap: () {
+                  context
+                      .read<EventBloc>()
+                      .add(EventCardPressed(eventData[index]));
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                      color: UIColor.solidWhite,
+                      image: DecorationImage(
+                          // image: AssetImage('assets/images/image_welcome.png'),
+                          image: NetworkImage(eventData[index].posterUrl!),
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter),
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Stack(
+                    children: [
+                      Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -90,11 +152,15 @@ class _CarouselEventsState extends State<CarouselSection> {
                                   padding:
                                       const EdgeInsets.fromLTRB(12, 8, 12, 8),
                                   color: UIColor.bgCarousel.withOpacity(0.4),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.bottomEnd,
                                     children: [
+                                      // Row(
+                                      //   mainAxisAlignment:
+                                      //       MainAxisAlignment.spaceBetween,
+                                      //   crossAxisAlignment:
+                                      //       CrossAxisAlignment.end,
+                                      //   children: [
                                       Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -104,7 +170,8 @@ class _CarouselEventsState extends State<CarouselSection> {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "${_eventsCarousel[index].category} : ${_eventsCarousel[index].tittle}",
+                                                overflow: TextOverflow.clip,
+                                                "${eventData[index].category} : ${eventData[index].title}",
                                                 style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold,
@@ -114,105 +181,35 @@ class _CarouselEventsState extends State<CarouselSection> {
                                               )
                                             ],
                                           ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: [
-                                              Icon(
-                                                color: UIColor.solidWhite,
-                                                UIconsPro.regularRounded.user,
-                                                size: 12,
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(
-                                                "${_eventsCarousel[index].quota} people",
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: UIColor.solidWhite,
-                                                ),
-                                                textAlign: TextAlign.left,
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                color: UIColor.solidWhite,
-                                                UIconsPro.regularRounded
-                                                    .house_building,
-                                                size: 12,
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(_eventsCarousel[index].place,
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: UIColor.solidWhite,
-                                                  ))
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                color: UIColor.solidWhite,
-                                                UIconsPro.regularRounded.marker,
-                                                size: 12,
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(
-                                                  _eventsCarousel[index]
-                                                      .location,
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: UIColor.solidWhite,
-                                                  ))
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                color: UIColor.solidWhite,
-                                                UIconsPro
-                                                    .regularRounded.calendar,
-                                                size: 12,
-                                              ),
-                                              const SizedBox(
-                                                width: 8,
-                                              ),
-                                              Text(
-                                                _eventsCarousel[index]
-                                                    .dateStart,
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: UIColor.solidWhite,
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                          cardInfoCarouselRow(
+                                              UIconsPro.regularRounded.user,
+                                              eventData[index].quota),
+                                          cardInfoCarouselRow(
+                                              UIconsPro.regularRounded
+                                                  .house_building,
+                                              eventData[index].place),
+                                          cardInfoCarouselRow(
+                                              UIconsPro.regularRounded.marker,
+                                              eventData[index].location!),
+                                          cardInfoCarouselRow(
+                                              UIconsPro.regularRounded.calendar,
+                                              eventData[index].dateStart),
                                         ],
                                       ),
-                                      Column(
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
                                           Container(
                                             width: 108,
                                             height: 31,
                                             decoration: BoxDecoration(
                                                 color: UIColor.getStatusColor(
-                                                    _eventsCarousel[index]
-                                                        .status),
+                                                    eventData[index].status),
                                                 borderRadius:
                                                     BorderRadius.circular(30)),
                                             child: Text(
-                                              _eventsCarousel[index].status,
+                                              eventData[index].status,
                                               textAlign: TextAlign.center,
                                               style: const TextStyle(
                                                   color: UIColor.solidWhite,
@@ -220,7 +217,7 @@ class _CarouselEventsState extends State<CarouselSection> {
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 12),
                                             ),
-                                          )
+                                          ),
                                         ],
                                       )
                                     ],
@@ -231,75 +228,28 @@ class _CarouselEventsState extends State<CarouselSection> {
                           )
                         ],
                       ),
-                    );
-                  },
+                      // ClipRRect(
+                      //   // borderRadius: BorderRadius.circular(12),
+                      //   child: Image.network(
+                      //     eventData[index].posterUrl!,
+                      //     fit: BoxFit.cover,
+                      //     alignment: Alignment.topCenter,
+                      //     errorBuilder: (context, error, stackTrace) {
+                      //       return Image.asset(
+                      //         'assets/images/image_not_found.png',
+                      //         fit: BoxFit.scaleDown,
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          );
-        } else {
-          return Center();
-        }
-      },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
-}
-
-class CarouselEventsModel {
-  String tittle;
-  String category;
-  String quota;
-  String posterUrl;
-  String place;
-  String location;
-  String dateStart;
-  String status;
-
-  CarouselEventsModel({
-    required this.tittle,
-    required this.category,
-    required this.quota,
-    required this.posterUrl,
-    required this.place,
-    required this.location,
-    required this.dateStart,
-    required this.status,
-  });
-}
-
-List<CarouselEventsModel> getEventsCarousel() {
-  DateTime now = DateTime.now();
-  List<CarouselEventsModel> events = [];
-
-  events.add(CarouselEventsModel(
-    tittle: 'Techcomfest',
-    category: 'Seminar',
-    quota: '12',
-    posterUrl: "https://i.ibb.co.com/6X9CvTT/Dicding-SYK.jpg",
-    place: "GKT II",
-    location: "Semarang, Indonesia",
-    dateStart: DateFormat('E, d MMM yyy').format(now),
-    status: "Proposed",
-  ));
-  events.add(CarouselEventsModel(
-    tittle: '',
-    category: 'Seminar',
-    quota: '120',
-    posterUrl: "https://i.ibb.co.com/6X9CvTT/Dicding-SYK.jpg",
-    place: "GKT I",
-    location: "Semarang, Indonesia",
-    dateStart: DateFormat('E, d MMM yyy').format(now),
-    status: "Approved",
-  ));
-  events.add(CarouselEventsModel(
-    tittle: '',
-    category: 'Seminar',
-    quota: '20',
-    posterUrl: "https://i.ibb.co.com/6X9CvTT/Dicding-SYK.jpg",
-    place: "GKT I",
-    location: "Semarang, Indonesia",
-    dateStart: DateFormat('E, d MMM yyy').format(now),
-    status: "Pending",
-  ));
-  return events;
 }

@@ -24,3 +24,28 @@ Widget cardInfoRow(IconData icon, String text) {
     ),
   );
 }
+
+Widget cardInfoCarouselRow(IconData icon, String text) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Icon(
+        color: UIColor.solidWhite,
+        icon,
+        size: 12,
+      ),
+      const SizedBox(
+        width: 8,
+      ),
+      Text(
+        text,
+        style: const TextStyle(
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+          color: UIColor.solidWhite,
+        ),
+        textAlign: TextAlign.left,
+      )
+    ],
+  );
+}

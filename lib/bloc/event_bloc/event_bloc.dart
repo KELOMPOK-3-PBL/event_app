@@ -35,6 +35,10 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       _onEventFetchDataByProposeOrAdminUserID,
       transformer: throttleDroppable(throttleDuration),
     );
+    on<EventFetchCarousel>(
+      _onEventFetchCarousel,
+      transformer: throttleDroppable(throttleDuration),
+    );
     on<EventCardPressed>(_onEventCardPressed);
   }
 
@@ -95,6 +99,21 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       pathRequest: event.pathRequest,
       requestEvent: event.requestEvent,
     );
+  }
+
+  void _onEventFetchCarousel(
+      EventFetchCarousel event, Emitter<EventState> emit) async {
+    emit(EventLoading());
+    try {
+      // loading ketika halaman baru saja dibuka
+      emit(EventLoading());
+      // Mengambil data events dari API
+      final events = await eventRepository.getEventsFromAPI(
+          requestEvent: event.requestEvent, pathRequest: event.pathRequest);
+      emit(EventCarouselLoaded(events.data!));
+    } catch (_) {
+      emit(EventLoadError("Failed to load initial events request"));
+    }
   }
 
   //! Membuat fungsi untuk mengatasi pemanggilan data ke API dan sekaligus mengatasi logika penambahan setiap event baru dimuat

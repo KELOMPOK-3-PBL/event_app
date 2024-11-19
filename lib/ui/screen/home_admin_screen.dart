@@ -41,7 +41,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   List<Widget> _buildWidgetOptions(String token) {
     return [
-      const HomeExplorePage(),
+      HomeExplorePage(token: token),
       const HomeEventsPage(),
       const HomeApprovalPage(),
       const HomeProfilePage(),

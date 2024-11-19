@@ -67,7 +67,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
       //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
       // requestEvent.copyWith();
       context.read<EventBloc>().add(
-            EventFetchAllData(
+            EventFetchDataByProposeOrAdminUserID(
               requestEvent: requestFilteredEvent,
             ),
           );
@@ -96,10 +96,10 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
               arguments: state.event);
 
           // Navigator.of(context).pop(); // Close loading spinner
-          context.read<EventBloc>().add(EventFetchAllData(
+          context.read<EventBloc>().add(EventFetchDataByProposeOrAdminUserID(
                 requestEvent: requestFilteredEvent,
               ));
-        } else if (state is EventAllLoaded) {
+        } else if (state is EventDataByProposeOrAdminUserIDLoaded) {
           // token = (context.read<AuthBloc>().state as AuthAuthenticated)
           //     .authData
           //     .token!;
@@ -166,7 +166,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                   builder: (context, state) {
                     if (state is EventLoading) {
                       return const Center(child: CircularProgressIndicator());
-                    } else if (state is EventAllLoaded) {
+                    } else if (state is EventDataByProposeOrAdminUserIDLoaded) {
                       final events = state.event;
 
                       return ListView.builder(

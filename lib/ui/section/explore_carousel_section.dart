@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:event_proposal_app/data/model/model.dart';
+import 'package:event_proposal_app/data/provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +13,8 @@ import '../router/router.dart';
 import '../widget/card_info_row.dart';
 
 class CarouselSection extends StatefulWidget {
-  const CarouselSection({super.key});
+  final String token;
+  const CarouselSection({super.key, required this.token});
 
   @override
   State<CarouselSection> createState() => _CarouselEventsState();
@@ -49,9 +51,10 @@ class _CarouselEventsState extends State<CarouselSection> {
               arguments: state.event);
 
           // Navigator.of(context).pop(); // Close loading spinner
-          // context.read<EventBloc>().add(EventFetchAllData(
-          //       requestEvent: ,requestFilteredEvent
-          //     ));
+          context.read<EventBloc>().add(EventFetchCarousel(
+              requestEvent: RequestFilteredEventModel(
+                  token: widget.token, currentIndex: '0', status: 'Reviewing'),
+              pathRequest: PathRequestEvents.allEvents));
         }
       },
     );

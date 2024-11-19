@@ -3,6 +3,8 @@ part of '../model.dart';
 class RequestFilteredEventModel extends Equatable {
   final String token;
   final String currentIndex;
+  final String? proposeUserId;
+  final String? adminUserId;
   static const String postLimit = "5";
   final String? eventId;
   final String? status;
@@ -16,6 +18,8 @@ class RequestFilteredEventModel extends Equatable {
   const RequestFilteredEventModel({
     required this.token,
     required this.currentIndex,
+    this.proposeUserId,
+    this.adminUserId,
     // this.postLimit,
     this.eventId,
     this.status,
@@ -59,6 +63,8 @@ class RequestFilteredEventModel extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'offset': currentIndex,
+      'propose_uid': proposeUserId,
+      'admin_uid': adminUserId,
       'limit': postLimit,
       'status': status,
       'category': category,

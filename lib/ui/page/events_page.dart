@@ -60,9 +60,10 @@ class _HomeEventsPageState extends State<HomeEventsPage>
 
   void _onScroll() {
     // if (_isBottom) {
-    if (_isBottom &&
-        !(context.read<EventBloc>().state as EventApprovedLoaded)
-            .hasReachedMax) {
+    if (_isBottom
+        // &&!(context.read<EventBloc>().state as EventApprovedLoaded)
+        // .hasReachedMax
+        ) {
       //! mengatasi perubahan request ketika di scroll
       // mengambil request yang sudah diubah current statenya
       // requestFilteredEvent =

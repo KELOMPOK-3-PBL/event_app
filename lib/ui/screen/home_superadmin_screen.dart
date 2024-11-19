@@ -1,4 +1,3 @@
-import 'package:event_proposal_app/data/provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -47,10 +46,6 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
         providers: [
           BlocProvider(
             create: (context) => EventBloc()
-              ..add(EventFetchCarousel(
-                  requestEvent: RequestFilteredEventModel(
-                      token: token, currentIndex: '0', status: 'Proposed'),
-                  pathRequest: PathRequestEvents.allEvents))
               ..add(EventFetchAllData(
                   requestEvent: RequestFilteredEventModel(
                       token: token, currentIndex: '0'))),
@@ -59,7 +54,7 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
             create: (context) => CategoryBloc()..add(StatusReadData()),
           ),
         ],
-        child: const HomeExplorePage(),
+        child: HomeExplorePage(token: token),
       ),
       BlocProvider(
         create: (context) => EventBloc()
@@ -74,7 +69,7 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
       BlocProvider(
         create: (context) => EventBloc()
           ..add(
-            EventFetchAllData(
+            EventFetchDataByProposeOrAdminUserID(
               requestEvent:
                   RequestFilteredEventModel(token: token, currentIndex: '0'),
             ),

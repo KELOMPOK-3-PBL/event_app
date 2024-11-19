@@ -44,7 +44,7 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
 
   List<Widget> _buildWidgetOptions(String token) {
     return [
-      const HomeExplorePage(),
+      HomeExplorePage(token: token),
       const HomeEventsPage(),
       const HomeProposePage(),
       const HomeProfilePage(),

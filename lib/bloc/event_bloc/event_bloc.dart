@@ -23,6 +23,10 @@ class EventBloc extends Bloc<EventEvent, EventState> {
   final eventRepository = EventRepository();
 
   EventBloc() : super(EventInitial()) {
+    on<EventFetchData>(
+      _onEventFetchData,
+      transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
+    );
     on<EventFetchApprovedData>(
       _onEventFetchApprovedData,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
@@ -39,17 +43,36 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       _onEventFetchCarousel,
       transformer: throttleDroppable(throttleDuration),
     );
-    on<EventCardPressed>(_onEventCardPressed);
+    // on<EventCardPressed>(_onEventCardPressed);
   }
 
-  void _onEventCardPressed(
-      EventCardPressed event, Emitter<EventState> emit) async {
-    emit(EventLoading());
-    try {
-      emit(EventSubmited(event.event));
-    } catch (e) {
-      emit(EventLoadError("Failed to find events"));
-    }
+  // void _onEventCardPressed(
+  //     EventCardPressed event, Emitter<EventState> emit) async {
+  //   emit(EventLoading());
+  //   try {
+  //     emit(EventSubmited(event.event));
+  //   } catch (e) {
+  //     emit(EventLoadError("Failed to find events"));
+  //   }
+  // }
+  void _onEventFetchData(EventFetchData event, Emitter<EventState> emit) async {
+    final carousel = await eventRepository.getEventsFromAPI(
+      requestEvent: event.requestEventCarousel!,
+      pathRequest: event.pathRequest,
+    );
+    await _handleEventFetch<EventApprovedLoaded>(
+      event: event,
+      emit: emit,
+      createState: (newCombinedEvents, hasReachedMax, request) => EventLoaded(
+        listEvents: newCombinedEvents,
+        listEventsCarousel: carousel.data!,
+        hasReachedMax: hasReachedMax,
+        requestEvent: request,
+        pathRequest: event.pathRequest,
+      ),
+      pathRequest: event.pathRequest,
+      requestEvent: event.requestEvent,
+    );
   }
 
   void _onEventFetchApprovedData(

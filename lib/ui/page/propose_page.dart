@@ -86,17 +86,18 @@ class _HomeProposePageState extends State<HomeProposePage> {
         // debugPrint("get");
         // debugPrint("Token: $token");
 
-        if (state is EventSubmited) {
-          debugPrint("event submited");
+        // if (state is EventSubmited) {
+        //   debugPrint("event submited");
 
-          Navigator.of(context).pushNamed(AppRouter.detailEventProposeRoute,
-              arguments: state.event);
+        //   Navigator.of(context).pushNamed(AppRouter.detailEventProposeRoute,
+        //       arguments: state.event);
 
-          //! Trigger CategoryBloc untuk memuat ulang data
-          context.read<EventBloc>().add(EventFetchApprovedData(
-                requestEvent: requestFilteredEvent,
-              ));
-        } else if (state is EventApprovedLoaded) {
+        //   //! Trigger CategoryBloc untuk memuat ulang data
+        //   context.read<EventBloc>().add(EventFetchApprovedData(
+        //         requestEvent: requestFilteredEvent,
+        //       ));
+        // } else
+        if (state is EventApprovedLoaded) {
           requestFilteredEvent = state.requestEvent;
           // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
@@ -151,7 +152,11 @@ class _HomeProposePageState extends State<HomeProposePage> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is EventApprovedLoaded) {
                       final events = state.event;
-
+                      if (events.isEmpty) {
+                        return const Center(
+                          child: Text("You don't propose any events"),
+                        );
+                      }
                       return ListView.builder(
                         controller: _scrollController,
                         padding: EdgeInsets.zero,
@@ -174,9 +179,12 @@ class _HomeProposePageState extends State<HomeProposePage> {
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
                               child: GestureDetector(
                                 onTap: () {
-                                  context
-                                      .read<EventBloc>()
-                                      .add(EventCardPressed(events[index]));
+                                  Navigator.of(context).pushNamed(
+                                      AppRouter.detailEventProposeRoute);
+                                  //       arguments: state.event);
+                                  // context
+                                  //     .read<EventBloc>()
+                                  //     .add(EventCardPressed(events[index]));
                                 },
                                 child: EventCardWithStatusWidget(
                                   events: events[index],

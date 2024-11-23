@@ -1,14 +1,13 @@
+import 'package:event_proposal_app/data/provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 import '../../bloc/bloc.dart';
 import '../../data/model/model.dart';
-import '../../data/provider/provider.dart';
 import '../router/router.dart';
 // import '../section/explore_event_list_section.dart';
 import '../section/explore_quick_category_section.dart';
 import '../section/explore_carousel_section.dart';
-import '../screen/search_result_event_screen.dart';
 import '../theme/ui_colors.dart';
 import '../widget/search_widget.dart';
 import '../widget/show_error.dart';
@@ -30,6 +29,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
 
   //! Updated request
   late RequestFilteredEventModel requestFilteredEvent;
+  late PathRequestEvents pathRequest;
 
   @override
   void initState() {
@@ -47,12 +47,13 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
 
   void _onScroll() {
     if (_isBottom
-        // &&!(context.read<EventBloc>().state as EventAllLoaded).hasReachedMax
+        // &&!(context.read<EventBloc>().state as EventLoaded).hasReachedMax
         ) {
       //! mengatasi perubahan request ketika di scroll
       context.read<EventBloc>().add(
-            EventFetchAllData(
+            EventFetchData(
               requestEvent: requestFilteredEvent,
+              pathRequest: pathRequest,
             ),
           );
     }
@@ -131,16 +132,18 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
           ),
 
           QuickCategorySection(), //! memanggil model => category
-          BlocProvider(
-            create: (context) => EventBloc()
-              ..add(EventFetchCarousel(
-                  requestEvent: RequestFilteredEventModel(
-                      token: widget.token,
-                      currentIndex: '0',
-                      status: 'Proposed'),
-                  pathRequest: PathRequestEvents.allEvents)),
-            child: CarouselSection(token: widget.token),
-          ), //! -- Carousel Events Section
+          // BlocProvider(
+          //   create: (context) => EventBloc()
+          //     ..add(EventFetchData(
+          //         requestEventCarousel: ,
+          //         requestEvent: RequestFilteredEventModel(
+          //             token: widget.token,
+          //             currentIndex: '0',
+          //             status: 'Proposed'),
+          //         pathRequest: PathRequestEvents.allEvents)),
+          // child:
+          CarouselSection(),
+          // ), //! -- Carousel Events Section
           // EventListSection(
           //   scrollController: _scrollController,
           //   requestFilteredEvent: requestFilteredEvent,
@@ -154,12 +157,13 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
               //       arguments: state.event);
 
               //   // Navigator.of(context).pop(); // Close loading spinner
-              //   context.read<EventBloc>().add(EventFetchAllData(
+              //   context.read<EventBloc>().add(EventFetchData(
               //         requestEvent: requestFilteredEvent,
               //       ));
               // } else
-              if (state is EventAllLoaded) {
+              if (state is EventLoaded) {
                 requestFilteredEvent = state.requestEvent;
+                pathRequest = state.pathRequest;
                 debugPrint("New Request: ${requestFilteredEvent.toString()}");
                 // Navigator.of(context).pop();
               } else if (state is EventLoadError) {
@@ -169,8 +173,8 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
             }, builder: (context, state) {
               if (state is EventLoading) {
                 return const Center(child: CircularProgressIndicator());
-              } else if (state is EventAllLoaded) {
-                // return ExploreCard<EventAllLoaded>(
+              } else if (state is EventLoaded) {
+                // return ExploreCard<EventLoaded>(
                 // eventsMore: _eventsMore,
                 // state: state,
                 // );
@@ -198,8 +202,8 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: state.hasReachedMax
-                            ? state.event.length
-                            : state.event.length + 1,
+                            ? state.listEvents.length
+                            : state.listEvents.length + 1,
                         // controller: _scrollController,
                         padding: EdgeInsets.zero,
                         // physics: const AlwaysScrollableScrollPhysics(),
@@ -214,7 +218,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                           //     200, // Rasio lebar-tinggi setiap item
                         ),
                         itemBuilder: (context, index) {
-                          if (index >= state.event.length) {
+                          if (index >= state.listEvents.length) {
                             return Padding(
                               padding:
                                   const EdgeInsets.only(top: 10, bottom: 20),
@@ -226,11 +230,11 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.pushNamed(
-                                    context, AppRouter.detailEventApprovalRoute,
-                                    arguments: state.event[index].eventId);
+                                    context, AppRouter.detailEventRoute,
+                                    arguments: state.listEvents[index].eventId);
                                 // context
                                 //     .read<EventBloc>()
-                                //     .add(EventCardPressed(state.event[index]));
+                                //     .add(EventCardPressed(state.listEvents[index]));
                               },
                               child: Container(
                                 // width: (MediaQuery.of(context).size.width - 44) /
@@ -260,7 +264,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                           child:
                                               // Image.asset('assets/images/background.png',
                                               Image.network(
-                                            state.event[index].posterUrl!,
+                                            state.listEvents[index].posterUrl!,
                                             height: (MediaQuery.of(context)
                                                         .size
                                                         .width -
@@ -300,14 +304,15 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                           Container(
                                             decoration: BoxDecoration(
                                               color: UIColor.getStatusColor(
-                                                  state.event[index].status),
+                                                  state.listEvents[index]
+                                                      .status),
                                               borderRadius:
                                                   BorderRadius.circular(6),
                                             ),
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 2, horizontal: 10),
                                             child: Text(
-                                              state.event[index].status,
+                                              state.listEvents[index].status,
                                               style: const TextStyle(
                                                 color: UIColor.solidWhite,
                                                 fontSize: 10,
@@ -317,7 +322,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
-                                            '${state.event[index].category} : ${state.event[index].title}',
+                                            '${state.listEvents[index].category} : ${state.listEvents[index].title}',
                                             style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold,
@@ -335,7 +340,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                               ),
                                               const SizedBox(width: 4),
                                               Text(
-                                                '${state.event[index].quota} participants',
+                                                '${state.listEvents[index].quota} participants',
                                                 style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400,
@@ -355,7 +360,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                               ),
                                               const SizedBox(width: 4),
                                               Text(
-                                                state.event[index].place,
+                                                state.listEvents[index].place,
                                                 style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400,
@@ -374,7 +379,8 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                               ),
                                               const SizedBox(width: 4),
                                               Text(
-                                                state.event[index].location!,
+                                                state.listEvents[index]
+                                                    .location!,
                                                 style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400,
@@ -394,7 +400,8 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                               ),
                                               const SizedBox(width: 4),
                                               Text(
-                                                state.event[index].dateStart,
+                                                state.listEvents[index]
+                                                    .dateStart,
                                                 style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400,

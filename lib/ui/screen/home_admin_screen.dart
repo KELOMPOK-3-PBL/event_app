@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/bloc.dart';
 import '../../data/model/model.dart';
+import '../../data/provider/provider.dart';
 import '../navigation/bottom_navbar_admin.dart';
 import '../page/approval_page.dart';
 import '../page/events_page.dart';
@@ -48,9 +49,12 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         providers: [
           BlocProvider(
             create: (context) => EventBloc()
-              ..add(EventFetchAllData(
+              ..add(EventFetchData(
+                  requestEventCarousel: RequestFilteredEventModel(
+                      token: token, currentIndex: '0', status: 'Proposed'),
                   requestEvent: RequestFilteredEventModel(
-                      token: token, currentIndex: '0'))),
+                      token: token, currentIndex: '0'),
+                  pathRequest: PathRequestEvents.allEvents)),
           ),
           BlocProvider(
             create: (context) => CategoryBloc()..add(StatusReadData()),

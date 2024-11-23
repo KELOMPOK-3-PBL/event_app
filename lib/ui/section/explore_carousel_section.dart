@@ -12,8 +12,7 @@ import '../router/router.dart';
 import '../widget/card_info_row.dart';
 
 class CarouselSection extends StatefulWidget {
-  final String token;
-  const CarouselSection({super.key, required this.token});
+  const CarouselSection({super.key});
 
   @override
   State<CarouselSection> createState() => _CarouselEventsState();
@@ -33,30 +32,17 @@ class _CarouselEventsState extends State<CarouselSection> {
     // return BlocConsumer<EventBloc, EventState>(
     return BlocBuilder<EventBloc, EventState>(
       builder: (context, state) {
-        if (state is EventCarouselLoaded) {
-          if (state.event.isEmpty) {
+        if (state is EventLoaded) {
+          if (state.listEventsCarousel!.isEmpty) {
             return Center();
           }
-          return ExploreCarousel(eventData: state.event);
+          return ExploreCarousel(eventData: state.listEvents);
         } else {
           return Center(
-            child: Text("No Proposed Events"),
+            child: Text("No Data"),
           );
         }
       },
-      // listener: (BuildContext context, EventState state) {
-      // if (state is EventSubmited) {
-      //   // debugPrint("event submited");
-      //   Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
-      //       arguments: state.event);
-
-      //   // Navigator.of(context).pop(); // Close loading spinner
-      //   context.read<EventBloc>().add(EventFetchCarousel(
-      //       requestEvent: RequestFilteredEventModel(
-      //           token: widget.token, currentIndex: '0', status: 'Reviewing'),
-      //       pathRequest: PathRequestEvents.allEvents));
-      // }
-      // },
     );
   }
 }

@@ -50,11 +50,21 @@ class EventFetchCarousel extends EventEvent {
 }
 // class EventFilterApply extends EventEvent {}
 
-class EventCardPressed extends EventEvent {
-  final EventDataModel event;
+class EventFetchData extends EventEvent {
+  final RequestFilteredEventModel requestEvent;
+  final RequestFilteredEventModel? requestEventCarousel;
+  final PathRequestEvents pathRequest;
 
-  const EventCardPressed(this.event);
-
-  @override
-  List<Object> get props => [event];
+  const EventFetchData(
+      {required this.requestEvent,
+      this.requestEventCarousel,
+      required this.pathRequest});
 }
+// class EventCardPressed extends EventEvent {
+//   final EventDataModel event;
+
+//   const EventCardPressed(this.event);
+
+//   @override
+//   List<Object> get props => [event];
+// }

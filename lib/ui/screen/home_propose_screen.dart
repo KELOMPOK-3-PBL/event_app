@@ -1,3 +1,4 @@
+import 'package:event_proposal_app/data/provider/provider.dart';
 import 'package:event_proposal_app/ui/router/router.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter/material.dart';
@@ -51,9 +52,16 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
         providers: [
           BlocProvider(
             create: (context) => EventBloc()
-              ..add(EventFetchApprovedData(
-                  requestEvent: RequestFilteredEventModel(
-                      token: token, currentIndex: '0'))),
+              ..add(
+                EventFetchData(
+                    requestEventCarousel: RequestFilteredEventModel(
+                      token: token,
+                      currentIndex: '0',
+                    ),
+                    requestEvent: RequestFilteredEventModel(
+                        token: token, currentIndex: '0'),
+                    pathRequest: PathRequestEvents.approvedEvents),
+              ),
           ),
           BlocProvider(
             create: (context) => CategoryBloc()..add(StatusReadData()),

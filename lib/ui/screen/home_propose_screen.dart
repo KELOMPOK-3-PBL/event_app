@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/bloc.dart';
+import '../../data/model/model.dart';
 import '../navigation/bottom_navbar_propose.dart';
 import '../page/events_page.dart';
 import '../page/explore_page.dart';
@@ -21,6 +22,7 @@ class HomeProposeScreen extends StatefulWidget {
 //! masih salah
 class _HomeProposeScreenState extends State<HomeProposeScreen> {
   String token = "";
+  String adminUserId = "";
   int _currentIndex = 0;
 
   @override
@@ -30,6 +32,7 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
 
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
+      adminUserId = authState.authData.data!.userId.toString();
     } else {
       token = '';
       debugPrint("User is not authenticated.");
@@ -44,9 +47,40 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
 
   List<Widget> _buildWidgetOptions(String token) {
     return [
-      HomeExplorePage(token: token),
-      const HomeEventsPage(),
-      const HomeProposePage(),
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => EventBloc()
+              ..add(EventFetchApprovedData(
+                  requestEvent: RequestFilteredEventModel(
+                      token: token, currentIndex: '0'))),
+          ),
+          BlocProvider(
+            create: (context) => CategoryBloc()..add(StatusReadData()),
+          ),
+        ],
+        child: HomeExplorePage(token: token),
+      ),
+      BlocProvider(
+        create: (context) => EventBloc()
+          ..add(
+            EventFetchApprovedData(
+              requestEvent:
+                  RequestFilteredEventModel(token: token, currentIndex: '0'),
+            ),
+          ),
+        child: const HomeEventsPage(),
+      ),
+      BlocProvider(
+        create: (context) => EventBloc()
+          ..add(
+            EventFetchDataByProposeOrAdminUserID(
+              requestEvent:
+                  RequestFilteredEventModel(token: token, currentIndex: '0'),
+            ),
+          ),
+        child: const HomeProposePage(),
+      ),
       const HomeProfilePage(),
     ];
   }
@@ -61,20 +95,13 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
       );
     }
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(
-          value: context.read<AuthBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => EventBloc(),
-        ),
-        BlocProvider(
-          create: (context) => CategoryBloc()..add(StatusReadData()),
-        ),
-      ],
+    return BlocProvider.value(
+      value: context.read<AuthBloc>(),
       child: Scaffold(
-        body: _buildWidgetOptions(token).elementAt(_currentIndex),
+        body: IndexedStack(
+          index: _currentIndex,
+          children: _buildWidgetOptions(token),
+        ),
         floatingActionButton: Container(
           margin: EdgeInsets.only(right: 13),
           decoration: BoxDecoration(

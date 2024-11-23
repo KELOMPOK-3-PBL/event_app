@@ -90,16 +90,17 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
         // debugPrint("get");
         // debugPrint("Token: $token");
 
-        if (state is EventSubmited) {
-          // debugPrint("event submited");
-          Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
-              arguments: state.event);
+        // if (state is EventSubmited) {
+        //   // debugPrint("event submited");
+        //   Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
+        //       arguments: state.event);
 
-          // Navigator.of(context).pop(); // Close loading spinner
-          context.read<EventBloc>().add(EventFetchDataByProposeOrAdminUserID(
-                requestEvent: requestFilteredEvent,
-              ));
-        } else if (state is EventDataByProposeOrAdminUserIDLoaded) {
+        //   // Navigator.of(context).pop(); // Close loading spinner
+        //   context.read<EventBloc>().add(EventFetchDataByProposeOrAdminUserID(
+        //         requestEvent: requestFilteredEvent,
+        //       ));
+        // } else
+        if (state is EventDataByProposeOrAdminUserIDLoaded) {
           // token = (context.read<AuthBloc>().state as AuthAuthenticated)
           //     .authData
           //     .token!;
@@ -147,13 +148,16 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                 child: SearchWidget(
                   label: 'Search Event ...',
                   onSubmittedKeyboard: (searchQuery) {
+                    Navigator.pushNamed(
+                        context, AppRouter.searchResultEventRoute,
+                        arguments: {'search_query': searchQuery});
                     //! pencarian approval menu
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SearchResultEventsScreen(
-                              searchQuery: searchQuery)),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => SearchResultEventsScreen(
+                    //           searchQuery: searchQuery)),
+                    // );
                   },
                   onPressedFilter: () {
                     // Handle the button tap action here
@@ -168,7 +172,11 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is EventDataByProposeOrAdminUserIDLoaded) {
                       final events = state.event;
-
+                      if (events.isEmpty) {
+                        return const Center(
+                          child: Text("You don't review an events"),
+                        );
+                      }
                       return ListView.builder(
                         controller: _scrollController,
                         padding: EdgeInsets.zero,
@@ -191,9 +199,12 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
                               child: GestureDetector(
                                 onTap: () {
-                                  context
-                                      .read<EventBloc>()
-                                      .add(EventCardPressed(events[index]));
+                                  Navigator.pushNamed(context,
+                                      AppRouter.detailEventApprovalRoute,
+                                      arguments: state.event[index].eventId);
+                                  // context
+                                  //     .read<EventBloc>()
+                                  //     .add(EventCardPressed(events[index]));
                                 },
                                 child: EventCardWithStatusWidget(
                                   events: events[index],
@@ -210,8 +221,11 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                             : events.length + 1,
                       );
                       // }
+                    } else {
+                      return const Center(
+                        child: Text("You're never review events"),
+                      );
                     }
-                    return SizedBox();
                   },
                 ),
               ),

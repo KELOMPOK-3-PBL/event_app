@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:event_proposal_app/data/model/model.dart';
-import 'package:event_proposal_app/data/provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,7 +30,8 @@ class _CarouselEventsState extends State<CarouselSection> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<EventBloc, EventState>(
+    // return BlocConsumer<EventBloc, EventState>(
+    return BlocBuilder<EventBloc, EventState>(
       builder: (context, state) {
         if (state is EventCarouselLoaded) {
           if (state.event.isEmpty) {
@@ -44,19 +44,19 @@ class _CarouselEventsState extends State<CarouselSection> {
           );
         }
       },
-      listener: (BuildContext context, EventState state) {
-        if (state is EventSubmited) {
-          // debugPrint("event submited");
-          Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
-              arguments: state.event);
+      // listener: (BuildContext context, EventState state) {
+      // if (state is EventSubmited) {
+      //   // debugPrint("event submited");
+      //   Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
+      //       arguments: state.event);
 
-          // Navigator.of(context).pop(); // Close loading spinner
-          context.read<EventBloc>().add(EventFetchCarousel(
-              requestEvent: RequestFilteredEventModel(
-                  token: widget.token, currentIndex: '0', status: 'Reviewing'),
-              pathRequest: PathRequestEvents.allEvents));
-        }
-      },
+      //   // Navigator.of(context).pop(); // Close loading spinner
+      //   context.read<EventBloc>().add(EventFetchCarousel(
+      //       requestEvent: RequestFilteredEventModel(
+      //           token: widget.token, currentIndex: '0', status: 'Reviewing'),
+      //       pathRequest: PathRequestEvents.allEvents));
+      // }
+      // },
     );
   }
 }
@@ -117,9 +117,12 @@ class ExploreCarousel extends StatelessWidget {
             itemBuilder: (context, index) {
               return GestureDetector(
                 onTap: () {
-                  context
-                      .read<EventBloc>()
-                      .add(EventCardPressed(eventData[index]));
+                  // context
+                  //     .read<EventBloc>()
+                  //     .add(EventCardPressed(eventData[index]));
+                  Navigator.pushNamed(
+                      context, AppRouter.detailEventApprovalRoute,
+                      arguments: eventData[index].eventId);
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width - 40,

@@ -52,9 +52,14 @@ class AppRouter {
         const DetailEventApprovalScreen(),
     // ),
     detailEventProposeRoute: (context) => const DetailEventApprovalScreen(),
-    searchResultEventRoute: (context) => const SearchResultEventsScreen(
-          searchQuery: '',
-        ),
+    searchResultEventRoute: (context) {
+      final Map<String, dynamic> arguments =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      String searchQuery = arguments['search_query'];
+      return SearchResultEventsScreen(
+        searchQuery: searchQuery,
+      );
+    },
     formProposeEventRoute: (context) => const FormProposeEvent(),
   };
 

@@ -113,12 +113,9 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                 SearchWidget(
                   label: 'Search Event ...',
                   onSubmittedKeyboard: (searchQuery) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SearchResultEventsScreen(
-                              searchQuery: searchQuery)),
-                    );
+                    Navigator.pushNamed(
+                        context, AppRouter.searchResultEventRoute,
+                        arguments: {'search_query': searchQuery});
                   },
                   onPressedFilter: () {
                     // Handle the button tap action here
@@ -140,7 +137,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                   requestEvent: RequestFilteredEventModel(
                       token: widget.token,
                       currentIndex: '0',
-                      status: 'Reviewing'),
+                      status: 'Proposed'),
                   pathRequest: PathRequestEvents.allEvents)),
             child: CarouselSection(token: widget.token),
           ), //! -- Carousel Events Section
@@ -151,16 +148,17 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
           SizedBox(
             child:
                 BlocConsumer<EventBloc, EventState>(listener: (context, state) {
-              if (state is EventSubmited) {
-                // debugPrint("event submited");
-                Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
-                    arguments: state.event);
+              // if (state is EventSubmited) {
+              //   // debugPrint("event submited");
+              //   Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
+              //       arguments: state.event);
 
-                // Navigator.of(context).pop(); // Close loading spinner
-                context.read<EventBloc>().add(EventFetchAllData(
-                      requestEvent: requestFilteredEvent,
-                    ));
-              } else if (state is EventAllLoaded) {
+              //   // Navigator.of(context).pop(); // Close loading spinner
+              //   context.read<EventBloc>().add(EventFetchAllData(
+              //         requestEvent: requestFilteredEvent,
+              //       ));
+              // } else
+              if (state is EventAllLoaded) {
                 requestFilteredEvent = state.requestEvent;
                 debugPrint("New Request: ${requestFilteredEvent.toString()}");
                 // Navigator.of(context).pop();
@@ -227,9 +225,12 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                           } else {
                             return GestureDetector(
                               onTap: () {
-                                context
-                                    .read<EventBloc>()
-                                    .add(EventCardPressed(state.event[index]));
+                                Navigator.pushNamed(
+                                    context, AppRouter.detailEventApprovalRoute,
+                                    arguments: state.event[index].eventId);
+                                // context
+                                //     .read<EventBloc>()
+                                //     .add(EventCardPressed(state.event[index]));
                               },
                               child: Container(
                                 // width: (MediaQuery.of(context).size.width - 44) /

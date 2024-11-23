@@ -31,11 +31,16 @@ class EventProvider {
         options = Options(
           contentType: 'application/json',
           headers: {
-            'Cookie': 'jwt=${pathRequest.token}',
             'Authorization': 'Bearer ${pathRequest.token}',
+            'Cookie': 'jwt=${pathRequest.token}',
+            'Accept': 'application/json',
+            'User-Agent': 'Dart/Flutter',
           },
         );
       }
+      // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
+      dio.interceptors
+          .add(LogInterceptor(responseBody: true, requestBody: true));
 
       // Melakukan permintaan GET dengan query parameters
       final Response rawResponse = await dio.get(

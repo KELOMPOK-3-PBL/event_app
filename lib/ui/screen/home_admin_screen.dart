@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/bloc.dart';
+import '../../data/model/model.dart';
 import '../navigation/bottom_navbar_admin.dart';
 import '../page/approval_page.dart';
 import '../page/events_page.dart';
@@ -18,6 +19,7 @@ class HomeAdminScreen extends StatefulWidget {
 //! masih salah
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
   String token = "";
+  String adminUserId = "";
   int _currentIndex = 0;
 
   @override
@@ -27,6 +29,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
+      adminUserId = authState.authData.data!.userId.toString();
     } else {
       token = '';
       debugPrint("User is not authenticated.");
@@ -41,9 +44,40 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   List<Widget> _buildWidgetOptions(String token) {
     return [
-      HomeExplorePage(token: token),
-      const HomeEventsPage(),
-      const HomeApprovalPage(),
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => EventBloc()
+              ..add(EventFetchAllData(
+                  requestEvent: RequestFilteredEventModel(
+                      token: token, currentIndex: '0'))),
+          ),
+          BlocProvider(
+            create: (context) => CategoryBloc()..add(StatusReadData()),
+          ),
+        ],
+        child: HomeExplorePage(token: token),
+      ),
+      BlocProvider(
+        create: (context) => EventBloc()
+          ..add(
+            EventFetchApprovedData(
+              requestEvent:
+                  RequestFilteredEventModel(token: token, currentIndex: '0'),
+            ),
+          ),
+        child: const HomeEventsPage(),
+      ),
+      BlocProvider(
+        create: (context) => EventBloc()
+          ..add(
+            EventFetchDataByProposeOrAdminUserID(
+              requestEvent: RequestFilteredEventModel(
+                  token: token, currentIndex: '0', adminUserId: adminUserId),
+            ),
+          ),
+        child: const HomeApprovalPage(),
+      ),
       const HomeProfilePage(),
     ];
   }
@@ -58,20 +92,13 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       );
     }
 
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider.value(
-          value: context.read<AuthBloc>(),
-        ),
-        BlocProvider(
-          create: (context) => EventBloc(),
-        ),
-        BlocProvider(
-          create: (context) => CategoryBloc()..add(StatusReadData()),
-        ),
-      ],
+    return BlocProvider.value(
+      value: context.read<AuthBloc>(),
       child: Scaffold(
-        body: _buildWidgetOptions(token).elementAt(_currentIndex),
+        body: IndexedStack(
+          index: _currentIndex,
+          children: _buildWidgetOptions(token),
+        ),
         bottomNavigationBar: BottomNavbarAdmin(
           currentIndex: _currentIndex,
           onItemTapped: _onItemTapped,

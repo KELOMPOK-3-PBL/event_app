@@ -163,7 +163,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         final events = await eventRepository.getEventsFromAPI(
             requestEvent: requestEvent, pathRequest: pathRequest);
         // Menentukan apakah data event di DB sudah termuat semua atau belum
-        if (events.data!.isEmpty || events.data!.length < 4) {
+        if (events.data!.length < 4) {
           emit(createState(events.data!, true, requestEvent));
         } else {
           emit(createState(events.data!, false, requestEvent));

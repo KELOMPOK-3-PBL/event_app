@@ -19,6 +19,7 @@ class HomeSuperadminScreen extends StatefulWidget {
 
 class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
   String token = "";
+  String adminUserId = "";
   int _currentIndex = 0;
 
   @override
@@ -28,6 +29,7 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
 
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
+      adminUserId = authState.authData.data!.userId.toString();
     } else {
       token = '';
       debugPrint("User is not authenticated.");
@@ -70,8 +72,8 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
         create: (context) => EventBloc()
           ..add(
             EventFetchDataByProposeOrAdminUserID(
-              requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'),
+              requestEvent: RequestFilteredEventModel(
+                  token: token, currentIndex: '0', adminUserId: adminUserId),
             ),
           ),
         child: const HomeApprovalPage(),

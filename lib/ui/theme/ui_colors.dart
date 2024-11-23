@@ -35,7 +35,7 @@ class UIColor {
     } else if (status == "Rejected") {
       return UIColor.rejected;
     } else {
-      return UIColor.typoGray2;
+      return UIColor.admin;
     }
   }
 

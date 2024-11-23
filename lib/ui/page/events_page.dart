@@ -92,18 +92,19 @@ class _HomeEventsPageState extends State<HomeEventsPage>
         // token = (authState as AuthAuthenticated).authData.token!;
         // debugPrint("Token: $token");
 
-        if (state is EventSubmited) {
-          // debugPrint("event submited");
+        // if (state is EventSubmited) {
+        // debugPrint("event submited");
 
-          // Navigator.of(context).pop(); // Close loading spinner
-          Navigator.of(context)
-              .pushNamed(AppRouter.detailEventRoute, arguments: state.event);
+        // Navigator.of(context).pop(); // Close loading spinner
+        // Navigator.of(context)
+        //     .pushNamed(AppRouter.detailEventRoute, arguments: state.event);
 
-          //! Trigger CategoryBloc untuk memuat ulang data
-          context.read<EventBloc>().add(EventFetchApprovedData(
-                requestEvent: requestFilteredEvent,
-              ));
-        } else if (state is EventApprovedLoaded) {
+        // //! Trigger CategoryBloc untuk memuat ulang data
+        // context.read<EventBloc>().add(EventFetchApprovedData(
+        //       requestEvent: requestFilteredEvent,
+        //     ));
+        // } else
+        if (state is EventApprovedLoaded) {
           requestFilteredEvent = state.requestEvent;
           // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
@@ -138,12 +139,15 @@ class _HomeEventsPageState extends State<HomeEventsPage>
                   label: 'Search Event ...',
                   onSubmittedKeyboard: (searchQuery) {
                     //! pencarian approval menu
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SearchResultEventsScreen(
-                              searchQuery: searchQuery)),
-                    );
+                    Navigator.pushNamed(
+                        context, AppRouter.searchResultEventRoute,
+                        arguments: {'search_query': searchQuery});
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => SearchResultEventsScreen(
+                    //           searchQuery: searchQuery)),
+                    // );
                   },
                   onPressedFilter: () {
                     // Handle the button tap action here
@@ -158,7 +162,11 @@ class _HomeEventsPageState extends State<HomeEventsPage>
                       return const Center(child: CircularProgressIndicator());
                     } else if (state is EventApprovedLoaded) {
                       final events = state.event;
-
+                      if (events.isEmpty) {
+                        return Center(
+                          child: Text('There are no events to attend'),
+                        );
+                      }
                       return ListView.builder(
                         controller: _scrollController,
                         padding: EdgeInsets.zero,
@@ -182,9 +190,12 @@ class _HomeEventsPageState extends State<HomeEventsPage>
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
                               child: GestureDetector(
                                 onTap: () {
-                                  context
-                                      .read<EventBloc>()
-                                      .add(EventCardPressed(events[index]));
+                                  Navigator.pushNamed(
+                                      context, AppRouter.detailEventRoute,
+                                      arguments: events[index].eventId);
+                                  // context
+                                  //     .read<EventBloc>()
+                                  //     .add(EventCardPressed(events[index]));
                                 },
                                 child: EventCard(
                                   events: events[index],

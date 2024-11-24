@@ -183,7 +183,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
 
               requestFilteredEvent = state.requestEvent;
               // pathRequest = state.pathRequest!;
-              debugPrint("New Request: ${requestFilteredEvent.toString()}");
+              // debugPrint("New Request: ${requestFilteredEvent.toString()}");
               // Navigator.of(context).pop();
             } else if (state is EventLoadError) {
               debugPrint("load error");

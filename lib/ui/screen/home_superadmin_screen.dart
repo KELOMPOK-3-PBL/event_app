@@ -74,7 +74,7 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
               pathRequest: PathRequestEvents.approvedEvents,
             ),
           ),
-        child: const HomeEventsPage(),
+        child: HomeEventsPage(),
       ),
       BlocProvider(
         create: (context) => EventBloc()
@@ -85,9 +85,12 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
               pathRequest: PathRequestEvents.events,
             ),
           ),
-        child: const HomeApprovalPage(),
+        child: HomeApprovalPage(),
       ),
-      const HomeAccountsPage(),
+      BlocProvider(
+        create: (context) => UserBloc()..add(FetchUser(token: token)),
+        child: HomeAccountsPage(),
+      ),
       const HomeProfilePage(),
     ];
   }

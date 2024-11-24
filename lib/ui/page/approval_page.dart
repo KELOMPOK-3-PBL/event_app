@@ -116,7 +116,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
           //     ));
 
           requestFilteredEvent = state.requestEvent;
-          debugPrint("New Request: ${requestFilteredEvent.toString()}");
+          // debugPrint("New Request: ${requestFilteredEvent.toString()}");
           // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
           debugPrint("load error");

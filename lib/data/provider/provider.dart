@@ -12,6 +12,7 @@ import '../model/model.dart';
 part 'providers/auth_provider.dart';
 part 'providers/category_provider.dart';
 part 'providers/event_provider.dart';
+part 'providers/user_provider.dart';
 
 final GetIt getIt = GetIt.instance;
 

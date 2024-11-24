@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../ui/theme/ui_colors.dart';
@@ -13,3 +12,4 @@ import '../../data/model/model.dart';
 part 'repositories/auth_repository.dart';
 part 'repositories/category_repository.dart';
 part 'repositories/event_repository.dart';
+part 'repositories/user_repository.dart';

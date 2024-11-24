@@ -20,7 +20,7 @@ class EventFetchApprovedData extends EventEvent {
 
 class EventFetchAllData extends EventEvent {
   final RequestFilteredEventModel requestEvent;
-  final PathRequestEvents pathRequest = PathRequestEvents.allEvents;
+  final PathRequestEvents pathRequest = PathRequestEvents.events;
 
   const EventFetchAllData({required this.requestEvent});
 
@@ -30,7 +30,7 @@ class EventFetchAllData extends EventEvent {
 
 class EventFetchDataByProposeOrAdminUserID extends EventEvent {
   final RequestFilteredEventModel requestEvent;
-  final PathRequestEvents pathRequest = PathRequestEvents.allEvents;
+  final PathRequestEvents pathRequest = PathRequestEvents.events;
 
   const EventFetchDataByProposeOrAdminUserID({required this.requestEvent});
 
@@ -59,7 +59,21 @@ class EventFetchData extends EventEvent {
       {required this.requestEvent,
       this.requestEventCarousel,
       required this.pathRequest});
+
+  EventFetchData copyWith({
+    RequestFilteredEventModel? requestEvent,
+  }) {
+    return EventFetchData(
+      requestEvent: requestEvent ?? this.requestEvent,
+      // requestEventCarousel: requestEventCarousel,
+      pathRequest: pathRequest,
+    );
+  }
+
+  // @override
+  // List<Object> get props => [requestEvent, requestEventCarousel!, pathRequest];
 }
+
 // class EventCardPressed extends EventEvent {
 //   final EventDataModel event;
 

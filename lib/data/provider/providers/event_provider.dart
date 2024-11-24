@@ -1,6 +1,6 @@
 part of '../provider.dart';
 
-enum PathRequestEvents { allEvents, approvedEvents }
+enum PathRequestEvents { events, approvedEvents }
 
 class EventProvider {
   final dio = getIt<Dio>();
@@ -25,7 +25,7 @@ class EventProvider {
       );
 
       // memperbarui path dan options bila permintaan untuk mengambil allEvents
-      if (getAction == PathRequestEvents.allEvents) {
+      if (getAction == PathRequestEvents.events) {
         path = event;
         // Mengatur header dengan token untuk autentikasi
         options = Options(

@@ -14,36 +14,36 @@ class EventLoading extends EventState {}
 // class EventLoadedMax extends EventState {}
 
 class EventLoaded extends EventState {
-  final List<EventDataModel> listEvents;
+  final List<EventDataModel> event;
   final List<EventDataModel>? listEventsCarousel;
   final RequestFilteredEventModel requestEvent;
-  final PathRequestEvents pathRequest;
+  // final PathRequestEvents? pathRequest;
   final bool hasReachedMax;
 
   const EventLoaded({
-    required this.listEvents,
-    required this.listEventsCarousel,
-    required this.pathRequest,
+    required this.event,
+    this.listEventsCarousel,
+    // required this.pathRequest,
     required this.requestEvent,
     required this.hasReachedMax,
   });
 
   EventLoaded copyWith({
-    List<EventDataModel>? listEvents,
+    List<EventDataModel>? event,
     RequestFilteredEventModel? requestEvent,
     bool? hasReachedMax,
   }) {
     return EventLoaded(
-      listEvents: listEvents ?? this.listEvents,
+      event: event ?? this.event,
       listEventsCarousel: listEventsCarousel,
       requestEvent: requestEvent ?? this.requestEvent,
       hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-      pathRequest: pathRequest,
+      // pathRequest: pathRequest,
     );
   }
 
   @override
-  List<Object> get props => [listEvents, requestEvent, hasReachedMax];
+  List<Object> get props => [event, requestEvent, hasReachedMax];
 }
 
 class EventApprovedLoaded extends EventState {

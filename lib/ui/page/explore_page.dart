@@ -29,13 +29,21 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
 
   //! Updated request
   late RequestFilteredEventModel requestFilteredEvent;
-  late PathRequestEvents pathRequest;
+  PathRequestEvents requestPath = PathRequestEvents.approvedEvents;
+  // late EventFetchData eventFetchData;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
     // _eventsMore = getEventsMore();
+    final authState = context.read<AuthBloc>().state;
+    // mencari role untuk menyesuaikan output
+    final roles = (authState as AuthAuthenticated).authData.data?.roles;
+
+    if (roles!.contains('Admin') || roles.contains('Superadmin')) {
+      requestPath = PathRequestEvents.events;
+    }
   }
 
   bool get _isBottom {
@@ -52,9 +60,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
       //! mengatasi perubahan request ketika di scroll
       context.read<EventBloc>().add(
             EventFetchData(
-              requestEvent: requestFilteredEvent,
-              pathRequest: pathRequest,
-            ),
+                requestEvent: requestFilteredEvent, pathRequest: requestPath),
           );
     }
   }
@@ -142,46 +148,59 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
           //             status: 'Proposed'),
           //         pathRequest: PathRequestEvents.allEvents)),
           // child:
-          CarouselSection(),
+          // CarouselSection(),
           // ), //! -- Carousel Events Section
           // EventListSection(
           //   scrollController: _scrollController,
           //   requestFilteredEvent: requestFilteredEvent,
           // ) //! -- Events Available Section
-          SizedBox(
-            child:
-                BlocConsumer<EventBloc, EventState>(listener: (context, state) {
-              // if (state is EventSubmited) {
-              //   // debugPrint("event submited");
-              //   Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
-              //       arguments: state.event);
+          BlocConsumer<EventBloc, EventState>(listener: (context, state) {
+            // if (state is EventSubmited) {
+            //   // debugPrint("event submited");
+            //   Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
+            //       arguments: state.event);
 
-              //   // Navigator.of(context).pop(); // Close loading spinner
-              //   context.read<EventBloc>().add(EventFetchData(
-              //         requestEvent: requestFilteredEvent,
-              //       ));
-              // } else
-              if (state is EventLoaded) {
-                requestFilteredEvent = state.requestEvent;
-                pathRequest = state.pathRequest;
-                debugPrint("New Request: ${requestFilteredEvent.toString()}");
-                // Navigator.of(context).pop();
-              } else if (state is EventLoadError) {
-                debugPrint("load error");
-                showError(context, state.message);
-              }
-            }, builder: (context, state) {
-              if (state is EventLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is EventLoaded) {
-                // return ExploreCard<EventLoaded>(
-                // eventsMore: _eventsMore,
-                // state: state,
-                // );
+            //   // Navigator.of(context).pop(); // Close loading spinner
+            //   context.read<EventBloc>().add(EventFetchData(
+            //         requestEvent: requestFilteredEvent,
+            //       ));
+            // } else
+            if (state is EventLoaded) {
+              // final authState = context.read<AuthBloc>().state;
+              // // mencari role untuk menyesuaikan output
+              // final roles =
+              //     (authState as AuthAuthenticated).authData.data?.roles;
 
-                return Column(
+              // if (roles!.contains('Propose')) {
+              //   pathRequest = PathRequestEvents.events;
+              // } else if (roles.contains('Admin') ||
+              //     roles.contains('Superadmin')) {
+              //   pathRequest = PathRequestEvents.approvedEvents;
+              // }
+
+              requestFilteredEvent = state.requestEvent;
+              // pathRequest = state.pathRequest!;
+              debugPrint("New Request: ${requestFilteredEvent.toString()}");
+              // Navigator.of(context).pop();
+            } else if (state is EventLoadError) {
+              debugPrint("load error");
+              showError(context, state.message);
+            }
+          }, builder: (context, state) {
+            if (state is EventLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is EventLoaded) {
+              // return ExploreCard<EventLoaded>(
+              // eventsMore: _eventsMore,
+              // state: state,
+              // );
+
+              return SizedBox(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    CarouselSection(eventData: state.listEventsCarousel ?? []),
+
                     const Padding(
                       padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                       child: Text(
@@ -202,8 +221,8 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: state.hasReachedMax
-                            ? state.listEvents.length
-                            : state.listEvents.length + 1,
+                            ? state.event.length
+                            : state.event.length + 1,
                         // controller: _scrollController,
                         padding: EdgeInsets.zero,
                         // physics: const AlwaysScrollableScrollPhysics(),
@@ -218,7 +237,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                           //     200, // Rasio lebar-tinggi setiap item
                         ),
                         itemBuilder: (context, index) {
-                          if (index >= state.listEvents.length) {
+                          if (index >= state.event.length) {
                             return Padding(
                               padding:
                                   const EdgeInsets.only(top: 10, bottom: 20),
@@ -231,7 +250,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                               onTap: () {
                                 Navigator.pushNamed(
                                     context, AppRouter.detailEventRoute,
-                                    arguments: state.listEvents[index].eventId);
+                                    arguments: state.event[index].eventId);
                                 // context
                                 //     .read<EventBloc>()
                                 //     .add(EventCardPressed(state.listEvents[index]));
@@ -264,7 +283,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                           child:
                                               // Image.asset('assets/images/background.png',
                                               Image.network(
-                                            state.listEvents[index].posterUrl!,
+                                            state.event[index].posterUrl!,
                                             height: (MediaQuery.of(context)
                                                         .size
                                                         .width -
@@ -304,15 +323,14 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                           Container(
                                             decoration: BoxDecoration(
                                               color: UIColor.getStatusColor(
-                                                  state.listEvents[index]
-                                                      .status),
+                                                  state.event[index].status),
                                               borderRadius:
                                                   BorderRadius.circular(6),
                                             ),
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 2, horizontal: 10),
                                             child: Text(
-                                              state.listEvents[index].status,
+                                              state.event[index].status,
                                               style: const TextStyle(
                                                 color: UIColor.solidWhite,
                                                 fontSize: 10,
@@ -322,7 +340,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
-                                            '${state.listEvents[index].category} : ${state.listEvents[index].title}',
+                                            '${state.event[index].category} : ${state.event[index].title}',
                                             style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold,
@@ -340,7 +358,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                               ),
                                               const SizedBox(width: 4),
                                               Text(
-                                                '${state.listEvents[index].quota} participants',
+                                                '${state.event[index].quota} participants',
                                                 style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400,
@@ -360,7 +378,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                               ),
                                               const SizedBox(width: 4),
                                               Text(
-                                                state.listEvents[index].place,
+                                                state.event[index].place,
                                                 style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400,
@@ -379,8 +397,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                               ),
                                               const SizedBox(width: 4),
                                               Text(
-                                                state.listEvents[index]
-                                                    .location!,
+                                                state.event[index].location!,
                                                 style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400,
@@ -400,8 +417,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                                               ),
                                               const SizedBox(width: 4),
                                               Text(
-                                                state.listEvents[index]
-                                                    .dateStart,
+                                                state.event[index].dateStart,
                                                 style: const TextStyle(
                                                   fontSize: 10,
                                                   fontWeight: FontWeight.w400,
@@ -427,17 +443,17 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                     //   height: 14,
                     // ),
                   ],
-                );
-              } else {
-                return Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Text("No Data"),
-                  ),
-                );
-              }
-            }),
-          )
+                ),
+              );
+            } else {
+              return Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Text("No Data"),
+                ),
+              );
+            }
+          })
         ],
       ),
     );

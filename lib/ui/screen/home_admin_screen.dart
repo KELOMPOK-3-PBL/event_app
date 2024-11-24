@@ -54,7 +54,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       token: token, currentIndex: '0', status: 'Proposed'),
                   requestEvent: RequestFilteredEventModel(
                       token: token, currentIndex: '0'),
-                  pathRequest: PathRequestEvents.allEvents)),
+                  pathRequest: PathRequestEvents.events)),
           ),
           BlocProvider(
             create: (context) => CategoryBloc()..add(StatusReadData()),

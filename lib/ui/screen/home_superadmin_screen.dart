@@ -47,6 +47,7 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
     return [
       MultiBlocProvider(
         providers: [
+          BlocProvider.value(value: context.read<AuthBloc>()),
           BlocProvider(
             create: (context) => EventBloc()
               ..add(EventFetchData(
@@ -54,7 +55,7 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
                       token: token, currentIndex: '0', status: 'Proposed'),
                   requestEvent: RequestFilteredEventModel(
                       token: token, currentIndex: '0'),
-                  pathRequest: PathRequestEvents.allEvents)),
+                  pathRequest: PathRequestEvents.events)),
           ),
           BlocProvider(
             create: (context) => CategoryBloc()..add(StatusReadData()),
@@ -76,8 +77,8 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
         create: (context) => EventBloc()
           ..add(
             EventFetchDataByProposeOrAdminUserID(
-              requestEvent: RequestFilteredEventModel(
-                  token: token, currentIndex: '0', adminUserId: adminUserId),
+              requestEvent:
+                  RequestFilteredEventModel(token: token, currentIndex: '0'),
             ),
           ),
         child: const HomeApprovalPage(),

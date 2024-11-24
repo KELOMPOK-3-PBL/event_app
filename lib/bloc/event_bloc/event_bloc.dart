@@ -56,23 +56,100 @@ class EventBloc extends Bloc<EventEvent, EventState> {
   //   }
   // }
   void _onEventFetchData(EventFetchData event, Emitter<EventState> emit) async {
-    final carousel = await eventRepository.getEventsFromAPI(
-      requestEvent: event.requestEventCarousel!,
-      pathRequest: event.pathRequest,
-    );
-    await _handleEventFetch<EventApprovedLoaded>(
-      event: event,
-      emit: emit,
-      createState: (newCombinedEvents, hasReachedMax, request) => EventLoaded(
-        listEvents: newCombinedEvents,
-        listEventsCarousel: carousel.data!,
-        hasReachedMax: hasReachedMax,
-        requestEvent: request,
-        pathRequest: event.pathRequest,
-      ),
-      pathRequest: event.pathRequest,
-      requestEvent: event.requestEvent,
-    );
+    late List<EventDataModel> carousel = [];
+    // if (event.requestEventCarousel != null) {
+    //   carousel = await eventRepository.getEventsFromAPI(
+    //     requestEvent: event.requestEventCarousel!,
+    //     pathRequest: event.pathRequest,
+    //   );
+    // }
+    // await _handleEventFetch<EventLoaded>(
+    //   event: event,
+    //   emit: emit,
+    //   createState: (newCombinedEvents, hasReachedMax, request) => EventLoaded(
+    //     event: newCombinedEvents,
+    //     listEventsCarousel: carousel.data!,
+    //     hasReachedMax: hasReachedMax,
+    //     requestEvent: request,
+    //     // pathRequest: event.pathRequest,
+    //   ),
+    //   pathRequest: event.pathRequest,
+    //   requestEvent: event.requestEvent,
+    // );
+
+    // Mengecek apakah sudah ada data yang terambil sebelumnya
+    if (state is EventLoaded) {
+      try {
+        final currentState = state as EventLoaded;
+        // Mengecek apakah semua event yang ada di database sudah termuat
+        if ((currentState as dynamic).hasReachedMax) {
+          debugPrint("Max Loaded");
+          return;
+        }
+        // Mengambil jumah index yang termuat saat ini
+        final currentIndex = (currentState.event.length).toString();
+        // Mengambil data event baru berdasarkan index yang termuat saat ini dari API
+        final newEvents = await eventRepository.getEventsFromAPI(
+          requestEvent: event.requestEvent.copyWith(currentIndex: currentIndex),
+          pathRequest: event.pathRequest,
+        );
+        // Menggabungkan data event yang sudah dengan event baru
+        final combinedEvents = currentState.event + newEvents.data!;
+        // Menentukan apakah data event di DB sudah termuat semua atau belum
+        if (newEvents.data!.isEmpty || newEvents.data!.length < 4) {
+          emit(EventLoaded(
+              event: combinedEvents,
+              listEventsCarousel: currentState.listEventsCarousel ?? [],
+              requestEvent: event.requestEvent,
+              hasReachedMax: true));
+        } else {
+          emit(EventLoaded(
+              event: combinedEvents,
+              listEventsCarousel: currentState.listEventsCarousel ?? [],
+              requestEvent: event.requestEvent,
+              hasReachedMax: false));
+        }
+      } catch (_) {
+        emit(EventLoadError("Faied to load events"));
+      }
+    }
+    // Mengambil data untuk pertama kalinya
+    else {
+      try {
+        // loading ketika halaman baru saja dibuka
+        emit(EventLoading());
+        // Mengambil data events dari API
+        final events = await eventRepository.getEventsFromAPI(
+            requestEvent: event.requestEvent, pathRequest: event.pathRequest);
+        // try {
+        if (event.requestEventCarousel != null) {
+          final carouselModel = await eventRepository.getEventsFromAPI(
+            requestEvent: event.requestEventCarousel!,
+            pathRequest: event.pathRequest,
+          );
+          carousel = carouselModel.data!;
+        }
+        // } catch (e) {
+        //   debugPrint(e.toString());
+        // }
+        // Menentukan apakah data event di DB sudah termuat semua atau belum
+        if (events.data!.length < 4) {
+          emit(EventLoaded(
+              event: events.data!,
+              listEventsCarousel: carousel,
+              requestEvent: event.requestEvent,
+              hasReachedMax: true));
+        } else {
+          emit(EventLoaded(
+              event: events.data!,
+              listEventsCarousel: carousel,
+              requestEvent: event.requestEvent,
+              hasReachedMax: false));
+        }
+      } catch (_) {
+        emit(EventLoadError("Failed to load initial events request"));
+      }
+    }
   }
 
   void _onEventFetchApprovedData(
@@ -174,7 +251,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
           emit(createState(combinedEvents, false, requestEvent));
         }
       } catch (_) {
-        emit(EventLoadError("Faied tp load events"));
+        emit(EventLoadError("Faied to load events"));
       }
     }
     // Mengambil data untuk pertama kalinya

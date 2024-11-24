@@ -18,6 +18,7 @@ class SearchWidget extends StatelessWidget {
     return SizedBox(
       height: 45,
       child: TextField(
+        autofocus: false,
         controller: _searchController, // Assigning the controller
         textInputAction: TextInputAction.search,
         maxLines: 1,

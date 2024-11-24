@@ -1,4 +1,5 @@
 import 'package:event_proposal_app/data/model/model.dart';
+import 'package:event_proposal_app/data/provider/provider.dart';
 
 import '../../bloc/bloc.dart';
 
@@ -66,8 +67,9 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
       //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
       // requestEvent.copyWith();
       context.read<EventBloc>().add(
-            EventFetchDataByProposeOrAdminUserID(
+            EventFetchData(
               requestEvent: requestFilteredEvent,
+              pathRequest: PathRequestEvents.events,
             ),
           );
     }
@@ -95,11 +97,11 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
         //       arguments: state.event);
 
         //   // Navigator.of(context).pop(); // Close loading spinner
-        //   context.read<EventBloc>().add(EventFetchDataByProposeOrAdminUserID(
+        //   context.read<EventBloc>().add(EventFetchData(
         //         requestEvent: requestFilteredEvent,
         //       ));
         // } else
-        if (state is EventDataByProposeOrAdminUserIDLoaded) {
+        if (state is EventLoaded) {
           // token = (context.read<AuthBloc>().state as AuthAuthenticated)
           //     .authData
           //     .token!;
@@ -169,7 +171,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                   builder: (context, state) {
                     if (state is EventLoading) {
                       return const Center(child: CircularProgressIndicator());
-                    } else if (state is EventDataByProposeOrAdminUserIDLoaded) {
+                    } else if (state is EventLoaded) {
                       final events = state.event;
                       if (events.isEmpty) {
                         return const Center(

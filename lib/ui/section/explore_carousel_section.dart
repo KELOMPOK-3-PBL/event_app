@@ -6,14 +6,15 @@ import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 
 import 'package:uicons_pro/uicons_pro.dart';
 
-import '../router/router.dart';
 import '../widget/card_info_row.dart';
 
 class CarouselSection extends StatelessWidget {
   final List<EventDataModel>? eventData;
+  final String route;
   const CarouselSection({
     super.key,
     required this.eventData,
+    required this.route,
   });
 
   @override
@@ -71,8 +72,7 @@ class CarouselSection extends StatelessWidget {
                     // context
                     //     .read<EventBloc>()
                     //     .add(EventCardPressed(eventData![index]));
-                    Navigator.pushNamed(
-                        context, AppRouter.detailEventApprovalRoute,
+                    Navigator.pushNamed(context, route,
                         arguments: eventData![index].eventId);
                   },
                   child: Container(

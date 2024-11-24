@@ -65,9 +65,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       BlocProvider(
         create: (context) => EventBloc()
           ..add(
-            EventFetchApprovedData(
+            EventFetchData(
               requestEvent:
                   RequestFilteredEventModel(token: token, currentIndex: '0'),
+              pathRequest: PathRequestEvents.approvedEvents,
             ),
           ),
         child: const HomeEventsPage(),
@@ -75,9 +76,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       BlocProvider(
         create: (context) => EventBloc()
           ..add(
-            EventFetchDataByProposeOrAdminUserID(
+            EventFetchData(
               requestEvent: RequestFilteredEventModel(
                   token: token, currentIndex: '0', adminUserId: adminUserId),
+              pathRequest: PathRequestEvents.events,
             ),
           ),
         child: const HomeApprovalPage(),

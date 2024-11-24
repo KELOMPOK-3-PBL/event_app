@@ -32,6 +32,8 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
   PathRequestEvents requestPath = PathRequestEvents.approvedEvents;
   // late EventFetchData eventFetchData;
 
+  String route = AppRouter.detailEventRoute;
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +45,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
 
     if (roles!.contains('Admin') || roles.contains('Superadmin')) {
       requestPath = PathRequestEvents.events;
+      route = AppRouter.detailEventApprovalRoute;
     }
   }
 
@@ -199,7 +202,9 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CarouselSection(eventData: state.listEventsCarousel ?? []),
+                    CarouselSection(
+                        eventData: state.listEventsCarousel ?? [],
+                        route: route),
 
                     const Padding(
                       padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
@@ -248,8 +253,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                           } else {
                             return GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(
-                                    context, AppRouter.detailEventRoute,
+                                Navigator.pushNamed(context, route,
                                     arguments: state.event[index].eventId);
                                 // context
                                 //     .read<EventBloc>()

@@ -60,15 +60,15 @@ class EventFetchData extends EventEvent {
       this.requestEventCarousel,
       required this.pathRequest});
 
-  EventFetchData copyWith({
-    RequestFilteredEventModel? requestEvent,
-  }) {
-    return EventFetchData(
-      requestEvent: requestEvent ?? this.requestEvent,
-      // requestEventCarousel: requestEventCarousel,
-      pathRequest: pathRequest,
-    );
-  }
+  // EventFetchData copyWith({
+  //   RequestFilteredEventModel? requestEvent,
+  // }) {
+  //   return EventFetchData(
+  //     requestEvent: requestEvent ?? this.requestEvent,
+  //     // requestEventCarousel: requestEventCarousel,
+  //     pathRequest: pathRequest,
+  //   );
+  // }
 
   // @override
   // List<Object> get props => [requestEvent, requestEventCarousel!, pathRequest];

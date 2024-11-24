@@ -1,4 +1,5 @@
 import 'package:event_proposal_app/data/model/model.dart';
+import 'package:event_proposal_app/data/provider/provider.dart';
 
 import '../../bloc/bloc.dart';
 
@@ -45,7 +46,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
     //   currentIndex: '0',
     // );
 
-    // context.read<EventBloc>().add(EventFetchApprovedData(
+    // context.read<EventBloc>().add(EventFetchData(
     //       requestEvent: requestFilteredEvent,
     //     ));
   }
@@ -69,8 +70,9 @@ class _HomeEventsPageState extends State<HomeEventsPage>
       //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
       // requestEvent.copyWith();
       context.read<EventBloc>().add(
-            EventFetchApprovedData(
+            EventFetchData(
               requestEvent: requestFilteredEvent,
+              pathRequest: PathRequestEvents.approvedEvents,
             ),
           );
     }
@@ -99,11 +101,11 @@ class _HomeEventsPageState extends State<HomeEventsPage>
         //     .pushNamed(AppRouter.detailEventRoute, arguments: state.event);
 
         // //! Trigger CategoryBloc untuk memuat ulang data
-        // context.read<EventBloc>().add(EventFetchApprovedData(
+        // context.read<EventBloc>().add(EventFetchData(
         //       requestEvent: requestFilteredEvent,
         //     ));
         // } else
-        if (state is EventApprovedLoaded) {
+        if (state is EventLoaded) {
           requestFilteredEvent = state.requestEvent;
           // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
@@ -159,7 +161,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
                   builder: (context, state) {
                     if (state is EventLoading) {
                       return const Center(child: CircularProgressIndicator());
-                    } else if (state is EventApprovedLoaded) {
+                    } else if (state is EventLoaded) {
                       final events = state.event;
                       if (events.isEmpty) {
                         return Center(

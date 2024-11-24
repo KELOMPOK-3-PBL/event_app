@@ -93,39 +93,39 @@ class _HomeProfile extends State<HomeProfilePage> {
                       ),
                     ),
                     SizedBox(height: 8),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Read More',
-                        style: TextStyle(
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
+                    // TextButton(
+                    //   onPressed: () {},
+                    //   child: Text(
+                    //     'Read More',
+                    //     style: TextStyle(
+                    //       color: Colors.blue,
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(height: 24),
 
                     // Section "Interests"
-                    Text(
-                      'Interests',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Wrap(
-                      spacing: 8.0,
-                      runSpacing: 8.0,
-                      children: [
-                        InterestChip(label: 'Music'),
-                        InterestChip(label: 'Workshop'),
-                        InterestChip(label: 'Art'),
-                        InterestChip(label: 'Sport'),
-                        InterestChip(label: 'Food'),
-                        InterestChip(label: 'Seminar'),
-                        InterestChip(label: 'E-Sport'),
-                      ],
-                    ),
+                    // Text(
+                    //   'Interests',
+                    //   style: TextStyle(
+                    //     fontSize: 18,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
+                    // SizedBox(height: 16),
+                    // Wrap(
+                    //   spacing: 8.0,
+                    //   runSpacing: 8.0,
+                    //   children: [
+                    //     InterestChip(label: 'Music'),
+                    //     InterestChip(label: 'Workshop'),
+                    //     InterestChip(label: 'Art'),
+                    //     InterestChip(label: 'Sport'),
+                    //     InterestChip(label: 'Food'),
+                    //     InterestChip(label: 'Seminar'),
+                    //     InterestChip(label: 'E-Sport'),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),

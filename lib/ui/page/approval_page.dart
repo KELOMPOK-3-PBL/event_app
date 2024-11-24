@@ -131,7 +131,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
             backgroundColor: UIColor.solidWhite,
             scrolledUnderElevation: 0,
             title: Text(
-              "Approval",
+              "My Approval",
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,

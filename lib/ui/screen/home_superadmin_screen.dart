@@ -67,8 +67,10 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
         create: (context) => EventBloc()
           ..add(
             EventFetchApprovedData(
-              requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'),
+              requestEvent: RequestFilteredEventModel(
+                token: token, currentIndex: '0',
+                // adminUserId: adminUserId
+              ),
             ),
           ),
         child: const HomeEventsPage(),

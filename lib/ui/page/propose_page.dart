@@ -115,7 +115,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
             backgroundColor: UIColor.solidWhite,
             scrolledUnderElevation: 0,
             title: Text(
-              "Propose",
+              "My Propose",
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,

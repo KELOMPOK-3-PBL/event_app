@@ -254,7 +254,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.pushNamed(context, route,
-                                    arguments: state.event[index].eventId);
+                                    arguments: state.event[index]);
                                 // context
                                 //     .read<EventBloc>()
                                 //     .add(EventCardPressed(state.listEvents[index]));

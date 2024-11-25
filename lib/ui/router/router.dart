@@ -1,3 +1,5 @@
+import 'package:event_proposal_app/data/model/model.dart';
+import 'package:event_proposal_app/ui/page/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,6 +27,7 @@ class AppRouter {
   static const String detailEventApprovalRoute = '/detail_event_approval';
   static const String searchResultEventRoute = '/search_result_event';
   static const String formProposeEventRoute = '/form_propose_event';
+  static const String detailProfile = '/detail_profile';
 
   static Map<String, WidgetBuilder> routes = {
     splashRoute: (context) => const SplashScreen(),
@@ -45,13 +48,24 @@ class AppRouter {
           value: context.read<AuthBloc>(),
           child: const SettingsScreen(),
         ),
-    detailEventApprovalRoute: (context) =>
-        // BlocProvider.value(
-        //       value: context.read<EventBloc>(),
-        // child:
-        const DetailEventApprovalScreen(),
+    detailEventApprovalRoute: (context) {
+      final EventDataModel arguments =
+          ModalRoute.of(context)!.settings.arguments as EventDataModel;
+      // BlocProvider.value(
+      //       value: context.read<EventBloc>(),
+      // child:
+      return DetailEventApprovalScreen(data: arguments);
+    },
     // ),
-    detailEventProposeRoute: (context) => const DetailEventApprovalScreen(),
+    detailEventProposeRoute: (context) {
+      final EventDataModel arguments =
+          ModalRoute.of(context)!.settings.arguments as EventDataModel;
+      // BlocProvider.value(
+      //       value: context.read<EventBloc>(),
+      // child:
+      return DetailEventApprovalScreen(data: arguments);
+    },
+
     searchResultEventRoute: (context) {
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
@@ -61,6 +75,7 @@ class AppRouter {
       );
     },
     formProposeEventRoute: (context) => const FormProposeEvent(),
+    detailProfile: (context) => const HomeProfilePage(),
   };
 
   static Widget getHomeScreen(String role) {

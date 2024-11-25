@@ -1,3 +1,4 @@
+import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:uicons_pro/uicons_pro.dart';
@@ -6,7 +7,8 @@ import '../navigation/bottom_button_approval.dart';
 import '../theme/ui_colors.dart';
 
 class DetailEventApprovalScreen extends StatefulWidget {
-  const DetailEventApprovalScreen({super.key});
+  final EventDataModel data;
+  const DetailEventApprovalScreen({super.key, required this.data});
 
   @override
   DetailEventApprovalScreenState createState() =>
@@ -14,17 +16,17 @@ class DetailEventApprovalScreen extends StatefulWidget {
 }
 
 class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
-  final String eventTitle = 'Seminar : Techcomfest';
-  final String attendees = '120 Person';
-  final String location = 'GKT VIII/05';
-  final String city = 'Semarang, Indonesia';
-  final String dateRange = '23 - 25 July 2023';
-  final String time = '08:00 - end';
-  final String timeStamp = 'Added: 12/12/2024 08:00';
+  String eventTitle = 'Seminar : Techcomfest';
+  String attendees = '120 Person';
+  String location = 'GKT VIII/05';
+  String city = 'Semarang, Indonesia';
+  String dateRange = '23 - 25 July 2023';
+  // String time = '08:00 - end';
+  String timeStamp = 'Added: 12/12/2024 08:00';
   String status = "Proposed";
   Color statusColor = UIColor.propose;
 
-  final String description =
+  String description =
       'Join us at Techomfest, the ultimate seminar for tech enthusiasts, innovators, and future leaders! '
       'This year’s seminar will dive deep into the latest advancements in technology, from artificial intelligence '
       'and blockchain to the Internet of Things (IoT) and cutting-edge software development.'
@@ -38,10 +40,22 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
       'This year’s seminar will dive deep into the latest advancements in technology, from artificial intelligence '
       'and blockchain to the Internet of Things (IoT) and cutting-edge software development.';
 
-  final List<Map<String, String>> invitedPersons = [
-    {"name": "Sofia Trenia", "image": "assets/sofia.png"},
-    {"name": "Demian", "image": "assets/demian.jpg"},
-    {"name": "Felix Roudger", "image": "assets/felix.jpg"},
+  List<Map<String, String>> invitedPersons = [
+    {
+      "name": "Sofia Trenia",
+      "image":
+          "https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    },
+    {
+      "name": "Demian",
+      "image":
+          "https://cdn.pixabay.com/photo/2016/11/29/06/08/woman-1867715_960_720.jpg"
+    },
+    {
+      "name": "Felix Roudger",
+      "image":
+          "https://cdn.pixabay.com/photo/2016/11/29/06/08/woman-1867715_960_720.jpg"
+    },
   ];
 
   TextEditingController adminNoteController = TextEditingController(text: '-');
@@ -196,6 +210,20 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final data = widget.data;
+
+    String eventTitle = data.title;
+    String attendees = data.quota;
+    String location = data.location!;
+    String city = data.place;
+    String dateRange = data.dateEnd!;
+    // String time = data.dateStart;
+    String timeStamp = data.dateAdd;
+    String status = data.status;
+    Color statusColor = UIColor.getStatusColor(data.status);
+
+    String description = data.description;
+
     return Scaffold(
       backgroundColor: UIColor.white,
       body: CustomScrollView(
@@ -246,7 +274,11 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                           },
                           child: PhotoView(
                             imageProvider: NetworkImage(
-                                'https://i.ibb.co.com/pW4RQff/poster-techomfest.jpg'),
+                                // (data.posterUrl != null)
+                                // ?
+                                data.posterUrl!
+                                // : 'https://i.ibb.co.com/pW4RQff/poster-techomfest.jpg'
+                                ),
                             backgroundDecoration: BoxDecoration(
                               color: Colors.black,
                             ),
@@ -309,10 +341,10 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(timeStamp,
+                            Text('Added: $timeStamp',
                                 style: TextStyle(
                                     fontSize: 10, color: UIColor.primary)),
-                            Text('Updated: 12/12/2024 08:00',
+                            Text('Updated: ${data.updated}',
                                 style: TextStyle(
                                     fontSize: 10, color: UIColor.reviewing)),
                           ],
@@ -322,7 +354,7 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(eventTitle,
+                              Text('${data.category}: $eventTitle',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w800)),
@@ -344,7 +376,7 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),
-                                  Text('Checked by: Sofia Trenia',
+                                  Text('Checked by: ${data.adminUsername}',
                                       style: TextStyle(
                                           fontSize: 10, color: UIColor.admin)),
                                 ],
@@ -360,7 +392,7 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                               size: 12,
                             ),
                             SizedBox(width: 8),
-                            Text(attendees,
+                            Text('$attendees Person',
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
@@ -409,20 +441,20 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                             SizedBox(
                               width: 20,
                             ),
-                            Row(
-                              children: [
-                                Icon(UIconsPro.regularRounded.clock,
-                                    color: UIColor.primary, size: 12),
-                                SizedBox(width: 8),
-                                Text(
-                                  time,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            // Row(
+                            //   children: [
+                            //     Icon(UIconsPro.regularRounded.clock,
+                            //         color: UIColor.primary, size: 12),
+                            //     SizedBox(width: 8),
+                            //     Text(
+                            //       time,
+                            //       style: TextStyle(
+                            //         fontSize: 12,
+                            //         fontWeight: FontWeight.w500,
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
                           ],
                         ),
                         InkWell(
@@ -531,8 +563,8 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                                 children: [
                                   CircleAvatar(
                                     radius: 14,
-                                    backgroundImage:
-                                        AssetImage(person["image"].toString()),
+                                    backgroundImage: NetworkImage(
+                                        person["image"].toString()),
                                   ),
                                   SizedBox(
                                     width: 8,

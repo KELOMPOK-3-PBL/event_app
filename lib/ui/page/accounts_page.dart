@@ -1,5 +1,6 @@
 // import 'package:event_proposal_app/models/search_events.dart';
 import 'package:event_proposal_app/data/model/model.dart';
+// import 'package:event_proposal_app/ui/router/router.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 // import 'package:intl/intl.dart';
 // import 'package:uicons_pro/uicons_pro.dart';
@@ -91,16 +92,21 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
               builder: (context, state) {
                 if (state is UsersLoaded) {
                   debugPrint(state.listUser.toString());
-                  return ListView.builder(
-                    padding: EdgeInsets.zero,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount: state.listUser.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
-                        child: _buildEventCard(state.listUser[index]),
-                      );
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigator.pushNamed(context, AppRouter.detailProfile);
                     },
+                    child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      itemCount: state.listUser.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                          child: _buildEventCard(state.listUser[index]),
+                        );
+                      },
+                    ),
                   );
                 } else {
                   return Center(

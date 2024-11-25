@@ -202,7 +202,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                                 onTap: () {
                                   Navigator.pushNamed(context,
                                       AppRouter.detailEventApprovalRoute,
-                                      arguments: state.event[index].eventId);
+                                      arguments: state.event[index]);
                                   // context
                                   //     .read<EventBloc>()
                                   //     .add(EventCardPressed(events[index]));

@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
   //! Route lama (jadi)
   @override
   Widget build(BuildContext context) {
-    String initialRoute = AppRouter.welcomeRoute;
+    String initialRoute = AppRouter.splashRoute;
     return BlocProvider<AuthBloc>(
       //! Pengecekan apakah pernah login
       create: (context) => AuthBloc()..add(AuthAppStarted()),
@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
             debugPrint(state.authData.toString());
             initialRoute = AppRouter.homeRoute;
           } else {
-            initialRoute = AppRouter.splashRoute;
+            // initialRoute = AppRouter.welcomeRoute;
           }
         },
         child: MaterialApp(

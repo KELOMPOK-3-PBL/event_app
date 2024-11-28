@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../model/model.dart';
@@ -23,6 +24,10 @@ void setupLocator() {
   //     ));
   getIt.registerLazySingleton<Dio>(() => Dio(
         //! set api link
-        BaseOptions(baseUrl: 'http://10.0.2.2:80/api-03/routes'),
+        BaseOptions(
+            baseUrl: 'http://10.0.2.2:80/api-03/routes',
+            contentType: 'application/json',
+            persistentConnection: true,
+            preserveHeaderCase: true),
       ));
 }

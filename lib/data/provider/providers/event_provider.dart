@@ -20,23 +20,29 @@ class EventProvider {
             value == null); // Menghapus parameter yang bernilai null
 
       // mengatur default options
-      var options = Options(
-        contentType: 'application/json',
-      );
+      // var options = Options(
+      //   contentType: 'application/json',
+      // );
 
       // memperbarui path dan options bila permintaan untuk mengambil allEvents
       if (getAction == PathRequestEvents.events) {
+        // set header untuk auth token
+        dio.options.headers[HttpHeaders.authorizationHeader] =
+            "Bearer ${pathRequest.token}";
+        dio.options.headers[HttpHeaders.cookieHeader] =
+            "jwt=${pathRequest.token}";
         path = event;
         // Mengatur header dengan token untuk autentikasi
-        options = Options(
-          contentType: 'application/json',
-          headers: {
-            'Authorization': 'Bearer ${pathRequest.token}',
-            'Cookie': 'jwt=${pathRequest.token}',
-            'Accept': 'application/json',
-            'User-Agent': 'Dart/Flutter',
-          },
-        );
+        // options = Options(
+        //   method: 'GET',
+        //   contentType: 'application/json',
+        //   headers: {
+        //     //   'Authorization': 'Bearer ${pathRequest.token}',
+        //     'Cookie': 'jwt=${pathRequest.token}',
+        //     //   // 'Accept': 'application/json',
+        //     //   // 'User-Agent': 'Dart/Flutter',
+        //   },
+        // );
       }
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
       // dio.interceptors
@@ -45,7 +51,7 @@ class EventProvider {
       // Melakukan permintaan GET dengan query parameters
       final Response rawResponse = await dio.get(
         path,
-        options: options,
+        // options: options,
         queryParameters: queryParameters,
       );
 
@@ -55,27 +61,27 @@ class EventProvider {
     }
   }
 
-  Future<Response> getEventByID(String token, String eventId) async {
-    try {
-      // Melakukan permintaan GET dengan query parameters
-      final Response rawResponse = await dio.get(
-        event,
-        options: Options(
-          contentType: 'application/json',
-          headers: {
-            'Cookie': 'jwt=$token',
-            'Authorization': token,
-          },
-        ),
-        queryParameters: {'event_id': eventId},
-      );
-      return rawResponse;
-    } on DioException catch (e) {
-      debugPrint(
-          'Error response event by id $eventId. data: ${e.response.toString()}');
-      return e.response!;
-    }
-  }
+  // Future<Response> getEventByID(String token, String eventId) async {
+  //   try {
+  //     // Melakukan permintaan GET dengan query parameters
+  //     final Response rawResponse = await dio.get(
+  //       event,
+  //       options: Options(
+  //         contentType: 'application/json',
+  //         headers: {
+  //           'Cookie': 'jwt=$token',
+  //           'Authorization': token,
+  //         },
+  //       ),
+  //       queryParameters: {'event_id': eventId},
+  //     );
+  //     return rawResponse;
+  //   } on DioException catch (e) {
+  //     debugPrint(
+  //         'Error response event by id $eventId. data: ${e.response.toString()}');
+  //     return e.response!;
+  //   }
+  // }
 }
 
 

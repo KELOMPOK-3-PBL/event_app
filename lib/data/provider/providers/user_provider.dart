@@ -8,14 +8,16 @@ class UserProvider {
       final queryParameters = {'query': searchUser} // Menyederhanakan fungsi
         ..removeWhere((key, value) =>
             value == null); // Menghapus parameter yang bernilai null
-
+      dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
+      dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
+      // request get ke API
       final Response rawResponse = await dio.get('/users.php',
-          options: Options(contentType: 'application/json', headers: {
-            'Authorization': 'Bearer $token',
-            'Cookie': 'jwt=$token',
-            'Accept': 'application/json',
-            'User-Agent': 'Dart/Flutter',
-          }),
+          // options: Options(contentType: 'application/json', headers: {
+          //   'Authorization': 'Bearer $token',
+          //   'Cookie': 'jwt=$token',
+          //   'Accept': 'application/json',
+          //   'User-Agent': 'Dart/Flutter',
+          // }),
           queryParameters: queryParameters);
       // debugPrint(rawResponse.toString());
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar

@@ -18,10 +18,8 @@ class CategoryRepository {
 
   // Simulasi data API atau database lokal
   Future<List<CategoryModel>> getCategoryData() async {
-    await Future.delayed(Duration(seconds: 1)); // Simulate network delay
-
     // try {
-    //   final response = await dio.post('/authRoutes.php/login',
+    //   final response = await dio.get('/authRoutes.php/login',
     //       options: Options(contentType: 'application/json'),
     //       data: jsonEncode(
     //         {

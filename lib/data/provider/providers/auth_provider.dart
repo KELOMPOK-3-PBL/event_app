@@ -7,12 +7,15 @@ class AuthProvider {
     try {
       final Response rawResponse = await dio.post(
         '/auth.php',
-        options: Options(contentType: 'application/json'),
+        // options: Options(contentType: 'application/json'),
         data: jsonEncode({
           'email': email,
           'password': password,
         }),
       );
+      // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
+      dio.interceptors
+          .add(LogInterceptor(responseBody: true, requestBody: true));
       // debugPrint("Raw response: $rawResponse.toString()");
       return rawResponse;
     } on DioException catch (e) {

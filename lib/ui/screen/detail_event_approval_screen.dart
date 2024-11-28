@@ -1,7 +1,9 @@
 import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
+// import 'package:go_router/go_router.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:uicons_pro/uicons_pro.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../navigation/bottom_button_approval.dart';
 import '../theme/ui_colors.dart';
@@ -291,11 +293,18 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                   );
                 },
                 child: Image.network(
-                  'https://i.ibb.co.com/pW4RQff/poster-techomfest.jpg',
+                  data.posterUrl!,
                   alignment: Alignment.topCenter,
                   fit: BoxFit.cover,
                   height: 250,
                   width: double.infinity,
+                  errorBuilder: (context, object, stackTrace) => Image.asset(
+                    data.posterUrl!,
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.cover,
+                    height: 250,
+                    width: double.infinity,
+                  ),
                 ),
               ),
             ),
@@ -457,13 +466,30 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
                             // ),
                           ],
                         ),
-                        InkWell(
-                          onTap: () {
-                            //! ACTION FOR BUTTON
-                            debugPrint("Menuuju ke link jadwal");
-                            // Navigator.push(
-                            //   context,
-                            // );
+                        GestureDetector(
+                          onTap: () async {
+                            // if (data.schedule != null &&
+                            //     data.schedule!.isNotEmpty) {
+                            String url = data.schedule ??
+                                'https://docs.google.com/spreadsheets/d/1vR7XZabWPs9qMRtg8btOZWlaF32O7gjlZONN6C2Q-98/edit?gid=1854995311#gid=1854995311';
+                            debugPrint('Attempting to launch URL: $url');
+                            try {
+                              if (await canLaunchUrl(Uri.parse(url))) {
+                                await launchUrl(
+                                  Uri.parse(url),
+                                  mode: LaunchMode.externalApplication,
+                                );
+                                debugPrint('URL launched successfully');
+                              } else {
+                                debugPrint('Could not launch URL: $url');
+                                throw 'Could not launch $url';
+                              }
+                            } catch (e) {
+                              debugPrint('Error launching URL: $e');
+                            }
+                            // } else {
+                            //   debugPrint('URL is null or empty');
+                            // }
                           },
                           child: Container(
                             decoration: BoxDecoration(

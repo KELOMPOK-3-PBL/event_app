@@ -31,30 +31,12 @@ class AppRouter {
   static const String detailProfile = '/detail_profile';
 
   static Map<String, WidgetBuilder> routes = {
-    // initialRoute: (context) {
-    //   String? role;
-    //   return BlocListener<AuthBloc, AuthState>(
-    //     listener: (context, state) {
-    //       if (state is AuthAuthenticated) {
-    //         role = state.currentRole!;
-    //       } else {
-    //         role = null;
-    //       }
-    //     },
-    //     child: BlocProvider.value(
-    //         value: context.read<AuthBloc>(), child: getHomeScreen(role)),
-    //   );
-    // },
-    splashRoute: (context) {
+    initialRoute: (context) {
       return BlocProvider.value(
         value: context.read<AuthBloc>(),
         child: BlocListener<AuthBloc, AuthState>(
           child: WelcomeScreen(),
           listener: (context, state) {
-            // WidgetsBinding instance addPostFrameCallback:
-            // 1. Fungsi ini akan menjadwalkan logika navigasi untuk dijalankan setelah fase build selesai.
-            // 2. Dengan ini, navigasi tidak lagi mengganggu proses build.
-            // WidgetsBinding.instance.addPostFrameCallback((_) {
             if (state is AuthAuthenticated) {
               if (state.currentRole != null) {
                 Navigator.pushNamedAndRemoveUntil(
@@ -94,7 +76,7 @@ class AppRouter {
         ),
       );
     },
-
+    splashRoute: (context) => const SplashScreen(),
     welcomeRoute: (context) => const WelcomeScreen(),
     loginRoute: (context) => BlocProvider.value(
           value: context.read<AuthBloc>()..add(AuthLoadRememberMe()),

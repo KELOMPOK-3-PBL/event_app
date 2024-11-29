@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Izin untuk koneksi Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:label="event_proposal_app"
         android:name="${applicationName}"

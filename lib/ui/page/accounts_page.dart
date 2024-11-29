@@ -91,7 +91,7 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
             child: BlocBuilder<UserBloc, UserState>(
               builder: (context, state) {
                 if (state is UsersLoaded) {
-                  debugPrint(state.listUser.toString());
+                  // debugPrint(state.listUser.toString());
                   return GestureDetector(
                     onTap: () {
                       // Navigator.pushNamed(context, AppRouter.detailProfile);

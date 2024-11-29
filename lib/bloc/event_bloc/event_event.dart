@@ -55,10 +55,11 @@ class EventFetchData extends EventEvent {
   final RequestFilteredEventModel? requestEventCarousel;
   final PathRequestEvents pathRequest;
 
-  const EventFetchData(
-      {required this.requestEvent,
-      this.requestEventCarousel,
-      required this.pathRequest});
+  const EventFetchData({
+    required this.requestEvent,
+    this.requestEventCarousel,
+    required this.pathRequest,
+  });
 
   // EventFetchData copyWith({
   //   RequestFilteredEventModel? requestEvent,

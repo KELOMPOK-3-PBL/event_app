@@ -106,22 +106,56 @@ class LoginScreenState extends State<LoginScreen>
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is AuthLoading) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return const Center(child: CircularProgressIndicator());
-            },
-          );
-        } else if (state is AuthRememberMeLoaded) {
+        // if (state is AuthLoading) {
+        //   showDialog(
+        //     context: context,
+        //     barrierDismissible: false,
+        //     builder: (BuildContext context) {
+        //       return const Center(child: CircularProgressIndicator());
+        //     },
+        //   );
+        // } else
+        if (state is AuthRememberMeLoaded) {
           _emailController.text = state.email;
           _passwordController.text = state.password;
           setState(() => rememberMe = state.rememberMe);
         } else if (state is AuthAuthenticated) {
-          // Navigator.of(context).pop(); // Close loading spinner
+          // debugPrint("Login Requested: ${state.authData.toString()}");
+          if (state.currentRole == null) {
+            showChoosePrivilegeDialog(context, state.authData.data!.roles);
+          }
+          // else {
+          //   Navigator.of(context).restorablePushNamedAndRemoveUntil(
+          //       AppRouter.loginRoute, (Route<dynamic> route) => false,
+          //       arguments: state.authData.currentRole);
+          // }
+          // choosePrivilege(context, state.authData.data!.roles
+          // , (selectedRole) {
+          // context.read<AuthBloc>().add(
+          //       AuthSaveCurrentRole(currentRole: selectedRole!),
+          //     );
+          // Navigator.of(context).restorablePushNamedAndRemoveUntil(
+          //     AppRouter.homeRoute, (Route<dynamic> route) => false,
+          //     arguments: selectedRole);
+          // }
+          // );
+          // }
+          // else if (state is AuthAuthenticated) {
+          //   debugPrint("Authenticated: ${state.authData.toString()}");
 
-          choosePrivilege(context, state.authData.data!.roles);
+          //   // Navigator.of(context).pop(); // Close loading spinner
+          //   if (state.authData.currentRole == null) {
+          //     choosePrivilege(context, state.authData.data!.roles,
+          //         (selectedRole) {
+          //       context.read<AuthBloc>().add(
+          //             AuthSaveCurrentRole(currentRole: selectedRole!),
+          //           );
+          //     });
+          //   } else {
+          //     Navigator.of(context).restorablePushNamedAndRemoveUntil(
+          //         AppRouter.homeRoute, (Route<dynamic> route) => false,
+          //         arguments: state.authData.currentRole);
+          // }
 
           // if (state.payload!.roles.isNotEmpty) {}
           // Navigator.pushReplacement(

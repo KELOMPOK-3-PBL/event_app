@@ -71,27 +71,40 @@ class MyApp extends StatelessWidget {
   //! Route lama (jadi)
   @override
   Widget build(BuildContext context) {
-    String initialRoute = AppRouter.splashRoute;
-    return BlocProvider<AuthBloc>(
-      //! Pengecekan apakah pernah login
-      create: (context) => AuthBloc()..add(AuthAppStarted()),
+    return BlocProvider(
+      create: (_) => AuthBloc()..add(AuthAppStarted()),
+      child:
+          // BlocBuilder<AuthBloc, AuthState>(
+          //   builder: (context, state) {
+          //     String initialRoute;
 
-      child: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is AuthAuthenticated) {
-            debugPrint(state.authData.toString());
-            initialRoute = AppRouter.homeRoute;
-          } else {
-            // initialRoute = AppRouter.welcomeRoute;
-          }
-        },
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.buildTheme(Brightness.light),
-          title: 'Polivent',
-          routes: AppRouter.routes,
-          initialRoute: initialRoute,
-        ),
+          //     // Tentukan initial route berdasarkan state
+          //     if (state is AuthLoading) {
+          //       return const MaterialApp(
+          //         debugShowCheckedModeBanner: false,
+          //         home: Scaffold(
+          //           body: Center(
+          //             child: CircularProgressIndicator(),
+          //           ),
+          //         ),
+          //       );
+          //     } else if (state is AuthAuthenticated &&
+          //         (state).authData.currentRole != null) {
+          //       initialRoute = AppRouter.homeRoute;
+          //     } else {
+          //       initialRoute = AppRouter.splashRoute;
+          //     }
+
+          // Kembalikan MaterialApp dengan atribut umum
+          // return
+          MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.buildTheme(Brightness.light),
+        title: 'Polivent',
+        routes: AppRouter.routes,
+        initialRoute: AppRouter.splashRoute,
+        // );
+        // },
       ),
     );
   }

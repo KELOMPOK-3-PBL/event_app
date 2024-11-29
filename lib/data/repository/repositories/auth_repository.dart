@@ -39,9 +39,19 @@ class AuthRepository {
       await prefs.setString('password', password);
     } else {
       await prefs.setBool('rememberMe', false);
-      await prefs.setString('email', '');
-      await prefs.setString('password', '');
+      await prefs.remove('email');
+      await prefs.remove('password');
     }
+  }
+
+  Future<void> saveCurrentRole(String role) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('current_role', role);
+  }
+
+  Future<String?> getCurretRole() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('current_role');
   }
 
   Future<UserPreferencesModel> getRememberMeUserPref() async {
@@ -64,9 +74,9 @@ class AuthRepository {
     return JwtPayloadModel.fromJson(data);
   }
 
-  Future<void> saveToken(String? token) async {
+  Future<void> saveToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('auth_token', token ?? '');
+    await prefs.setString('auth_token', token);
   }
 
   Future<String?> getToken() async {
@@ -100,6 +110,9 @@ class AuthRepository {
 
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('auth_token', '');
+    await prefs.remove('auth_token');
+    await prefs.remove('current_role');
+    // await prefs.setString('auth_token', '');
+    // await prefs.setString('current_role', '');
   }
 }

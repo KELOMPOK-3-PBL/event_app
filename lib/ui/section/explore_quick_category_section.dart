@@ -62,7 +62,7 @@ class QuickCategorySection extends StatelessWidget {
                   context
                       .read<CategoryBloc>()
                       .add(CategoryButtonPressed(state.category[index].name));
-                  debugPrint('Tapped on ${state.category[index].name}');
+                  // debugPrint('Tapped on ${state.category[index].name}');
                 },
                 child: Container(
                   width: 90,

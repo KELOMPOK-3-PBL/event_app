@@ -25,6 +25,12 @@ class AuthLoginRequest extends AuthEvent {
   List<Object> get props => [email, password, rememberMe];
 }
 
+class AuthSaveCurrentRole extends AuthEvent {
+  final String currentRole;
+
+  AuthSaveCurrentRole({required this.currentRole});
+}
+
 class AuthAppStarted extends AuthEvent {}
 
 class AuthLogoutRequest extends AuthEvent {}

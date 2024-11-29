@@ -14,8 +14,8 @@ class AuthProvider {
         }),
       );
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
-      dio.interceptors
-          .add(LogInterceptor(responseBody: true, requestBody: true));
+      // dio.interceptors
+      //     .add(LogInterceptor(responseBody: true, requestBody: true));
       // debugPrint("Raw response: $rawResponse.toString()");
       return rawResponse;
     } on DioException catch (e) {

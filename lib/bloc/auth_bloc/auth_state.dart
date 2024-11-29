@@ -13,10 +13,26 @@ class AuthLoading extends AuthState {}
 
 class AuthAuthenticated extends AuthState {
   final AuthModel authData;
+  final String? currentRole;
   // final String token;
   // final JwtPayloadModel payload;
 
   const AuthAuthenticated({
+    required this.authData,
+    this.currentRole,
+  });
+  // const AuthAuthenticated({required this.token, required this.payload});
+
+  @override
+  List<Object?> get props => [authData];
+}
+
+class AuthLoginRequested extends AuthState {
+  final AuthModel authData;
+  // final String token;
+  // final JwtPayloadModel payload;
+
+  const AuthLoginRequested({
     required this.authData,
   });
   // const AuthAuthenticated({required this.token, required this.payload});

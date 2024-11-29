@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/model/model.dart';
@@ -13,6 +14,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc() : super(AuthInitial()) {
     on<AuthAppStarted>(_onAppStarted);
+    on<AuthSaveCurrentRole>(_onSaveCurrentRole);
     on<AuthLoadRememberMe>(_onAuthLoadRememberMe);
     on<AuthLoginRequest>(_onAuthLoginRequest);
     on<AuthLogoutRequest>(_onAuthLogoutRequest);
@@ -21,16 +23,39 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onAppStarted(AuthAppStarted event, Emitter<AuthState> emit) async {
     try {
-      final authData = await _authRepository.checkAuthentication();
       // emit(AuthLoading());
+      final authData = await _authRepository.checkAuthentication();
       // debugPrint(authData.toString());
       if (authData?.status == 'success') {
-        emit(AuthAuthenticated(authData: authData!));
+        final currentRole = await _authRepository.getCurretRole();
+        emit(AuthAuthenticated(authData: authData!, currentRole: currentRole));
       } else {
         emit(AuthUnauthenticated(message: authData!.message));
         // emit(AuthInitial());
       }
     } catch (error) {
+      emit(AuthInitial());
+    }
+  }
+
+  void _onSaveCurrentRole(
+      AuthSaveCurrentRole event, Emitter<AuthState> emit) async {
+    debugPrint(
+        "Event received: AuthSaveCurrentRole with role: ${event.currentRole}");
+    try {
+      final authState = state as AuthAuthenticated;
+      if (state is AuthAuthenticated && authState.currentRole == null) {
+        await _authRepository.saveCurrentRole(event.currentRole);
+        emit(AuthAuthenticated(
+            authData: authState.authData, currentRole: event.currentRole));
+      } else {
+        debugPrint("Ignored: Current state is not AuthAuthenticated.");
+        // emit(AuthAuthenticated(authData: authState.authData));
+        emit(AuthUnauthenticated(message: "No role selected"));
+      }
+    } catch (e, stackTrace) {
+      debugPrint("Error in _onSaveCurrentRole: $e");
+      debugPrintStack(stackTrace: stackTrace);
       emit(AuthInitial());
     }
   }
@@ -43,6 +68,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           user.email, user.password, user.rememberMe);
       if (authData.status == 'success') {
         emit(AuthAuthenticated(authData: authData));
+        // emit(AuthLoginRequested(authData: authData));
       } else {
         emit(AuthUnauthenticated(message: authData.message));
       }

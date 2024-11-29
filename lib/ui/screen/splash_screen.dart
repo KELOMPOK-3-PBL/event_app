@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:event_proposal_app/ui/router/router.dart'; // Pastikan file router sudah sesuai
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -8,34 +9,41 @@ class SplashScreen extends StatefulWidget {
 }
 
 class SplashScreenState extends State<SplashScreen> {
-  double _opacity = 1.0;
+  double _opacity = 1.0; // Opacity awal
+  late final Future<void> fadeOutFuture; // Mengelola future untuk animasi
 
   @override
   void initState() {
     super.initState();
 
-    // Mulai animasi fade out setelah 2 detik
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        _opacity = 0.0; // Mengubah opacity menjadi 0 (fade out)
-      });
+    // Memulai animasi fade out
+    fadeOutFuture = _startFadeOut();
+  }
 
-      // Setelah 1 detik (animasi fade out selesai), navigasi ke WelcomeScreen
-      Future.delayed(const Duration(seconds: 1), () {
-        if (mounted) {
-          // Navigator.of(context).restorablePushNamed('/welcome');
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            '/welcome',
-            (Route<dynamic> route) => false,
-          );
-        }
-      });
+  Future<void> _startFadeOut() async {
+    // Tunggu 2 detik sebelum memulai animasi fade out
+    await Future.delayed(const Duration(seconds: 2));
+    if (!mounted) return; // Cek jika widget masih mounted
+    setState(() {
+      _opacity = 0.0; // Fade out dengan mengubah opacity
     });
+
+    // Tunggu animasi selesai (1 detik) sebelum navigasi
+    await Future.delayed(const Duration(seconds: 1));
+    if (!mounted) return; // Cek jika widget masih mounted
+    _navigateToWelcome();
+  }
+
+  void _navigateToWelcome() {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      AppRouter.welcomeRoute,
+      (Route<dynamic> route) => false,
+    );
   }
 
   @override
   void dispose() {
-    // Pastikan dispose dipanggil
+    // Pastikan semua proses asynchronous dihentikan jika widget disposed
     super.dispose();
   }
 
@@ -52,9 +60,14 @@ class SplashScreenState extends State<SplashScreen> {
             children: [
               // Logo
               Image.asset(
-                'assets/images/logo.png', // Pastikan path gambar logo benar
+                'assets/images/logo.png', // Pastikan path logo benar
                 width: 200, // Ukuran logo
                 height: 200,
+                errorBuilder: (context, error, stackTrace) => const Icon(
+                  Icons.error,
+                  size: 50,
+                  color: Colors.red,
+                ), // Handle error jika gambar tidak ditemukan
               ),
               const SizedBox(height: 20), // Jarak antara logo dan teks
               const Text(
@@ -70,6 +83,5 @@ class SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
-    // });
   }
 }

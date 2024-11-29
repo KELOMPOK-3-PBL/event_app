@@ -21,6 +21,7 @@ class AppRouter {
   static const String welcomeRoute = '/welcome';
   static const String loginRoute = '/login';
   static const String homeRoute = '/';
+  static const String initialRoute = '/initial';
   static const String detailEventRoute = '/detail_event';
   static const String settingsRoute = '/settings';
   static const String detailEventProposeRoute = '/detail_event_propose';
@@ -30,7 +31,70 @@ class AppRouter {
   static const String detailProfile = '/detail_profile';
 
   static Map<String, WidgetBuilder> routes = {
-    splashRoute: (context) => const SplashScreen(),
+    // initialRoute: (context) {
+    //   String? role;
+    //   return BlocListener<AuthBloc, AuthState>(
+    //     listener: (context, state) {
+    //       if (state is AuthAuthenticated) {
+    //         role = state.currentRole!;
+    //       } else {
+    //         role = null;
+    //       }
+    //     },
+    //     child: BlocProvider.value(
+    //         value: context.read<AuthBloc>(), child: getHomeScreen(role)),
+    //   );
+    // },
+    splashRoute: (context) {
+      return BlocProvider.value(
+        value: context.read<AuthBloc>(),
+        child: BlocListener<AuthBloc, AuthState>(
+          child: WelcomeScreen(),
+          listener: (context, state) {
+            // WidgetsBinding instance addPostFrameCallback:
+            // 1. Fungsi ini akan menjadwalkan logika navigasi untuk dijalankan setelah fase build selesai.
+            // 2. Dengan ini, navigasi tidak lagi mengganggu proses build.
+            // WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (state is AuthAuthenticated) {
+              if (state.currentRole != null) {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRouter.homeRoute,
+                  (Route<dynamic> route) => false,
+                  arguments: state.currentRole,
+                );
+              } else {
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  AppRouter.loginRoute,
+                  (Route<dynamic> route) => false,
+                );
+              }
+            } else if (state is AuthUnauthenticated) {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRouter.loginRoute,
+                (Route<dynamic> route) => false,
+              );
+            } else {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRouter.splashRoute,
+                (Route<dynamic> route) => false,
+              );
+            }
+            // });
+          },
+          // builder: (context, state) {
+          //   if (state is AuthLoading) {
+          //     return const SplashScreen(); // Tampilkan SplashScreen saat loading
+          //   }
+          //   return const SplashScreen(); // Fallback
+          // },
+        ),
+      );
+    },
+
     welcomeRoute: (context) => const WelcomeScreen(),
     loginRoute: (context) => BlocProvider.value(
           value: context.read<AuthBloc>()..add(AuthLoadRememberMe()),
@@ -39,10 +103,15 @@ class AppRouter {
     homeRoute: (context) {
       final String role = ModalRoute.of(context)!.settings.arguments.toString();
       return BlocProvider.value(
-        value: context.read<AuthBloc>(),
+        value: context.read<AuthBloc>()
+        // ..add(
+        //   AuthSaveCurrentRole(currentRole: role),
+        // )
+        ,
         child: getHomeScreen(role),
       );
     },
+
     detailEventRoute: (context) => const DetailEventScreen(),
     settingsRoute: (context) => BlocProvider.value(
           value: context.read<AuthBloc>(),
@@ -78,7 +147,7 @@ class AppRouter {
     detailProfile: (context) => const HomeProfilePage(),
   };
 
-  static Widget getHomeScreen(String role) {
+  static Widget getHomeScreen(String? role) {
     switch (role) {
       case 'Superadmin':
         return const HomeSuperadminScreen();
@@ -89,7 +158,7 @@ class AppRouter {
       case 'Member':
         return const HomeProposeScreen();
       default:
-        return const LoginScreen(); // Fallback
+        return const SplashScreen(); // Fallback
     }
   }
 }

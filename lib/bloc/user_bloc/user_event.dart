@@ -11,3 +11,10 @@ class FetchUser extends UserEvent {
 
   FetchUser({this.searchUser, required this.token});
 }
+
+class FetchUserById extends UserEvent {
+  final String userId;
+  final String token;
+
+  FetchUserById({required this.token, required this.userId});
+}

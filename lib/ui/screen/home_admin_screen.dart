@@ -20,7 +20,7 @@ class HomeAdminScreen extends StatefulWidget {
 //! masih salah
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
   String token = "";
-  String adminUserId = "";
+  String userId = "";
   int _currentIndex = 0;
 
   @override
@@ -30,7 +30,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
-      adminUserId = authState.authData.data!.userId.toString();
+      userId = authState.authData.data!.userId.toString();
     } else {
       token = '';
       debugPrint("User is not authenticated.");
@@ -78,13 +78,17 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           ..add(
             EventFetchData(
               requestEvent: RequestFilteredEventModel(
-                  token: token, currentIndex: '0', adminUserId: adminUserId),
+                  token: token, currentIndex: '0', adminUserId: userId),
               pathRequest: PathRequestEvents.events,
             ),
           ),
         child: const HomeApprovalPage(),
       ),
-      const HomeProfilePage(),
+      BlocProvider(
+        create: (context) =>
+            UserBloc()..add(FetchUserById(token: token, userId: userId)),
+        child: const HomeProfilePage(),
+      ),
     ];
   }
 

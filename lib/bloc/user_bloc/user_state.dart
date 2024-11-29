@@ -13,7 +13,7 @@ class UserLoading extends UserState {}
 
 /// Initialized
 class UsersLoaded extends UserState {
-  final List<UserModel> listUser;
+  final List<UserDataModel> listUser;
 
   const UsersLoaded({required this.listUser});
 
@@ -22,6 +22,18 @@ class UsersLoaded extends UserState {
 
   @override
   List<Object> get props => [listUser];
+}
+
+class UserByUIDLoaded extends UserState {
+  final UserDataModel userData;
+
+  const UserByUIDLoaded({required this.userData});
+
+  @override
+  String toString() => 'InUserState $userData';
+
+  @override
+  List<Object> get props => [userData];
 }
 
 class ErrorUserState extends UserState {

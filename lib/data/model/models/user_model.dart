@@ -1,32 +1,41 @@
 part of '../model.dart';
 
-class ListUsersModel extends Equatable {
+class UsersModel extends Equatable {
   final String status;
   final String message;
-  final List<UserModel>? data;
+  final List<UserDataModel>? listUserData;
+  final UserDataModel? userData;
 
   // Constructor
-  const ListUsersModel({
+  const UsersModel({
     required this.status,
     required this.message,
-    this.data,
+    this.listUserData,
+    this.userData,
   });
 
   // Convert a JSON map to the ListUsersModel object
-  factory ListUsersModel.fromJson({required Map<String, dynamic> json}) =>
-      ListUsersModel(
+  factory UsersModel.fromJsonforList({required Map<String, dynamic> json}) =>
+      UsersModel(
         status: json['status'],
         message: json['message'],
-        data: (json['data'] as List<dynamic>?)
-            ?.map((item) => UserModel.fromJson(item as Map<String, dynamic>))
+        listUserData: (json['data'] as List<dynamic>?)
+            ?.map(
+                (item) => UserDataModel.fromJson(item as Map<String, dynamic>))
             .toList(),
       );
 
+  factory UsersModel.fromJsonForSingle({required Map<String, dynamic> json}) =>
+      UsersModel(
+        status: json['status'],
+        message: json['message'],
+        userData: UserDataModel.fromJson(json['data'] as Map<String, dynamic>),
+      );
   @override
-  List<Object?> get props => [status, message, data];
+  List<Object?> get props => [status, message, listUserData];
 }
 
-class UserModel extends Equatable {
+class UserDataModel extends Equatable {
   final String userid;
   final String username;
   final String email;
@@ -35,7 +44,7 @@ class UserModel extends Equatable {
   final String? avatar;
 
   // Constructor
-  const UserModel({
+  const UserDataModel({
     required this.userid,
     required this.username,
     required this.email,
@@ -45,8 +54,8 @@ class UserModel extends Equatable {
   });
 
   // Convert a JSON map to the UserModel object
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
+  factory UserDataModel.fromJson(Map<String, dynamic> json) {
+    return UserDataModel(
       userid: json['user_id'].toString(),
       username: json['username'],
       email: json['email'],

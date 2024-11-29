@@ -126,7 +126,16 @@ class AppRouter {
       );
     },
     formProposeEventRoute: (context) => const FormProposeEvent(),
-    detailProfile: (context) => const HomeProfilePage(),
+    detailProfile: (context) {
+      final Map<String, dynamic> arguments =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      return BlocProvider(
+        create: (context) => UserBloc()
+          ..add(FetchUserById(
+              token: arguments['token'], userId: arguments['user_id'])),
+        child: const HomeProfilePage(),
+      );
+    },
   };
 
   static Widget getHomeScreen(String? role) {

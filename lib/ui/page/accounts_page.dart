@@ -121,7 +121,7 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
     ]);
   }
 
-  Widget _buildEventCard(UserModel account) {
+  Widget _buildEventCard(UserDataModel account) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,

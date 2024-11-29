@@ -3,9 +3,13 @@ part of '../provider.dart';
 class UserProvider {
   final dio = getIt<Dio>();
 
-  Future<Response> getUsersAPI(String? searchUser, String token) async {
+  Future<Response> getUsersAPI(
+      {String? userId, String? searchUser, required String token}) async {
     try {
-      final queryParameters = {'query': searchUser} // Menyederhanakan fungsi
+      final queryParameters = {
+        'query': searchUser,
+        'user_id': userId,
+      } // Menyederhanakan fungsi
         ..removeWhere((key, value) =>
             value == null); // Menghapus parameter yang bernilai null
       dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";

@@ -1,6 +1,11 @@
+import 'package:event_proposal_app/data/model/model.dart';
+import 'package:event_proposal_app/ui/router/router.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
+
+import '../../bloc/user_bloc/user_bloc.dart';
 
 class HomeProfilePage extends StatefulWidget {
   const HomeProfilePage({super.key});
@@ -17,6 +22,26 @@ class _HomeProfile extends State<HomeProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<UserBloc, UserState>(
+      builder: (context, state) {
+        if (state is UserByUIDLoaded) {
+          return ProfilePage(userData: state.userData);
+        }
+        return ProfilePage();
+      },
+    );
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  final UserDataModel? userData;
+  const ProfilePage({
+    super.key,
+    this.userData,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Column(children: [
       AppBar(
         actions: [
@@ -26,7 +51,8 @@ class _HomeProfile extends State<HomeProfilePage> {
               size: 17,
             ),
             onPressed: () {
-              Navigator.pushNamed(context, '/settings');
+              Navigator.pushNamed(context, AppRouter.settingsRoute,
+                  arguments: userData);
             },
           ),
         ],
@@ -54,18 +80,51 @@ class _HomeProfile extends State<HomeProfilePage> {
               CircleAvatar(
                 radius: 60, // Atur ukuran lingkaran di sini
                 backgroundColor: Colors.grey[300],
-                backgroundImage: NetworkImage(
+                backgroundImage: NetworkImage(userData?.avatar ??
                     'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?t=st=1729955954~exp=1729959554~hmac=21f4e9f848ed4521b47e6041fcd202d019651577ec676e23bba8e7fe93adce16&w=826'), // Ganti dengan URL gambar Anda
               ),
+
               SizedBox(height: 16),
               Text(
-                'Fattur Fadhika',
+                // 'Fattur Fadhika',
+                userData?.username ?? 'Tidak Ada Data',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 50),
+              Container(
+                margin: const EdgeInsets.only(top: 6, bottom: 30),
+                height: 24,
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: userData!.roles.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 8),
+                  itemBuilder: (context, index) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: UIColor.getRoleColor(userData!.roles[index]),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Center(
+                        child: Text(
+                          userData!.roles[index],
+                          style: const TextStyle(
+                            color: UIColor.solidWhite,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
 
               // Bagian "About Me" dan "Interests" rata kiri
               Align(
@@ -83,9 +142,10 @@ class _HomeProfile extends State<HomeProfilePage> {
                     ),
                     SizedBox(height: 8),
                     Text(
-                      'I am a student with a strong interest in mobile app development, '
-                      'UI/UX design, and gaming. I also enjoy competing in the fields '
-                      'of technology and design, constantly striving to improve my skills.',
+                      userData?.about ??
+                          'I am a student with a strong interest in mobile app development, '
+                              'UI/UX design, and gaming. I also enjoy competing in the fields '
+                              'of technology and design, constantly striving to improve my skills.',
                       textAlign: TextAlign.left, // Teks rata kiri
                       style: TextStyle(
                         fontSize: 16,

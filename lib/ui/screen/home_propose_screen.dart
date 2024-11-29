@@ -23,7 +23,7 @@ class HomeProposeScreen extends StatefulWidget {
 //! masih salah
 class _HomeProposeScreenState extends State<HomeProposeScreen> {
   String token = "";
-  String adminUserId = "";
+  String proposeUID = "";
   int _currentIndex = 0;
 
   @override
@@ -33,7 +33,7 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
 
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
-      adminUserId = authState.authData.data!.userId.toString();
+      proposeUID = authState.authData.data!.userId.toString();
     } else {
       token = '';
       debugPrint("User is not authenticated.");
@@ -91,7 +91,11 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
           ),
         child: const HomeProposePage(),
       ),
-      const HomeProfilePage(),
+      BlocProvider(
+        create: (context) =>
+            UserBloc()..add(FetchUserById(token: token, userId: proposeUID)),
+        child: const HomeProfilePage(),
+      ),
     ];
   }
 

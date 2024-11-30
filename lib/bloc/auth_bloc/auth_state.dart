@@ -21,10 +21,10 @@ class AuthAuthenticated extends AuthState {
     required this.authData,
     this.currentRole,
   });
-  // const AuthAuthenticated({required this.token, required this.payload});
+  // AuthAuthenticated({required this.token, required this.payload});
 
   @override
-  List<Object?> get props => [authData];
+  List<Object?> get props => [authData, currentRole];
 }
 
 class AuthLoginRequested extends AuthState {

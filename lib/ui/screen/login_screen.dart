@@ -106,16 +106,15 @@ class LoginScreenState extends State<LoginScreen>
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        // if (state is AuthLoading) {
-        //   showDialog(
-        //     context: context,
-        //     barrierDismissible: false,
-        //     builder: (BuildContext context) {
-        //       return const Center(child: CircularProgressIndicator());
-        //     },
-        //   );
-        // } else
-        if (state is AuthRememberMeLoaded) {
+        if (state is AuthLoading) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return const Center(child: CircularProgressIndicator());
+            },
+          );
+        } else if (state is AuthRememberMeLoaded) {
           _emailController.text = state.email;
           _passwordController.text = state.password;
           setState(() => rememberMe = state.rememberMe);

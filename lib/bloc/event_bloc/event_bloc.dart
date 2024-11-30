@@ -1,23 +1,14 @@
-import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stream_transform/stream_transform.dart';
 
 import '../../data/provider/provider.dart';
 import '../../data/repository/repository.dart';
 import '../../data/model/model.dart';
+import '../throtle_droppable.dart';
 
 part 'event_event.dart';
 part 'event_state.dart';
-
-const throttleDuration = Duration(milliseconds: 100);
-
-EventTransformer<E> throttleDroppable<E>(Duration duration) {
-  return (events, mapper) {
-    return droppable<E>().call(events.throttle(duration), mapper);
-  };
-}
 
 class EventBloc extends Bloc<EventEvent, EventState> {
   final eventRepository = EventRepository();

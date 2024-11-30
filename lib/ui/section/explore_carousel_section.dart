@@ -6,7 +6,7 @@ import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 
 import 'package:uicons_pro/uicons_pro.dart';
 
-import '../widget/card_info_row.dart';
+import 'detail_profile_section/card_info.dart';
 
 class CarouselSection extends StatelessWidget {
   final List<EventDataModel>? eventData;

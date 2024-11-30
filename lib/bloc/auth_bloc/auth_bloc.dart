@@ -1,13 +1,23 @@
 import 'dart:async';
+// import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:stream_transform/stream_transform.dart';
 
 import '../../data/model/model.dart';
 import '../../data/repository/repository.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
+
+// const throttleDuration = Duration(milliseconds: 100);
+
+// EventTransformer<E> throttleDroppable<E>(Duration duration) {
+//   return (events, mapper) {
+//     return droppable<E>().call(events.throttle(duration), mapper);
+//   };
+// }
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final _authRepository = AuthRepository();
@@ -44,10 +54,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         "Event received: AuthSaveCurrentRole with role: ${event.currentRole}");
     try {
       final authState = state as AuthAuthenticated;
-      if (state is AuthAuthenticated && authState.currentRole == null) {
+      if (state is AuthAuthenticated
+          //  && authState.currentRole == null
+          ) {
+        final String currentRole = event.currentRole;
+        // emit(AuthLoading());
+        debugPrint(currentRole);
         await _authRepository.saveCurrentRole(event.currentRole);
         emit(AuthAuthenticated(
-            authData: authState.authData, currentRole: event.currentRole));
+            currentRole: currentRole, authData: authState.authData));
       } else {
         debugPrint("Ignored: Current state is not AuthAuthenticated.");
         // emit(AuthAuthenticated(authData: authState.authData));

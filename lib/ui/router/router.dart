@@ -1,5 +1,4 @@
 import 'package:event_proposal_app/data/model/model.dart';
-import 'package:event_proposal_app/ui/page/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -96,10 +95,17 @@ class AppRouter {
     },
 
     detailEventRoute: (context) => const DetailEventScreen(),
-    settingsRoute: (context) => BlocProvider.value(
-          value: context.read<AuthBloc>(),
-          child: const SettingsScreen(),
-        ),
+    settingsRoute: (context) {
+      // final UserDataModel arguments =
+      //     ModalRoute.of(context)!.settings.arguments as UserDataModel;
+      return BlocProvider.value(
+        value: context.read<AuthBloc>(),
+        child: SettingsScreen(
+            // roles: arguments.roles,
+            // currentRole: '',
+            ),
+      );
+    },
     detailEventApprovalRoute: (context) {
       final EventDataModel arguments =
           ModalRoute.of(context)!.settings.arguments as EventDataModel;

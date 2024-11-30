@@ -30,119 +30,132 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
     } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        AppRouter.loginRoute,
-        (Route<dynamic> route) => false,
-      );
-      debugPrint("User is not authenticated.");
+      // WidgetsBinding.instance.addPostFrameCallback((_) {
+      //   Navigator.of(context).pushNamedAndRemoveUntil(
+      //     AppRouter.loginRoute,
+      //     (Route<dynamic> route) => false,
+      //   );
+      // });
+      // debugPrint("User is not authenticated.");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      AppBar(
-        automaticallyImplyLeading: false, // remove leading(left) back icon
-        centerTitle: true,
-        backgroundColor: UIColor.solidWhite,
-        scrolledUnderElevation: 0,
-        title: Text(
-          "Account",
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: UIColor.typoBlack,
+    return Column(
+      children: [
+        AppBar(
+          automaticallyImplyLeading: false, // remove leading(left) back icon
+          centerTitle: true,
+          backgroundColor: UIColor.solidWhite,
+          scrolledUnderElevation: 0,
+          title: Text(
+            "Account",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: UIColor.typoBlack,
+            ),
           ),
         ),
-      ),
-      Expanded(
+        Expanded(
           child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-            child: SizedBox(
-              height: 45,
-              child: TextField(
-                textInputAction: TextInputAction.search,
-                // controller: _searchController,
-                maxLines: 1,
-                minLines: 1,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  isDense: true,
-                  alignLabelWithHint: true,
-                  hintText: 'Search account...',
-                  contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
-                  hintStyle:
-                      const TextStyle(color: UIColor.typoGray, fontSize: 14),
-                  filled: true,
-                  fillColor: UIColor.solidWhite,
-                  prefixIcon: Icon(
-                    UIconsPro.regularRounded.search,
-                    color: UIColor.typoBlack,
-                    size: 18,
-                  ),
-                  suffixIcon: Icon(
-                    UIconsPro.regularRounded.settings_sliders,
-                    color: UIColor.typoBlack,
-                    size: 18,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                child: SizedBox(
+                  height: 45,
+                  child: TextField(
+                    textInputAction: TextInputAction.search,
+                    // controller: _searchController,
+                    maxLines: 1,
+                    minLines: 1,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide.none,
+                      ),
+                      isDense: true,
+                      alignLabelWithHint: true,
+                      hintText: 'Search account...',
+                      contentPadding:
+                          const EdgeInsets.symmetric(vertical: 10.0),
+                      hintStyle: const TextStyle(
+                          color: UIColor.typoGray, fontSize: 14),
+                      filled: true,
+                      fillColor: UIColor.solidWhite,
+                      prefixIcon: Icon(
+                        UIconsPro.regularRounded.search,
+                        color: UIColor.typoBlack,
+                        size: 18,
+                      ),
+                      suffixIcon: Icon(
+                        UIconsPro.regularRounded.settings_sliders,
+                        color: UIColor.typoBlack,
+                        size: 18,
+                      ),
+                    ),
+                    onSubmitted: (searchQuery) {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) =>
+                      //           SearchAccountResultScreen(searchQuery: searchQuery)),
+                      // );
+                    },
                   ),
                 ),
-                onSubmitted: (searchQuery) {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) =>
-                  //           SearchAccountResultScreen(searchQuery: searchQuery)),
-                  // );
-                },
               ),
-            ),
-          ),
-          Expanded(
-            child: BlocBuilder<UserBloc, UserState>(
-              builder: (context, state) {
-                if (state is UsersLoaded) {
-                  // debugPrint(state.listUser.toString());
-                  return ListView.builder(
-                      padding: EdgeInsets.zero,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemCount: state.listUser.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRouter.detailAccount,
-                              arguments: {
-                                'token': token,
-                                'user_id':
-                                    state.listUser[index].userid.toString(),
+              Expanded(
+                child: BlocBuilder<UserBloc, UserState>(
+                  builder: (context, state) {
+                    if (state is UsersLoaded) {
+                      // debugPrint(state.listUser.toString());
+                      return ListView.builder(
+                          padding: EdgeInsets.zero,
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          itemCount: state.listUser.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRouter.detailAccount,
+                                  arguments: {
+                                    'token': token,
+                                    'user_id':
+                                        state.listUser[index].userid.toString(),
+                                  },
+                                );
                               },
+                              child: _buildEventCard(state.listUser[index]),
                             );
-                          },
-                          child: _buildEventCard(state.listUser[index]),
-                        );
-                      });
-                } else {
-                  return Center(
-                    child: Text('No Users Found'),
-                  );
-                }
-              },
-            ),
+                          });
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
-      ))
-    ]);
+        )
+      ],
+    );
   }
 
   Widget _buildEventCard(UserDataModel account) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+    return Container(
+      margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+      color: Colors.transparent,
+      // decoration: BoxDecoration(
+      //     borderRadius: BorderRadius.all(
+      //       Radius.circular(10),
+      //     )),
+      width: MediaQuery.of(context).size.width,
+      // padding: const EdgeInsets.all(5),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -151,9 +164,10 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
             backgroundColor: UIColor.solidWhite,
             radius: 24,
             backgroundImage: NetworkImage(
-              account.avatar != null
-                  ? account.avatar!
-                  : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+              account.avatar
+                  // : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+                  ??
+                  'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?t=st=1729955954~exp=1729959554~hmac=21f4e9f848ed4521b47e6041fcd202d019651577ec676e23bba8e7fe93adce16&w=826',
             ),
             onBackgroundImageError: (exception, stackTrace) {
               // Tangani error di sini

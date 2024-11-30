@@ -33,10 +33,12 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       token = authState.authData.token!;
       adminUID = authState.authData.data!.userId.toString();
     } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        AppRouter.loginRoute,
-        (Route<dynamic> route) => false,
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRouter.loginRoute,
+          (Route<dynamic> route) => false,
+        );
+      });
       debugPrint("User is not authenticated.");
     }
   }

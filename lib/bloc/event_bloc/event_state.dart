@@ -28,19 +28,19 @@ class EventLoaded extends EventState {
     required this.hasReachedMax,
   });
 
-  EventLoaded copyWith({
-    List<EventDataModel>? event,
-    RequestFilteredEventModel? requestEvent,
-    bool? hasReachedMax,
-  }) {
-    return EventLoaded(
-      event: event ?? this.event,
-      listEventsCarousel: listEventsCarousel,
-      requestEvent: requestEvent ?? this.requestEvent,
-      hasReachedMax: hasReachedMax ?? this.hasReachedMax,
-      // pathRequest: pathRequest,
-    );
-  }
+  // EventLoaded copyWith({
+  //   List<EventDataModel>? event,
+  //   RequestFilteredEventModel? requestEvent,
+  //   bool? hasReachedMax,
+  // }) {
+  //   return EventLoaded(
+  //     event: event ?? this.event,
+  //     listEventsCarousel: listEventsCarousel,
+  //     requestEvent: requestEvent ?? this.requestEvent,
+  //     hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+  //     // pathRequest: pathRequest,
+  //   );
+  // }
 
   @override
   List<Object> get props => [event, requestEvent, hasReachedMax];

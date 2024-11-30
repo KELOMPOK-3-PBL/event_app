@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
+import '../../bloc/auth_bloc/auth_bloc.dart';
 import '../../bloc/user_bloc/user_bloc.dart';
+import '../router/router.dart';
 
 class HomeAccountsPage extends StatefulWidget {
   const HomeAccountsPage({super.key});
@@ -18,9 +20,22 @@ class HomeAccountsPage extends StatefulWidget {
 }
 
 class _HomeAccountsPageState extends State<HomeAccountsPage> {
+  String token = "";
+
   @override
   void initState() {
     super.initState();
+    final authState = context.read<AuthBloc>().state;
+
+    if (authState is AuthAuthenticated) {
+      token = authState.authData.token!;
+    } else {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        AppRouter.loginRoute,
+        (Route<dynamic> route) => false,
+      );
+      debugPrint("User is not authenticated.");
+    }
   }
 
   @override
@@ -92,22 +107,26 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
               builder: (context, state) {
                 if (state is UsersLoaded) {
                   // debugPrint(state.listUser.toString());
-                  return GestureDetector(
-                    onTap: () {
-                      // Navigator.pushNamed(context, AppRouter.detailProfile);
-                    },
-                    child: ListView.builder(
+                  return ListView.builder(
                       padding: EdgeInsets.zero,
                       physics: const AlwaysScrollableScrollPhysics(),
                       itemCount: state.listUser.length,
                       itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRouter.detailAccount,
+                              arguments: {
+                                'token': token,
+                                'user_id':
+                                    state.listUser[index].userid.toString(),
+                              },
+                            );
+                          },
                           child: _buildEventCard(state.listUser[index]),
                         );
-                      },
-                    ),
-                  );
+                      });
                 } else {
                   return Center(
                     child: Text('No Users Found'),
@@ -122,134 +141,137 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
   }
 
   Widget _buildEventCard(UserDataModel account) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        CircleAvatar(
-          backgroundColor: UIColor.solidWhite,
-          radius: 24,
-          backgroundImage: NetworkImage(
-            account.avatar != null
-                ? account.avatar!
-                : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            backgroundColor: UIColor.solidWhite,
+            radius: 24,
+            backgroundImage: NetworkImage(
+              account.avatar != null
+                  ? account.avatar!
+                  : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+            ),
+            onBackgroundImageError: (exception, stackTrace) {
+              // Tangani error di sini
+              debugPrint('Failed to load image: $exception');
+            },
+            // child: Image.network(
+            //   account.avatar != null ? account.avatar! : 'error',
+            //   errorBuilder: (context, error, stackTrace) => Image.asset(
+            //     'assets/images/image_not_found.png',
+            //     fit: BoxFit.fill,
+            //   ),
+            //   // Icon(Icons.person),
+            // ),
           ),
-          onBackgroundImageError: (exception, stackTrace) {
-            // Tangani error di sini
-            debugPrint('Failed to load image: $exception');
-          },
-          // child: Image.network(
-          //   account.avatar != null ? account.avatar! : 'error',
-          //   errorBuilder: (context, error, stackTrace) => Image.asset(
-          //     'assets/images/image_not_found.png',
-          //     fit: BoxFit.fill,
-          //   ),
-          //   // Icon(Icons.person),
-          // ),
-        ),
-        SizedBox(
-          width: 12,
-        ),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Username
-              Text(
-                account.username,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: UIColor.typoBlack,
+          SizedBox(
+            width: 12,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Username
+                Text(
+                  account.username,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: UIColor.typoBlack,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 6), // Spacing between username and roles
-              // Roles badges
-              SizedBox(
-                height: 18,
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  itemCount: account.roles.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 8),
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                      ),
-                      decoration: BoxDecoration(
-                        color: UIColor.getRoleColor(account.roles[index]),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Center(
-                        child: Text(
-                          account.roles[index],
-                          style: const TextStyle(
-                            color: UIColor.solidWhite,
-                            fontSize: 10,
-                            fontWeight: FontWeight.w400,
+                const SizedBox(height: 6), // Spacing between username and roles
+                // Roles badges
+                SizedBox(
+                  height: 18,
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: account.roles.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(width: 8),
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          color: UIColor.getRoleColor(account.roles[index]),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Center(
+                          child: Text(
+                            account.roles[index],
+                            style: const TextStyle(
+                              color: UIColor.solidWhite,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
 
-        // Column(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   mainAxisAlignment: MainAxisAlignment.start,
-        //   children: [
-        //     Text(
-        //       account.username,
-        //       style: const TextStyle(
-        //         fontSize: 14,
-        //         fontWeight: FontWeight.bold,
-        //         color: UIColor.typoBlack,
-        //       ),
-        //       maxLines: 2,
-        //       overflow: TextOverflow.ellipsis,
-        //     ),
-        //     SizedBox(
-        //       child: ListView.separated(
-        //         shrinkWrap: true,
-        //         padding: EdgeInsets.zero,
-        //         scrollDirection: Axis.horizontal,
-        //         physics: const NeverScrollableScrollPhysics(),
-        //         itemCount: account.roles.length,
-        //         separatorBuilder: (context, index) => const SizedBox(
-        //           width: 10,
-        //         ),
-        //         itemBuilder: (context, index) {
-        //           debugPrint(account.roles.toString());
-        //           return Container(
-        //             decoration: BoxDecoration(
-        //               color: UIColor.getRoleColor(account.roles[index]),
-        //               borderRadius: BorderRadius.circular(4),
-        //             ),
-        //             padding:
-        //                 const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
-        //             child: Text(
-        //               account.roles[index],
-        //               style: const TextStyle(
-        //                 color: UIColor.solidWhite,
-        //                 fontSize: 10,
-        //                 fontWeight: FontWeight.w400,
-        //               ),
-        //             ),
-        //           );
-        //         },
-        //       ),
-        //     ),
-        //   ],
-        // ),
-      ],
+          // Column(
+          //   crossAxisAlignment: CrossAxisAlignment.start,
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          //     Text(
+          //       account.username,
+          //       style: const TextStyle(
+          //         fontSize: 14,
+          //         fontWeight: FontWeight.bold,
+          //         color: UIColor.typoBlack,
+          //       ),
+          //       maxLines: 2,
+          //       overflow: TextOverflow.ellipsis,
+          //     ),
+          //     SizedBox(
+          //       child: ListView.separated(
+          //         shrinkWrap: true,
+          //         padding: EdgeInsets.zero,
+          //         scrollDirection: Axis.horizontal,
+          //         physics: const NeverScrollableScrollPhysics(),
+          //         itemCount: account.roles.length,
+          //         separatorBuilder: (context, index) => const SizedBox(
+          //           width: 10,
+          //         ),
+          //         itemBuilder: (context, index) {
+          //           debugPrint(account.roles.toString());
+          //           return Container(
+          //             decoration: BoxDecoration(
+          //               color: UIColor.getRoleColor(account.roles[index]),
+          //               borderRadius: BorderRadius.circular(4),
+          //             ),
+          //             padding:
+          //                 const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+          //             child: Text(
+          //               account.roles[index],
+          //               style: const TextStyle(
+          //                 color: UIColor.solidWhite,
+          //                 fontSize: 10,
+          //                 fontWeight: FontWeight.w400,
+          //               ),
+          //             ),
+          //           );
+          //         },
+          //       ),
+          //     ),
+          //   ],
+          // ),
+        ],
+      ),
     );
   }
 }

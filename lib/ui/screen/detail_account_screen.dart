@@ -1,36 +1,53 @@
 import 'package:event_proposal_app/data/model/model.dart';
-import 'package:event_proposal_app/ui/router/router.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/user_bloc/user_bloc.dart';
+import '../navigation/bottom_button_update_rbac.dart';
 
-class HomeProfilePage extends StatefulWidget {
-  const HomeProfilePage({super.key});
+class DetailAccountScreen extends StatefulWidget {
+  const DetailAccountScreen({super.key});
 
   @override
-  State<HomeProfilePage> createState() => _HomeProfile();
+  State<DetailAccountScreen> createState() => _HomeProfile();
 }
 
-class _HomeProfile extends State<HomeProfilePage> {
+class _HomeProfile extends State<DetailAccountScreen> {
   @override
   void initState() {
     super.initState();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
-      builder: (context, state) {
-        if (state is UserByUIDLoaded) {
-          return ProfilePage(userData: state.userData);
-        }
-        return Center(
-          child: Text("Data not found"),
-        );
-      },
+    return Scaffold(
+      backgroundColor: UIColor.white,
+      body: BlocBuilder<UserBloc, UserState>(
+        builder: (context, state) {
+          if (state is UserByUIDLoaded) {
+            return ProfilePage(userData: state.userData);
+          }
+          return Center(
+            child: Text("Data not found"),
+          );
+        },
+      ),
+      bottomNavigationBar: BottomButtonUpdateRBAC(
+        changeStatus: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog();
+              });
+        },
+      ),
     );
   }
 }
@@ -46,18 +63,16 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       AppBar(
-        actions: [
-          IconButton(
-            icon: Icon(
-              UIconsPro.regularRounded.settings,
-              size: 17,
-            ),
-            onPressed: () {
-              Navigator.pushNamed(context, AppRouter.settingsRoute,
-                  arguments: userData);
-            },
+        leading: IconButton(
+          icon: Icon(
+            UIconsPro.regularRounded.angle_small_left,
+            size: 17,
           ),
-        ],
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+
         automaticallyImplyLeading: false, // remove leading(left) back icon
         centerTitle: true,
         backgroundColor: UIColor.solidWhite,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/bloc.dart';
+import '../screen/detail_account_screen.dart';
 import '../screen/detail_event_approval_screen.dart';
 import '../screen/detail_event_screen.dart';
 import '../screen/form_propose_event.dart';
@@ -28,7 +29,7 @@ class AppRouter {
   static const String detailEventApprovalRoute = '/detail_event_approval';
   static const String searchResultEventRoute = '/search_result_event';
   static const String formProposeEventRoute = '/form_propose_event';
-  static const String detailProfile = '/detail_profile';
+  static const String detailAccount = '/detail_account';
 
   static Map<String, WidgetBuilder> routes = {
     initialRoute: (context) {
@@ -126,14 +127,14 @@ class AppRouter {
       );
     },
     formProposeEventRoute: (context) => const FormProposeEvent(),
-    detailProfile: (context) {
+    detailAccount: (context) {
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       return BlocProvider(
         create: (context) => UserBloc()
           ..add(FetchUserById(
               token: arguments['token'], userId: arguments['user_id'])),
-        child: const HomeProfilePage(),
+        child: const DetailAccountScreen(),
       );
     },
   };

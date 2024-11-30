@@ -10,6 +10,7 @@ import '../page/approval_page.dart';
 import '../page/events_page.dart';
 import '../page/explore_page.dart';
 import '../page/profile_page.dart';
+import '../router/router.dart';
 
 class HomeSuperadminScreen extends StatefulWidget {
   const HomeSuperadminScreen({super.key});
@@ -20,7 +21,7 @@ class HomeSuperadminScreen extends StatefulWidget {
 
 class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
   String token = "";
-  String userId = "";
+  String superadminUID = "";
   int _currentIndex = 0;
 
   @override
@@ -30,9 +31,12 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
 
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
-      userId = authState.authData.data!.userId.toString();
+      superadminUID = authState.authData.data!.userId.toString();
     } else {
-      token = '';
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        AppRouter.loginRoute,
+        (Route<dynamic> route) => false,
+      );
       debugPrint("User is not authenticated.");
     }
   }
@@ -81,19 +85,26 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
           ..add(
             EventFetchData(
               requestEvent: RequestFilteredEventModel(
-                  token: token, currentIndex: '0', adminUserId: userId),
+                  token: token, currentIndex: '0', adminUserId: superadminUID),
               pathRequest: PathRequestEvents.events,
             ),
           ),
         child: HomeApprovalPage(),
       ),
-      BlocProvider(
-        create: (context) => UserBloc()..add(FetchUser(token: token)),
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => UserBloc()..add(FetchUser(token: token)),
+          ),
+          BlocProvider.value(
+            value: context.read<AuthBloc>(),
+          ),
+        ],
         child: HomeAccountsPage(),
       ),
       BlocProvider(
         create: (context) =>
-            UserBloc()..add(FetchUserById(token: token, userId: userId)),
+            UserBloc()..add(FetchUserById(token: token, userId: superadminUID)),
         child: const HomeProfilePage(),
       ),
     ];

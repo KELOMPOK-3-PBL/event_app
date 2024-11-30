@@ -9,6 +9,7 @@ import '../page/approval_page.dart';
 import '../page/events_page.dart';
 import '../page/explore_page.dart';
 import '../page/profile_page.dart';
+import '../router/router.dart';
 
 class HomeAdminScreen extends StatefulWidget {
   const HomeAdminScreen({super.key});
@@ -20,7 +21,7 @@ class HomeAdminScreen extends StatefulWidget {
 //! masih salah
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
   String token = "";
-  String userId = "";
+  String adminUID = "";
   int _currentIndex = 0;
 
   @override
@@ -30,9 +31,12 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
-      userId = authState.authData.data!.userId.toString();
+      adminUID = authState.authData.data!.userId.toString();
     } else {
-      token = '';
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        AppRouter.loginRoute,
+        (Route<dynamic> route) => false,
+      );
       debugPrint("User is not authenticated.");
     }
   }
@@ -78,7 +82,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           ..add(
             EventFetchData(
               requestEvent: RequestFilteredEventModel(
-                  token: token, currentIndex: '0', adminUserId: userId),
+                  token: token, currentIndex: '0', adminUserId: adminUID),
               pathRequest: PathRequestEvents.events,
             ),
           ),
@@ -86,7 +90,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       ),
       BlocProvider(
         create: (context) =>
-            UserBloc()..add(FetchUserById(token: token, userId: userId)),
+            UserBloc()..add(FetchUserById(token: token, userId: adminUID)),
         child: const HomeProfilePage(),
       ),
     ];

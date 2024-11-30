@@ -35,7 +35,10 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
       token = authState.authData.token!;
       proposeUID = authState.authData.data!.userId.toString();
     } else {
-      token = '';
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        AppRouter.loginRoute,
+        (Route<dynamic> route) => false,
+      );
       debugPrint("User is not authenticated.");
     }
   }

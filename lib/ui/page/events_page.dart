@@ -4,7 +4,7 @@ import 'package:event_proposal_app/data/provider/provider.dart';
 import '../../bloc/bloc.dart';
 
 import '../router/router.dart';
-import '../widget/event_card.dart';
+import '../widget/event_card_widget.dart';
 import '../widget/search_widget.dart';
 import '../widget/show_error.dart';
 import '../theme/ui_colors.dart';
@@ -31,12 +31,16 @@ class _HomeEventsPageState extends State<HomeEventsPage>
 
   //! Updated request
   late RequestFilteredEventModel requestFilteredEvent;
+  String? currentRole;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-
+    final authState = context.read<AuthBloc>().state;
+    // mencari role untuk menyesuaikan output
+    // final roles = .authData.data?.roles;
+    currentRole = (authState as AuthAuthenticated).currentRole!;
     // token =
     //     (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
 
@@ -198,8 +202,10 @@ class _HomeEventsPageState extends State<HomeEventsPage>
                                   //     .read<EventBloc>()
                                   //     .add(EventCardPressed(events[index]));
                                 },
-                                child: EventCard(
+                                child: EventCardWidget(
                                   events: events[index],
+                                  currentRole: currentRole!,
+                                  showStatus: false,
                                 ),
                               ),
                             );

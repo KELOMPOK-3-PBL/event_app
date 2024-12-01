@@ -9,10 +9,12 @@ import 'package:uicons_pro/uicons_pro.dart';
 import 'detail_profile_section/card_info.dart';
 
 class CarouselSection extends StatelessWidget {
+  final String currentRole;
   final List<EventDataModel>? eventData;
   final String route;
   const CarouselSection({
     super.key,
+    required this.currentRole,
     required this.eventData,
     required this.route,
   });
@@ -154,30 +156,9 @@ class CarouselSection extends StatelessWidget {
                                                 eventData![index].dateStart),
                                           ],
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              width: 108,
-                                              height: 31,
-                                              decoration: BoxDecoration(
-                                                  color: UIColor.getStatusColor(
-                                                      eventData![index].status),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          30)),
-                                              child: Text(
-                                                eventData![index].status,
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                    color: UIColor.solidWhite,
-                                                    height: 2.5,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 12),
-                                              ),
-                                            ),
-                                          ],
+                                        StatusOrSeeMore(
+                                          status: eventData![index].status,
+                                          currentRole: currentRole,
                                         )
                                       ],
                                     ),
@@ -211,5 +192,45 @@ class CarouselSection extends StatelessWidget {
         ],
       );
     }
+  }
+}
+
+class StatusOrSeeMore extends StatelessWidget {
+  final String status;
+  final String currentRole;
+
+  const StatusOrSeeMore({
+    super.key,
+    required this.status,
+    required this.currentRole,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Container(
+          width: 108,
+          height: 31,
+          decoration: BoxDecoration(
+              color: (currentRole == 'Admin' || currentRole == 'Superadmin')
+                  ? UIColor.getStatusColor(status)
+                  : UIColor.reviewing,
+              borderRadius: BorderRadius.circular(30)),
+          child: Text(
+            (currentRole == 'Admin' || currentRole == 'Superadmin')
+                ? status
+                : 'See detail',
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+                color: UIColor.solidWhite,
+                height: 2.5,
+                fontWeight: FontWeight.w600,
+                fontSize: 12),
+          ),
+        ),
+      ],
+    );
   }
 }

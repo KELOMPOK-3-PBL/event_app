@@ -139,7 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             if (anotherRole != null)
               _buildListTile(
                   leadingIcon: UIconsPro.regularRounded.sign_in_alt,
-                  title: 'Login as ${anotherRole!}',
+                  title: 'Sign in as ${anotherRole!}',
                   trailingIcon: null,
                   onTap: () {
                     switchUser(context, anotherRole!);
@@ -233,7 +233,7 @@ void showLogoutBottomSheet(BuildContext context) {
           children: [
             const Text(
               'Sign out',
-              style: TextStyle(color: Colors.red, fontSize: 24),
+              style: TextStyle(color: UIColor.rejected, fontSize: 24),
             ),
             Divider(
               height: 48,
@@ -272,7 +272,7 @@ void showLogoutBottomSheet(BuildContext context) {
                   ),
                   child: const Text(
                     'Cancel',
-                    style: TextStyle(color: UIColor.primary),
+                    style: TextStyle(color: UIColor.typoBlack),
                   ),
                 ),
                 ElevatedButton(
@@ -324,7 +324,8 @@ void switchUser(BuildContext context, String anotherRole) {
           children: [
             Text(
               'Login as $anotherRole',
-              style: TextStyle(color: UIColor.primary, fontSize: 24),
+              style: TextStyle(
+                  color: UIColor.getRoleColor(anotherRole), fontSize: 24),
             ),
             Divider(
               height: 10,
@@ -364,7 +365,7 @@ void switchUser(BuildContext context, String anotherRole) {
                   ),
                   child: const Text(
                     'Cancel',
-                    style: TextStyle(color: UIColor.primary),
+                    style: TextStyle(color: UIColor.typoBlack),
                   ),
                 ),
                 ElevatedButton(
@@ -390,8 +391,8 @@ void switchUser(BuildContext context, String anotherRole) {
                     fixedSize: const Size(150, 50),
                     // padding: const EdgeInsets.symmetric(
                     //     horizontal: 50, vertical: 20),
-                    backgroundColor: Colors
-                        .blue, // Set Yes, Sign out button background to blue
+                    backgroundColor: UIColor.getRoleColor(
+                        anotherRole), //getRoleColor(anotherRole) Set Yes, Sign out button background to blue
                   ),
                   child: const Text(
                     'Yes, switch',

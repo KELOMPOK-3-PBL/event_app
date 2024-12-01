@@ -13,11 +13,11 @@ class CategoryReadData extends CategoryEvent {}
 
 class StatusReadData extends CategoryEvent {}
 
-class CategoryButtonPressed extends CategoryEvent {
-  final String nameCategory;
+// class CategoryButtonPressed extends CategoryEvent {
+//   final String nameCategory;
 
-  const CategoryButtonPressed(this.nameCategory);
+//   const CategoryButtonPressed(this.nameCategory);
 
-  @override
-  List<Object?> get props => [nameCategory];
-}
+//   @override
+//   List<Object?> get props => [nameCategory];
+// }

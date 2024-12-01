@@ -6,7 +6,7 @@ import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 
 import 'package:uicons_pro/uicons_pro.dart';
 
-import 'detail_event_section/card_info.dart';
+import '../widget/card_info.dart';
 
 class CarouselSection extends StatelessWidget {
   final String currentRole;
@@ -22,7 +22,9 @@ class CarouselSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (eventData!.isEmpty) {
-      return Center();
+      return Center(
+        child: CircularProgressIndicator(),
+      );
     } else {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,

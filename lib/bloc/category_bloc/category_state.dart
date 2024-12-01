@@ -20,14 +20,14 @@ class CategoryLoadded extends CategoryState {
   List<Object?> get props => [category];
 }
 
-class CategorySubmited extends CategoryState {
-  final String nameCategory;
+// class CategorySubmited extends CategoryState {
+//   final String nameCategory;
 
-  const CategorySubmited(this.nameCategory);
+//   const CategorySubmited(this.nameCategory);
 
-  @override
-  List<Object?> get props => [nameCategory];
-}
+//   @override
+//   List<Object?> get props => [nameCategory];
+// }
 
 class CategoryLoadFailure extends CategoryState {
   final String message;

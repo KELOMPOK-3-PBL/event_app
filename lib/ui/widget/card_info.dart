@@ -16,7 +16,7 @@ Widget cardInfoRow(IconData icon, String text) {
               fontWeight: FontWeight.w400,
               color: UIColor.typoBlack,
             ),
-            maxLines: 1,
+            // maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
         ),

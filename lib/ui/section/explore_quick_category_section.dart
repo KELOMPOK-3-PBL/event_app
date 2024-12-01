@@ -1,7 +1,6 @@
-import 'package:event_proposal_app/bloc/bloc.dart';
-
-import 'package:event_proposal_app/ui/screen/search_result_event_screen.dart';
-import 'package:event_proposal_app/ui/theme/ui_colors.dart';
+import '../../bloc/bloc.dart';
+import '../../ui/router/router.dart';
+import '../../ui/theme/ui_colors.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +20,8 @@ class QuickCategorySection extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           },
         );
-      } else if (state is CategorySubmited) {
+        // }
+        // else if (state is CategorySubmited) {
         //! Go Router
         // GoRouter.of(context).goNamed(
         //   'search_result_events',
@@ -33,14 +33,14 @@ class QuickCategorySection extends StatelessWidget {
         // Navigator.pushNamed(context, '/search_result_events',
         //     arguments: state.nameCategory);
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  SearchResultEventsScreen(searchQuery: state.nameCategory)),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context) =>
+        //           SearchResultEventsScreen(searchQuery: state.nameCategory)),
+        // );
         //! Trigger CategoryBloc untuk memuat ulang data kategori
-        context.read<CategoryBloc>().add(StatusReadData());
+        // context.read<CategoryBloc>().add(StatusReadData());
       } else if (state is CategoryLoadded) {
         Navigator.of(context).pop();
         // context.pop();
@@ -59,10 +59,12 @@ class QuickCategorySection extends StatelessWidget {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  context
-                      .read<CategoryBloc>()
-                      .add(CategoryButtonPressed(state.category[index].name));
+                  // context
+                  //     .read<CategoryBloc>()
+                  //     .add(CategoryButtonPressed(state.category[index].name));
                   // debugPrint('Tapped on ${state.category[index].name}');
+                  Navigator.pushNamed(context, AppRouter.searchResultEventRoute,
+                      arguments: {"search_query": state.category[index].name});
                 },
                 child: Container(
                   width: 90,
@@ -84,7 +86,9 @@ class QuickCategorySection extends StatelessWidget {
           ),
         );
       }
-      return SizedBox();
+      return Center(
+        child: CircularProgressIndicator(),
+      );
     });
   }
 }

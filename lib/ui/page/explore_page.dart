@@ -5,10 +5,10 @@ import 'package:uicons_pro/uicons_pro.dart';
 import '../../bloc/bloc.dart';
 import '../../data/model/model.dart';
 import '../router/router.dart';
-// import '../section/explore_event_list_section.dart';
 import '../section/explore_quick_category_section.dart';
 import '../section/explore_carousel_section.dart';
 import '../theme/ui_colors.dart';
+import '../widget/card_info.dart';
 import '../widget/search_widget.dart';
 import '../widget/show_error.dart';
 
@@ -156,52 +156,9 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
               const SizedBox(
                 height: 14,
               ),
-
-              QuickCategorySection(), //! memanggil model => category
-              // BlocProvider(
-              //   create: (context) => EventBloc()
-              //     ..add(EventFetchData(
-              //         requestEventCarousel: ,
-              //         requestEvent: RequestFilteredEventModel(
-              //             token: widget.token,
-              //             currentIndex: '0',
-              //             status: 'Proposed'),
-              //         pathRequest: PathRequestEvents.allEvents)),
-              // child:
-              // CarouselSection(),
-              // ), //! -- Carousel Events Section
-              // EventListSection(
-              //   scrollController: _scrollController,
-              //   requestFilteredEvent: requestFilteredEvent,
-              // ) //! -- Events Available Section
               BlocConsumer<EventBloc, EventState>(listener: (context, state) {
-                // if (state is EventSubmited) {
-                //   // debugPrint("event submited");
-                //   Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
-                //       arguments: state.event);
-
-                //   // Navigator.of(context).pop(); // Close loading spinner
-                //   context.read<EventBloc>().add(EventFetchData(
-                //         requestEvent: requestFilteredEvent,
-                //       ));
-                // } else
                 if (state is EventLoaded) {
-                  // final authState = context.read<AuthBloc>().state;
-                  // // mencari role untuk menyesuaikan output
-                  // final roles =
-                  //     (authState as AuthAuthenticated).authData.data?.roles;
-
-                  // if (roles!.contains('Propose')) {
-                  //   pathRequest = PathRequestEvents.events;
-                  // } else if (roles.contains('Admin') ||
-                  //     roles.contains('Superadmin')) {
-                  //   pathRequest = PathRequestEvents.approvedEvents;
-                  // }
-
                   requestFilteredEvent = state.requestEvent;
-                  // pathRequest = state.pathRequest!;
-                  // debugPrint("New Request: ${requestFilteredEvent.toString()}");
-                  // Navigator.of(context).pop();
                 } else if (state is EventLoadError) {
                   debugPrint("load error");
                   showError(context, state.message);
@@ -210,11 +167,6 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                 if (state is EventLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is EventLoaded) {
-                  // return ExploreCard<EventLoaded>(
-                  // eventsMore: _eventsMore,
-                  // state: state,
-                  // );
-
                   return ExploreContentSection(
                       hasReachedMax: state.hasReachedMax,
                       events: state.event,
@@ -260,6 +212,8 @@ class ExploreContentSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          QuickCategorySection(),
+          //! Carousel Section
           CarouselSection(
               currentRole: currentRole,
               eventData: listEventsCarousel ?? [],
@@ -276,9 +230,8 @@ class ExploreContentSection extends StatelessWidget {
                   fontWeight: FontWeight.w800),
             ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 16),
-          //   child:
+
+          //! Events List Card
           Padding(
               padding: EdgeInsets.fromLTRB(20, 12, 20, 20),
               child: Wrap(
@@ -355,6 +308,26 @@ class ExploreCard extends StatelessWidget {
         crossAxisAlignment:
             CrossAxisAlignment.start, // Align contents to the start
         children: [
+          // if (currentRole == 'Admin' || currentRole == 'Superadmin')
+          //   Container(
+          //     width: MediaQuery.of(context).size.width,
+          //     // margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+          //     margin: EdgeInsets.fromLTRB(4, 4, 4, 0),
+          //     decoration: BoxDecoration(
+          //       color: UIColor.getStatusColor(eventData.status),
+          //       borderRadius: BorderRadius.circular(6),
+          //     ),
+          //     padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+          //     child: Text(
+          //       textAlign: TextAlign.center,
+          //       eventData.status,
+          //       style: const TextStyle(
+          //         color: UIColor.solidWhite,
+          //         fontSize: 10,
+          //         fontWeight: FontWeight.w400,
+          //       ),
+          //     ),
+          //   ),
           // ! Section Tittle
           Card(
             elevation: 0,
@@ -385,31 +358,51 @@ class ExploreCard extends StatelessWidget {
               ),
             ),
           ),
+          if (currentRole == 'Admin' || currentRole == 'Superadmin')
+            Container(
+              // width: MediaQuery.of(context).size.width,
+              // margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+              margin: EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                color: UIColor.getStatusColor(eventData.status),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+              child: Text(
+                // textAlign: TextAlign.center,
+                eventData.status,
+                style: const TextStyle(
+                  color: UIColor.solidWhite,
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
           //! Content
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // if (currentRole == 'Admin' || currentRole == 'Superadmin')
+                //   Container(
+                //     margin: EdgeInsets.only(top: 4),
+                //     decoration: BoxDecoration(
+                //       color: UIColor.getStatusColor(eventData.status),
+                //       borderRadius: BorderRadius.circular(6),
+                //     ),
+                //     padding:
+                //         const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+                //     child: Text(
+                //       eventData.status,
+                //       style: const TextStyle(
+                //         color: UIColor.solidWhite,
+                //         fontSize: 10,
+                //         fontWeight: FontWeight.w400,
+                //       ),
+                //     ),
+                //   ),
                 // const SizedBox(height: 0),
-                if (currentRole == 'Admin' || currentRole == 'Superadmin')
-                  Container(
-                    margin: EdgeInsets.only(top: 8),
-                    decoration: BoxDecoration(
-                      color: UIColor.getStatusColor(eventData.status),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-                    child: Text(
-                      eventData.status,
-                      style: const TextStyle(
-                        color: UIColor.solidWhite,
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
                 const SizedBox(height: 4),
                 Text(
                   '${eventData.category} : ${eventData.title}',
@@ -420,78 +413,15 @@ class ExploreCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Row(
-                  children: [
-                    Icon(
-                      UIconsPro.regularRounded.user_time,
-                      color: UIColor.typoGray,
-                      size: 10,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${eventData.quota} participants',
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        color: UIColor.typoBlack,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      UIconsPro.regularRounded.house_building,
-                      color: UIColor.typoGray,
-                      size: 10,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      eventData.place,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        color: UIColor.typoBlack,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      UIconsPro.regularRounded.marker,
-                      color: UIColor.typoGray,
-                      size: 10,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      eventData.location!,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        color: UIColor.typoBlack,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      UIconsPro.regularRounded.calendar,
-                      color: UIColor.typoGray,
-                      size: 10,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      eventData.dateStart,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w400,
-                        color: UIColor.typoBlack,
-                      ),
-                    )
-                  ],
-                ),
+                cardInfoRow(UIconsPro.regularRounded.user_time,
+                    '${eventData.quota} participants'),
+                cardInfoRow(
+                    UIconsPro.regularRounded.house_building, eventData.place),
+                cardInfoRow(
+                    UIconsPro.regularRounded.marker, eventData.location!),
+                cardInfoRow(
+                    UIconsPro.regularRounded.calendar, eventData.dateStart),
+
                 if (currentRole == 'Member' || currentRole == 'Propose')
                   Container(
                     margin: EdgeInsets.only(top: 6),
@@ -514,6 +444,25 @@ class ExploreCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
+          // if (currentRole == 'Admin' || currentRole == 'Superadmin')
+          //   Container(
+          //     width: MediaQuery.of(context).size.width,
+          //     margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+          //     decoration: BoxDecoration(
+          //       color: UIColor.getStatusColor(eventData.status),
+          //       borderRadius: BorderRadius.circular(6),
+          //     ),
+          //     padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+          //     child: Text(
+          //       textAlign: TextAlign.center,
+          //       eventData.status,
+          //       style: const TextStyle(
+          //         color: UIColor.solidWhite,
+          //         fontSize: 10,
+          //         fontWeight: FontWeight.w400,
+          //       ),
+          //     ),
+          //   ),
         ],
       ),
     );

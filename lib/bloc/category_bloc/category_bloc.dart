@@ -12,22 +12,22 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   CategoryBloc() : super(CategoryInitial()) {
     // Trigger fetch event right when the bloc is created
-    on<CategoryReadData>(_onInitialCategories);
+    on<CategoryReadData>(_onCategoryReadData);
     on<StatusReadData>(_onStatusReadData);
-    on<CategoryButtonPressed>(_onCategoryButtonPressed);
+    // on<CategoryButtonPressed>(_onCategoryButtonPressed);
   }
 
-  void _onCategoryButtonPressed(
-      CategoryButtonPressed event, Emitter<CategoryState> emit) async {
-    // emit(CategoryLoading());
-    try {
-      emit(CategorySubmited(event.nameCategory));
-    } catch (e) {
-      emit(CategoryLoadFailure("Failed to find events with category $event"));
-    }
-  }
+  // void _onCategoryButtonPressed(
+  //     CategoryButtonPressed event, Emitter<CategoryState> emit) async {
+  //   // emit(CategoryLoading());
+  //   try {
+  //     emit(CategorySubmited(event.nameCategory));
+  //   } catch (e) {
+  //     emit(CategoryLoadFailure("Failed to find events with category $event"));
+  //   }
+  // }
 
-  void _onInitialCategories(
+  void _onCategoryReadData(
       CategoryReadData event, Emitter<CategoryState> emit) async {
     emit(CategoryLoading());
     try {

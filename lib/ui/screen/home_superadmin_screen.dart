@@ -64,6 +64,10 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
                   pathRequest: PathRequestEvents.events)),
           ),
           BlocProvider(
+            create: (context) => UserBloc()
+              ..add(FetchUserById(token: token, userId: superadminUID)),
+          ),
+          BlocProvider(
             create: (context) => CategoryBloc()..add(StatusReadData()),
           ),
         ],

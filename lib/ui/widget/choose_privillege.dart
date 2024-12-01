@@ -14,11 +14,13 @@ class ChoosePrivilegeDialog extends StatelessWidget {
 
   void _navigateToHome(BuildContext context, String role) {
     context.read<AuthBloc>().add(AuthSaveCurrentRole(currentRole: role));
-    Navigator.of(context).pushNamedAndRemoveUntil(
-      AppRouter.homeRoute,
-      (Route<dynamic> route) => false,
-      arguments: role,
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        AppRouter.homeRoute,
+        (Route<dynamic> route) => false,
+        arguments: role,
+      );
+    });
   }
 
   @override

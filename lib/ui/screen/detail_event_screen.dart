@@ -1,481 +1,641 @@
-import 'package:flutter/services.dart';
+import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
+// import 'package:go_router/go_router.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:uicons_pro/uicons_pro.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../navigation/bottom_button_approval.dart';
 import '../theme/ui_colors.dart';
 
-// import 'package:google_fonts/google_fonts.dart';
-
-void main() {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent, // Make the status bar transparent
-    systemNavigationBarColor:
-        Colors.transparent, // Make the navigation bar transparent
-    // statusBarIconBrightness:
-    //     Brightness.dark, // Change icon brightness (optional)
-  ));
-  runApp(PoliventApp());
-}
-
-// Define primary color
-const Color primaryColor = Color(0xFF1886EA);
-const Color secondaryColor = Color(0xFFFAAD14);
-
-class PoliventApp extends StatelessWidget {
-  const PoliventApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Polivent App - Detail Event',
-      theme: ThemeData(
-        fontFamily: 'Inter', // Set Inter as default font
-        primaryColor: primaryColor, // Use primaryColor globally
-      ),
-      home: DetailEventScreen(),
-      debugShowCheckedModeBanner: false, // Debug banner removed
-    );
-  }
-}
-
 class DetailEventScreen extends StatefulWidget {
-  const DetailEventScreen({super.key});
+  final EventDataModel data;
+  const DetailEventScreen({super.key, required this.data});
 
   @override
   DetailEventScreenState createState() => DetailEventScreenState();
 }
 
 class DetailEventScreenState extends State<DetailEventScreen> {
-  final String eventTitle = 'Seminar : Techcomfest';
-  final String location = 'Gedung Kuliah Terpadu Lantai 2';
-  final String dateTime = '12 Januari 2024 - 10:00 PM';
-  final int totalTickets = 50;
-  final String description =
-      'Join us at Techomfest, the ultimate seminar for tech enthusiasts, innovators, and future leaders! '
-      'This year’s seminar will dive deep into the latest advancements in technology, from artificial intelligence '
-      'and blockchain to the Internet of Things (IoT) and cutting-edge software development.';
+  TextEditingController adminNoteController = TextEditingController(text: '-');
 
-  final String fullDescription =
-      'With renowned speakers, interactive panels, and hands-on workshops, Techomfest offers a unique opportunity to explore '
-      'how technology is shaping the future across various industries. Whether you\'re a student, entrepreneur, or tech professional, '
-      'this event is your gateway to new knowledge and innovation.';
+  // Fungsi untuk memperbarui warna berdasarkan status
+  // void _updateStatusColor() {
+  //   if (status == "Proposed") {
+  //     statusColor = UIColor.propose;
+  //   } else if (status == "Pending") {
+  //     statusColor = UIColor.pending;
+  //   } else if (status == "Approved") {
+  //     statusColor = UIColor.approved;
+  //   } else {
+  //     statusColor = UIColor.rejected;
+  //   }
+  // }
 
-  final int availableTickets = 44;
+  // late ScrollController _scrollController;
+  // bool _isScrolled = false;
 
-  bool isLoved = false; // State for love button interaction
+  @override
+  void initState() {
+    super.initState();
+    // _scrollController = ScrollController();
+    // _scrollController.addListener(() {
+    //   if (_scrollController.hasClients) {
+    //     final isScrolled = _scrollController.offset > 200;
+    //     if (isScrolled != _isScrolled) {
+    //       setState(() {
+    //         _isScrolled = isScrolled;
+    //       });
+    //     }
+    //   }
+    // });
+  }
+
+  @override
+  void dispose() {
+    // _scrollController.removeListener(_scrollListener);
+    // _scrollController.dispose();
+    super.dispose();
+  }
+
+  // void _scrollListener() {
+  //   if (_scrollController.offset > 200 && !_isScrolled) {
+  //     setState(() {
+  //       _isScrolled = true;
+  //     });
+  //   } else if (_scrollController.offset <= 200 && _isScrolled) {
+  //     setState(() {
+  //       _isScrolled = false;
+  //     });
+  //   }
+  // }
+
+  // Fungsi untuk mengubah status
+  void _changeStatus() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Change Status"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: Text("Proposed"),
+                onTap: () {
+                  // setState(() {
+                  //   status = "Proposed";
+                  //   _updateStatusColor();
+                  // });
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text("Pending"),
+                onTap: () {
+                  // setState(() {
+                  //   status = "Pending";
+                  //   _updateStatusColor();
+                  // });
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text("Approved"),
+                onTap: () {
+                  // setState(() {
+                  //   status = "Approved";
+                  //   _updateStatusColor();
+                  // });
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                title: Text("Rejected"),
+                onTap: () {
+                  // setState(() {
+                  //   status = "Rejected";
+                  //   _updateStatusColor();
+                  // });
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // Fungsi untuk menampilkan dialog pengeditan
+  void _showEditNoteDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Edit Admin Note"),
+          content: TextField(
+            controller: adminNoteController,
+            maxLines: 4,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: "Enter new admin note...",
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  // Update admin note dengan teks baru dari controller
+                });
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("Save"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final data = widget.data;
+
     return Scaffold(
-      body: Stack(
+      backgroundColor: UIColor.white,
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            centerTitle: true,
+            surfaceTintColor: UIColor.solidWhite,
+            elevation: 0,
+            // pinned: true,
+            expandedHeight: MediaQuery.of(context).size.width /
+                1.4, //! Buat tinggi gambar berbanding dengan lebar layar
+            leading: IconButton(
+              color:
+                  // _isScrolled ?
+                  // UIColor.typoBlack,
+                  // :
+                  UIColor.solidWhite,
+              icon: Icon(UIconsPro.regularRounded.angle_small_left),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            backgroundColor: UIColor.solidWhite,
+            title: Text(
+              "Review Events",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color:
+                    // _isScrolled ?
+                    // UIColor.typoBlack,
+                    // :
+                    UIColor.solidWhite,
+              ),
+            ),
+            flexibleSpace: FlexibleSpaceBar(
+              background: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        backgroundColor: Colors.black,
+                        insetPadding: EdgeInsets.all(0),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: PhotoView(
+                            imageProvider: NetworkImage(
+                                // (data.posterUrl != null)
+                                // ?
+                                data.posterUrl!
+                                // : 'https://i.ibb.co.com/pW4RQff/poster-techomfest.jpg'
+                                ),
+                            backgroundDecoration: BoxDecoration(
+                              color: Colors.black,
+                            ),
+                            minScale: PhotoViewComputedScale.contained,
+                            maxScale: PhotoViewComputedScale.covered * 3.0,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Image.network(
+                  data.posterUrl!,
+                  alignment: Alignment.topCenter,
+                  fit: BoxFit.cover,
+                  height: 250,
+                  width: double.infinity,
+                  errorBuilder: (context, object, stackTrace) => Image.asset(
+                    data.posterUrl!,
+                    alignment: Alignment.topCenter,
+                    fit: BoxFit.cover,
+                    height: 250,
+                    width: double.infinity,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AdminNoteSection(adminNoteController: adminNoteController),
+                  MainInfoSection(data: data),
+                  OrganizerSection(),
+                  InvitedPersonSection(),
+                  // SizedBox(height: 80),
+                  SizedBox(height: 8),
+                  Text(
+                    'Description',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Inter',
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    data.description,
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey[700]),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomButtonApproval(
+          changeStatus: _changeStatus, showEditNoteDialog: _showEditNoteDialog),
+    );
+  }
+}
+
+class InvitedPersonSection extends StatelessWidget {
+  InvitedPersonSection({
+    super.key,
+  });
+
+  final List<Map<String, String>> invitedPersons = [
+    {
+      "name": "Sofia Trenia",
+      "image":
+          "https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+    },
+    {
+      "name": "Demian",
+      "image":
+          "https://cdn.pixabay.com/photo/2016/11/29/06/08/woman-1867715_960_720.jpg"
+    },
+    {
+      "name": "Felix Roudger",
+      "image":
+          "https://cdn.pixabay.com/photo/2016/11/29/06/08/woman-1867715_960_720.jpg"
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsetsDirectional.symmetric(vertical: 6),
+      decoration: BoxDecoration(
+          color: UIColor.solidWhite, borderRadius: BorderRadius.circular(12)),
+      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Scrollable content
-          SingleChildScrollView(
+          Text("Invited Person",
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+          SizedBox(
+            height: 10,
+          ),
+          ListView.builder(
+            padding: EdgeInsets.zero,
+            shrinkWrap:
+                true, // Agar ListView dapat menyesuaikan tinggi dengan konten di dalamnya
+            physics:
+                NeverScrollableScrollPhysics(), // Menghindari scrolling di dalam ListView
+            itemCount: invitedPersons.length,
+            itemBuilder: (context, index) {
+              final person = invitedPersons[index];
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 14,
+                      backgroundImage: NetworkImage(person["image"].toString()),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      person["name"]!,
+                      style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          color: UIColor.typoGray),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class OrganizerSection extends StatelessWidget {
+  const OrganizerSection({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: UIColor.solidWhite,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      // margin: EdgeInsets.all(8),
+
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // tileColor: UIColor.solidWhite,
+        children: [
+          CircleAvatar(
+            backgroundColor: UIColor.primary,
+            child: Icon(UIconsPro.regularRounded.user, color: Colors.white),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'UKM PCC',
+                style: TextStyle(fontWeight: FontWeight.w600),
+              ),
+              Text('Organizer', style: TextStyle(color: Colors.grey)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MainInfoSection extends StatelessWidget {
+  const MainInfoSection({
+    super.key,
+    required this.data,
+  });
+
+  final EventDataModel data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsetsDirectional.symmetric(vertical: 6),
+      decoration: BoxDecoration(
+          color: UIColor.solidWhite, borderRadius: BorderRadius.circular(12)),
+      padding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('Added: ${data.dateAdd}',
+                  style: TextStyle(fontSize: 10, color: UIColor.primary)),
+              if (data.updated != null)
+                Text('Updated: ${data.updated}',
+                    style: TextStyle(fontSize: 10, color: UIColor.reviewing))
+            ],
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 4, 0, 6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Gambar di bagian atas dengan rounded corner dan gradient hitam
-                Container(
-                  height: 300,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(10),
-                      bottomRight: Radius.circular(10),
-                    ),
-                    child: Stack(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Dialog(
-                                  backgroundColor: Colors
-                                      .black, // Background hitam untuk tampilan full image
-                                  insetPadding: EdgeInsets.all(
-                                      0), // Hilangkan padding di dialog
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .pop(); // Tutup dialog saat gambar di-tap lagi
-                                    },
-                                    child: SizedBox(
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                      child: PhotoView(
-                                        imageProvider: NetworkImage(
-                                            'https://i.ibb.co.com/pW4RQff/poster-techomfest.jpg'),
-                                        backgroundDecoration: BoxDecoration(
-                                          color: Colors
-                                              .black, // Latar belakang hitam saat full screen
-                                        ),
-                                        minScale: PhotoViewComputedScale
-                                            .contained, // Gambar di-fit sesuai layar
-                                        maxScale:
-                                            PhotoViewComputedScale.covered *
-                                                3.0, // Bisa di-zoom hingga 3x
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            );
-                          },
-                          child: Image.network(
-                            'https://i.ibb.co.com/pW4RQff/poster-techomfest.jpg',
-                            alignment: Alignment.topCenter,
-                            fit: BoxFit.cover,
-                            height: 300,
-                            width: double.infinity,
-                          ),
-                        ),
-                      ],
-                    ),
-                    // child: Stack(
-                    //   children: [
-                    //     Image.asset(
-                    //       'assets/images/images/Image_Here.png',
-                    //       fit: BoxFit.cover,
-                    //       height: 300,
-                    //       width: double.infinity,
-                    //     ),
-                    //     // Container(
-                    //     //   decoration: BoxDecoration(
-                    //     //     gradient: LinearGradient(
-                    //     //       begin: Alignment.topCenter,
-                    //     //       end: Alignment.bottomCenter,
-                    //     //       colors: [
-                    //     //         Colors.black.withOpacity(0.6),
-                    //     //         Colors.transparent,
-                    //     //       ],
-                    //     //     ),
-                    //     //   ),
-                    //     // ),
-                    //   ],
-                    // ),
-                  ),
-                ),
-                SizedBox(height: 4),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 8.0), // Updated padding(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Detail seminar
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              eventTitle,
-                              style: TextStyle(
-                                fontSize: 20, // Title font size updated
-                                fontWeight: FontWeight.w800,
-                                fontFamily: 'Inter',
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              isLoved ? Icons.favorite : Icons.favorite_border,
-                              color: isLoved ? Colors.red : Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                isLoved = !isLoved; // Toggle love interaction
-                              });
-                            },
-                          ),
-                        ],
+                Text('${data.category}: ${data.title}',
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
+                Row(
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(right: 8),
+                      decoration: BoxDecoration(
+                        color: UIColor.getStatusColor(data.status),
+                        borderRadius: BorderRadius.circular(4),
                       ),
-                      SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Icon(UIconsPro.regularRounded.marker,
-                              size: 16, color: primaryColor),
-                          SizedBox(width: 8),
-                          Text(
-                            location,
-                            style: TextStyle(
-                              fontFamily: 'Inter', // Set font to Inter
-                              fontSize: 14, // Set font size to 13
-                              fontWeight:
-                                  FontWeight.w500, // Medium weight (w500)
-                              color:
-                                  Colors.grey[600], // Optionally set text color
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Icon(UIconsPro.regularRounded.calendar,
-                              size: 16, color: primaryColor),
-                          SizedBox(width: 8),
-                          Text(
-                            dateTime,
-                            style: TextStyle(
-                              fontFamily: 'Inter', // Set font to Inter
-                              fontSize: 14, // Set font size to 13
-                              fontWeight:
-                                  FontWeight.w500, // Medium weight (w500)
-                              color:
-                                  Colors.grey[600], // Optionally set text color
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Icon(UIconsPro.regularRounded.ticket,
-                              size: 16, color: primaryColor),
-                          SizedBox(width: 8),
-                          Text(
-                            '$totalTickets Ticket',
-                            style: TextStyle(
-                              fontFamily: 'Inter', // Set font to Inter
-                              fontSize: 14, // Set font size to 13
-                              fontWeight:
-                                  FontWeight.w500, // Medium weight (w500)
-                              color:
-                                  Colors.grey[600], // Optionally set text color
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      SizedBox(height: 8),
-
-                      Divider(color: Colors.grey[300], thickness: 1),
-
-                      // Organizer Info
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: primaryColor,
-                            radius: 20,
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.white,
-                              size: 24,
-                            ),
-                          ),
-                          SizedBox(width: 12),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'UKM PCC',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  fontFamily: 'Inter',
-                                ),
-                              ),
-                              Text(
-                                'Organizer',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                  fontFamily: 'Inter',
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-
-                      Divider(color: Colors.grey[300], thickness: 1),
-                      SizedBox(height: 8),
-
-                      // Descriptions
-                      Text(
-                        'Description',
+                      padding:
+                          EdgeInsets.symmetric(vertical: 0, horizontal: 14),
+                      child: Text(
+                        data.status,
                         style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Inter',
-                        ),
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500),
                       ),
-                      SizedBox(height: 8),
-                      Text(
-                        description,
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey[700]),
-                      ),
-                      SizedBox(height: 8),
-                      Text(
-                        fullDescription,
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey[700]),
-                      ),
-                      SizedBox(height: 100),
-                    ],
-                  ),
+                    ),
+                    if (data.adminUsername != null)
+                      Text('Checked by: ${data.adminUsername}',
+                          style: TextStyle(fontSize: 10, color: UIColor.admin)),
+                  ],
                 ),
               ],
             ),
           ),
-
-          // Custom AppBar dengan tombol Back, Title, dan Share
-          Positioned(
-            top: 0, // Fixed position at top
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 48, horizontal: 16),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.black.withOpacity(0.7),
-                    Colors.transparent,
-                  ],
-                ),
+          Row(
+            children: [
+              Icon(
+                UIconsPro.regularRounded.user,
+                color: UIColor.primary,
+                size: 12,
               ),
-              child: Row(
-                children: [
-                  // Back button with semi-transparent background
-                  Container(
-                    width: 40, // Set width of the container
-                    height: 40, // Set height of the container
-                    decoration: BoxDecoration(
-                      // color: Colors.white
-                      //     .withOpacity(0.2), // Semi-transparent background
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: IconButton(
-                      color:
-                          // _isScrolled ?
-                          // UIColor.typoBlack,
-                          // :
-                          UIColor.solidWhite,
-                      icon: Icon(UIconsPro.regularRounded.angle_small_left),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ),
-                  Spacer(),
-                  // Title "Detail Event" in the center
-                  Text(
-                    'Detail Event',
-                    style: TextStyle(
-                      fontFamily: 'Inter',
-                      color: Colors.white,
-                      fontSize: 20, // Font size 20 as per image
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Spacer(),
-                  // Share button with semi-transparent background
-                  Container(
-                    width: 40, // Set width of the container
-                    height: 40, // Set height of the container
-                    decoration: BoxDecoration(
-                      // color: Colors.white
-                      //     .withOpacity(0.2), // Semi-transparent background
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: IconButton(
-                      icon: Icon(
-                        UIconsPro.regularRounded.share,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                      onPressed: () {
-                        // Aksi tombol share
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
+              SizedBox(width: 8),
+              Text('${data.quota} Person',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  )),
+            ],
           ),
-
-          // Bagian bawah dengan tombol "Join"
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
+          if (data.location != null)
+            Row(
+              children: [
+                Icon(UIconsPro.regularRounded.house_building,
+                    color: UIColor.primary, size: 12),
+                SizedBox(width: 8),
+                Text(data.location!,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    )),
+              ],
+            ),
+          Row(
+            children: [
+              Icon(UIconsPro.regularRounded.marker,
+                  color: UIColor.primary, size: 12),
+              SizedBox(width: 8),
+              Text(data.place,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  )),
+            ],
+          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          Row(
+            children: [
+              Icon(UIconsPro.regularRounded.calendar,
+                  color: UIColor.primary, size: 12),
+              SizedBox(width: 8),
+              Text(data.dateStart,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  )),
+            ],
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          // Row(
+          //   children: [
+          //     Icon(UIconsPro.regularRounded.clock,
+          //         color: UIColor.primary, size: 12),
+          //     SizedBox(width: 8),
+          //     Text(
+          //       data.dateEnd!,
+          //       style: TextStyle(
+          //         fontSize: 12,
+          //         fontWeight: FontWeight.w500,
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          //   ],
+          // ),
+          GestureDetector(
+            onTap: () async {
+              debugPrint(data.toString());
+              if (data.schedule != null) {
+                final url = data.schedule!;
+                debugPrint('Attempting to launch URL: $url');
+                try {
+                  if (await canLaunchUrl(Uri.parse(url))) {
+                    await launchUrl(
+                      Uri.parse(url),
+                      mode: LaunchMode.externalApplication,
+                    );
+                    debugPrint('URL launched successfully');
+                  } else {
+                    // debugPrint('Could not launch URL: $url');
+                    throw 'Could not launch $url';
+                  }
+                } catch (e) {
+                  debugPrint('Error launching URL: $e');
+                }
+                // } else {
+                //   debugPrint('URL is null or empty');
+              }
+            },
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-              color: Colors.white,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                color: UIColor.admin,
+              ),
+              margin: EdgeInsets.only(top: 6),
+              padding: EdgeInsets.symmetric(vertical: 5),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Free',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFFFAAD14),
-                        ),
-                      ),
-                      Text(
-                        '$availableTickets Tickets Left',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
+                  Icon(
+                    size: 14,
+                    UIconsPro.solidRounded.time_fast,
+                    color: UIColor.solidWhite,
                   ),
-                  Spacer(),
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      // Rounded rectangle background with 20% opacity
-                      Container(
-                        width: 200,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          // color: Colors.white.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Aksi ketika tombol join diklik
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              primaryColor, // Use primary blue color
-                          minimumSize: Size(200, 60), // Updated button size
-                        ),
-                        child: Text(
-                          'Join',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Inter',
-                          ),
-                        ),
-                      ),
-                    ],
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Click to Show Complete Schedule",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: UIColor.solidWhite,
+                    ),
                   ),
                 ],
               ),
             ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class AdminNoteSection extends StatelessWidget {
+  const AdminNoteSection({
+    super.key,
+    required this.adminNoteController,
+  });
+
+  final TextEditingController adminNoteController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      // margin: EdgeInsetsDirectional.only(bottom: 4),
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 14),
+      decoration: BoxDecoration(
+        color: UIColor.solidWhite,
+        borderRadius: BorderRadius.circular(12),
+        // border: Border.all(color: Colors.grey[300]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Admin Note",
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800)),
+          Text(
+            adminNoteController.text,
+            style: TextStyle(fontSize: 14, color: Colors.grey[800]),
           ),
         ],
       ),

@@ -33,7 +33,8 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
   // late EventFetchData eventFetchData;
 
   String route = AppRouter.detailEventRoute;
-  String? currentRole;
+  String currentRole = '';
+  String username = '';
 
   @override
   void initState() {
@@ -41,9 +42,15 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
     _scrollController.addListener(_onScroll);
     // _eventsMore = getEventsMore();
     final authState = context.read<AuthBloc>().state;
+    // final userState = context.read<UserBloc>().state;
+
     // mencari role untuk menyesuaikan output
     final roles = (authState as AuthAuthenticated).authData.data?.roles;
     currentRole = (authState).currentRole!;
+
+    debugPrint(authState.toString());
+    // debugPrint(userState.toString());
+    // username = (userState as UserByUIDLoaded).userData.username;
 
     if (roles!.contains('Admin') || roles.contains('Superadmin')) {
       requestPath = PathRequestEvents.events;
@@ -78,212 +85,245 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      controller: _scrollController,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
-            decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage('assets/images/background.png'),
-                fit:
-                    BoxFit.cover, // Set the image to cover the entire container
-              ),
-              border: Border.all(
-                color: Colors.blue, // Set the border color to white
-                width: 0, // Set the border width to 1
-              ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(14),
-                bottomRight: Radius.circular(14),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 16),
-                const Text(
-                  'Hi, Fattur 👋',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
+    return BlocConsumer<UserBloc, UserState>(
+      listener: (context, state) {
+        if (state is UserByUIDLoaded) {
+          username = state.userData.username;
+        }
+        debugPrint(state.toString());
+      },
+      builder: (context, state) {
+        return SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: AssetImage('assets/images/background.png'),
+                    fit: BoxFit
+                        .cover, // Set the image to cover the entire container
+                  ),
+                  border: Border.all(
+                    color: Colors.blue, // Set the border color to white
+                    width: 0, // Set the border width to 1
+                  ),
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(14),
+                    bottomRight: Radius.circular(14),
                   ),
                 ),
-                const SizedBox(height: 4),
-                const Text(
-                  'You are logged in as superadmin',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 63),
-                SearchWidget(
-                  label: 'Search Event ...',
-                  onSubmittedKeyboard: (searchQuery) {
-                    Navigator.pushNamed(
-                        context, AppRouter.searchResultEventRoute,
-                        arguments: {'search_query': searchQuery});
-                  },
-                  onPressedFilter: () {
-                    // Handle the button tap action here
-                    debugPrint('Tapped on FILTER ITEM-BUTTON');
-                  },
-                ), //! memanggil model => search
-                const SizedBox(height: 4),
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 14,
-          ),
-
-          QuickCategorySection(), //! memanggil model => category
-          // BlocProvider(
-          //   create: (context) => EventBloc()
-          //     ..add(EventFetchData(
-          //         requestEventCarousel: ,
-          //         requestEvent: RequestFilteredEventModel(
-          //             token: widget.token,
-          //             currentIndex: '0',
-          //             status: 'Proposed'),
-          //         pathRequest: PathRequestEvents.allEvents)),
-          // child:
-          // CarouselSection(),
-          // ), //! -- Carousel Events Section
-          // EventListSection(
-          //   scrollController: _scrollController,
-          //   requestFilteredEvent: requestFilteredEvent,
-          // ) //! -- Events Available Section
-          BlocConsumer<EventBloc, EventState>(listener: (context, state) {
-            // if (state is EventSubmited) {
-            //   // debugPrint("event submited");
-            //   Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
-            //       arguments: state.event);
-
-            //   // Navigator.of(context).pop(); // Close loading spinner
-            //   context.read<EventBloc>().add(EventFetchData(
-            //         requestEvent: requestFilteredEvent,
-            //       ));
-            // } else
-            if (state is EventLoaded) {
-              // final authState = context.read<AuthBloc>().state;
-              // // mencari role untuk menyesuaikan output
-              // final roles =
-              //     (authState as AuthAuthenticated).authData.data?.roles;
-
-              // if (roles!.contains('Propose')) {
-              //   pathRequest = PathRequestEvents.events;
-              // } else if (roles.contains('Admin') ||
-              //     roles.contains('Superadmin')) {
-              //   pathRequest = PathRequestEvents.approvedEvents;
-              // }
-
-              requestFilteredEvent = state.requestEvent;
-              // pathRequest = state.pathRequest!;
-              // debugPrint("New Request: ${requestFilteredEvent.toString()}");
-              // Navigator.of(context).pop();
-            } else if (state is EventLoadError) {
-              debugPrint("load error");
-              showError(context, state.message);
-            }
-          }, builder: (context, state) {
-            if (state is EventLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is EventLoaded) {
-              // return ExploreCard<EventLoaded>(
-              // eventsMore: _eventsMore,
-              // state: state,
-              // );
-
-              return SizedBox(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CarouselSection(
-                        currentRole: currentRole ?? '',
-                        eventData: state.listEventsCarousel ?? [],
-                        route: route),
-
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                      child: Text(
-                        'Events Available',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                            color: UIColor.typoBlack,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800),
+                    const SizedBox(height: 16),
+                    Text(
+                      'Hi, ${username.toLowerCase()} 👋',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
-                    //   child:
-                    Padding(
-                        padding: EdgeInsets.fromLTRB(20, 12, 20, 20),
-                        child: Wrap(
-                          spacing: 10, // Jarak horizontal antar item
-                          runSpacing: 10, // Jarak vertikal antar baris
-                          children: List.generate(
-                            state.hasReachedMax
-                                ? state.event.length
-                                : state.event.length + 1,
-                            (index) {
-                              if (index >= state.event.length) {
-                                return SizedBox(
-                                  // width: MediaQuery.of(context).size.width / 2 -
-                                  //     18, // Lebar untuk 2 kolom
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 10, bottom: 20),
-                                    child: const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                return SizedBox(
-                                  width:
-                                      (MediaQuery.of(context).size.width / 2) -
-                                          25, // Lebar untuk 2 kolom
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        route,
-                                        arguments: state.event[index],
-                                      );
-                                    },
-                                    child: ExploreCard(
-                                      currentRole: currentRole!,
-                                      eventData: state.event[index],
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                        )),
-                    // ),
-                    // const SizedBox(
-                    //   height: 14,
-                    // ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'You are logged in as ${currentRole.toLowerCase()}',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 63),
+                    SearchWidget(
+                      label: 'Search Event ...',
+                      onSubmittedKeyboard: (searchQuery) {
+                        Navigator.pushNamed(
+                            context, AppRouter.searchResultEventRoute,
+                            arguments: {'search_query': searchQuery});
+                      },
+                      onPressedFilter: () {
+                        // Handle the button tap action here
+                        debugPrint('Tapped on FILTER ITEM-BUTTON');
+                      },
+                    ), //! memanggil model => search
+                    const SizedBox(height: 4),
                   ],
                 ),
-              );
-            } else {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  child: Text("No Data"),
+              ),
+              const SizedBox(
+                height: 14,
+              ),
+
+              QuickCategorySection(), //! memanggil model => category
+              // BlocProvider(
+              //   create: (context) => EventBloc()
+              //     ..add(EventFetchData(
+              //         requestEventCarousel: ,
+              //         requestEvent: RequestFilteredEventModel(
+              //             token: widget.token,
+              //             currentIndex: '0',
+              //             status: 'Proposed'),
+              //         pathRequest: PathRequestEvents.allEvents)),
+              // child:
+              // CarouselSection(),
+              // ), //! -- Carousel Events Section
+              // EventListSection(
+              //   scrollController: _scrollController,
+              //   requestFilteredEvent: requestFilteredEvent,
+              // ) //! -- Events Available Section
+              BlocConsumer<EventBloc, EventState>(listener: (context, state) {
+                // if (state is EventSubmited) {
+                //   // debugPrint("event submited");
+                //   Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
+                //       arguments: state.event);
+
+                //   // Navigator.of(context).pop(); // Close loading spinner
+                //   context.read<EventBloc>().add(EventFetchData(
+                //         requestEvent: requestFilteredEvent,
+                //       ));
+                // } else
+                if (state is EventLoaded) {
+                  // final authState = context.read<AuthBloc>().state;
+                  // // mencari role untuk menyesuaikan output
+                  // final roles =
+                  //     (authState as AuthAuthenticated).authData.data?.roles;
+
+                  // if (roles!.contains('Propose')) {
+                  //   pathRequest = PathRequestEvents.events;
+                  // } else if (roles.contains('Admin') ||
+                  //     roles.contains('Superadmin')) {
+                  //   pathRequest = PathRequestEvents.approvedEvents;
+                  // }
+
+                  requestFilteredEvent = state.requestEvent;
+                  // pathRequest = state.pathRequest!;
+                  // debugPrint("New Request: ${requestFilteredEvent.toString()}");
+                  // Navigator.of(context).pop();
+                } else if (state is EventLoadError) {
+                  debugPrint("load error");
+                  showError(context, state.message);
+                }
+              }, builder: (context, state) {
+                if (state is EventLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is EventLoaded) {
+                  // return ExploreCard<EventLoaded>(
+                  // eventsMore: _eventsMore,
+                  // state: state,
+                  // );
+
+                  return ExploreContentSection(
+                      hasReachedMax: state.hasReachedMax,
+                      events: state.event,
+                      listEventsCarousel: state.listEventsCarousel!,
+                      currentRole: currentRole,
+                      route: route);
+                } else {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Text("No Data"),
+                    ),
+                  );
+                }
+              })
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class ExploreContentSection extends StatelessWidget {
+  const ExploreContentSection({
+    super.key,
+    required this.currentRole,
+    required this.route,
+    required this.events,
+    required this.listEventsCarousel,
+    required this.hasReachedMax,
+  });
+
+  final String currentRole;
+  final List<EventDataModel> events;
+  final List<EventDataModel>? listEventsCarousel;
+  final String route;
+  final bool hasReachedMax;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CarouselSection(
+              currentRole: currentRole,
+              eventData: listEventsCarousel ?? [],
+              route: route),
+
+          const Padding(
+            padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Text(
+              'Events Available',
+              textAlign: TextAlign.right,
+              style: TextStyle(
+                  color: UIColor.typoBlack,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800),
+            ),
+          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 16),
+          //   child:
+          Padding(
+              padding: EdgeInsets.fromLTRB(20, 12, 20, 20),
+              child: Wrap(
+                spacing: 10, // Jarak horizontal antar item
+                runSpacing: 10, // Jarak vertikal antar baris
+                children: List.generate(
+                  hasReachedMax ? events.length : events.length + 1,
+                  (index) {
+                    if (index >= events.length) {
+                      return SizedBox(
+                        // width: MediaQuery.of(context).size.width / 2 -
+                        //     18, // Lebar untuk 2 kolom
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 10, bottom: 20),
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                      );
+                    } else {
+                      return SizedBox(
+                        width: (MediaQuery.of(context).size.width / 2) -
+                            25, // Lebar untuk 2 kolom
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              route,
+                              arguments: events[index],
+                            );
+                          },
+                          child: ExploreCard(
+                            currentRole: currentRole,
+                            eventData: events[index],
+                          ),
+                        ),
+                      );
+                    }
+                  },
                 ),
-              );
-            }
-          })
+              )),
+          // ),
+          // const SizedBox(
+          //   height: 14,
+          // ),
         ],
       ),
     );

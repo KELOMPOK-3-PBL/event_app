@@ -1,4 +1,4 @@
-import 'package:event_proposal_app/ui/section/detail_profile_content.dart';
+import 'package:event_proposal_app/ui/section/detail_profile_content_section.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,7 +59,7 @@ class _HomeProfile extends State<DetailAccountScreen> {
                     ),
                   ),
                 ),
-                DetailProfileContent(userData: state.userData),
+                DetailProfileContentSection(userData: state.userData),
               ],
             );
           }

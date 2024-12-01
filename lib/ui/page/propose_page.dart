@@ -186,7 +186,8 @@ class _HomeProposePageState extends State<HomeProposePage> {
                               child: GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).pushNamed(
-                                      AppRouter.detailEventProposeRoute);
+                                      AppRouter.detailEventProposeRoute,
+                                      arguments: events[index]);
                                   //       arguments: state.event);
                                   // context
                                   //     .read<EventBloc>()

@@ -6,7 +6,7 @@ import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 
 import 'package:uicons_pro/uicons_pro.dart';
 
-import 'detail_profile_section/card_info.dart';
+import 'detail_event_section/card_info.dart';
 
 class CarouselSection extends StatelessWidget {
   final String currentRole;

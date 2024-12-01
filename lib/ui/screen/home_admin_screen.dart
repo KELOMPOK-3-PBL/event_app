@@ -54,6 +54,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       MultiBlocProvider(
         providers: [
           BlocProvider(
+            create: (context) =>
+                UserBloc()..add(FetchUserById(token: token, userId: adminUID)),
+          ),
+          BlocProvider(
             create: (context) => EventBloc()
               ..add(EventFetchData(
                   requestEventCarousel: RequestFilteredEventModel(

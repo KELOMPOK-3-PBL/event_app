@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/user_bloc/user_bloc.dart';
-import '../section/detail_profile_content.dart';
+import '../section/detail_profile_content_section.dart';
 import '../theme/ui_colors.dart';
 
 class HomeProfilePage extends StatelessWidget {
@@ -44,7 +44,7 @@ class HomeProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              DetailProfileContent(userData: state.userData),
+              DetailProfileContentSection(userData: state.userData),
             ],
           );
         }

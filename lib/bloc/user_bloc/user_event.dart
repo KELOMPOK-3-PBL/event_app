@@ -10,6 +10,9 @@ class FetchUser extends UserEvent {
   final String token;
 
   FetchUser({this.searchUser, required this.token});
+
+  @override
+  List<Object> get props => [searchUser!, token];
 }
 
 class FetchUserById extends UserEvent {
@@ -17,4 +20,7 @@ class FetchUserById extends UserEvent {
   final String token;
 
   FetchUserById({required this.token, required this.userId});
+
+  @override
+  List<Object> get props => [userId, token];
 }

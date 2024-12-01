@@ -2,7 +2,7 @@ import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
-import '../section/detail_profile_section/card_info.dart';
+import '../section/detail_event_section/card_info.dart';
 import '../theme/ui_colors.dart';
 
 class EventCardWidget extends StatelessWidget {

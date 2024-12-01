@@ -2,9 +2,9 @@ import 'package:event_proposal_app/data/model/model.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter/material.dart';
 
-class DetailProfileContent extends StatelessWidget {
+class DetailProfileContentSection extends StatelessWidget {
   final UserDataModel? userData;
-  const DetailProfileContent({
+  const DetailProfileContentSection({
     super.key,
     this.userData,
   });

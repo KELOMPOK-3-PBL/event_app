@@ -69,6 +69,10 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
               ),
           ),
           BlocProvider(
+            create: (context) => UserBloc()
+              ..add(FetchUserById(token: token, userId: proposeUID)),
+          ),
+          BlocProvider(
             create: (context) => CategoryBloc()..add(StatusReadData()),
           ),
         ],

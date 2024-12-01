@@ -40,7 +40,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       FetchUserById event, Emitter<UserState> emit) async {
     // emit(AuthLoading());
     try {
-      // debugPrint("fetch user");
+      debugPrint("fetch user");
 
       final userData =
           await _userRepository.getUserByUID(event.userId, event.token);

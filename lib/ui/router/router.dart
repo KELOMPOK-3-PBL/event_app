@@ -94,7 +94,6 @@ class AppRouter {
       );
     },
 
-    detailEventRoute: (context) => const DetailEventScreen(),
     settingsRoute: (context) {
       // final UserDataModel arguments =
       //     ModalRoute.of(context)!.settings.arguments as UserDataModel;
@@ -105,6 +104,14 @@ class AppRouter {
             // currentRole: '',
             ),
       );
+    },
+    detailEventRoute: (context) {
+      final EventDataModel arguments =
+          ModalRoute.of(context)!.settings.arguments as EventDataModel;
+      // BlocProvider.value(
+      //       value: context.read<EventBloc>(),
+      // child:
+      return DetailEventScreen(data: arguments);
     },
     detailEventApprovalRoute: (context) {
       final EventDataModel arguments =

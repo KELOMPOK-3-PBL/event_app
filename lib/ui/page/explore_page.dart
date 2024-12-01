@@ -45,14 +45,13 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
     // final userState = context.read<UserBloc>().state;
 
     // mencari role untuk menyesuaikan output
-    final roles = (authState as AuthAuthenticated).authData.data?.roles;
-    currentRole = (authState).currentRole!;
+    currentRole = (authState as AuthAuthenticated).currentRole!;
 
-    debugPrint(authState.toString());
+    // debugPrint(authState.toString());
     // debugPrint(userState.toString());
     // username = (userState as UserByUIDLoaded).userData.username;
 
-    if (roles!.contains('Admin') || roles.contains('Superadmin')) {
+    if (currentRole == 'Admin' || currentRole == 'Superadmin') {
       requestPath = PathRequestEvents.events;
       route = AppRouter.detailEventApprovalRoute;
     }
@@ -129,7 +128,9 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'You are logged in as ${currentRole.toLowerCase()}',
+                      (currentRole == 'Member')
+                          ? "Let’s explore the event!"
+                          : 'You are logged in as ${currentRole.toLowerCase()}',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -219,12 +220,14 @@ class ExploreContentSection extends StatelessWidget {
               eventData: listEventsCarousel ?? [],
               route: route),
 
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
             child: Text(
-              'Events Available',
+              (currentRole == 'Admin' || currentRole == 'Superadmin')
+                  ? 'Events Available'
+                  : "Events Near You",
               textAlign: TextAlign.right,
-              style: TextStyle(
+              style: const TextStyle(
                   color: UIColor.typoBlack,
                   fontSize: 16,
                   fontWeight: FontWeight.w800),

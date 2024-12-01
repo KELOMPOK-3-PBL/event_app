@@ -119,67 +119,12 @@ class LoginScreenState extends State<LoginScreen>
           _passwordController.text = state.password;
           setState(() => rememberMe = state.rememberMe);
         } else if (state is AuthAuthenticated) {
-          // debugPrint("Login Requested: ${state.authData.toString()}");
           if (state.currentRole == null) {
-            showChoosePrivilegeDialog(context, state.authData.data!.roles);
+            //! Memanggil Dialog Untuk Memilih Role
+            PrivilegeDialog.showChoosePrivilegeDialog(
+                context, state.authData.data!.roles);
           }
-          // else {
-          //   Navigator.of(context).restorablePushNamedAndRemoveUntil(
-          //       AppRouter.loginRoute, (Route<dynamic> route) => false,
-          //       arguments: state.authData.currentRole);
-          // }
-          // choosePrivilege(context, state.authData.data!.roles
-          // , (selectedRole) {
-          // context.read<AuthBloc>().add(
-          //       AuthSaveCurrentRole(currentRole: selectedRole!),
-          //     );
-          // Navigator.of(context).restorablePushNamedAndRemoveUntil(
-          //     AppRouter.homeRoute, (Route<dynamic> route) => false,
-          //     arguments: selectedRole);
-          // }
-          // );
-          // }
-          // else if (state is AuthAuthenticated) {
-          //   debugPrint("Authenticated: ${state.authData.toString()}");
-
-          //   // Navigator.of(context).pop(); // Close loading spinner
-          //   if (state.authData.currentRole == null) {
-          //     choosePrivilege(context, state.authData.data!.roles,
-          //         (selectedRole) {
-          //       context.read<AuthBloc>().add(
-          //             AuthSaveCurrentRole(currentRole: selectedRole!),
-          //           );
-          //     });
-          //   } else {
-          //     Navigator.of(context).restorablePushNamedAndRemoveUntil(
-          //         AppRouter.homeRoute, (Route<dynamic> route) => false,
-          //         arguments: state.authData.currentRole);
-          // }
-
-          // if (state.payload!.roles.isNotEmpty) {}
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => MultiBlocProvider(
-          //       providers: [
-          //         BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-          //         BlocProvider<EventBloc>(
-          //             //! memanggil AuthBloc di dalam bloc EventBloc
-          //             create: (context) => EventBloc(
-          //                 eventRepository: EventRepository(),
-          //                 authBloc: AuthBloc())
-          //               ..add(EventFetched())),
-          //         BlocProvider<CategoryBloc>(
-          //             create: (context) =>
-          //                 CategoryBloc(categoryRepository: StatusRepository())
-          //                   ..add(CategoryReadData())),
-          //       ],
-          //       child: HomeSuperadminScreen(),
-          //     ),
-          //   ),
-          // );
         } else if (state is AuthUnauthenticated) {
-          // Navigator.of(context).pop(); // Close loading spinner
           showError(context, state.message);
         }
       },

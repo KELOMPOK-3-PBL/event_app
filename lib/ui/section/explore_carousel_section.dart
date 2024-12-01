@@ -30,10 +30,12 @@ class CarouselSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           //! Section Tittle
-          const Padding(
+          Padding(
             padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
             child: Text(
-              'Newly Proposed Events',
+              (currentRole == 'Admin' || currentRole == 'Superadmin')
+                  ? 'Newly Proposed Events'
+                  : 'Trending Events',
               textAlign: TextAlign.right,
               style: TextStyle(
                   color: UIColor.typoBlack,
@@ -144,7 +146,7 @@ class CarouselSection extends StatelessWidget {
                                             ),
                                             cardInfoCarouselRow(
                                                 UIconsPro.regularRounded.user,
-                                                eventData![index].quota),
+                                                "${eventData![index].quota} participants"),
                                             cardInfoCarouselRow(
                                                 UIconsPro.regularRounded
                                                     .house_building,

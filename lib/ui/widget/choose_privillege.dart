@@ -12,8 +12,10 @@ class PrivilegeDialog {
     if (roles.isEmpty) {
       return; // No roles to display
     }
+    if (roles.length == 1) return _navigateToHome(context, roles[0]);
 
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(

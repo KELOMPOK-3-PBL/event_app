@@ -120,6 +120,15 @@ class AppBarDetailEvent extends StatelessWidget {
                       Navigator.of(context).pop();
                     },
                     child: PhotoView(
+                      errorBuilder: (BuildContext context, Object error,
+                          StackTrace? stackTrace) {
+                        return Image.asset(
+                          'assets/images/image_not_found.png',
+                          // height: (MediaQuery.of(context).size.width - 44) / 3,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        );
+                      },
                       imageProvider: NetworkImage(
                           // (data.posterUrl != null)
                           // ?
@@ -144,7 +153,7 @@ class AppBarDetailEvent extends StatelessWidget {
             height: 250,
             width: double.infinity,
             errorBuilder: (context, object, stackTrace) => Image.asset(
-              data.posterUrl!,
+              'assets/images/image_not_found.png',
               alignment: Alignment.topCenter,
               fit: BoxFit.cover,
               height: 250,

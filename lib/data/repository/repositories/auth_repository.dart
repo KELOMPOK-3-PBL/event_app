@@ -8,25 +8,31 @@ class AuthRepository {
 
   Future<AuthModel> login(
       String email, String password, bool rememberMe) async {
-    try {
-      final response = await authProvider.authRequest(email, password);
-      final data = response.data;
+    final response = await authProvider.authRequest(email, password);
+    final data = response.data;
+    JwtPayloadModel? payload;
+    String? token;
+    // debugPrint(response.toString());
 
-      if (response.statusCode == 200 && data["status"] == 'success') {
+    debugPrint(response.toString());
+    try {
+      if (data["status"] == 'success') {
         //! Simpan waktu login dan waktu sesi berakhir
         saveUserPreferences(email, password, rememberMe);
         saveToken(data['data']['token']);
-        final payload = await decodeToken(data['data']['token']);
-        return AuthModel.fromJson(json: data, payload: payload);
-      } else if (response.statusCode == 404 ||
-          response.statusCode == 401 ||
-          data["status"] == 'error') {
-        return AuthModel.fromJson(json: data);
-      } else {
-        throw Exception('Error: ${response.statusCode}');
+        token = data['data']['token'];
+        payload = await decodeToken(token!);
       }
-    } catch (error) {
-      throw Exception('API REQUEST FAILED');
+      return AuthModel.fromJson(json: data, token: token, payload: payload);
+      // } else if (data["status"] == 'error') {
+      // return AuthModel.fromJson(json: data);
+      // } else {
+      // throw Exception('Error: ${response.statusCode}');
+      // throw Exception('API REQUEST FAILED');
+      // }
+    } catch (_) {
+      return AuthModel.fromJson(json: data);
+      // throw Exception('API REQUEST FAILED');
     }
   }
 

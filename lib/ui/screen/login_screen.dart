@@ -107,13 +107,13 @@ class LoginScreenState extends State<LoginScreen>
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthLoading) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return const Center(child: CircularProgressIndicator());
-            },
-          );
+          // showDialog(
+          //   context: context,
+          //   barrierDismissible: false,
+          //   builder: (BuildContext context) {
+          //     return const Center(child: CircularProgressIndicator());
+          //   },
+          // );
         } else if (state is AuthRememberMeLoaded) {
           _emailController.text = state.email;
           _passwordController.text = state.password;
@@ -125,6 +125,11 @@ class LoginScreenState extends State<LoginScreen>
                 context, state.authData.data!.roles);
           }
         } else if (state is AuthUnauthenticated) {
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(
+          //       content: Text(state.message),
+          //       duration: const Duration(days: 1)),
+          // );
           showError(context, state.message);
         }
       },

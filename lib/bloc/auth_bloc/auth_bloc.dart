@@ -40,7 +40,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         final currentRole = await _authRepository.getCurretRole();
         emit(AuthAuthenticated(authData: authData!, currentRole: currentRole));
       } else {
-        emit(AuthUnauthenticated(message: authData!.message));
+        emit(AuthUnauthenticated(
+          message: authData!.message,
+        ));
         // emit(AuthInitial());
       }
     } catch (error) {
@@ -85,9 +87,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthAuthenticated(authData: authData));
         // emit(AuthLoginRequested(authData: authData));
       } else {
+        emit(AuthLoading());
+
         emit(AuthUnauthenticated(message: authData.message));
       }
     } catch (error) {
+      emit(AuthLoading());
+
       emit(AuthUnauthenticated(message: error.toString()));
     }
   }
@@ -109,7 +115,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   void _onAuthLogoutRequest(
       AuthLogoutRequest event, Emitter<AuthState> emit) async {
     await _authRepository.logout();
-    emit(AuthUnauthenticated(message: "Loging Out Success"));
+    emit(AuthUnauthenticated(message: "Loging Out Succes"));
     await Future.delayed(
         Duration(milliseconds: 1000)); // memastikan status diperbarui
     emit(

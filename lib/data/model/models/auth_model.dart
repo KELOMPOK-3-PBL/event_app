@@ -16,11 +16,13 @@ class AuthModel extends Equatable {
 
   // Convert a JSON map to the AuthModel object
   factory AuthModel.fromJson(
-          {required Map<String, dynamic> json, JwtPayloadModel? payload}) =>
+          {required Map<String, dynamic> json,
+          String? token,
+          JwtPayloadModel? payload}) =>
       AuthModel(
         status: json['status'],
         message: json['message'],
-        token: json['data']['token'],
+        token: token,
         data: payload,
       );
 

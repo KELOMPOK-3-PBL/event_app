@@ -18,11 +18,11 @@ class HomeAdminScreen extends StatefulWidget {
   State<HomeAdminScreen> createState() => _HomeAdminScreenState();
 }
 
-//! masih salah
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
   String token = "";
   String adminUID = "";
   int _currentIndex = 0;
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
@@ -46,58 +46,35 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
     });
   }
 
-  List<Widget> _buildWidgetOptions(String token) {
+  List<Widget> _buildWidgetOptions() {
     return [
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) =>
-                UserBloc()..add(FetchUserById(token: token, userId: adminUID)),
-          ),
-          BlocProvider(
-            create: (context) => EventBloc()
-              ..add(EventFetchData(
-                  requestEventCarousel: RequestFilteredEventModel(
-                      token: token, currentIndex: '0', status: 'Proposed'),
-                  requestEvent: RequestFilteredEventModel(
-                      token: token, currentIndex: '0'),
-                  pathRequest: PathRequestEvents.events)),
-          ),
-          BlocProvider(
-            create: (context) => CategoryBloc()..add(StatusReadData()),
-          ),
-        ],
-        child: HomeExplorePage(token: token),
+      _HomeTabPage(
+        token: token,
+        adminUID: adminUID,
+        pageIndex: 0,
       ),
-      BlocProvider(
-        create: (context) => EventBloc()
-          ..add(
-            EventFetchData(
-              requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.approvedEvents,
-            ),
-          ),
-        child: const HomeEventsPage(),
+      _HomeTabPage(
+        token: token,
+        adminUID: adminUID,
+        pageIndex: 1,
       ),
-      BlocProvider(
-        create: (context) => EventBloc()
-          ..add(
-            EventFetchData(
-              requestEvent: RequestFilteredEventModel(
-                  token: token, currentIndex: '0', adminUserId: adminUID),
-              pathRequest: PathRequestEvents.events,
-            ),
-          ),
-        child: const HomeApprovalPage(),
+      _HomeTabPage(
+        token: token,
+        adminUID: adminUID,
+        pageIndex: 2,
       ),
-      BlocProvider(
-        create: (context) =>
-            UserBloc()..add(FetchUserById(token: token, userId: adminUID)),
-        child: const HomeProfilePage(),
+      _HomeTabPage(
+        token: token,
+        adminUID: adminUID,
+        pageIndex: 3,
       ),
     ];
   }
@@ -105,7 +82,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   @override
   Widget build(BuildContext context) {
     if (token.isEmpty) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: Text("User is not authenticated. Please log in."),
         ),
@@ -115,9 +92,14 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     return BlocProvider.value(
       value: context.read<AuthBloc>(),
       child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: _buildWidgetOptions(token),
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _currentIndex = index; // Sinkronkan indeks aktif
+            });
+          },
+          children: _buildWidgetOptions(),
         ),
         bottomNavigationBar: BottomNavbarAdmin(
           currentIndex: _currentIndex,
@@ -125,5 +107,100 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+}
+
+class _HomeTabPage extends StatefulWidget {
+  final String token;
+  final String adminUID;
+  final int pageIndex;
+
+  const _HomeTabPage({
+    required this.token,
+    required this.adminUID,
+    required this.pageIndex,
+  });
+
+  @override
+  State<_HomeTabPage> createState() => _HomeTabPageState();
+}
+
+class _HomeTabPageState extends State<_HomeTabPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true; // Pertahankan state halaman
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context); // Memanggil build dari AutomaticKeepAliveClientMixin
+
+    // Sesuaikan halaman berdasarkan pageIndex
+    switch (widget.pageIndex) {
+      case 0:
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => UserBloc()
+                ..add(FetchUserById(
+                    token: widget.token, userId: widget.adminUID)),
+            ),
+            BlocProvider(
+              create: (context) => EventBloc()
+                ..add(EventFetchData(
+                    requestEventCarousel: RequestFilteredEventModel(
+                        token: widget.token,
+                        currentIndex: '0',
+                        status: 'Proposed'),
+                    requestEvent: RequestFilteredEventModel(
+                        token: widget.token, currentIndex: '0'),
+                    pathRequest: PathRequestEvents.events)),
+            ),
+            BlocProvider(
+              create: (context) => CategoryBloc()..add(StatusReadData()),
+            ),
+          ],
+          child: HomeExplorePage(token: widget.token),
+        );
+      case 1:
+        return BlocProvider(
+          create: (context) => EventBloc()
+            ..add(
+              EventFetchData(
+                requestEvent: RequestFilteredEventModel(
+                    token: widget.token, currentIndex: '0'),
+                pathRequest: PathRequestEvents.approvedEvents,
+              ),
+            ),
+          child: const HomeEventsPage(),
+        );
+      case 2:
+        return BlocProvider(
+          create: (context) => EventBloc()
+            ..add(
+              EventFetchData(
+                requestEvent: RequestFilteredEventModel(
+                    token: widget.token,
+                    currentIndex: '0',
+                    adminUserId: widget.adminUID),
+                pathRequest: PathRequestEvents.events,
+              ),
+            ),
+          child: const HomeApprovalPage(),
+        );
+      case 3:
+        return BlocProvider(
+          create: (context) => UserBloc()
+            ..add(FetchUserById(token: widget.token, userId: widget.adminUID)),
+          child: const HomeProfilePage(),
+        );
+      default:
+        return const SizedBox.shrink();
+    }
   }
 }

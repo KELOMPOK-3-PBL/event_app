@@ -155,7 +155,9 @@ class _HomeProposePageState extends State<HomeProposePage> {
                 child: BlocBuilder<EventBloc, EventState>(
                   builder: (context, state) {
                     if (state is EventLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     } else if (state is EventLoaded) {
                       final events = state.event;
                       if (events.isEmpty) {

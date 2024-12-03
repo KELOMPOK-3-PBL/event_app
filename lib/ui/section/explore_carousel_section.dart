@@ -31,7 +31,7 @@ class CarouselSection extends StatelessWidget {
         children: [
           //! Section Tittle
           Padding(
-            padding: EdgeInsets.fromLTRB(20, 20, 20, 16),
+            padding: EdgeInsets.fromLTRB(20, 16, 20, 16),
             child: Text(
               (currentRole == 'Admin' || currentRole == 'Superadmin')
                   ? 'Newly Proposed Events'

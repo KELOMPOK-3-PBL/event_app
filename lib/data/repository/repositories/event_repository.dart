@@ -14,6 +14,10 @@ class EventRepository {
 
       final data = response.data;
       if (response.statusCode == 200 && data["status"] == 'success') {
+        await Future.delayed(
+          Duration(milliseconds: 100),
+        ); // Simulate network delay
+
         return EventModel.fromJson(json: data);
         // } else if (response.statusCode == 404 || data["status"] == 'error') {
         //   return EventModel.fromJson(json: data);

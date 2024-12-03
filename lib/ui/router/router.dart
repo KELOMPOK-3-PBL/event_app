@@ -65,14 +65,7 @@ class AppRouter {
                 (Route<dynamic> route) => false,
               );
             }
-            // });
           },
-          // builder: (context, state) {
-          //   if (state is AuthLoading) {
-          //     return const SplashScreen(); // Tampilkan SplashScreen saat loading
-          //   }
-          //   return const SplashScreen(); // Fallback
-          // },
         ),
       );
     },

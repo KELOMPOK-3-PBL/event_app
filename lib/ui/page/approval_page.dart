@@ -36,23 +36,6 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
     final authState = context.read<AuthBloc>().state;
 
     currentRole = (authState as AuthAuthenticated).currentRole!;
-
-    // token =
-    //     (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
-
-    // requestFilteredEvent = RequestFilteredEventModel(
-    //   token: token,
-    //   currentIndex: '0',
-    // );
-
-    // debugPrint("Initiial Request: $requestFilteredEvent");
-    // context.read<EventBloc>().add(EventFetchAllData(
-    //       requestEvent: requestFilteredEvent,
-    //     ));
-
-    //! mengambil data dari event EventFetchData untuk diperbarui
-    // requestEvent = context.read<EventFetchData>().requestEvent;
-    // event = context.read<EventFetchData>();
   }
 
   bool get _isBottom {
@@ -67,10 +50,6 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
         // && !(context.read<EventBloc>().state as EventAllLoaded).hasReachedMax
         ) {
       //! mengatasi perubahan request ketika di scroll
-      // mengambil request yang sudah diubah current statenya
-      // requestFilteredEvent =
-      //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
-      // requestEvent.copyWith();
       context.read<EventBloc>().add(
             EventFetchData(
               requestEvent: requestFilteredEvent,
@@ -90,46 +69,14 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   Widget build(BuildContext context) {
     return BlocListener<EventBloc, EventState>(
       listener: (context, state) {
-        //! Mengambil token
-        // final authState = context.read<AuthBloc>().state;
-        // token = (authState as AuthAuthenticated).authData.token!;
-        // debugPrint("get");
-        // debugPrint("Token: $token");
-
-        // if (state is EventSubmited) {
-        //   // debugPrint("event submited");
-        //   Navigator.pushNamed(context, AppRouter.detailEventApprovalRoute,
-        //       arguments: state.event);
-
-        //   // Navigator.of(context).pop(); // Close loading spinner
-        //   context.read<EventBloc>().add(EventFetchData(
-        //         requestEvent: requestFilteredEvent,
-        //       ));
-        // } else
         if (state is EventLoaded) {
-          // token = (context.read<AuthBloc>().state as AuthAuthenticated)
-          //     .authData
-          //     .token!;
-
-          // requestFilteredEvent = RequestFilteredEventModel(
-          //   token: token,
-          //   currentIndex: '0',
-          // );
-
-          // context.read<EventBloc>().add(EventFetchAllData(
-          //       requestEvent: requestFilteredEvent,
-          //     ));
-
+          //! Mengambil data request event
           requestFilteredEvent = state.requestEvent;
-          // debugPrint("New Request: ${requestFilteredEvent.toString()}");
-          // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
           debugPrint("load error");
           showError(context, state.message);
         }
       },
-      // builder: (context, state) {
-      //   if (state is EventLoaded) {
       child: Column(
         children: [
           AppBar(
@@ -175,7 +122,9 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                 child: BlocBuilder<EventBloc, EventState>(
                   builder: (context, state) {
                     if (state is EventLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     } else if (state is EventLoaded) {
                       final events = state.event;
                       if (events.isEmpty) {

@@ -1,4 +1,4 @@
-import 'package:flutter/painting.dart';
+import 'package:flutter/material.dart';
 
 class UIColor {
   UIColor._();
@@ -6,6 +6,7 @@ class UIColor {
   static const Color typoBlack = Color(0xff000000);
   static const Color typoGray = Color(0xff747688);
   static const Color typoGray2 = Color(0xcccccccc);
+  static const Color shadowColor = Colors.black26;
 
   static const Color solidWhite = Color(0xffffffff);
   static const Color white = Color(0xfff6f6f6);

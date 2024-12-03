@@ -92,107 +92,174 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
         debugPrint(state.toString());
       },
       builder: (context, state) {
-        return SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(20, 40, 20, 20),
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/background.png'),
-                    fit: BoxFit
-                        .cover, // Set the image to cover the entire container
-                  ),
-                  border: Border.all(
-                    color: Colors.blue, // Set the border color to white
-                    width: 0, // Set the border width to 1
-                  ),
-                  borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(14),
-                    bottomRight: Radius.circular(14),
-                  ),
+        if (state is UserByUIDLoaded) {
+          return CustomScrollView(
+            controller: _scrollController,
+            slivers: [
+              ExploreAppBar(username: username, currentRole: currentRole),
+              SliverToBoxAdapter(
+                child: BlocConsumer<EventBloc, EventState>(
+                  listener: (context, state) {
+                    if (state is EventLoaded) {
+                      requestFilteredEvent = state.requestEvent;
+                    } else if (state is EventLoadError) {
+                      debugPrint("load error");
+                      showError(context, state.message);
+                    }
+                  },
+                  builder: (context, state) {
+                    // if (state is EventLoading) {
+                    // return Center(
+                    //   child: CircularProgressIndicator(),
+                    // );
+                    // } else
+                    if (state is EventLoaded) {
+                      return ExploreBody(
+                          hasReachedMax: state.hasReachedMax,
+                          events: state.event,
+                          listEventsCarousel: state.listEventsCarousel!,
+                          currentRole: currentRole,
+                          route: route);
+                    } else {
+                      return SizedBox(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: Text("No Data"),
+                          ),
+                        ),
+                      );
+                    }
+                  },
                 ),
+              ),
+            ],
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+}
+
+class ExploreAppBar extends StatelessWidget {
+  const ExploreAppBar({
+    super.key,
+    required this.username,
+    required this.currentRole,
+  });
+
+  final String username;
+  final String currentRole;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      shadowColor: UIColor.shadowColor,
+      automaticallyImplyLeading: false,
+      expandedHeight: 200.0,
+      pinned: true,
+      surfaceTintColor: UIColor.solidWhite,
+      backgroundColor: UIColor.solidWhite,
+      flexibleSpace: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          // Hitung proporsi collapse
+          final double t = (constraints.maxHeight - kToolbarHeight) /
+              (200.0 - kToolbarHeight);
+
+          // Membuat Padding dinamis
+          final EdgeInsets dynamicPadding = EdgeInsets.lerp(
+            const EdgeInsets.only(
+                right: 20, left: 20.0, bottom: 20.0), // Saat expanded
+            const EdgeInsets.only(
+                right: 10, left: 10.0, bottom: 5.0), // Saat collapsed
+            1 - t, // Perubahan proporsional
+          )!;
+
+          return FlexibleSpaceBar(
+            titlePadding: dynamicPadding,
+            title: SearchWidget(
+              label: 'Search Event ...',
+              onSubmittedKeyboard: (searchQuery) {
+                Navigator.pushNamed(context, AppRouter.searchResultEventRoute,
+                    arguments: {'search_query': searchQuery});
+              },
+              onPressedFilter: () {
+                debugPrint('Tapped on FILTER ITEM-BUTTON');
+              },
+            ),
+            expandedTitleScale: 1,
+            // collapseMode: CollapseMode.pin,
+            background: Container(
+              decoration: BoxDecoration(
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/background.png'),
+                  fit: BoxFit
+                      .cover, // Set the image to cover the entire container
+                ),
+                border: Border.all(
+                  color: Colors.blue, // Set the border color to blue
+                  width: 0, // Set the border width to 0
+                ),
+                // borderRadius: const BorderRadius.only(
+                //   bottomLeft: Radius.circular(10),
+                //   bottomRight: Radius.circular(10),
+                // ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(22, 40, 10, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 16),
-                    Text(
-                      'Hi, ${username.toLowerCase()} 👋',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          'Hi, ${username.toLowerCase()} 👋',
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                        // IconButton(
+                        //   iconSize: 22,
+                        //   color: UIColor.solidWhite,
+                        //   icon: Icon(UIconsPro
+                        //       .regularRounded.bell_notification_social_media),
+                        //   onPressed: () {},
+                        // )
+                      ],
                     ),
                     const SizedBox(height: 4),
                     Text(
                       (currentRole == 'Member')
                           ? "Let’s explore the event!"
                           : 'You are logged in as ${currentRole.toLowerCase()}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 63),
-                    SearchWidget(
-                      label: 'Search Event ...',
-                      onSubmittedKeyboard: (searchQuery) {
-                        Navigator.pushNamed(
-                            context, AppRouter.searchResultEventRoute,
-                            arguments: {'search_query': searchQuery});
-                      },
-                      onPressedFilter: () {
-                        // Handle the button tap action here
-                        debugPrint('Tapped on FILTER ITEM-BUTTON');
-                      },
-                    ), //! memanggil model => search
-                    const SizedBox(height: 4),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 14,
-              ),
-              BlocConsumer<EventBloc, EventState>(listener: (context, state) {
-                if (state is EventLoaded) {
-                  requestFilteredEvent = state.requestEvent;
-                } else if (state is EventLoadError) {
-                  debugPrint("load error");
-                  showError(context, state.message);
-                }
-              }, builder: (context, state) {
-                if (state is EventLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is EventLoaded) {
-                  return ExploreContentSection(
-                      hasReachedMax: state.hasReachedMax,
-                      events: state.event,
-                      listEventsCarousel: state.listEventsCarousel!,
-                      currentRole: currentRole,
-                      route: route);
-                } else {
-                  return Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Text("No Data"),
-                    ),
-                  );
-                }
-              })
-            ],
-          ),
-        );
-      },
+            ),
+          );
+        },
+      ),
     );
   }
 }
 
-class ExploreContentSection extends StatelessWidget {
-  const ExploreContentSection({
+class ExploreBody extends StatelessWidget {
+  const ExploreBody({
     super.key,
     required this.currentRole,
     required this.route,
@@ -213,6 +280,9 @@ class ExploreContentSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(
+            height: 16,
+          ),
           QuickCategorySection(),
           //! Carousel Section
           CarouselSection(

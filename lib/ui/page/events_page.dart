@@ -92,26 +92,9 @@ class _HomeEventsPageState extends State<HomeEventsPage>
   Widget build(BuildContext context) {
     return BlocListener<EventBloc, EventState>(
       listener: (context, state) {
-        //! Mengambil token
-        // final authState = context.read<AuthBloc>().state;
-        // token = (authState as AuthAuthenticated).authData.token!;
-        // debugPrint("Token: $token");
-
-        // if (state is EventSubmited) {
-        // debugPrint("event submited");
-
-        // Navigator.of(context).pop(); // Close loading spinner
-        // Navigator.of(context)
-        //     .pushNamed(AppRouter.detailEventRoute, arguments: state.event);
-
-        // //! Trigger CategoryBloc untuk memuat ulang data
-        // context.read<EventBloc>().add(EventFetchData(
-        //       requestEvent: requestFilteredEvent,
-        //     ));
-        // } else
         if (state is EventLoaded) {
+          //! Mengambil data request event
           requestFilteredEvent = state.requestEvent;
-          // Navigator.of(context).pop();
         } else if (state is EventLoadError) {
           debugPrint("load error");
           showError(context, state.message);
@@ -164,7 +147,9 @@ class _HomeEventsPageState extends State<HomeEventsPage>
                 child: BlocBuilder<EventBloc, EventState>(
                   builder: (context, state) {
                     if (state is EventLoading) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
                     } else if (state is EventLoaded) {
                       final events = state.event;
                       if (events.isEmpty) {

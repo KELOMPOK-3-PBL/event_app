@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/bloc.dart';
 import '../../data/model/model.dart';
 import '../../data/provider/provider.dart';
-import '../navigation/bottom_navbar_superadmin.dart';
+import '../navigation/navbar_superadmin.dart';
 import '../page/accounts_page.dart';
 import '../page/approval_page.dart';
 import '../page/events_page.dart';
@@ -23,6 +23,7 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
   String token = "";
   String superadminUID = "";
   int _currentIndex = 0;
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
@@ -46,72 +47,40 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
     });
   }
 
-  List<Widget> _buildWidgetOptions(String token) {
+  List<Widget> _buildWidgetOptions() {
     return [
-      MultiBlocProvider(
-        providers: [
-          BlocProvider.value(value: context.read<AuthBloc>()),
-          BlocProvider(
-            create: (context) => EventBloc()
-              ..add(EventFetchData(
-                  requestEventCarousel: RequestFilteredEventModel(
-                      token: token, currentIndex: '0', status: 'Proposed'),
-                  requestEvent: RequestFilteredEventModel(
-                      token: token, currentIndex: '0'),
-                  pathRequest: PathRequestEvents.events)),
-          ),
-          BlocProvider(
-            create: (context) => UserBloc()
-              ..add(FetchUserById(token: token, userId: superadminUID)),
-          ),
-          BlocProvider(
-            create: (context) => CategoryBloc()..add(StatusReadData()),
-          ),
-        ],
-        child: HomeExplorePage(token: token),
+      _HomeTabPage(
+        token: token,
+        superadminUID: superadminUID,
+        pageIndex: 0,
       ),
-      BlocProvider(
-        create: (context) => EventBloc()
-          ..add(
-            EventFetchData(
-              requestEvent: RequestFilteredEventModel(
-                token: token, currentIndex: '0',
-                // adminUserId: adminUserId
-              ),
-              pathRequest: PathRequestEvents.approvedEvents,
-            ),
-          ),
-        child: HomeEventsPage(),
+      _HomeTabPage(
+        token: token,
+        superadminUID: superadminUID,
+        pageIndex: 1,
       ),
-      BlocProvider(
-        create: (context) => EventBloc()
-          ..add(
-            EventFetchData(
-              requestEvent: RequestFilteredEventModel(
-                  token: token, currentIndex: '0', adminUserId: superadminUID),
-              pathRequest: PathRequestEvents.events,
-            ),
-          ),
-        child: HomeApprovalPage(),
+      _HomeTabPage(
+        token: token,
+        superadminUID: superadminUID,
+        pageIndex: 2,
       ),
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => UserBloc()..add(FetchUser(token: token)),
-          ),
-          BlocProvider.value(
-            value: context.read<AuthBloc>(),
-          ),
-        ],
-        child: HomeAccountsPage(),
+      _HomeTabPage(
+        token: token,
+        superadminUID: superadminUID,
+        pageIndex: 3,
       ),
-      BlocProvider(
-        create: (context) =>
-            UserBloc()..add(FetchUserById(token: token, userId: superadminUID)),
-        child: const HomeProfilePage(),
+      _HomeTabPage(
+        token: token,
+        superadminUID: superadminUID,
+        pageIndex: 4,
       ),
     ];
   }
@@ -119,7 +88,7 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
   @override
   Widget build(BuildContext context) {
     if (token.isEmpty) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: Text("User is not authenticated. Please log in."),
         ),
@@ -129,16 +98,137 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
     return BlocProvider.value(
       value: context.read<AuthBloc>(),
       child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: _buildWidgetOptions(token),
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          children: _buildWidgetOptions(),
         ),
-        // _buildWidgetOptions(token).elementAt(_currentIndex),
         bottomNavigationBar: BottomNavbarSuperadmin(
           currentIndex: _currentIndex,
           onItemTapped: _onItemTapped,
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+}
+
+class _HomeTabPage extends StatefulWidget {
+  final String token;
+  final String superadminUID;
+  final int pageIndex;
+
+  const _HomeTabPage({
+    required this.token,
+    required this.superadminUID,
+    required this.pageIndex,
+  });
+
+  @override
+  State<_HomeTabPage> createState() => _HomeTabPageState();
+}
+
+class _HomeTabPageState extends State<_HomeTabPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+
+    switch (widget.pageIndex) {
+      case 0:
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => EventBloc()
+                ..add(EventFetchData(
+                  requestEventCarousel: RequestFilteredEventModel(
+                    token: widget.token,
+                    currentIndex: '0',
+                    status: 'Proposed',
+                  ),
+                  requestEvent: RequestFilteredEventModel(
+                    token: widget.token,
+                    currentIndex: '0',
+                  ),
+                  pathRequest: PathRequestEvents.events,
+                )),
+            ),
+            BlocProvider(
+              create: (context) => UserBloc()
+                ..add(FetchUserById(
+                  token: widget.token,
+                  userId: widget.superadminUID,
+                )),
+            ),
+            BlocProvider(
+              create: (context) => CategoryBloc()..add(StatusReadData()),
+            ),
+          ],
+          child: HomeExplorePage(token: widget.token),
+        );
+      case 1:
+        return BlocProvider(
+          create: (context) => EventBloc()
+            ..add(
+              EventFetchData(
+                requestEvent: RequestFilteredEventModel(
+                  token: widget.token,
+                  currentIndex: '0',
+                ),
+                pathRequest: PathRequestEvents.approvedEvents,
+              ),
+            ),
+          child: const HomeEventsPage(),
+        );
+      case 2:
+        return BlocProvider(
+          create: (context) => EventBloc()
+            ..add(
+              EventFetchData(
+                requestEvent: RequestFilteredEventModel(
+                  token: widget.token,
+                  currentIndex: '0',
+                  adminUserId: widget.superadminUID,
+                ),
+                pathRequest: PathRequestEvents.events,
+              ),
+            ),
+          child: const HomeApprovalPage(),
+        );
+      case 3:
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) =>
+                  UserBloc()..add(FetchUser(token: widget.token)),
+            ),
+            BlocProvider.value(value: context.read<AuthBloc>()),
+          ],
+          child: const HomeAccountsPage(),
+        );
+      case 4:
+        return BlocProvider(
+          create: (context) => UserBloc()
+            ..add(FetchUserById(
+              token: widget.token,
+              userId: widget.superadminUID,
+            )),
+          child: const HomeProfilePage(),
+        );
+      default:
+        return const SizedBox.shrink();
+    }
   }
 }

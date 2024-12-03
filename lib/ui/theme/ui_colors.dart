@@ -35,8 +35,10 @@ class UIColor {
       return UIColor.approved;
     } else if (status == "Rejected") {
       return UIColor.rejected;
-    } else {
+    } else if (status == "Complete") {
       return UIColor.admin;
+    } else {
+      return UIColor.solidWhite;
     }
   }
 

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 import '../theme/ui_colors.dart';
 
-class BottomButtonApproval extends StatelessWidget {
+class ButtonAdminUpdateEvent extends StatelessWidget {
   final VoidCallback changeStatus;
   final VoidCallback showEditNoteDialog;
 
-  const BottomButtonApproval({
+  const ButtonAdminUpdateEvent({
     super.key,
     required this.changeStatus,
     required this.showEditNoteDialog,
@@ -52,7 +52,7 @@ class BottomButtonApproval extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 8),
+          SizedBox(width: 6),
           Expanded(
             flex: 4,
             child: ElevatedButton(

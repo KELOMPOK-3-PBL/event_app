@@ -1,20 +1,27 @@
 import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
 
-import '../navigation/bottom_button_approval.dart';
+import '../navigation/button_admin_update_event.dart';
+import '../navigation/button_propose_update_event.dart';
 import '../section/detail_event_content_section.dart';
 import '../theme/ui_colors.dart';
 
-class DetailEventApprovalScreen extends StatefulWidget {
-  final EventDataModel data;
-  const DetailEventApprovalScreen({super.key, required this.data});
+class DetailEventApprovalProposeScreen extends StatefulWidget {
+  final EventDataModel eventData;
+  final String currentRole;
+  const DetailEventApprovalProposeScreen({
+    super.key,
+    required this.eventData,
+    required this.currentRole,
+  });
 
   @override
-  DetailEventApprovalScreenState createState() =>
-      DetailEventApprovalScreenState();
+  DetailEventApprovalProposeScreenState createState() =>
+      DetailEventApprovalProposeScreenState();
 }
 
-class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
+class DetailEventApprovalProposeScreenState
+    extends State<DetailEventApprovalProposeScreen> {
   TextEditingController adminNoteController = TextEditingController(text: '-');
 
   @override
@@ -126,7 +133,7 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final data = widget.data;
+    final data = widget.eventData;
 
     return Scaffold(
       backgroundColor: UIColor.white,
@@ -143,8 +150,13 @@ class DetailEventApprovalScreenState extends State<DetailEventApprovalScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomButtonApproval(
-          changeStatus: _changeStatus, showEditNoteDialog: _showEditNoteDialog),
+      bottomNavigationBar: (widget.currentRole == 'Propose')
+          ? ButtonProposeUpdateEvent(
+              changeStatus: _changeStatus,
+              showEditNoteDialog: _showEditNoteDialog)
+          : ButtonAdminUpdateEvent(
+              changeStatus: _changeStatus,
+              showEditNoteDialog: _showEditNoteDialog),
     );
   }
 }

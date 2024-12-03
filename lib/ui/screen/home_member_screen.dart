@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/bloc.dart';
 import '../../data/model/model.dart';
 import '../../data/provider/provider.dart';
-import '../navigation/navbar_admin.dart';
-import '../page/approval_page.dart';
 import '../page/events_page.dart';
 import '../page/explore_page.dart';
 import '../page/profile_page.dart';
 import '../router/router.dart';
+import '../navigation/navbar_propose.dart';
+import '../page/propose_page.dart';
+import '../theme/ui_colors.dart';
 
-class HomeAdminScreen extends StatefulWidget {
-  const HomeAdminScreen({super.key});
+class HomeMemberScreen extends StatefulWidget {
+  const HomeMemberScreen({super.key});
 
   @override
-  State<HomeAdminScreen> createState() => _HomeAdminScreenState();
+  State<HomeMemberScreen> createState() => _HomeMemberScreenState();
 }
 
-class _HomeAdminScreenState extends State<HomeAdminScreen> {
+class _HomeMemberScreenState extends State<HomeMemberScreen> {
   String token = "";
-  String adminUID = "";
+  String proposeUID = "";
   int _currentIndex = 0;
   final PageController _pageController = PageController();
 
@@ -31,7 +33,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
-      adminUID = authState.authData.data!.userId.toString();
+      proposeUID = authState.authData.data!.userId.toString();
     } else {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -56,24 +58,24 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   List<Widget> _buildWidgetOptions() {
     return [
-      _HomeTabPage(
+      _HomeProposeTabPage(
         token: token,
-        adminUID: adminUID,
+        proposeUID: proposeUID,
         pageIndex: 0,
       ),
-      _HomeTabPage(
+      _HomeProposeTabPage(
         token: token,
-        adminUID: adminUID,
+        proposeUID: proposeUID,
         pageIndex: 1,
       ),
-      _HomeTabPage(
+      _HomeProposeTabPage(
         token: token,
-        adminUID: adminUID,
+        proposeUID: proposeUID,
         pageIndex: 2,
       ),
-      _HomeTabPage(
+      _HomeProposeTabPage(
         token: token,
-        adminUID: adminUID,
+        proposeUID: proposeUID,
         pageIndex: 3,
       ),
     ];
@@ -101,7 +103,22 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           },
           children: _buildWidgetOptions(),
         ),
-        bottomNavigationBar: BottomNavbarAdmin(
+        floatingActionButton: Container(
+          margin: const EdgeInsets.only(right: 13),
+          decoration: BoxDecoration(
+            color: UIColor.propose,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+          ),
+          child: IconButton(
+            onPressed: () =>
+                Navigator.pushNamed(context, AppRouter.formProposeEventRoute),
+            icon: Icon(
+              UIconsPro.solidRounded.file_upload,
+              color: UIColor.solidWhite,
+            ),
+          ),
+        ),
+        bottomNavigationBar: BottomNavbarPropose(
           currentIndex: _currentIndex,
           onItemTapped: _onItemTapped,
         ),
@@ -116,22 +133,22 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 }
 
-class _HomeTabPage extends StatefulWidget {
+class _HomeProposeTabPage extends StatefulWidget {
   final String token;
-  final String adminUID;
+  final String proposeUID;
   final int pageIndex;
 
-  const _HomeTabPage({
+  const _HomeProposeTabPage({
     required this.token,
-    required this.adminUID,
+    required this.proposeUID,
     required this.pageIndex,
   });
 
   @override
-  State<_HomeTabPage> createState() => _HomeTabPageState();
+  State<_HomeProposeTabPage> createState() => _HomeProposeTabPageState();
 }
 
-class _HomeTabPageState extends State<_HomeTabPage>
+class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true; // Pertahankan state halaman
@@ -140,29 +157,31 @@ class _HomeTabPageState extends State<_HomeTabPage>
   Widget build(BuildContext context) {
     super.build(context); // Memanggil build dari AutomaticKeepAliveClientMixin
 
-    // Sesuaikan halaman berdasarkan pageIndex
     switch (widget.pageIndex) {
       case 0:
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => UserBloc()
-                ..add(FetchUserById(
-                    token: widget.token, userId: widget.adminUID)),
-            ),
-            BlocProvider(
               create: (context) => EventBloc()
-                ..add(EventFetchData(
+                ..add(
+                  EventFetchData(
                     requestEventCarousel: RequestFilteredEventModel(
-                        token: widget.token,
-                        currentIndex: '0',
-                        status: 'Proposed'),
+                      token: widget.token,
+                      currentIndex: '0',
+                    ),
                     requestEvent: RequestFilteredEventModel(
                         token: widget.token, currentIndex: '0'),
-                    pathRequest: PathRequestEvents.events)),
+                    pathRequest: PathRequestEvents.approvedEvents,
+                  ),
+                ),
             ),
             BlocProvider(
-              create: (context) => CategoryBloc()..add(StatusReadData()),
+              create: (context) => UserBloc()
+                ..add(FetchUserById(
+                    token: widget.token, userId: widget.proposeUID)),
+            ),
+            BlocProvider(
+              create: (context) => CategoryBloc()..add(CategoryReadData()),
             ),
           ],
           child: HomeExplorePage(token: widget.token),
@@ -173,7 +192,9 @@ class _HomeTabPageState extends State<_HomeTabPage>
             ..add(
               EventFetchData(
                 requestEvent: RequestFilteredEventModel(
-                    token: widget.token, currentIndex: '0'),
+                  token: widget.token,
+                  currentIndex: '0',
+                ),
                 pathRequest: PathRequestEvents.approvedEvents,
               ),
             ),
@@ -185,18 +206,19 @@ class _HomeTabPageState extends State<_HomeTabPage>
             ..add(
               EventFetchData(
                 requestEvent: RequestFilteredEventModel(
-                    token: widget.token,
-                    currentIndex: '0',
-                    adminUserId: widget.adminUID),
+                  token: widget.token,
+                  currentIndex: '0',
+                ),
                 pathRequest: PathRequestEvents.events,
               ),
             ),
-          child: const HomeApprovalPage(),
+          child: const HomeProposePage(),
         );
       case 3:
         return BlocProvider(
           create: (context) => UserBloc()
-            ..add(FetchUserById(token: widget.token, userId: widget.adminUID)),
+            ..add(
+                FetchUserById(token: widget.token, userId: widget.proposeUID)),
           child: const HomeProfilePage(),
         );
       default:

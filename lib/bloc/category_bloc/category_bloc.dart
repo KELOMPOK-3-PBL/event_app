@@ -32,7 +32,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     emit(CategoryLoading());
     try {
       final categories = await categoryRepository.getCategoryData();
-      emit(CategoryLoadded(categories));
+      emit(CategoryLoadded(categoryData: categories, isCategoryEvents: true));
     } catch (e) {
       emit(CategoryLoadFailure("Failed to get categories data"));
     }
@@ -43,7 +43,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     emit(CategoryLoading());
     try {
       final categories = await categoryRepository.getEventsStatus();
-      emit(CategoryLoadded(categories));
+      emit(CategoryLoadded(categoryData: categories, isCategoryEvents: false));
     } catch (e) {
       emit(CategoryLoadFailure("Failed to get categories data"));
     }

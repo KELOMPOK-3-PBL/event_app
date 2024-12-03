@@ -2,7 +2,6 @@ import 'package:event_proposal_app/data/model/model.dart';
 import 'package:event_proposal_app/ui/section/detail_event_content_section.dart';
 import 'package:flutter/material.dart';
 
-// import '../navigation/bottom_button_approval.dart';
 import '../theme/ui_colors.dart';
 
 class DetailEventScreen extends StatefulWidget {
@@ -46,8 +45,10 @@ class DetailEventScreenState extends State<DetailEventScreen> {
         ],
       ),
       //! Tambahkan pengecekan untuk User Member agar bisa menampilkan BottomButtonJoin
-      // bottomNavigationBar: BottomButtonApproval(
-      //     changeStatus: _changeStatus, showEditNoteDialog: _showEditNoteDialog),
+      // bottomNavigationBar: (data.adminUsername == 'Admin' || data.adminUsername == 'Superadmin')
+      //         ? ButtonAdminUpdateEvent(
+      //             changeStatus: _changeStatus,
+      //             showEditNoteDialog: _showEditNoteDialog)
     );
   }
 }

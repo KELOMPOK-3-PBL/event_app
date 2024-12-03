@@ -1,17 +1,17 @@
-import 'package:event_proposal_app/data/provider/provider.dart';
-import 'package:event_proposal_app/ui/router/router.dart';
-import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/bloc.dart';
 import '../../data/model/model.dart';
-import '../navigation/bottom_navbar_propose.dart';
+import '../../data/provider/provider.dart';
 import '../page/events_page.dart';
 import '../page/explore_page.dart';
 import '../page/profile_page.dart';
+import '../router/router.dart';
+import '../navigation/navbar_propose.dart';
 import '../page/propose_page.dart';
+import '../theme/ui_colors.dart';
 
 class HomeProposeScreen extends StatefulWidget {
   const HomeProposeScreen({super.key});
@@ -20,11 +20,11 @@ class HomeProposeScreen extends StatefulWidget {
   State<HomeProposeScreen> createState() => _HomeProposeScreenState();
 }
 
-//! masih salah
 class _HomeProposeScreenState extends State<HomeProposeScreen> {
   String token = "";
   String proposeUID = "";
   int _currentIndex = 0;
+  final PageController _pageController = PageController();
 
   @override
   void initState() {
@@ -48,62 +48,35 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
+      _pageController.animateToPage(
+        index,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
     });
   }
 
-  List<Widget> _buildWidgetOptions(String token) {
+  List<Widget> _buildWidgetOptions() {
     return [
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => EventBloc()
-              ..add(
-                EventFetchData(
-                    requestEventCarousel: RequestFilteredEventModel(
-                      token: token,
-                      currentIndex: '0',
-                    ),
-                    requestEvent: RequestFilteredEventModel(
-                        token: token, currentIndex: '0'),
-                    pathRequest: PathRequestEvents.approvedEvents),
-              ),
-          ),
-          BlocProvider(
-            create: (context) => UserBloc()
-              ..add(FetchUserById(token: token, userId: proposeUID)),
-          ),
-          BlocProvider(
-            create: (context) => CategoryBloc()..add(StatusReadData()),
-          ),
-        ],
-        child: HomeExplorePage(token: token),
+      _HomeProposeTabPage(
+        token: token,
+        proposeUID: proposeUID,
+        pageIndex: 0,
       ),
-      BlocProvider(
-        create: (context) => EventBloc()
-          ..add(
-            EventFetchData(
-              requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.approvedEvents,
-            ),
-          ),
-        child: const HomeEventsPage(),
+      _HomeProposeTabPage(
+        token: token,
+        proposeUID: proposeUID,
+        pageIndex: 1,
       ),
-      BlocProvider(
-        create: (context) => EventBloc()
-          ..add(
-            EventFetchData(
-              requestEvent:
-                  RequestFilteredEventModel(token: token, currentIndex: '0'),
-              pathRequest: PathRequestEvents.events,
-            ),
-          ),
-        child: const HomeProposePage(),
+      _HomeProposeTabPage(
+        token: token,
+        proposeUID: proposeUID,
+        pageIndex: 2,
       ),
-      BlocProvider(
-        create: (context) =>
-            UserBloc()..add(FetchUserById(token: token, userId: proposeUID)),
-        child: const HomeProfilePage(),
+      _HomeProposeTabPage(
+        token: token,
+        proposeUID: proposeUID,
+        pageIndex: 3,
       ),
     ];
   }
@@ -111,7 +84,7 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
   @override
   Widget build(BuildContext context) {
     if (token.isEmpty) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: Text("User is not authenticated. Please log in."),
         ),
@@ -121,15 +94,21 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
     return BlocProvider.value(
       value: context.read<AuthBloc>(),
       child: Scaffold(
-        body: IndexedStack(
-          index: _currentIndex,
-          children: _buildWidgetOptions(token),
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _currentIndex = index; // Sinkronkan indeks aktif
+            });
+          },
+          children: _buildWidgetOptions(),
         ),
         floatingActionButton: Container(
-          margin: EdgeInsets.only(right: 13),
+          margin: const EdgeInsets.only(right: 13),
           decoration: BoxDecoration(
-              color: UIColor.propose,
-              borderRadius: BorderRadius.all(Radius.circular(10))),
+            color: UIColor.propose,
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+          ),
           child: IconButton(
             onPressed: () =>
                 Navigator.pushNamed(context, AppRouter.formProposeEventRoute),
@@ -145,5 +124,105 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+}
+
+class _HomeProposeTabPage extends StatefulWidget {
+  final String token;
+  final String proposeUID;
+  final int pageIndex;
+
+  const _HomeProposeTabPage({
+    required this.token,
+    required this.proposeUID,
+    required this.pageIndex,
+  });
+
+  @override
+  State<_HomeProposeTabPage> createState() => _HomeProposeTabPageState();
+}
+
+class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true; // Pertahankan state halaman
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context); // Memanggil build dari AutomaticKeepAliveClientMixin
+
+    switch (widget.pageIndex) {
+      case 0:
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => EventBloc()
+                ..add(
+                  EventFetchData(
+                    requestEventCarousel: RequestFilteredEventModel(
+                      token: widget.token,
+                      currentIndex: '0',
+                    ),
+                    requestEvent: RequestFilteredEventModel(
+                        token: widget.token, currentIndex: '0'),
+                    pathRequest: PathRequestEvents.approvedEvents,
+                  ),
+                ),
+            ),
+            BlocProvider(
+              create: (context) => UserBloc()
+                ..add(FetchUserById(
+                    token: widget.token, userId: widget.proposeUID)),
+            ),
+            BlocProvider(
+              create: (context) => CategoryBloc()..add(CategoryReadData()),
+            ),
+          ],
+          child: HomeExplorePage(token: widget.token),
+        );
+      case 1:
+        return BlocProvider(
+          create: (context) => EventBloc()
+            ..add(
+              EventFetchData(
+                requestEvent: RequestFilteredEventModel(
+                  token: widget.token,
+                  currentIndex: '0',
+                ),
+                pathRequest: PathRequestEvents.approvedEvents,
+              ),
+            ),
+          child: const HomeEventsPage(),
+        );
+      case 2:
+        return BlocProvider(
+          create: (context) => EventBloc()
+            ..add(
+              EventFetchData(
+                requestEvent: RequestFilteredEventModel(
+                  token: widget.token,
+                  currentIndex: '0',
+                ),
+                pathRequest: PathRequestEvents.events,
+              ),
+            ),
+          child: const HomeProposePage(),
+        );
+      case 3:
+        return BlocProvider(
+          create: (context) => UserBloc()
+            ..add(
+                FetchUserById(token: widget.token, userId: widget.proposeUID)),
+          child: const HomeProfilePage(),
+        );
+      default:
+        return const SizedBox.shrink();
+    }
   }
 }

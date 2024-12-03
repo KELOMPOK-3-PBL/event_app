@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 
 import '../theme/ui_colors.dart';
 
-class BottomButtonUpdateRBAC extends StatelessWidget {
+class ButtonUpdateRBACAdmin extends StatelessWidget {
   final VoidCallback changeStatus;
   // final VoidCallback showEditNoteDialog;
 
-  const BottomButtonUpdateRBAC({
+  const ButtonUpdateRBACAdmin({
     super.key,
     required this.changeStatus,
     // required this.showEditNoteDialog,
@@ -28,7 +28,7 @@ class BottomButtonUpdateRBAC extends StatelessWidget {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   double fontSize = constraints.maxWidth *
-                      0.07; // Ukuran font disesuaikan dengan lebar tombol
+                      0.057; // Ukuran font disesuaikan dengan lebar tombol
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

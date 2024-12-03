@@ -1,28 +1,49 @@
 part of '../model.dart';
 
 class CategoryModel extends Equatable {
-  final String name;
-  final Color? boxColor;
+  final String status;
+  final int code;
+  final String message;
+  final List<CategoryDataModel>? categories;
 
-  // Constructor
-  const CategoryModel({required this.name, this.boxColor});
+  const CategoryModel({
+    required this.status,
+    required this.code,
+    required this.message,
+    this.categories,
+  });
 
-  // Convert a JSON map to the CategoryModel object
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
     return CategoryModel(
-      name: json['name'],
-      boxColor: Color(int.parse(json['colorHex'], radix: 16)).withOpacity(1.0),
+      status: json['status'],
+      code: json['code'],
+      message: json['message'],
+      categories: (json['data'] as List<dynamic>?)
+          ?.map((category) => CategoryDataModel.fromJson(category))
+          .toList(),
     );
   }
 
-  // Convert the CategoryModel object to a JSON map
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'name': name,
-  //     'colorHex': boxColor.value.toRadixString(16),
-  //   };
-  // }
+  @override
+  List<Object?> get props => [status, code, message, categories];
+}
+
+class CategoryDataModel extends Equatable {
+  final int categoryId;
+  final String categoryName;
+
+  const CategoryDataModel({
+    required this.categoryId,
+    required this.categoryName,
+  });
+
+  factory CategoryDataModel.fromJson(Map<String, dynamic> json) {
+    return CategoryDataModel(
+      categoryId: json['category_id'],
+      categoryName: json['category_name'],
+    );
+  }
 
   @override
-  List<Object?> get props => [name, boxColor];
+  List<Object?> get props => [categoryId, categoryName];
 }

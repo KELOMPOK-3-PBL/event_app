@@ -182,7 +182,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
                                 onTap: () {
                                   Navigator.pushNamed(
                                       context, AppRouter.detailEventRoute,
-                                      arguments: events[index]);
+                                      arguments: {'event_data': events[index]});
                                   // context
                                   //     .read<EventBloc>()
                                   //     .add(EventCardPressed(events[index]));

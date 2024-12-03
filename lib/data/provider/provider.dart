@@ -25,9 +25,10 @@ void setupLocator() {
   getIt.registerLazySingleton<Dio>(() => Dio(
         //! set api link
         BaseOptions(
-            baseUrl: 'http://10.0.2.2:80/api-03/routes',
-            contentType: 'application/json',
-            persistentConnection: true,
-            preserveHeaderCase: true),
+          baseUrl: 'http://10.0.2.2:80/api-03/routes',
+          contentType: 'application/json',
+          persistentConnection: true,
+          preserveHeaderCase: true,
+        ),
       ));
 }

@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/user_bloc/user_bloc.dart';
-import '../navigation/bottom_button_update_rbac.dart';
+import '../navigation/button_profile_update_rbac_admin.dart';
 
 class DetailAccountScreen extends StatefulWidget {
   const DetailAccountScreen({super.key});
@@ -68,7 +68,7 @@ class _HomeProfile extends State<DetailAccountScreen> {
           );
         },
       ),
-      bottomNavigationBar: BottomButtonUpdateRBAC(
+      bottomNavigationBar: ButtonUpdateRBACAdmin(
         changeStatus: () {
           showDialog(
               context: context,

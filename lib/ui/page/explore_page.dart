@@ -53,7 +53,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
 
     if (currentRole == 'Admin' || currentRole == 'Superadmin') {
       requestPath = PathRequestEvents.events;
-      route = AppRouter.detailEventApprovalRoute;
+      route = AppRouter.detailEventApprovalProposeRoute;
     }
   }
 
@@ -333,7 +333,10 @@ class ExploreBody extends StatelessWidget {
                             Navigator.pushNamed(
                               context,
                               route,
-                              arguments: events[index],
+                              arguments: {
+                                'event_data': events[index],
+                                'current_role': currentRole
+                              },
                             );
                           },
                           child: ExploreCard(

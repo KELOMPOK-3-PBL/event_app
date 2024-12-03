@@ -13,10 +13,13 @@ class QuickCategorySection extends StatelessWidget {
     return BlocBuilder<CategoryBloc, CategoryState>(
       builder: (context, state) {
         if (state is CategoryLoadded) {
+          final categoryData = state.categoryData.categories!;
+          final isCategoryEvents = state.isCategoryEvents;
+
           return SizedBox(
             height: 30,
             child: ListView.separated(
-              itemCount: state.category.length, // Correct item count
+              itemCount: categoryData.length, // Correct item count
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.only(left: 20, right: 20),
               separatorBuilder: (context, index) => const SizedBox(
@@ -27,21 +30,28 @@ class QuickCategorySection extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(
                         context, AppRouter.searchResultEventRoute, arguments: {
-                      "search_query": state.category[index].name
+                      "category_name": categoryData[index].categoryName
                     });
                   },
                   child: Container(
                     width: 90,
                     decoration: BoxDecoration(
-                      color: state.category[index].boxColor,
-                      borderRadius: BorderRadius.circular(8),
+                      color: UIColor.getStatusColor(
+                          categoryData[index].categoryName),
+                      borderRadius: BorderRadius.circular(
+                          (isCategoryEvents == true) ? 24 : 8),
+                      border: (isCategoryEvents == true)
+                          ? Border.all(color: UIColor.primary)
+                          : null,
                     ),
                     child: Text(
-                        state.category[index]
-                            .name, // Correct category name access
+                        categoryData[index]
+                            .categoryName, // Correct category name access
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            color: UIColor.solidWhite,
+                        style: TextStyle(
+                            color: (isCategoryEvents == true)
+                                ? UIColor.primary
+                                : UIColor.solidWhite,
                             height: 2.5,
                             fontSize: 12)),
                   ),

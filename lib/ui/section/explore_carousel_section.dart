@@ -78,8 +78,14 @@ class CarouselSection extends StatelessWidget {
                     // context
                     //     .read<EventBloc>()
                     //     .add(EventCardPressed(eventData![index]));
-                    Navigator.pushNamed(context, route,
-                        arguments: eventData![index]);
+                    Navigator.pushNamed(
+                      context,
+                      route,
+                      arguments: {
+                        'event_data': eventData![index],
+                        'current_role': currentRole
+                      },
+                    );
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width - 40,

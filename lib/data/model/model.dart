@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 
 //! MODEL : Digunakan untuk menyimpan data yang diambil dari API
 

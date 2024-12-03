@@ -154,9 +154,14 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                               padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
                               child: GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(context,
-                                      AppRouter.detailEventApprovalRoute,
-                                      arguments: state.event[index]);
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRouter.detailEventApprovalProposeRoute,
+                                    arguments: {
+                                      'event_data': state.event[index],
+                                      'current_role': currentRole
+                                    },
+                                  );
                                   // context
                                   //     .read<EventBloc>()
                                   //     .add(EventCardPressed(events[index]));

@@ -4,10 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/bloc.dart';
 import '../screen/detail_account_screen.dart';
-import '../screen/detail_event_approval_screen.dart';
-import '../screen/detail_event_screen.dart';
+import '../screen/detail_event_approval_propose_screen.dart';
+import '../screen/detail_event_for_join_screen.dart';
 import '../screen/form_propose_event.dart';
 import '../screen/home_admin_screen.dart';
+import '../screen/home_member_screen.dart';
 import '../screen/home_propose_screen.dart';
 import '../screen/home_superadmin_screen.dart';
 import '../screen/login_screen.dart';
@@ -24,8 +25,9 @@ class AppRouter {
   static const String initialRoute = '/initial';
   static const String detailEventRoute = '/detail_event';
   static const String settingsRoute = '/settings';
-  static const String detailEventProposeRoute = '/detail_event_propose';
-  static const String detailEventApprovalRoute = '/detail_event_approval';
+  // static const String detailEventProposeRoute = '/detail_event_propose';
+  static const String detailEventApprovalProposeRoute =
+      '/detail_event_approval_propose';
   static const String searchResultEventRoute = '/search_result_event';
   static const String formProposeEventRoute = '/form_propose_event';
   static const String detailAccount = '/detail_account';
@@ -99,37 +101,44 @@ class AppRouter {
       );
     },
     detailEventRoute: (context) {
-      final EventDataModel arguments =
-          ModalRoute.of(context)!.settings.arguments as EventDataModel;
-      // BlocProvider.value(
-      //       value: context.read<EventBloc>(),
-      // child:
-      return DetailEventScreen(data: arguments);
+      // final EventDataModel arguments =
+      //     ModalRoute.of(context)!.settings.arguments as EventDataModel;
+      final Map<String, dynamic> arguments =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      final EventDataModel eventData = arguments['event_data'];
+      // final String currentRole = arguments['current_role'];
+      return DetailEventScreen(data: eventData);
     },
-    detailEventApprovalRoute: (context) {
-      final EventDataModel arguments =
-          ModalRoute.of(context)!.settings.arguments as EventDataModel;
-      // BlocProvider.value(
-      //       value: context.read<EventBloc>(),
-      // child:
-      return DetailEventApprovalScreen(data: arguments);
+    detailEventApprovalProposeRoute: (context) {
+      // final EventDataModel arguments =
+      //     ModalRoute.of(context)!.settings.arguments as EventDataModel;
+      final Map<String, dynamic> arguments =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      final EventDataModel eventData = arguments['event_data'];
+      final String currentRole = arguments['current_role'];
+      debugPrint(arguments.toString());
+      return DetailEventApprovalProposeScreen(
+        eventData: eventData,
+        currentRole: currentRole,
+      );
     },
     // ),
-    detailEventProposeRoute: (context) {
-      final EventDataModel arguments =
-          ModalRoute.of(context)!.settings.arguments as EventDataModel;
-      // BlocProvider.value(
-      //       value: context.read<EventBloc>(),
-      // child:
-      return DetailEventApprovalScreen(data: arguments);
-    },
+    // detailEventProposeRoute: (context) {
+    //   final EventDataModel arguments =
+    //       ModalRoute.of(context)!.settings.arguments as EventDataModel;
+    //   // BlocProvider.value(
+    //   //       value: context.read<EventBloc>(),
+    //   // child:
+    //   return DetailEventApprovalScreen(data: arguments);
+    // },
 
     searchResultEventRoute: (context) {
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      String searchQuery = arguments['search_query'];
+      String? searchQuery = arguments['search_query'];
+      String? categoryName = arguments['category_name'];
       return SearchResultEventsScreen(
-        searchQuery: searchQuery,
+        searchQuery: searchQuery ?? categoryName!,
       );
     },
     formProposeEventRoute: (context) => const FormProposeEvent(),
@@ -154,7 +163,7 @@ class AppRouter {
       case 'Propose':
         return const HomeProposeScreen();
       case 'Member':
-        return const HomeProposeScreen();
+        return const HomeMemberScreen();
       default:
         return const SplashScreen(); // Fallback
     }

@@ -12,12 +12,16 @@ class CategoryInitial extends CategoryState {}
 class CategoryLoading extends CategoryState {}
 
 class CategoryLoadded extends CategoryState {
-  final List<CategoryModel> category;
+  final CategoryModel categoryData;
+  final bool isCategoryEvents; // Category loaded(true), Status Loaded(false)
 
-  const CategoryLoadded(this.category);
+  const CategoryLoadded({
+    required this.categoryData,
+    required this.isCategoryEvents,
+  });
 
   @override
-  List<Object?> get props => [category];
+  List<Object?> get props => [categoryData];
 }
 
 // class CategorySubmited extends CategoryState {

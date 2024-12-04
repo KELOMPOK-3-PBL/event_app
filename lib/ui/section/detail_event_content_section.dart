@@ -372,22 +372,9 @@ class MainInfoSection extends StatelessWidget {
                   )),
             ],
           ),
-          if (data.location != null)
-            Row(
-              children: [
-                Icon(UIconsPro.regularRounded.house_building,
-                    color: UIColor.primary, size: 12),
-                SizedBox(width: 8),
-                Text(data.location!,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    )),
-              ],
-            ),
           Row(
             children: [
-              Icon(UIconsPro.regularRounded.marker,
+              Icon(UIconsPro.regularRounded.house_building,
                   color: UIColor.primary, size: 12),
               SizedBox(width: 8),
               Text(data.place,
@@ -397,6 +384,19 @@ class MainInfoSection extends StatelessWidget {
                   )),
             ],
           ),
+          if (data.location != null)
+            Row(
+              children: [
+                Icon(UIconsPro.regularRounded.marker,
+                    color: UIColor.primary, size: 12),
+                SizedBox(width: 8),
+                Text(data.location!,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    )),
+              ],
+            ),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.start,
           //   children: [

@@ -1,9 +1,5 @@
-// import 'package:event_proposal_app/models/search_events.dart';
 import 'package:event_proposal_app/data/model/model.dart';
-// import 'package:event_proposal_app/ui/router/router.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
-// import 'package:intl/intl.dart';
-// import 'package:uicons_pro/uicons_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
@@ -20,7 +16,9 @@ class HomeAccountsPage extends StatefulWidget {
 }
 
 class _HomeAccountsPageState extends State<HomeAccountsPage> {
+  final _scrollController = ScrollController();
   String token = "";
+  String? searchUser;
 
   @override
   void initState() {
@@ -38,6 +36,13 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
       // });
       // debugPrint("User is not authenticated.");
     }
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        context.read<UserBloc>().add(FetchUser(searchUser: '', token: token));
+      }
+    });
   }
 
   @override
@@ -107,30 +112,39 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
                 ),
               ),
               Expanded(
-                child: BlocBuilder<UserBloc, UserState>(
+                child: BlocConsumer<UserBloc, UserState>(
+                  listener: (context, state) {
+                    if (state is UsersLoaded) {
+                      searchUser = state.searchUser;
+                    }
+                  },
                   builder: (context, state) {
                     if (state is UsersLoaded) {
                       // debugPrint(state.listUser.toString());
                       return ListView.builder(
-                          padding: EdgeInsets.zero,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: state.listUser.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRouter.detailAccount,
-                                  arguments: {
-                                    'token': token,
-                                    'user_id':
-                                        state.listUser[index].userid.toString(),
-                                  },
-                                );
-                              },
-                              child: _buildEventCard(state.listUser[index]),
-                            );
-                          });
+                        controller: _scrollController,
+                        padding: EdgeInsets.zero,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemCount: (state.hasReachedMax)
+                            ? state.listUser.length
+                            : state.listUser.length + 1,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                AppRouter.detailAccount,
+                                arguments: {
+                                  'token': token,
+                                  'user_id':
+                                      state.listUser[index].userid.toString(),
+                                },
+                              );
+                            },
+                            child: _buildEventCard(state.listUser[index]),
+                          );
+                        },
+                      );
                     } else {
                       return Center(
                         child: CircularProgressIndicator(),

@@ -29,15 +29,3 @@ class AuthModel extends Equatable {
   @override
   List<Object?> get props => [status, message, token, data];
 }
-
-// class AuthData extends Equatable {
-//   final String token;
-//   const AuthData({required this.token});
-
-//   // Convert a JSON map to the AuthData object
-//   factory AuthData.fromJson(Map<String, dynamic> json) =>
-//       AuthData(token: json['token']);
-
-//   @override
-//   List<Object?> get props => [token];
-// }

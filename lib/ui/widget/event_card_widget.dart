@@ -115,7 +115,7 @@ class EventCardWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   cardInfoRow(UIconsPro.regularRounded.user_time,
-                      '${events.quota} participants'),
+                      '${events.quota} Participants'),
                   cardInfoRow(
                       UIconsPro.regularRounded.house_building, events.place),
                   cardInfoRow(

@@ -2,11 +2,11 @@ part of '../model.dart';
 
 class RequestFilteredEventModel extends Equatable {
   final String token;
-  final String currentIndex;
+  final int currentIndex;
   // final String? proposeUserId;
   final String? adminUserId;
   // static const String postLimit = "5";
-  final String? postLimit;
+  final int? postLimit;
   final String? eventId;
   final String? status;
   final String? category;
@@ -18,10 +18,10 @@ class RequestFilteredEventModel extends Equatable {
 
   const RequestFilteredEventModel({
     required this.token,
-    required this.currentIndex,
+    this.currentIndex = 0,
     // this.proposeUserId,
     this.adminUserId,
-    this.postLimit = '5',
+    this.postLimit = 5,
     this.eventId,
     this.status,
     this.category,
@@ -34,8 +34,8 @@ class RequestFilteredEventModel extends Equatable {
 
   RequestFilteredEventModel copyWith({
     String? token,
-    String? currentIndex,
-    String? postLimit,
+    int? currentIndex,
+    int? postLimit,
     String? eventId,
     String? status,
     String? category,
@@ -79,6 +79,10 @@ class RequestFilteredEventModel extends Equatable {
 
   @override
   List<Object?> get props => [
+        token,
+        adminUserId,
+        postLimit,
+        eventId,
         status,
         category,
         dateFrom,

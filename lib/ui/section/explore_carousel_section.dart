@@ -152,7 +152,7 @@ class CarouselSection extends StatelessWidget {
                                             ),
                                             cardInfoCarouselRow(
                                                 UIconsPro.regularRounded.user,
-                                                "${eventData![index].quota} participants"),
+                                                "${eventData![index].quota} Participants"),
                                             cardInfoCarouselRow(
                                                 UIconsPro.regularRounded
                                                     .house_building,

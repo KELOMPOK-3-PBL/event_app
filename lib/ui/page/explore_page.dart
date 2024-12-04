@@ -490,7 +490,7 @@ class ExploreCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 cardInfoRow(UIconsPro.regularRounded.user_time,
-                    '${eventData.quota} participants'),
+                    '${eventData.quota} Participants'),
                 cardInfoRow(
                     UIconsPro.regularRounded.house_building, eventData.place),
                 cardInfoRow(

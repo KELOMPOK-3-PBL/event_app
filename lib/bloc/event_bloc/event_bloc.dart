@@ -32,7 +32,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
           return;
         }
         // Mengambil jumah index yang termuat saat ini
-        final currentIndex = (currentState.event.length).toString();
+        final currentIndex = currentState.event.length;
         // Mengambil data event baru berdasarkan index yang termuat saat ini dari API
         final newEvents = await eventRepository.getEventsFromAPI(
           requestEvent: event.requestEvent.copyWith(currentIndex: currentIndex),
@@ -41,7 +41,8 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         // Menggabungkan data event yang sudah dengan event baru
         final combinedEvents = currentState.event + newEvents.data!;
         // Menentukan apakah data event di DB sudah termuat semua atau belum
-        if (newEvents.data!.isEmpty || newEvents.data!.length < 4) {
+        if (newEvents.data!.isEmpty ||
+            newEvents.data!.length < event.requestEvent.postLimit!) {
           emit(EventLoaded(
               event: combinedEvents,
               listEventsCarousel: currentState.listEventsCarousel ?? [],
@@ -75,7 +76,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
           carousel = carouselModel.data!;
         }
         // Menentukan apakah data event di DB sudah termuat semua atau belum
-        if (events.data!.length < 4) {
+        if (events.data!.length < event.requestEvent.postLimit!) {
           emit(EventLoaded(
               event: events.data!,
               listEventsCarousel: carousel,

@@ -145,8 +145,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     switchUser(context, anotherRole!);
                   },
                   // titleColor: UIColor.reviewing,
-                  leadingIconColor: UIColor.white,
-                  titleColor: UIColor.white,
+                  leadingIconColor: UIColor.solidWhite,
+                  titleColor: UIColor.solidWhite,
                   tileColor: UIColor.getRoleColor(anotherRole!)),
             const SizedBox(height: 6.0),
             _buildListTile(
@@ -155,8 +155,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onTap: () {
                   showLogoutBottomSheet(context);
                 },
-                titleColor: UIColor.white,
-                leadingIconColor: UIColor.white,
+                titleColor: UIColor.solidWhite,
+                leadingIconColor: UIColor.solidWhite,
                 tileColor: UIColor.rejected),
           ],
         ),

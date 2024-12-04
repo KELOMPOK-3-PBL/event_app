@@ -37,7 +37,7 @@ class EventDataModel extends Equatable {
   final String? posterUrl;
   final String? location;
   final String place;
-  final String quota;
+  final int quota;
   final String dateStart;
   final String? dateEnd;
   final String? schedule;
@@ -80,7 +80,7 @@ class EventDataModel extends Equatable {
       posterUrl: json['poster'],
       location: json['location'],
       place: json['place'],
-      quota: json['quota'].toString(),
+      quota: json['quota'],
       dateStart: json['date_start'],
       dateEnd: json['date_end'],
       schedule: json['schedule'],

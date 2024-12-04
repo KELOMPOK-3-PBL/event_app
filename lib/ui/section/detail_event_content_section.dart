@@ -371,7 +371,7 @@ class MainInfoSection extends StatelessWidget {
                 size: 12,
               ),
               SizedBox(width: 8),
-              Text('${data.quota} Person',
+              Text('${data.quota} Participants',
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,

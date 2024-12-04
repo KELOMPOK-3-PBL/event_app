@@ -1,3 +1,4 @@
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -98,14 +99,19 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
     return BlocProvider.value(
       value: context.read<AuthBloc>(),
       child: Scaffold(
-        body: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
-          children: _buildWidgetOptions(),
+        body: DoubleBackToCloseApp(
+          snackBar: const SnackBar(
+            content: Text('Tap back again to leave'),
+          ),
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            children: _buildWidgetOptions(),
+          ),
         ),
         bottomNavigationBar: BottomNavbarSuperadmin(
           currentIndex: _currentIndex,
@@ -155,13 +161,11 @@ class _HomeTabPageState extends State<_HomeTabPage>
                 ..add(EventFetchData(
                   requestEventCarousel: RequestFilteredEventModel(
                     token: widget.token,
-                    currentIndex: '0',
                     status: 'Proposed',
                   ),
                   requestEvent: RequestFilteredEventModel(
                     token: widget.token,
-                    currentIndex: '0',
-                    postLimit: '6',
+                    postLimit: 6,
                   ),
                   pathRequest: PathRequestEvents.events,
                 )),
@@ -186,7 +190,6 @@ class _HomeTabPageState extends State<_HomeTabPage>
               EventFetchData(
                 requestEvent: RequestFilteredEventModel(
                   token: widget.token,
-                  currentIndex: '0',
                 ),
                 pathRequest: PathRequestEvents.approvedEvents,
               ),
@@ -200,7 +203,6 @@ class _HomeTabPageState extends State<_HomeTabPage>
               EventFetchData(
                 requestEvent: RequestFilteredEventModel(
                   token: widget.token,
-                  currentIndex: '0',
                   adminUserId: widget.superadminUID,
                 ),
                 pathRequest: PathRequestEvents.events,

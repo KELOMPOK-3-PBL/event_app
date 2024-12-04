@@ -24,16 +24,6 @@ class JwtPayloadModel extends Equatable {
     );
   }
 
-  // Method for encoding to JSON if needed
-  // Map<String, dynamic> toJson() {
-  //   return {
-  //     'user_id': userId,
-  //     'roles': roles,
-  //     'iat': issuedAt,
-  //     'exp': expiration,
-  //   };
-  // }
-
   @override
   List<Object?> get props => [userId, roles, issuedAt, expiration];
 }

@@ -6,11 +6,12 @@ part of '../repository.dart';
 class UserRepository {
   final userProvider = UserProvider();
 
-  Future<UsersModel> getUsers(String? searchUser, String token) async {
+  Future<UsersModel> getUsers(String? searchUser, String token,
+      {int offset = 0, int limit = 15}) async {
     try {
       // debugPrint("getUsers");
-      final response =
-          await userProvider.getUsersAPI(searchUser: searchUser, token: token);
+      final response = await userProvider.getUsersAPI(
+          searchUser: searchUser, token: token, offset: offset, limit: limit);
       final data = response.data;
       // debugPrint(response.data.toString());
       if (response.statusCode == 200 && data["status"] == 'success') {

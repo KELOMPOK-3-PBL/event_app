@@ -14,14 +14,17 @@ class UserLoading extends UserState {}
 /// Initialized
 class UsersLoaded extends UserState {
   final List<UserDataModel> listUser;
+  final String? searchUser;
+  final bool hasReachedMax;
 
-  const UsersLoaded({required this.listUser});
+  const UsersLoaded({
+    this.searchUser,
+    required this.hasReachedMax,
+    required this.listUser,
+  });
 
   @override
-  String toString() => 'InUserState $listUser';
-
-  @override
-  List<Object> get props => [listUser];
+  List<Object> get props => [listUser, hasReachedMax];
 }
 
 class UserByUIDLoaded extends UserState {

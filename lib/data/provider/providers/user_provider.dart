@@ -3,12 +3,19 @@ part of '../provider.dart';
 class UserProvider {
   final dio = getIt<Dio>();
 
-  Future<Response> getUsersAPI(
-      {String? userId, String? searchUser, required String token}) async {
+  Future<Response> getUsersAPI({
+    String? userId,
+    String? searchUser,
+    required String token,
+    int? offset,
+    int? limit,
+  }) async {
     try {
       final queryParameters = {
         'query': searchUser,
         'user_id': userId,
+        'offset': offset,
+        'limit': limit,
       } // Menyederhanakan fungsi
         ..removeWhere((key, value) =>
             value == null); // Menghapus parameter yang bernilai null

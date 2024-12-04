@@ -32,17 +32,6 @@ class EventProvider {
         dio.options.headers[HttpHeaders.cookieHeader] =
             "jwt=${pathRequest.token}";
         path = event;
-        // Mengatur header dengan token untuk autentikasi
-        // options = Options(
-        //   method: 'GET',
-        //   contentType: 'application/json',
-        //   headers: {
-        //     //   'Authorization': 'Bearer ${pathRequest.token}',
-        //     'Cookie': 'jwt=${pathRequest.token}',
-        //     //   // 'Accept': 'application/json',
-        //     //   // 'User-Agent': 'Dart/Flutter',
-        //   },
-        // );
       }
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
       // dio.interceptors
@@ -83,36 +72,3 @@ class EventProvider {
   //   }
   // }
 }
-
-
-  // Future<Response> getFilteredEventsByUID(
-  //     RequestFilteredEventModel pathRequest, String uId) async {
-  //   try {
-  //     // Menyusun parameter query string
-  //     final queryParameters = pathRequest.toJson() // Menyederhanakan fungsi
-  //       ..removeWhere((key, value) =>
-  //           value == null); // Menghapus parameter yang bernilai null
-
-  //     // Add the user_id parameter
-  //     queryParameters['user_id'] = uId;
-
-  //     // Mengatur header dengan token untuk autentikasi
-  //     final options = Options(
-  //       contentType: 'application/json',
-  //       headers: {
-  //         'Authorization': pathRequest.token,
-  //       },
-  //     );
-
-  //     // Melakukan permintaan GET dengan query parameters
-  //     final Response rawResponse = await dio.get(
-  //       event,
-  //       options: options,
-  //       queryParameters: queryParameters,
-  //     );
-
-  //     return rawResponse;
-  //   } on DioException catch (e) {
-  //     return e.response!;
-  //   }
-  // }

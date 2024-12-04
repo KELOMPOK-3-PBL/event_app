@@ -36,7 +36,10 @@ class BodyDetailEvent extends StatelessWidget {
               forEventPage: forEventPage,
             ),
             OrganizerSection(data: data),
-            InvitedPersonSection(),
+            if (data.invitedPersons != null)
+              InvitedPersonSection(
+                  // invitedPersons: data.invitedPersons,
+                  ),
             // SizedBox(height: 80),
             SizedBox(height: 8),
             Text(
@@ -169,9 +172,11 @@ class AppBarDetailEvent extends StatelessWidget {
 class InvitedPersonSection extends StatelessWidget {
   InvitedPersonSection({
     super.key,
+    this.invitedPersons,
   });
 
-  final List<Map<String, String>> invitedPersons = [
+  final List<String>? invitedPersons;
+  final List<Map<String, String>> invitedPersonsStatis = [
     {
       "name": "Sofia Trenia",
       "image":
@@ -210,9 +215,9 @@ class InvitedPersonSection extends StatelessWidget {
                 true, // Agar ListView dapat menyesuaikan tinggi dengan konten di dalamnya
             physics:
                 NeverScrollableScrollPhysics(), // Menghindari scrolling di dalam ListView
-            itemCount: invitedPersons.length,
+            itemCount: invitedPersonsStatis.length,
             itemBuilder: (context, index) {
-              final person = invitedPersons[index];
+              final person = invitedPersonsStatis[index];
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 4),
                 child: Row(
@@ -376,7 +381,7 @@ class MainInfoSection extends StatelessWidget {
             children: [
               Icon(UIconsPro.regularRounded.house_building,
                   color: UIColor.primary, size: 12),
-              SizedBox(width: 8),
+              if (data.location != null) SizedBox(width: 8),
               Text(data.place,
                   style: TextStyle(
                     fontSize: 12,
@@ -384,19 +389,18 @@ class MainInfoSection extends StatelessWidget {
                   )),
             ],
           ),
-          if (data.location != null)
-            Row(
-              children: [
-                Icon(UIconsPro.regularRounded.marker,
-                    color: UIColor.primary, size: 12),
-                SizedBox(width: 8),
-                Text(data.location!,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    )),
-              ],
-            ),
+          Row(
+            children: [
+              Icon(UIconsPro.regularRounded.marker,
+                  color: UIColor.primary, size: 12),
+              SizedBox(width: 8),
+              Text(data.location!,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  )),
+            ],
+          ),
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.start,
           //   children: [

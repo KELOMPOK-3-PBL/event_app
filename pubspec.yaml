@@ -39,6 +39,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   # cupertino_icons: ^1.0.8
   # http: ^1.2.2
+  icons_plus: ^5.0.0
   intl: ^0.19.0
   shared_preferences: ^2.3.2
   uicons_pro: ^1.1.0
@@ -49,10 +50,21 @@ dependencies:
   dio: ^5.7.0
   get_it: ^7.0.0
   stream_transform: ^2.1.0
+  path_provider: ^2.1.5
+  mobile_scanner: ^6.0.2
+  camera: ^0.11.0+2
+  path: ^1.9.0
+  timeago: ^3.7.0
+  image_picker: ^0.8.5+3
   bloc_concurrency: ^0.2.5
   dart_jsonwebtoken: ^2.14.1
+  share_plus: ^10.1.2
+  shimmer: ^3.0.0
   # go_router: ^14.4.1
   url_launcher: ^6.3.1
+  flutter_secure_storage: ^9.2.2
+  app_links: ^6.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -63,6 +75,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.11.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -112,3 +125,7 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
+flutter_icons:
+  image_path: "assets/images/icon_polivent_logo.png"
+  android: true
+  ios: true

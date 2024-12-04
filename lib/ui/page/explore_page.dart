@@ -314,14 +314,12 @@ class ExploreBody extends StatelessWidget {
                   hasReachedMax ? events.length : events.length + 1,
                   (index) {
                     if (index >= events.length) {
-                      return SizedBox(
-                        // width: MediaQuery.of(context).size.width / 2 -
-                        //     18, // Lebar untuk 2 kolom
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 10, bottom: 20),
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
+                      return Container(
+                        width: (MediaQuery.of(context).size.width / 2) -
+                            25, // Lebar untuk 2 kolom
+                        padding: const EdgeInsets.only(top: 10, bottom: 20),
+                        child: const Center(
+                          child: CircularProgressIndicator(),
                         ),
                       );
                     } else {

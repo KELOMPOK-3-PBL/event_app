@@ -17,8 +17,10 @@ class EventRepository {
         await Future.delayed(
           Duration(milliseconds: 100),
         ); // Simulate network delay
+        EventModel dataEvent = EventModel.fromJson(json: data);
 
-        return EventModel.fromJson(json: data);
+        debugPrint(dataEvent.toString());
+        return dataEvent;
         // } else if (response.statusCode == 404 || data["status"] == 'error') {
         //   return EventModel.fromJson(json: data);
       } else {

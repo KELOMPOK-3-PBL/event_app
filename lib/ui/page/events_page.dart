@@ -40,7 +40,9 @@ class _HomeEventsPageState extends State<HomeEventsPage>
     final authState = context.read<AuthBloc>().state;
     // mencari role untuk menyesuaikan output
     // final roles = .authData.data?.roles;
-    currentRole = (authState as AuthAuthenticated).currentRole!;
+    if (authState is AuthAuthenticated) {
+      currentRole = authState.currentRole!;
+    }
     // token =
     //     (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
 
@@ -105,6 +107,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
       child: Column(
         children: [
           AppBar(
+            shadowColor: UIColor.shadowColor,
             automaticallyImplyLeading: false, // remove leading(left) back icon
             centerTitle: true,
             backgroundColor: UIColor.solidWhite,

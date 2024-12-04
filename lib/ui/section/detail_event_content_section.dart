@@ -79,6 +79,7 @@ class AppBarDetailEvent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      shadowColor: UIColor.shadowColor,
       centerTitle: true,
       surfaceTintColor: UIColor.solidWhite,
       elevation: 0,

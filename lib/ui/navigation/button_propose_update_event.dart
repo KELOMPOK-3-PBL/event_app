@@ -18,8 +18,17 @@ class ButtonProposeUpdateEvent extends StatelessWidget {
     return Wrap(
       children: [
         Container(
-          // height: 110,
-          color: UIColor.solidWhite,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: UIColor
+                    .shadowColor, // Ganti UIColor.shadowColor dengan warna yang sesuai
+                blurRadius: 10.0, // Sesuaikan nilai blurRadius
+                offset: Offset(0, 4), // Sesuaikan nilai offset
+              ),
+            ],
+            color: UIColor.solidWhite,
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             children: [

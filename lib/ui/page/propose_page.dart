@@ -36,7 +36,9 @@ class _HomeProposePageState extends State<HomeProposePage> {
 
     final authState = context.read<AuthBloc>().state;
 
-    currentRole = (authState as AuthAuthenticated).currentRole!;
+    if (authState is AuthAuthenticated) {
+      currentRole = authState.currentRole!;
+    }
 
     // token =
     //     (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;

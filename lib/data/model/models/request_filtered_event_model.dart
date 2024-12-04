@@ -5,7 +5,8 @@ class RequestFilteredEventModel extends Equatable {
   final String currentIndex;
   // final String? proposeUserId;
   final String? adminUserId;
-  static const String postLimit = "5";
+  // static const String postLimit = "5";
+  final String? postLimit;
   final String? eventId;
   final String? status;
   final String? category;
@@ -20,7 +21,7 @@ class RequestFilteredEventModel extends Equatable {
     required this.currentIndex,
     // this.proposeUserId,
     this.adminUserId,
-    // this.postLimit,
+    this.postLimit = '5',
     this.eventId,
     this.status,
     this.category,
@@ -34,7 +35,7 @@ class RequestFilteredEventModel extends Equatable {
   RequestFilteredEventModel copyWith({
     String? token,
     String? currentIndex,
-    // String? postLimit,
+    String? postLimit,
     String? eventId,
     String? status,
     String? category,
@@ -47,7 +48,7 @@ class RequestFilteredEventModel extends Equatable {
     return RequestFilteredEventModel(
       token: token ?? this.token,
       currentIndex: currentIndex ?? this.currentIndex,
-      // postLimit: postLimit ?? this.postLimit,
+      postLimit: postLimit ?? this.postLimit,
       eventId: eventId ?? this.eventId,
       status: status ?? this.status,
       category: category ?? this.category,

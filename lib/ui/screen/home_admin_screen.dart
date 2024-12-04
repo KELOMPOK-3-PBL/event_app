@@ -158,7 +158,7 @@ class _HomeTabPageState extends State<_HomeTabPage>
                         currentIndex: '0',
                         status: 'Proposed'),
                     requestEvent: RequestFilteredEventModel(
-                        token: widget.token, currentIndex: '0'),
+                        token: widget.token, currentIndex: '0', postLimit: '6'),
                     pathRequest: PathRequestEvents.events)),
             ),
             BlocProvider(

@@ -35,7 +35,9 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
 
     final authState = context.read<AuthBloc>().state;
 
-    currentRole = (authState as AuthAuthenticated).currentRole!;
+    if (authState is AuthAuthenticated) {
+      currentRole = authState.currentRole!;
+    }
   }
 
   bool get _isBottom {
@@ -80,6 +82,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
       child: Column(
         children: [
           AppBar(
+            shadowColor: UIColor.shadowColor,
             automaticallyImplyLeading: false, // remove leading(left) back icon
             centerTitle: true,
             backgroundColor: UIColor.solidWhite,

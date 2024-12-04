@@ -18,7 +18,15 @@ class BottomNavbarSuperadmin extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: UIColor
+                  .shadowColor, // Ganti UIColor.shadowColor dengan warna yang sesuai
+              blurRadius: 10.0, // Sesuaikan nilai blurRadius
+              offset: Offset(0, 4), // Sesuaikan nilai offset
+            ),
+          ],
           color: UIColor.solidWhite,
         ),
         child: BottomNavigationBar(

@@ -50,6 +50,7 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
     return Column(
       children: [
         AppBar(
+          shadowColor: UIColor.shadowColor,
           automaticallyImplyLeading: false, // remove leading(left) back icon
           centerTitle: true,
           backgroundColor: UIColor.solidWhite,

@@ -45,7 +45,9 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
     // final userState = context.read<UserBloc>().state;
 
     // mencari role untuk menyesuaikan output
-    currentRole = (authState as AuthAuthenticated).currentRole!;
+    if (authState is AuthAuthenticated) {
+      currentRole = authState.currentRole!;
+    }
 
     // debugPrint(authState.toString());
     // debugPrint(userState.toString());
@@ -315,8 +317,8 @@ class ExploreBody extends StatelessWidget {
                   (index) {
                     if (index >= events.length) {
                       return Container(
-                        width: (MediaQuery.of(context).size.width / 2) -
-                            25, // Lebar untuk 2 kolom
+                        // width: (MediaQuery.of(context).size.width / 2) -
+                        //     25, // Lebar untuk 2 kolom
                         padding: const EdgeInsets.only(top: 10, bottom: 20),
                         child: const Center(
                           child: CircularProgressIndicator(),

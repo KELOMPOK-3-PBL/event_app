@@ -161,6 +161,7 @@ class _HomeTabPageState extends State<_HomeTabPage>
                   requestEvent: RequestFilteredEventModel(
                     token: widget.token,
                     currentIndex: '0',
+                    postLimit: '6',
                   ),
                   pathRequest: PathRequestEvents.events,
                 )),

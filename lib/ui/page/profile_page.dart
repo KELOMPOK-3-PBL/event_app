@@ -68,6 +68,7 @@ class ProfileAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      shadowColor: UIColor.shadowColor,
       actions: [
         IconButton(
           icon: Icon(

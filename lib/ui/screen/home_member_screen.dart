@@ -170,7 +170,7 @@ class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
                       currentIndex: '0',
                     ),
                     requestEvent: RequestFilteredEventModel(
-                        token: widget.token, currentIndex: '0'),
+                        token: widget.token, currentIndex: '0', postLimit: '6'),
                     pathRequest: PathRequestEvents.approvedEvents,
                   ),
                 ),

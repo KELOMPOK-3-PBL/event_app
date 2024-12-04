@@ -18,6 +18,10 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       _onEventFetchData,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     );
+    on<EventReloadData>(
+      _onEventReloadData,
+      transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
+    );
   }
 
   void _onEventFetchData(EventFetchData event, Emitter<EventState> emit) async {
@@ -47,12 +51,14 @@ class EventBloc extends Bloc<EventEvent, EventState> {
               event: combinedEvents,
               listEventsCarousel: currentState.listEventsCarousel ?? [],
               requestEvent: event.requestEvent,
+              requestEventCarousel: event.requestEventCarousel,
               hasReachedMax: true));
         } else {
           emit(EventLoaded(
               event: combinedEvents,
               listEventsCarousel: currentState.listEventsCarousel ?? [],
               requestEvent: event.requestEvent,
+              requestEventCarousel: event.requestEventCarousel,
               hasReachedMax: false));
         }
       } catch (_) {
@@ -81,17 +87,58 @@ class EventBloc extends Bloc<EventEvent, EventState> {
               event: events.data!,
               listEventsCarousel: carousel,
               requestEvent: event.requestEvent,
+              requestEventCarousel: event.requestEventCarousel,
               hasReachedMax: true));
         } else {
           emit(EventLoaded(
               event: events.data!,
               listEventsCarousel: carousel,
               requestEvent: event.requestEvent,
+              requestEventCarousel: event.requestEventCarousel,
               hasReachedMax: false));
         }
       } catch (_) {
         emit(EventLoadError("Failed to load initial events request"));
       }
+    }
+  }
+
+  void _onEventReloadData(
+      EventReloadData event, Emitter<EventState> emit) async {
+    try {
+      late List<EventDataModel> carousel = [];
+
+      // loading ketika halaman baru saja dibuka
+      emit(EventLoading());
+      // Mengambil data events dari API
+      final events = await eventRepository.getEventsFromAPI(
+          requestEvent: event.requestEvent, pathRequest: event.pathRequest);
+      // try {
+      if (event.requestEventCarousel != null) {
+        final carouselModel = await eventRepository.getEventsFromAPI(
+          requestEvent: event.requestEventCarousel!,
+          pathRequest: event.pathRequest,
+        );
+        carousel = carouselModel.data!;
+      }
+      // Menentukan apakah data event di DB sudah termuat semua atau belum
+      if (events.data!.length < event.requestEvent.postLimit!) {
+        emit(EventLoaded(
+            event: events.data!,
+            listEventsCarousel: carousel,
+            requestEvent: event.requestEvent,
+            requestEventCarousel: event.requestEventCarousel,
+            hasReachedMax: true));
+      } else {
+        emit(EventLoaded(
+            event: events.data!,
+            listEventsCarousel: carousel,
+            requestEvent: event.requestEvent,
+            requestEventCarousel: event.requestEventCarousel,
+            hasReachedMax: false));
+      }
+    } catch (_) {
+      emit(EventLoadError("Failed to load initial events request"));
     }
   }
 }

@@ -11,11 +11,11 @@ class CategoryInitial extends CategoryState {}
 
 class CategoryLoading extends CategoryState {}
 
-class CategoryLoadded extends CategoryState {
+class CategoryLoaded extends CategoryState {
   final CategoryModel categoryData;
   final bool isCategoryEvents; // Category loaded(true), Status Loaded(false)
 
-  const CategoryLoadded({
+  const CategoryLoaded({
     required this.categoryData,
     required this.isCategoryEvents,
   });

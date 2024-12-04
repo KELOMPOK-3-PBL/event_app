@@ -17,6 +17,7 @@ class EventLoaded extends EventState {
   final List<EventDataModel> event;
   final List<EventDataModel>? listEventsCarousel;
   final RequestFilteredEventModel requestEvent;
+  final RequestFilteredEventModel? requestEventCarousel;
   // final PathRequestEvents? pathRequest;
   final bool hasReachedMax;
 
@@ -25,6 +26,7 @@ class EventLoaded extends EventState {
     this.listEventsCarousel,
     // required this.pathRequest,
     required this.requestEvent,
+    this.requestEventCarousel,
     required this.hasReachedMax,
   });
 

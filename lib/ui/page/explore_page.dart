@@ -28,7 +28,8 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
   final ScrollController _scrollController = ScrollController();
 
   //! Updated request
-  late RequestFilteredEventModel requestFilteredEvent;
+  late RequestFilteredEventModel requestFilteredEvent,
+      requestFilteredEventCarousel;
   PathRequestEvents requestPath = PathRequestEvents.approvedEvents;
   // late EventFetchData eventFetchData;
 
@@ -73,7 +74,9 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
       //! mengatasi perubahan request ketika di scroll
       context.read<EventBloc>().add(
             EventFetchData(
-                requestEvent: requestFilteredEvent, pathRequest: requestPath),
+                requestEvent: requestFilteredEvent,
+                requestEventCarousel: requestFilteredEvent,
+                pathRequest: requestPath),
           );
     }
   }
@@ -86,63 +89,100 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<UserBloc, UserState>(
-      listener: (context, state) {
-        if (state is UserByUIDLoaded) {
-          username = state.userData.username;
-        }
-        debugPrint(state.toString());
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<EventBloc>().add(
+              EventReloadData(
+                  requestEvent: RequestFilteredEventModel(
+                      token: requestFilteredEvent.token, postLimit: 6),
+                  requestEventCarousel: RequestFilteredEventModel(
+                      token: requestFilteredEvent.token),
+                  pathRequest: requestPath),
+            );
       },
-      builder: (context, state) {
-        if (state is UserByUIDLoaded) {
-          return CustomScrollView(
-            controller: _scrollController,
-            slivers: [
-              ExploreAppBar(username: username, currentRole: currentRole),
-              SliverToBoxAdapter(
-                child: BlocConsumer<EventBloc, EventState>(
-                  listener: (context, state) {
-                    if (state is EventLoaded) {
-                      requestFilteredEvent = state.requestEvent;
-                    } else if (state is EventLoadError) {
-                      debugPrint("load error");
-                      showError(context, state.message);
-                    }
-                  },
-                  builder: (context, state) {
-                    // if (state is EventLoading) {
-                    // return Center(
-                    //   child: CircularProgressIndicator(),
-                    // );
-                    // } else
-                    if (state is EventLoaded) {
-                      return ExploreBody(
-                          hasReachedMax: state.hasReachedMax,
-                          events: state.event,
-                          listEventsCarousel: state.listEventsCarousel!,
-                          currentRole: currentRole,
-                          route: route);
-                    } else {
-                      return SizedBox(
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: Text("No Data"),
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                ),
+      child: BlocListener<UserBloc, UserState>(
+        listener: (context, state) {
+          if (state is UserByUIDLoaded) {
+            username = state.userData.username;
+          }
+          debugPrint(state.toString());
+        },
+        child:
+            // builder: (context, state) {
+            // if (state is UserByUIDLoaded) {
+            // return
+            CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            ExploreAppBar(username: username, currentRole: currentRole),
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 16),
+                    child: QuickCategorySection(),
+                  ),
+                  CarouselSection(
+                      currentRole: currentRole,
+                      // eventData: listEventsCarousel ?? [],
+                      route: route),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+                    child: Text(
+                      (currentRole == 'Admin' || currentRole == 'Superadmin')
+                          ? 'Events Available'
+                          : "Events Near You",
+                      textAlign: TextAlign.right,
+                      style: const TextStyle(
+                          color: UIColor.typoBlack,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w800),
+                    ),
+                  ),
+                  BlocConsumer<EventBloc, EventState>(
+                    listener: (context, state) {
+                      if (state is EventLoaded) {
+                        requestFilteredEvent = state.requestEvent;
+                        requestFilteredEventCarousel =
+                            state.requestEventCarousel!;
+                      } else if (state is EventLoadError) {
+                        debugPrint("load error");
+                        showError(context, state.message);
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is EventLoading) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (state is EventLoaded) {
+                        return ExploreBody(
+                            hasReachedMax: state.hasReachedMax,
+                            events: state.event,
+                            listEventsCarousel: state.listEventsCarousel!,
+                            currentRole: currentRole,
+                            route: route);
+                      } else {
+                        return Center(
+                          child: Text("Event load error"),
+                        );
+                      }
+                    },
+                  ),
+                ],
               ),
-            ],
-          );
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+            ),
+          ],
+        ),
+      ),
+      // } else {
+      //   return Center(
+      //     child: CircularProgressIndicator(),
+      //   );
+      // }
+      // }
+      // ,
     );
   }
 }
@@ -282,33 +322,33 @@ class ExploreBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 16,
-          ),
-          QuickCategorySection(),
+          // SizedBox(
+          //   height: 16,
+          // ),
+          // QuickCategorySection(),
           //! Carousel Section
-          CarouselSection(
-              currentRole: currentRole,
-              eventData: listEventsCarousel ?? [],
-              route: route),
+          // CarouselSection(
+          //     currentRole: currentRole,
+          //     eventData: listEventsCarousel ?? [],
+          //     route: route),
 
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-            child: Text(
-              (currentRole == 'Admin' || currentRole == 'Superadmin')
-                  ? 'Events Available'
-                  : "Events Near You",
-              textAlign: TextAlign.right,
-              style: const TextStyle(
-                  color: UIColor.typoBlack,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+          //   child: Text(
+          //     (currentRole == 'Admin' || currentRole == 'Superadmin')
+          //         ? 'Events Available'
+          //         : "Events Near You",
+          //     textAlign: TextAlign.right,
+          //     style: const TextStyle(
+          //         color: UIColor.typoBlack,
+          //         fontSize: 16,
+          //         fontWeight: FontWeight.w800),
+          //   ),
+          // ),
 
           //! Events List Card
           Padding(
-              padding: EdgeInsets.fromLTRB(20, 12, 20, 20),
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
               child: Wrap(
                 spacing: 10, // Jarak horizontal antar item
                 runSpacing: 10, // Jarak vertikal antar baris

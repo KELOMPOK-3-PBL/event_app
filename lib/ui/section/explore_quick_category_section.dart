@@ -12,7 +12,7 @@ class QuickCategorySection extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CategoryBloc, CategoryState>(
       builder: (context, state) {
-        if (state is CategoryLoadded) {
+        if (state is CategoryLoaded) {
           final categoryData = state.categoryData.categories!;
           final isCategoryEvents = state.isCategoryEvents;
 
@@ -59,9 +59,13 @@ class QuickCategorySection extends StatelessWidget {
               },
             ),
           );
-        } else {
+        } else if (state is CategoryLoading) {
           return Center(
             child: CircularProgressIndicator(),
+          );
+        } else {
+          return Center(
+            child: Text('Category load error'),
           );
         }
       },

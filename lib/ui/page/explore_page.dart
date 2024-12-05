@@ -93,11 +93,17 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
       onRefresh: () async {
         context.read<EventBloc>().add(
               EventReloadData(
-                  requestEvent: RequestFilteredEventModel(
-                      token: requestFilteredEvent.token, postLimit: 6),
                   requestEventCarousel: RequestFilteredEventModel(
-                      token: requestFilteredEvent.token),
-                  pathRequest: requestPath),
+                      token: widget.token,
+                      status:
+                          (currentRole != 'Member' || currentRole != 'Propose')
+                              ? 'Proposed'
+                              : null),
+                  requestEvent: RequestFilteredEventModel(
+                    token: widget.token,
+                    postLimit: 6,
+                  ),
+                  pathRequest: PathRequestEvents.events),
             );
       },
       child: BlocListener<UserBloc, UserState>(

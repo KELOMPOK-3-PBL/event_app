@@ -36,10 +36,10 @@ class BodyDetailEvent extends StatelessWidget {
               forEventPage: forEventPage,
             ),
             OrganizerSection(data: data),
-            if (data.invitedPersons != null)
+            if (data.invitedPersons != null && data.invitedPersons!.isNotEmpty)
               InvitedPersonSection(
-                  // invitedPersons: data.invitedPersons,
-                  ),
+                invitedPersons: data.invitedPersons,
+              ),
             // SizedBox(height: 80),
             SizedBox(height: 8),
             Text(
@@ -171,29 +171,29 @@ class AppBarDetailEvent extends StatelessWidget {
 }
 
 class InvitedPersonSection extends StatelessWidget {
-  InvitedPersonSection({
+  const InvitedPersonSection({
     super.key,
     this.invitedPersons,
   });
 
-  final List<String>? invitedPersons;
-  final List<Map<String, String>> invitedPersonsStatis = [
-    {
-      "name": "Sofia Trenia",
-      "image":
-          "https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-    },
-    {
-      "name": "Demian",
-      "image":
-          "https://cdn.pixabay.com/photo/2016/11/29/06/08/woman-1867715_960_720.jpg"
-    },
-    {
-      "name": "Felix Roudger",
-      "image":
-          "https://cdn.pixabay.com/photo/2016/11/29/06/08/woman-1867715_960_720.jpg"
-    },
-  ];
+  final List<InvitedPerson>? invitedPersons;
+  // final List<Map<String, String>> invitedPersonsStatis = [
+  //   {
+  //     "name": "Sofia Trenia",
+  //     "image":
+  //         "https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+  //   },
+  //   {
+  //     "name": "Demian",
+  //     "image":
+  //         "https://cdn.pixabay.com/photo/2016/11/29/06/08/woman-1867715_960_720.jpg"
+  //   },
+  //   {
+  //     "name": "Felix Roudger",
+  //     "image":
+  //         "https://cdn.pixabay.com/photo/2016/11/29/06/08/woman-1867715_960_720.jpg"
+  //   },
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -216,9 +216,9 @@ class InvitedPersonSection extends StatelessWidget {
                 true, // Agar ListView dapat menyesuaikan tinggi dengan konten di dalamnya
             physics:
                 NeverScrollableScrollPhysics(), // Menghindari scrolling di dalam ListView
-            itemCount: invitedPersonsStatis.length,
+            itemCount: invitedPersons!.length,
             itemBuilder: (context, index) {
-              final person = invitedPersonsStatis[index];
+              final person = invitedPersons![index];
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 4),
                 child: Row(
@@ -226,13 +226,18 @@ class InvitedPersonSection extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 14,
-                      backgroundImage: NetworkImage(person["image"].toString()),
+                      backgroundColor: UIColor.primary,
+                      child: Icon(
+                        UIconsPro.regularRounded.user,
+                        size: 12,
+                        color: UIColor.solidWhite,
+                      ),
                     ),
                     SizedBox(
                       width: 8,
                     ),
                     Text(
-                      person["name"]!,
+                      person.username,
                       style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,

@@ -24,7 +24,7 @@ class EventModel extends Equatable {
       );
 
   @override
-  List<Object?> get props => [status, message, data];
+  List<Object?> get props => [status, message, data!];
 }
 
 class EventDataModel extends Equatable {
@@ -32,6 +32,7 @@ class EventDataModel extends Equatable {
   final String title;
   final String dateAdd;
   final String proposeUsername;
+  final String? proposeAvatar;
   final String category;
   final String description;
   final String? posterUrl;
@@ -45,14 +46,15 @@ class EventDataModel extends Equatable {
   final String? updated;
   final String status;
   final String? adminNote;
-  final String? invitedPersons;
-  // final List<InvitedPerson>? invitedPerson;
+  // final String? invitedPersons;
+  final List<InvitedPerson>? invitedPersons;
 
   const EventDataModel({
     required this.eventId,
     required this.title,
     required this.dateAdd,
     required this.proposeUsername,
+    this.proposeAvatar,
     required this.category,
     required this.description,
     this.posterUrl,
@@ -75,6 +77,7 @@ class EventDataModel extends Equatable {
       title: json['title'],
       dateAdd: json['date_add'],
       proposeUsername: json['propose_user'],
+      proposeAvatar: json['propose_user_avatar'],
       category: json['category'],
       description: json['description'],
       posterUrl: json['poster'],
@@ -88,42 +91,38 @@ class EventDataModel extends Equatable {
       updated: json['updated'],
       status: json['status'],
       adminNote: json['note'],
-      invitedPersons: json['invited_users'].toString(),
-      // invitedPerson: json['invited_users']
-      // )
-      // !.map(
-      //     (item) => item as List<dynamic>)
-      // .toList(),
-      // invitedPerson: (json['invited_users'] as List<dynamic>?)?
-      //     .map((item) => InvitedPerson.fromJson(item as Map<String, dynamic>))
-      //     .toList(),
+      // invitedPersons: json['invited_users'].toString(),
+
+      invitedPersons: (json['invited_users'] as List?)
+          ?.map((user) => InvitedPerson.fromJson(user))
+          .toList(),
     );
   }
 
   @override
   List<Object?> get props => [
-        eventId,
-        title,
-        dateAdd,
-        proposeUsername,
-        category,
-        description,
-        posterUrl,
-        location,
-        place,
-        quota,
-        dateStart,
-        dateEnd,
-        schedule,
-        adminUsername,
-        updated,
-        status,
-        adminNote,
-        invitedPersons,
+        // eventId,
+        // title,
+        // dateAdd,
+        // proposeUsername,
+        // proposeAvatar!,
+        // category,
+        // description,
+        // posterUrl!,
+        // location!,
+        // place,
+        // quota,
+        // dateStart,
+        // dateEnd!,
+        // schedule!,
+        // adminUsername!,
+        // updated!,
+        // status,
+        // adminNote!,
       ];
 }
 
-class InvitedPerson extends Equatable {
+class InvitedPerson {
   final String username;
   final String? avatar;
 
@@ -134,11 +133,10 @@ class InvitedPerson extends Equatable {
   });
 
   // Convert a JSON map to the InvitedPerson object
-  factory InvitedPerson.fromJson(Map<String, dynamic> json) => InvitedPerson(
-        username: json['username'],
-        avatar: json['avatar'] ?? Null,
-      );
-
-  @override
-  List<Object?> get props => [username, avatar!];
+  factory InvitedPerson.fromJson(Map<String, dynamic> json) {
+    return InvitedPerson(
+      username: json['username'],
+      avatar: json['avatar'],
+    );
+  }
 }

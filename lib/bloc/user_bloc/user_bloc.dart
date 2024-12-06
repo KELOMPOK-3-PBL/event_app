@@ -15,6 +15,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc() : super(UserInitial()) {
     on<FetchUser>(_onFetchUser);
     on<FetchUserById>(_onFetchUserById);
+    on<ReloadFetchUserById>(_onReloadFetchUserById);
   }
 
   Future<void> _onFetchUser(FetchUser event, Emitter<UserState> emit) async {
@@ -88,7 +89,27 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Future<void> _onFetchUserById(
       FetchUserById event, Emitter<UserState> emit) async {
-    // emit(AuthLoading());
+    // emit(UserLoading());
+    try {
+      debugPrint("fetch user");
+
+      final userData =
+          await _userRepository.getUserByUID(event.userId, event.token);
+      // debugPrint(userData.toString());
+      if (userData.status == 'success') {
+        emit(UserByUIDLoaded(userData: userData.userData!));
+      } else {
+        emit(ErrorUserState(errorMessage: userData.message));
+      }
+    } catch (error) {
+      debugPrint('error model');
+      emit(ErrorUserState(errorMessage: error.toString()));
+    }
+  }
+
+  Future<void> _onReloadFetchUserById(
+      ReloadFetchUserById event, Emitter<UserState> emit) async {
+    // emit(UserLoading());
     try {
       debugPrint("fetch user");
 

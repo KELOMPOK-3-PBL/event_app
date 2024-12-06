@@ -36,6 +36,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
   String route = AppRouter.detailEventRoute;
   String currentRole = '';
   String username = '';
+  String userid = '';
 
   @override
   void initState() {
@@ -105,10 +106,14 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                   ),
                   pathRequest: PathRequestEvents.events),
             );
+        context
+            .read<UserBloc>()
+            .add(ReloadFetchUserById(token: widget.token, userId: userid));
       },
       child: BlocBuilder<UserBloc, UserState>(builder: (context, state) {
         if (state is UserByUIDLoaded) {
           username = state.userData.username;
+          userid = state.userData.userid;
         }
         debugPrint(state.toString());
         // },

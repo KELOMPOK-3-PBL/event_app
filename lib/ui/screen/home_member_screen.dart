@@ -222,7 +222,7 @@ class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
           create: (context) => UserBloc()
             ..add(
                 FetchUserById(token: widget.token, userId: widget.proposeUID)),
-          child: const HomeProfilePage(),
+          child: HomeProfilePage(),
         );
       default:
         return const SizedBox.shrink();

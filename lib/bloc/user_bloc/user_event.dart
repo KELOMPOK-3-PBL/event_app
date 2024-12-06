@@ -24,3 +24,13 @@ class FetchUserById extends UserEvent {
   @override
   List<Object> get props => [userId, token];
 }
+
+class ReloadFetchUserById extends UserEvent {
+  final String userId;
+  final String token;
+
+  ReloadFetchUserById({required this.token, required this.userId});
+
+  @override
+  List<Object> get props => [userId, token];
+}

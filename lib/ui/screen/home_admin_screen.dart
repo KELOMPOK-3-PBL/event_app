@@ -188,9 +188,9 @@ class _HomeTabPageState extends State<_HomeTabPage>
             ..add(
               EventFetchData(
                 requestEvent: RequestFilteredEventModel(
-                    token: widget.token,
-                    currentIndex: 0,
-                    adminUserId: widget.adminUID),
+                  token: widget.token,
+                  adminUserId: widget.adminUID,
+                ),
                 pathRequest: PathRequestEvents.events,
               ),
             ),
@@ -200,7 +200,7 @@ class _HomeTabPageState extends State<_HomeTabPage>
         return BlocProvider(
           create: (context) => UserBloc()
             ..add(FetchUserById(token: widget.token, userId: widget.adminUID)),
-          child: const HomeProfilePage(),
+          child: HomeProfilePage(),
         );
       default:
         return const SizedBox.shrink();

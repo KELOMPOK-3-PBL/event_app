@@ -79,124 +79,138 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
           showError(context, state.message);
         }
       },
-      child: Column(
-        children: [
-          AppBar(
-            shadowColor: UIColor.shadowColor,
-            automaticallyImplyLeading: false, // remove leading(left) back icon
-            centerTitle: true,
-            backgroundColor: UIColor.solidWhite,
-            scrolledUnderElevation: 0,
-            title: Text(
-              "My Approval",
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: UIColor.typoBlack,
-              ),
-            ),
-          ),
-          Expanded(
-              child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-                child: SearchWidget(
-                  label: 'Search Event ...',
-                  onSubmittedKeyboard: (searchQuery) {
-                    Navigator.pushNamed(
-                        context, AppRouter.searchResultEventRoute,
-                        arguments: {'search_query': searchQuery});
-                    //! pencarian approval menu
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => SearchResultEventsScreen(
-                    //           searchQuery: searchQuery)),
-                    // );
-                  },
-                  onPressedFilter: () {
-                    // Handle the button tap action here
-                    debugPrint('Tapped on FILTER ITEM-BUTTON');
-                  },
-                ), //! memanggil model => search,
-              ),
-              Expanded(
-                child: BlocBuilder<EventBloc, EventState>(
-                  builder: (context, state) {
-                    if (state is EventLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (state is EventLoaded) {
-                      final events = state.event;
-                      if (events.isEmpty) {
-                        return const Center(
-                          child: Text("You don't review any events"),
-                        );
-                      }
-                      return ListView.builder(
-                        controller: _scrollController,
-                        padding: EdgeInsets.zero,
-                        physics: const AlwaysScrollableScrollPhysics(),
-
-                        //! builder card event approval menu with INDEX
-                        itemBuilder: (context, index) {
-                          final events = state.event;
-                          if (index >= events.length) {
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 20),
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          } else {
-                            //! card event
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRouter.detailEventApprovalProposeRoute,
-                                    arguments: {
-                                      'event_data': state.event[index],
-                                      'current_role': currentRole
-                                    },
-                                  );
-                                  // context
-                                  //     .read<EventBloc>()
-                                  //     .add(EventCardPressed(events[index]));
-                                },
-                                child: EventCardWidget(
-                                  events: events[index],
-                                  currentRole: currentRole!,
-                                  showStatus: true,
-                                ),
-                              ),
-                            );
-                          }
-                        },
-
-                        //! penambahan event
-                        // itemCount: state is EventLoadedMax
-                        itemCount: state.hasReachedMax
-                            ? events.length
-                            : events.length + 1,
-                      );
-                      // }
-                    } else {
-                      return const Center(
-                        child: Text("You're never review events"),
-                      );
-                    }
-                  },
+      child: RefreshIndicator(
+        onRefresh: () async {
+          context.read<EventBloc>().add(
+                EventReloadData(
+                    requestEvent: RequestFilteredEventModel(
+                      token: requestFilteredEvent.token,
+                      adminUserId: requestFilteredEvent.adminUserId,
+                    ),
+                    pathRequest: PathRequestEvents.events),
+              );
+        },
+        child: Column(
+          children: [
+            AppBar(
+              shadowColor: UIColor.shadowColor,
+              automaticallyImplyLeading:
+                  false, // remove leading(left) back icon
+              centerTitle: true,
+              backgroundColor: UIColor.solidWhite,
+              scrolledUnderElevation: 0,
+              title: Text(
+                "My Approval",
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: UIColor.typoBlack,
                 ),
               ),
-            ],
-          ))
-        ],
+            ),
+            Expanded(
+                child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                  child: SearchWidget(
+                    label: 'Search Event ...',
+                    onSubmittedKeyboard: (searchQuery) {
+                      Navigator.pushNamed(
+                          context, AppRouter.searchResultEventRoute,
+                          arguments: {'search_query': searchQuery});
+                      //! pencarian approval menu
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => SearchResultEventsScreen(
+                      //           searchQuery: searchQuery)),
+                      // );
+                    },
+                    onPressedFilter: () {
+                      // Handle the button tap action here
+                      debugPrint('Tapped on FILTER ITEM-BUTTON');
+                    },
+                  ), //! memanggil model => search,
+                ),
+                Expanded(
+                  child: BlocBuilder<EventBloc, EventState>(
+                    builder: (context, state) {
+                      if (state is EventLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (state is EventLoaded) {
+                        final events = state.event;
+                        if (events.isEmpty) {
+                          return const Center(
+                            child: Text("You don't review any events"),
+                          );
+                        }
+                        return ListView.builder(
+                          controller: _scrollController,
+                          padding: EdgeInsets.zero,
+                          physics: const AlwaysScrollableScrollPhysics(),
+
+                          //! builder card event approval menu with INDEX
+                          itemBuilder: (context, index) {
+                            final events = state.event;
+                            if (index >= events.length) {
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 10, bottom: 20),
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            } else {
+                              //! card event
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      AppRouter.detailEventApprovalProposeRoute,
+                                      arguments: {
+                                        'event_data': state.event[index],
+                                        'current_role': currentRole
+                                      },
+                                    );
+                                    // context
+                                    //     .read<EventBloc>()
+                                    //     .add(EventCardPressed(events[index]));
+                                  },
+                                  child: EventCardWidget(
+                                    events: events[index],
+                                    currentRole: currentRole!,
+                                    showStatus: true,
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+
+                          //! penambahan event
+                          // itemCount: state is EventLoadedMax
+                          itemCount: state.hasReachedMax
+                              ? events.length
+                              : events.length + 1,
+                        );
+                        // }
+                      } else {
+                        return const Center(
+                          child: Text("You're never review events"),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ))
+          ],
+        ),
       ),
     );
   }

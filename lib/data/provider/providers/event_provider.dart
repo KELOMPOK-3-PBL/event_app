@@ -50,6 +50,21 @@ class EventProvider {
     }
   }
 
+  Future<Response> getEventByID(String token, EventDataModel eventData) async {
+    try {
+      // Melakukan permintaan GET dengan query parameters
+      dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
+      dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
+      final Response rawResponse = await dio.post(
+        event,
+        data: eventData,
+      );
+      return rawResponse;
+    } on DioException catch (e) {
+      return e.response!;
+    }
+  }
+
   // Future<Response> getEventByID(String token, String eventId) async {
   //   try {
   //     // Melakukan permintaan GET dengan query parameters

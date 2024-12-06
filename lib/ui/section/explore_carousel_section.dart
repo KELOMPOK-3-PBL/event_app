@@ -103,18 +103,29 @@ class CarouselItems extends StatelessWidget {
                   },
                 );
               },
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width - 40,
-                decoration: BoxDecoration(
-                    color: UIColor.solidWhite,
-                    image: DecorationImage(
-                        // image: AssetImage('assets/images/image_welcome.png'),
-                        image: NetworkImage(eventData![index].posterUrl!),
-                        fit: BoxFit.cover,
-                        alignment: Alignment.topCenter),
-                    borderRadius: BorderRadius.circular(12)),
                 child: Stack(
                   children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        eventData![index].posterUrl!,
+                        alignment: Alignment.topCenter,
+                        fit: BoxFit.fitWidth,
+                        width: MediaQuery.of(context).size.width - 40,
+                        errorBuilder: (BuildContext context, Object error,
+                            StackTrace? stackTrace) {
+                          // Menampilkan gambar error jika gambar gagal dimuat
+                          return Image.asset(
+                            'assets/images/image_not_found.png',
+                            width: double.infinity,
+                            alignment: Alignment.center,
+                            fit: BoxFit.fitWidth,
+                          );
+                        },
+                      ),
+                    ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,

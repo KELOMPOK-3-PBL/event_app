@@ -106,18 +106,17 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                   pathRequest: PathRequestEvents.events),
             );
       },
-      child: BlocListener<UserBloc, UserState>(
-        listener: (context, state) {
-          if (state is UserByUIDLoaded) {
-            username = state.userData.username;
-          }
-          debugPrint(state.toString());
-        },
-        child:
-            // builder: (context, state) {
-            // if (state is UserByUIDLoaded) {
-            // return
-            CustomScrollView(
+      child: BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+        if (state is UserByUIDLoaded) {
+          username = state.userData.username;
+        }
+        debugPrint(state.toString());
+        // },
+        // child:
+        // builder: (context, state) {
+        // if (state is UserByUIDLoaded) {
+        // return
+        return CustomScrollView(
           controller: _scrollController,
           slivers: [
             ExploreAppBar(username: username, currentRole: currentRole),
@@ -180,8 +179,8 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
               ),
             ),
           ],
-        ),
-      ),
+        );
+      }),
       // } else {
       //   return Center(
       //     child: CircularProgressIndicator(),
@@ -258,7 +257,7 @@ class ExploreAppBar extends StatelessWidget {
                 // ),
               ),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(22, 40, 10, 0),
+                padding: const EdgeInsets.fromLTRB(22, 40, 22, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -267,12 +266,17 @@ class ExploreAppBar extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       // crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(
-                          'Hi, ${username.toLowerCase()} 👋',
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white,
+                        Flexible(
+                          child: Text(
+                            'Hi, $username 👋',
+                            maxLines: 2,
+                            softWrap: true,
+                            overflow: TextOverflow.visible,
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                         // IconButton(

@@ -23,7 +23,7 @@ class HomeMemberScreen extends StatefulWidget {
 
 class _HomeMemberScreenState extends State<HomeMemberScreen> {
   String token = "";
-  String proposeUID = "";
+  String memberUID = "";
   int _currentIndex = 0;
   final PageController _pageController = PageController();
 
@@ -34,7 +34,7 @@ class _HomeMemberScreenState extends State<HomeMemberScreen> {
 
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
-      proposeUID = authState.authData.data!.userId.toString();
+      memberUID = authState.authData.data!.userId.toString();
     } else {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -61,22 +61,22 @@ class _HomeMemberScreenState extends State<HomeMemberScreen> {
     return [
       _HomeProposeTabPage(
         token: token,
-        proposeUID: proposeUID,
+        proposeUID: memberUID,
         pageIndex: 0,
       ),
       _HomeProposeTabPage(
         token: token,
-        proposeUID: proposeUID,
+        proposeUID: memberUID,
         pageIndex: 1,
       ),
       _HomeProposeTabPage(
         token: token,
-        proposeUID: proposeUID,
+        proposeUID: memberUID,
         pageIndex: 2,
       ),
       _HomeProposeTabPage(
         token: token,
-        proposeUID: proposeUID,
+        proposeUID: memberUID,
         pageIndex: 3,
       ),
     ];
@@ -92,8 +92,18 @@ class _HomeMemberScreenState extends State<HomeMemberScreen> {
       );
     }
 
-    return BlocProvider.value(
-      value: context.read<AuthBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: context.read<AuthBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => UserBloc()
+            ..add(
+              FetchUserById(token: token, userId: memberUID),
+            ),
+        ),
+      ],
       child: Scaffold(
         body: DoubleBackToCloseApp(
           snackBar: const SnackBar(

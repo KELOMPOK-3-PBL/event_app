@@ -38,19 +38,21 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
     return Column(
       children: [
         ProfileAppBar(userData: userData),
-        BlocBuilder<UserBloc, UserState>(
-          builder: (context, state) {
-            if (state is UserByUIDLoaded) {
-              userData = state.userData;
-              return DetailProfileContentSection(userData: userData);
-            }
-            return Expanded(
-              child: Center(
+        Expanded(
+          child: BlocBuilder<UserBloc, UserState>(
+            builder: (context, state) {
+              if (state is UserByUIDLoaded) {
+                userData = state.userData;
+                return DetailProfileContentSection(userData: userData);
+              } else if (state is UserLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return Center(
                 child: Text("User Not Found"),
                 // child: CircularProgressIndicator(),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ],
     );
@@ -76,8 +78,9 @@ class ProfileAppBar extends StatelessWidget {
             size: 17,
           ),
           onPressed: () {
-            Navigator.pushNamed(context, AppRouter.settingsRoute,
-                arguments: userData);
+            Navigator.of(context).pushNamed(
+              AppRouter.settingsRoute,
+            );
           },
         ),
       ],

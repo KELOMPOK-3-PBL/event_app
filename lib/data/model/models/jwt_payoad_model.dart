@@ -1,7 +1,7 @@
 part of '../model.dart';
 
 class JwtPayloadModel extends Equatable {
-  final int userId;
+  final String userId;
   final List<String> roles;
   final int issuedAt;
   final int expiration;
@@ -16,7 +16,7 @@ class JwtPayloadModel extends Equatable {
   // Factory method for decoding from a Map (e.g., from a decoded JSON)
   factory JwtPayloadModel.fromJson(Map<String, dynamic> json) {
     return JwtPayloadModel(
-      userId: json['user_id'],
+      userId: json['user_id'].toString(),
       // roles: List<String>.from(json['roles']),
       roles: List.from(json['roles']),
       issuedAt: json['iat'],

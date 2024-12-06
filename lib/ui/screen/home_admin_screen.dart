@@ -33,6 +33,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
       adminUID = authState.authData.data!.userId.toString();
+      // context
+      //     .read<UserBloc>()
+      //     .add(FetchUserById(token: token, userId: adminUID));
     } else {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -90,8 +93,18 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       );
     }
 
-    return BlocProvider.value(
-      value: context.read<AuthBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: context.read<AuthBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => UserBloc()
+            ..add(
+              FetchUserById(token: token, userId: adminUID),
+            ),
+        ),
+      ],
       child: Scaffold(
         body: DoubleBackToCloseApp(
           snackBar: const SnackBar(
@@ -151,10 +164,8 @@ class _HomeTabPageState extends State<_HomeTabPage>
       case 0:
         return MultiBlocProvider(
           providers: [
-            BlocProvider(
-              create: (context) => UserBloc()
-                ..add(FetchUserById(
-                    token: widget.token, userId: widget.adminUID)),
+            BlocProvider.value(
+              value: context.read<UserBloc>(),
             ),
             BlocProvider(
               create: (context) => EventBloc()
@@ -197,9 +208,8 @@ class _HomeTabPageState extends State<_HomeTabPage>
           child: const HomeApprovalPage(),
         );
       case 3:
-        return BlocProvider(
-          create: (context) => UserBloc()
-            ..add(FetchUserById(token: widget.token, userId: widget.adminUID)),
+        return BlocProvider.value(
+          value: context.read<UserBloc>(),
           child: HomeProfilePage(),
         );
       default:

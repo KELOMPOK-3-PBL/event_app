@@ -9,13 +9,13 @@ class EventProvider {
   static const String event = '/events.php';
   static const String availableEvent = '/available_events.php';
 
-  Future<Response> getFilteredEvents(RequestFilteredEventModel pathRequest,
-      PathRequestEvents getAction) async {
+  Future<Response> getFilteredEvents(
+      RequestFilteredEventModel request, PathRequestEvents pathRequest) async {
     try {
       String path = availableEvent;
 
       // Menyusun parameter query string
-      final queryParameters = pathRequest.toJson() // Menyederhanakan fungsi
+      final queryParameters = request.toJson() // Menyederhanakan fungsi
         ..removeWhere((key, value) =>
             value == null); // Menghapus parameter yang bernilai null
 
@@ -25,12 +25,11 @@ class EventProvider {
       // );
 
       // memperbarui path dan options bila permintaan untuk mengambil allEvents
-      if (getAction == PathRequestEvents.events) {
+      if (pathRequest == PathRequestEvents.events) {
         // set header untuk auth token
         dio.options.headers[HttpHeaders.authorizationHeader] =
-            "Bearer ${pathRequest.token}";
-        dio.options.headers[HttpHeaders.cookieHeader] =
-            "jwt=${pathRequest.token}";
+            "Bearer ${request.token}";
+        dio.options.headers[HttpHeaders.cookieHeader] = "jwt=${request.token}";
         path = event;
       }
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
@@ -50,14 +49,15 @@ class EventProvider {
     }
   }
 
-  Future<Response> getEventByID(String token, EventDataModel eventData) async {
+  Future<Response> postEvent(String token, EventDataModel eventData) async {
     try {
-      // Melakukan permintaan GET dengan query parameters
+      final data = jsonEncode(eventData.toJson());
+      // Melakukan permintaan POST dengan data yang ingin dikirim
       dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
       dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
       final Response rawResponse = await dio.post(
         event,
-        data: eventData,
+        data: data,
       );
       return rawResponse;
     } on DioException catch (e) {

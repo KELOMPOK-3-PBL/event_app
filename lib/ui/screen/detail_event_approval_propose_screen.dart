@@ -44,46 +44,85 @@ class DetailEventApprovalProposeScreenState
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ListTile(
-                title: Text("Proposed"),
-                onTap: () {
-                  // setState(() {
-                  //   status = "Proposed";
-                  //   _updateStatusColor();
-                  // });
-                  Navigator.of(context).pop();
-                },
+              Container(
+                margin: const EdgeInsets.only(bottom: 5),
+                decoration: BoxDecoration(
+                  color: UIColor.getStatusColor('Pending'),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: ListTile(
+                  title: Text(
+                    "Pending",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: UIColor.solidWhite,
+                    ),
+                  ),
+                  onTap: () {
+                    // setState(() {
+                    //   status = "Pending";
+                    //   _updateStatusColor();
+                    // });
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
-              ListTile(
-                title: Text("Pending"),
-                onTap: () {
-                  // setState(() {
-                  //   status = "Pending";
-                  //   _updateStatusColor();
-                  // });
-                  Navigator.of(context).pop();
-                },
+              Container(
+                margin: const EdgeInsets.only(bottom: 5),
+                decoration: BoxDecoration(
+                  color: UIColor.getStatusColor('Approved'),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: ListTile(
+                  title: Text(
+                    "Approved",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: UIColor.solidWhite,
+                    ),
+                  ),
+                  onTap: () {
+                    // setState(() {
+                    //   status = "Proposed";
+                    //   _updateStatusColor();
+                    // });
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
-              ListTile(
-                title: Text("Approved"),
-                onTap: () {
-                  // setState(() {
-                  //   status = "Approved";
-                  //   _updateStatusColor();
-                  // });
-                  Navigator.of(context).pop();
-                },
+              Container(
+                margin: const EdgeInsets.only(bottom: 5),
+                decoration: BoxDecoration(
+                  color: UIColor.getStatusColor('Rejected'),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: ListTile(
+                  title: Text(
+                    "Rejected",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: UIColor.solidWhite,
+                    ),
+                  ),
+                  onTap: () {
+                    // setState(() {
+                    //   status = "Pending";
+                    //   _updateStatusColor();
+                    // });
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
-              ListTile(
-                title: Text("Rejected"),
-                onTap: () {
-                  // setState(() {
-                  //   status = "Rejected";
-                  //   _updateStatusColor();
-                  // });
-                  Navigator.of(context).pop();
-                },
-              ),
+              // ListTile(
+              //   title: Text("Approved"),
+              //   onTap: () {
+              //     // setState(() {
+              //     //   status = "Approved";
+              //     //   _updateStatusColor();
+              //     // });
+              //     Navigator.of(context).pop();
+              //   },
+              // ),
             ],
           ),
         );

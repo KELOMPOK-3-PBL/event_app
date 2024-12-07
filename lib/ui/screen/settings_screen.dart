@@ -23,6 +23,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   List<String>? roles;
   String? anotherRole;
   String? currentRole;
+  String? userId;
+  String? token;
 
   @override
   void initState() {
@@ -33,6 +35,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (state is AuthAuthenticated) {
       currentRole = state.currentRole ?? '';
       roles = state.authData.data?.roles;
+      userId = state.authData.data?.userId;
+      token = state.authData.token;
       debugPrint('Current Role: ${state.currentRole.toString()}');
       currentRole = currentRole!;
       if (roles!.length != 1) {
@@ -102,18 +106,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(height: 20.0),
             _buildSectionTitle(title: 'Account Settings'),
             _buildListTile(
-                leadingIcon: UIconsPro.solidRounded.user,
-                title: 'Edit Profile',
-                trailingIcon: UIconsPro.solidRounded.angle_small_right,
-                onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) =>
-                  //      const EditProfileScreen(),
-                  //   ),
-                  // );
-                }),
+              leadingIcon: UIconsPro.solidRounded.user,
+              title: 'Edit Profile',
+              trailingIcon: UIconsPro.solidRounded.angle_small_right,
+              onTap: () {
+                // Menunggu state di proses
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  // Setelah logout, arahkan pengguna ke halaman login
+                  Navigator.of(context).pushNamed(
+                    AppRouter.editProfile,
+                    arguments: {
+                      'token': token,
+                      'user_id': userId,
+                    },
+                  );
+                });
+              },
+            ),
             const SizedBox(height: 16.0),
             _buildSectionTitle(title: 'Preferences'),
             _buildListTile(
@@ -370,12 +379,6 @@ void switchUser(BuildContext context, String anotherRole) {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // Tambahkan logika logout di sini, misalnya:
-                    // FirebaseAuth.instance.signOut();
-                    // context.read<AuthBloc>().add(
-                    //       AuthLogoutRequest(),
-                    //     );
-
                     context
                         .read<AuthBloc>()
                         .add(AuthSaveCurrentRole(currentRole: anotherRole));

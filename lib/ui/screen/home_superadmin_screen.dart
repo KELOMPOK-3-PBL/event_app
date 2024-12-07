@@ -96,8 +96,18 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
       );
     }
 
-    return BlocProvider.value(
-      value: context.read<AuthBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: context.read<AuthBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => UserBloc()
+            ..add(
+              FetchUserById(token: token, userId: superadminUID),
+            ),
+        ),
+      ],
       child: Scaffold(
         body: DoubleBackToCloseApp(
           snackBar: const SnackBar(
@@ -170,12 +180,8 @@ class _HomeTabPageState extends State<_HomeTabPage>
                   pathRequest: PathRequestEvents.events,
                 )),
             ),
-            BlocProvider(
-              create: (context) => UserBloc()
-                ..add(FetchUserById(
-                  token: widget.token,
-                  userId: widget.superadminUID,
-                )),
+            BlocProvider.value(
+              value: context.read<UserBloc>(),
             ),
             BlocProvider(
               create: (context) => CategoryBloc()..add(StatusReadData()),
@@ -222,12 +228,8 @@ class _HomeTabPageState extends State<_HomeTabPage>
           child: const HomeAccountsPage(),
         );
       case 4:
-        return BlocProvider(
-          create: (context) => UserBloc()
-            ..add(FetchUserById(
-              token: widget.token,
-              userId: widget.superadminUID,
-            )),
+        return BlocProvider.value(
+          value: context.read<UserBloc>(),
           child: HomeProfilePage(),
         );
       default:

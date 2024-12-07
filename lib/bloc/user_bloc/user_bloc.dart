@@ -89,7 +89,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Future<void> _onFetchUserById(
       FetchUserById event, Emitter<UserState> emit) async {
-    // emit(UserLoading());
+    emit(UserLoading());
     try {
       debugPrint("fetch user");
 
@@ -126,4 +126,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       emit(ErrorUserState(errorMessage: error.toString()));
     }
   }
+
+  static value() {}
 }

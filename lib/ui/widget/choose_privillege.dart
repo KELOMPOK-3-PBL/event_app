@@ -64,12 +64,14 @@ class PrivilegeDialog {
     // Navigator.pop(context); // Close the dialog
     // Navigate to home with the selected role
     context.read<AuthBloc>().add(AuthSaveCurrentRole(currentRole: role));
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        AppRouter.homeRoute,
-        (Route<dynamic> route) => false,
-        arguments: role,
-      );
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRouter.homeRoute,
+          (Route<dynamic> route) => false,
+          arguments: role,
+        );
+      },
+    );
   }
 }

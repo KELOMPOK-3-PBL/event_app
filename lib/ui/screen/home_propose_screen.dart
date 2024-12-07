@@ -92,8 +92,18 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
       );
     }
 
-    return BlocProvider.value(
-      value: context.read<AuthBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(
+          value: context.read<AuthBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => UserBloc()
+            ..add(
+              FetchUserById(token: token, userId: proposeUID),
+            ),
+        ),
+      ],
       child: Scaffold(
         body: DoubleBackToCloseApp(
           snackBar: const SnackBar(
@@ -180,10 +190,8 @@ class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
                   ),
                 ),
             ),
-            BlocProvider(
-              create: (context) => UserBloc()
-                ..add(FetchUserById(
-                    token: widget.token, userId: widget.proposeUID)),
+            BlocProvider.value(
+              value: context.read<UserBloc>(),
             ),
             BlocProvider(
               create: (context) => CategoryBloc()..add(CategoryReadData()),
@@ -218,10 +226,8 @@ class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
           child: const HomeProposePage(),
         );
       case 3:
-        return BlocProvider(
-          create: (context) => UserBloc()
-            ..add(
-                FetchUserById(token: widget.token, userId: widget.proposeUID)),
+        return BlocProvider.value(
+          value: context.read<UserBloc>(),
           child: HomeProfilePage(),
         );
       default:

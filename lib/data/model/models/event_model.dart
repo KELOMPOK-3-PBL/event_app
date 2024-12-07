@@ -99,30 +99,55 @@ class EventDataModel extends Equatable {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'event_id': eventId,
+      'title': title,
+      'date_add': dateAdd,
+      'propose_user': proposeUsername,
+      'propose_user_avatar': proposeAvatar,
+      'category': category,
+      'description': description,
+      'poster': posterUrl,
+      'location': location,
+      'place': place,
+      'quota': quota,
+      'date_start': dateStart,
+      'date_end': dateEnd,
+      'schedule': schedule,
+      'admin_user': adminUsername,
+      'updated': updated,
+      'status': status,
+      'note': adminNote,
+      'invited_users': invitedPersons,
+    };
+  }
+
   @override
   List<Object?> get props => [
-        // eventId,
-        // title,
-        // dateAdd,
-        // proposeUsername,
-        // proposeAvatar!,
-        // category,
-        // description,
-        // posterUrl!,
-        // location!,
-        // place,
-        // quota,
-        // dateStart,
-        // dateEnd!,
-        // schedule!,
-        // adminUsername!,
-        // updated!,
-        // status,
-        // adminNote!,
+        eventId,
+        title,
+        dateAdd,
+        proposeUsername,
+        proposeAvatar,
+        category,
+        description,
+        posterUrl,
+        location,
+        place,
+        quota,
+        dateStart,
+        dateEnd,
+        schedule,
+        adminUsername,
+        updated,
+        status,
+        adminNote,
+        invitedPersons,
       ];
 }
 
-class InvitedPerson {
+class InvitedPerson extends Equatable {
   final String username;
   final String? avatar;
 
@@ -139,4 +164,7 @@ class InvitedPerson {
       avatar: json['avatar'],
     );
   }
+
+  @override
+  List<Object?> get props => [username, avatar];
 }

@@ -6,6 +6,7 @@ import '../../bloc/bloc.dart';
 import '../screen/detail_account_screen.dart';
 import '../screen/detail_event_approval_propose_screen.dart';
 import '../screen/detail_event_for_join_screen.dart';
+import '../screen/edit_profile_screen.dart';
 import '../screen/form_propose_event.dart';
 import '../screen/home_admin_screen.dart';
 import '../screen/home_member_screen.dart';
@@ -31,6 +32,7 @@ class AppRouter {
   static const String searchResultEventRoute = '/search_result_event';
   static const String formProposeEventRoute = '/form_propose_event';
   static const String detailAccount = '/detail_account';
+  static const String editProfile = '/edit_profile';
 
   static Map<String, WidgetBuilder> routes = {
     initialRoute: (context) {
@@ -88,16 +90,10 @@ class AppRouter {
         child: getHomeScreen(role),
       );
     },
-
     settingsRoute: (context) {
-      // final UserDataModel arguments =
-      //     ModalRoute.of(context)!.settings.arguments as UserDataModel;
       return BlocProvider.value(
         value: context.read<AuthBloc>(),
-        child: SettingsScreen(
-            // roles: arguments.roles,
-            // currentRole: '',
-            ),
+        child: SettingsScreen(),
       );
     },
     detailEventRoute: (context) {
@@ -110,8 +106,6 @@ class AppRouter {
       return DetailEventScreen(data: eventData);
     },
     detailEventApprovalProposeRoute: (context) {
-      // final EventDataModel arguments =
-      //     ModalRoute.of(context)!.settings.arguments as EventDataModel;
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       final EventDataModel eventData = arguments['event_data'];
@@ -122,16 +116,6 @@ class AppRouter {
         currentRole: currentRole,
       );
     },
-    // ),
-    // detailEventProposeRoute: (context) {
-    //   final EventDataModel arguments =
-    //       ModalRoute.of(context)!.settings.arguments as EventDataModel;
-    //   // BlocProvider.value(
-    //   //       value: context.read<EventBloc>(),
-    //   // child:
-    //   return DetailEventApprovalScreen(data: arguments);
-    // },
-
     searchResultEventRoute: (context) {
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
@@ -150,6 +134,16 @@ class AppRouter {
           ..add(FetchUserById(
               token: arguments['token'], userId: arguments['user_id'])),
         child: const DetailAccountScreen(),
+      );
+    },
+    editProfile: (context) {
+      final Map<String, dynamic> arguments =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+      return BlocProvider(
+        create: (context) => UserBloc()
+          ..add(FetchUserById(
+              token: arguments['token'], userId: arguments['user_id'])),
+        child: EditProfileScreen(),
       );
     },
   };

@@ -125,7 +125,10 @@ class AppRouter {
         searchQuery: searchQuery ?? categoryName!,
       );
     },
-    formProposeEventRoute: (context) => const FormProposeEvent(),
+    formProposeEventRoute: (context) => BlocProvider(
+          create: (context) => CategoryBloc()..add(CategoryReadData()),
+          child: FormProposeEvent(),
+        ),
     detailAccount: (context) {
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;

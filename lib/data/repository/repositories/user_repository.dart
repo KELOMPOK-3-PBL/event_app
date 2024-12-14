@@ -7,14 +7,14 @@ class UserRepository {
   final userProvider = UserProvider();
 
   Future<UsersModel> getUsers(String? searchUser, String token,
-      {int offset = 0, int limit = 15}) async {
+      {int offset = 0, required int limit}) async {
     try {
       // debugPrint("getUsers");
       final response = await userProvider.getUsersAPI(
           searchUser: searchUser, token: token, offset: offset, limit: limit);
       final data = response.data;
-      // debugPrint(response.data.toString());
-      if (response.statusCode == 200 && data["status"] == 'success') {
+      // debugPrint("response ${data.toString()}");
+      if (response.statusCode == 200) {
         return UsersModel.fromJsonforList(json: data);
         // } else if (response.statusCode == 404 || data["status"] == 'error') {
         //   return EventModel.fromJson(json: data);
@@ -22,6 +22,7 @@ class UserRepository {
         throw Exception('Error: ${response.statusCode}');
       }
     } catch (error) {
+      debugPrint('error users model');
       throw Exception('API REQUEST FAILED');
     }
   }

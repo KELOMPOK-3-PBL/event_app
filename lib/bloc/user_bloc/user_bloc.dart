@@ -9,6 +9,8 @@ import '../../data/repository/repository.dart';
 part 'user_event.dart';
 part 'user_state.dart';
 
+int limit = 10;
+
 class UserBloc extends Bloc<UserEvent, UserState> {
   final _userRepository = UserRepository();
 
@@ -20,26 +22,24 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   Future<void> _onFetchUser(FetchUser event, Emitter<UserState> emit) async {
     if (state is UsersLoaded) {
-      final currentState = state as UsersLoaded;
-
-      // Cek apakah semua data sudah termuat
-      if (currentState.hasReachedMax) {
-        debugPrint("All users loaded");
-        return;
-      }
-
       try {
+        final currentState = state as UsersLoaded;
+
+        // Cek apakah semua data sudah termuat
+        if (currentState.hasReachedMax) {
+          debugPrint("All users loaded");
+          return;
+        }
+
         // Ambil data berikutnya berdasarkan indeks halaman saat ini
         final nextPage = (currentState.listUser.length);
         final newUserData = await _userRepository.getUsers(
-          event.searchUser,
-          event.token,
-          offset: nextPage,
-        );
+            event.searchUser, event.token,
+            offset: nextPage, limit: limit);
 
         if (newUserData.status == 'success' &&
                 newUserData.listUserData!.isEmpty ||
-            newUserData.listUserData!.length < 14) {
+            newUserData.listUserData!.length < limit) {
           // Emit state dengan data gabungan
           emit(UsersLoaded(
             listUser: currentState.listUser + newUserData.listUserData!,
@@ -61,14 +61,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       try {
         emit(UserLoading());
 
-        final userData = await _userRepository.getUsers(
-          event.searchUser,
-          event.token,
-          offset: 0, // Muat data awal
-        );
-
-        if (userData.status == 'success' ||
-            userData.listUserData!.length < 14) {
+        final userData = await _userRepository
+            .getUsers(event.searchUser, event.token, limit: limit);
+        debugPrint(userData.toString());
+        if (userData.listUserData!.length < limit) {
           emit(UsersLoaded(
             listUser: userData.listUserData!,
             searchUser: event.searchUser,

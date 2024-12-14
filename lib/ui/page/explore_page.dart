@@ -109,6 +109,10 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
         context
             .read<UserBloc>()
             .add(ReloadFetchUserById(token: widget.token, userId: userid));
+        context.read<CategoryBloc>().add(
+            (currentRole == 'Superadmin' || currentRole == 'Admin')
+                ? StatusReadData()
+                : CategoryReadData());
       },
       child: BlocBuilder<UserBloc, UserState>(builder: (context, state) {
         if (state is UserByUIDLoaded) {
@@ -129,10 +133,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 16),
-                    child: QuickCategorySection(),
-                  ),
+                  QuickCategorySection(),
                   CarouselSection(
                       currentRole: currentRole,
                       // eventData: listEventsCarousel ?? [],

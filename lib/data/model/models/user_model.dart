@@ -17,11 +17,10 @@ class UsersModel extends Equatable {
   // Convert a JSON map to the ListUsersModel object
   factory UsersModel.fromJsonforList({required Map<String, dynamic> json}) =>
       UsersModel(
-        status: json['status'],
-        message: json['message'],
-        listUserData: (json['data'] as List<dynamic>?)
-            ?.map(
-                (item) => UserDataModel.fromJson(item as Map<String, dynamic>))
+        status: json['status'] ?? '',
+        message: json['message'] ?? '',
+        listUserData: (json['data'] as List<dynamic>)
+            .map((item) => UserDataModel.fromJson(item as Map<String, dynamic>))
             .toList(),
       );
 
@@ -32,14 +31,14 @@ class UsersModel extends Equatable {
         userData: UserDataModel.fromJson(json['data'] as Map<String, dynamic>),
       );
   @override
-  List<Object?> get props => [status, message, listUserData];
+  List<Object?> get props => [status, message, listUserData, userData];
 }
 
 class UserDataModel extends Equatable {
   final String userid;
   final String username;
   final String email;
-  final List<String> roles;
+  final List<String>? roles;
   final String? about;
   final String? avatar;
 
@@ -57,21 +56,16 @@ class UserDataModel extends Equatable {
   factory UserDataModel.fromJson(Map<String, dynamic> json) {
     return UserDataModel(
       userid: json['user_id'].toString(),
-      username: json['username'],
-      email: json['email'],
-      roles: (json['roles'] as String).split(',').map((e) => e.trim()).toList(),
+      username: json['username'] ?? '',
+      email: json['email'] ?? '',
+      roles: (json['roles'] != null)
+          ? (json['roles'] as String).split(',').map((e) => e.trim()).toList()
+          : [],
       about: json['about'],
       avatar: json['avatar'],
     );
   }
 
   @override
-  List<Object?> get props => [username, email, roles, about];
+  List<Object?> get props => [userid, username, email, roles, about, avatar];
 }
-
-// class Role {
-//   final String role;
-//   Role({required this.role});
-//   factory Role.fromModel(Map<String, dynamic> json) =>
-//       Role(role: json['roles']);
-// }

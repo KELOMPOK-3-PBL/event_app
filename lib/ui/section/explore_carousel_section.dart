@@ -75,7 +75,7 @@ class CarouselItems extends StatelessWidget {
   Widget build(BuildContext context) {
     if (eventData!.isEmpty) {
       return Center(
-        child: CircularProgressIndicator(),
+        child: Text('No Data'),
       );
     } else {
       return SizedBox(

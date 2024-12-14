@@ -27,15 +27,15 @@ class UIColor {
   static Color getStatusColor(String status) {
     if (status == "Proposed") {
       return UIColor.propose;
-    } else if (status == "Pending") {
+    } else if (status == "Revision Propose") {
       return UIColor.pending;
-    } else if (status == "Reviewing") {
+    } else if (status == "Review Admin") {
       return UIColor.reviewing;
     } else if (status == "Approved") {
       return UIColor.approved;
     } else if (status == "Rejected") {
       return UIColor.rejected;
-    } else if (status == "Complete") {
+    } else if (status == "Completed") {
       return UIColor.admin;
     } else {
       return UIColor.solidWhite;

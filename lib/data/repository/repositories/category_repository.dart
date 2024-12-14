@@ -14,11 +14,11 @@ class CategoryRepository {
       message: 'status',
       categories: [
         CategoryDataModel(categoryId: 1, categoryName: 'Proposed'),
-        CategoryDataModel(categoryId: 2, categoryName: 'Reviewing'),
-        CategoryDataModel(categoryId: 3, categoryName: 'Pending'),
+        CategoryDataModel(categoryId: 2, categoryName: 'Review Admin'),
+        CategoryDataModel(categoryId: 3, categoryName: 'Revision Propose'),
         CategoryDataModel(categoryId: 4, categoryName: 'Rejected'),
         CategoryDataModel(categoryId: 5, categoryName: 'Approved'),
-        CategoryDataModel(categoryId: 6, categoryName: 'Complete'),
+        CategoryDataModel(categoryId: 6, categoryName: 'Completed'),
       ],
     );
   }

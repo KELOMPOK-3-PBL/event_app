@@ -120,7 +120,11 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
                     }
                   },
                   builder: (context, state) {
-                    if (state is UsersLoaded) {
+                    if (state is UserLoading) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (state is UsersLoaded) {
                       // debugPrint(state.listUser.toString());
                       return ListView.builder(
                         controller: _scrollController,
@@ -130,25 +134,29 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
                             ? state.listUser.length
                             : state.listUser.length + 1,
                         itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                AppRouter.detailAccount,
-                                arguments: {
-                                  'token': token,
-                                  'user_id':
-                                      state.listUser[index].userid.toString(),
-                                },
-                              );
-                            },
-                            child: _buildEventCard(state.listUser[index]),
-                          );
+                          if (index >= state.listUser.length) {
+                            return Center(child: CircularProgressIndicator());
+                          } else {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRouter.detailAccount,
+                                  arguments: {
+                                    'token': token,
+                                    'user_id':
+                                        state.listUser[index].userid.toString(),
+                                  },
+                                );
+                              },
+                              child: _buildEventCard(state.listUser[index]),
+                            );
+                          }
                         },
                       );
                     } else {
                       return Center(
-                        child: CircularProgressIndicator(),
+                        child: Text('No Accounts'),
                       );
                     }
                   },
@@ -222,7 +230,7 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
                   child: ListView.separated(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: account.roles.length,
+                    itemCount: account.roles!.length,
                     separatorBuilder: (context, index) =>
                         const SizedBox(width: 8),
                     itemBuilder: (context, index) {
@@ -231,12 +239,12 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
                           horizontal: 12,
                         ),
                         decoration: BoxDecoration(
-                          color: UIColor.getRoleColor(account.roles[index]),
+                          color: UIColor.getRoleColor(account.roles![index]),
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Center(
                           child: Text(
-                            account.roles[index],
+                            account.roles![index],
                             style: const TextStyle(
                               color: UIColor.solidWhite,
                               fontSize: 10,
@@ -272,21 +280,21 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
           //         padding: EdgeInsets.zero,
           //         scrollDirection: Axis.horizontal,
           //         physics: const NeverScrollableScrollPhysics(),
-          //         itemCount: account.roles.length,
+          //         itemCount: account.roles!.length,
           //         separatorBuilder: (context, index) => const SizedBox(
           //           width: 10,
           //         ),
           //         itemBuilder: (context, index) {
-          //           debugPrint(account.roles.toString());
+          //           debugPrint(account.roles!.toString());
           //           return Container(
           //             decoration: BoxDecoration(
-          //               color: UIColor.getRoleColor(account.roles[index]),
+          //               color: UIColor.getRoleColor(account.roles![index]),
           //               borderRadius: BorderRadius.circular(4),
           //             ),
           //             padding:
           //                 const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
           //             child: Text(
-          //               account.roles[index],
+          //               account.roles![index],
           //               style: const TextStyle(
           //                 color: UIColor.solidWhite,
           //                 fontSize: 10,

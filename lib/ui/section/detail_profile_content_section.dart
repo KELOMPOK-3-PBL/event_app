@@ -50,7 +50,7 @@ class DetailProfileContentSection extends StatelessWidget {
             child: ListView.separated(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemCount: userData!.roles.length,
+              itemCount: userData!.roles!.length,
               separatorBuilder: (context, index) => const SizedBox(width: 8),
               itemBuilder: (context, index) {
                 return Container(
@@ -58,12 +58,12 @@ class DetailProfileContentSection extends StatelessWidget {
                     horizontal: 12,
                   ),
                   decoration: BoxDecoration(
-                    color: UIColor.getRoleColor(userData!.roles[index]),
+                    color: UIColor.getRoleColor(userData!.roles![index]),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Center(
                     child: Text(
-                      userData!.roles[index],
+                      userData!.roles![index],
                       style: const TextStyle(
                         color: UIColor.solidWhite,
                         fontSize: 12,

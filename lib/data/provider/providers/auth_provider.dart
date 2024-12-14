@@ -5,6 +5,7 @@ class AuthProvider {
 
   Future<Response> authRequest(String email, String password) async {
     try {
+      dio.options.contentType = "application/json";
       final Response rawResponse = await dio.post(
         '/auth.php',
         // options: Options(contentType: 'application/json'),

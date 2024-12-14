@@ -28,14 +28,16 @@ class EventModel extends Equatable {
 }
 
 class EventDataModel extends Equatable {
-  final String eventId;
+  final String? eventId;
   final String title;
-  final String dateAdd;
-  final String proposeUsername;
+  final String? dateAdd;
+  final String? proposeUsername;
   final String? proposeAvatar;
-  final String category;
+  final String? categoryId;
+  final String? category;
   final String description;
   final String? posterUrl;
+  final File? imagePoster;
   final String? location;
   final String place;
   final int quota;
@@ -44,20 +46,22 @@ class EventDataModel extends Equatable {
   final String? schedule;
   final String? adminUsername;
   final String? updated;
-  final String status;
+  final String? status;
   final String? adminNote;
   // final String? invitedPersons;
   final List<InvitedPerson>? invitedPersons;
 
   const EventDataModel({
-    required this.eventId,
+    this.eventId,
     required this.title,
-    required this.dateAdd,
-    required this.proposeUsername,
+    this.dateAdd,
+    this.proposeUsername,
     this.proposeAvatar,
-    required this.category,
+    this.categoryId,
+    this.category,
     required this.description,
     this.posterUrl,
+    this.imagePoster,
     this.location,
     required this.place,
     required this.quota,
@@ -66,7 +70,7 @@ class EventDataModel extends Equatable {
     this.schedule,
     this.adminUsername,
     this.updated,
-    required this.status,
+    this.status,
     this.adminNote,
     this.invitedPersons,
   });
@@ -99,16 +103,17 @@ class EventDataModel extends Equatable {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
+  Future<FormData> toFormData() async {
+    final Map<String, dynamic> data = {
       'event_id': eventId,
       'title': title,
       'date_add': dateAdd,
       'propose_user': proposeUsername,
       'propose_user_avatar': proposeAvatar,
-      'category': category,
+      'category_id': categoryId,
       'description': description,
-      'poster': posterUrl,
+      // 'poster': base64Encode(await imagePoster!.readAsBytes()),
+      'poster': await MultipartFile.fromFile(imagePoster!.path),
       'location': location,
       'place': place,
       'quota': quota,
@@ -121,6 +126,11 @@ class EventDataModel extends Equatable {
       'note': adminNote,
       'invited_users': invitedPersons,
     };
+
+    // Hapus key dengan nilai null
+    data.removeWhere((key, value) => value == null);
+
+    return FormData.fromMap(data);
   }
 
   @override

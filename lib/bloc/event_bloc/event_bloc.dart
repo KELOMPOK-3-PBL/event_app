@@ -11,7 +11,7 @@ part 'event_event.dart';
 part 'event_state.dart';
 
 class EventBloc extends Bloc<EventEvent, EventState> {
-  final eventRepository = EventRepository();
+  final _eventRepository = EventRepository();
 
   EventBloc() : super(EventInitial()) {
     on<EventFetchData>(
@@ -22,9 +22,14 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       _onEventReloadData,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     );
+    on<EventProposed>(
+      _onEventProposed,
+      transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
+    );
   }
 
-  void _onEventFetchData(EventFetchData event, Emitter<EventState> emit) async {
+  Future<void> _onEventFetchData(
+      EventFetchData event, Emitter<EventState> emit) async {
     late List<EventDataModel> carousel = [];
     // Mengecek apakah sudah ada data yang terambil sebelumnya
     if (state is EventLoaded) {
@@ -38,7 +43,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         // Mengambil jumah index yang termuat saat ini
         final currentIndex = currentState.event.length;
         // Mengambil data event baru berdasarkan index yang termuat saat ini dari API
-        final newEvents = await eventRepository.getEventsFromAPI(
+        final newEvents = await _eventRepository.getEventsFromAPI(
           requestEvent: event.requestEvent.copyWith(currentIndex: currentIndex),
           pathRequest: event.pathRequest,
         );
@@ -62,7 +67,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
               hasReachedMax: false));
         }
       } catch (_) {
-        emit(EventLoadError("Faied to load events"));
+        emit(EventError("Faied to load events"));
       }
     }
     // Mengambil data untuk pertama kalinya
@@ -71,11 +76,11 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         // loading ketika halaman baru saja dibuka
         emit(EventLoading());
         // Mengambil data events dari API
-        final events = await eventRepository.getEventsFromAPI(
+        final events = await _eventRepository.getEventsFromAPI(
             requestEvent: event.requestEvent, pathRequest: event.pathRequest);
         // try {
         if (event.requestEventCarousel != null) {
-          final carouselModel = await eventRepository.getEventsFromAPI(
+          final carouselModel = await _eventRepository.getEventsFromAPI(
             requestEvent: event.requestEventCarousel!,
             pathRequest: event.pathRequest,
           );
@@ -98,12 +103,12 @@ class EventBloc extends Bloc<EventEvent, EventState> {
               hasReachedMax: false));
         }
       } catch (_) {
-        emit(EventLoadError("Failed to load initial events request"));
+        emit(EventError("Failed to load initial events request"));
       }
     }
   }
 
-  void _onEventReloadData(
+  Future<void> _onEventReloadData(
       EventReloadData event, Emitter<EventState> emit) async {
     try {
       late List<EventDataModel> carousel = [];
@@ -111,11 +116,11 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       // loading ketika halaman baru saja dibuka
       emit(EventLoading());
       // Mengambil data events dari API
-      final events = await eventRepository.getEventsFromAPI(
+      final events = await _eventRepository.getEventsFromAPI(
           requestEvent: event.requestEvent, pathRequest: event.pathRequest);
       // try {
       if (event.requestEventCarousel != null) {
-        final carouselModel = await eventRepository.getEventsFromAPI(
+        final carouselModel = await _eventRepository.getEventsFromAPI(
           requestEvent: event.requestEventCarousel!,
           pathRequest: event.pathRequest,
         );
@@ -138,7 +143,23 @@ class EventBloc extends Bloc<EventEvent, EventState> {
             hasReachedMax: false));
       }
     } catch (_) {
-      emit(EventLoadError("Failed to load initial events request"));
+      emit(EventError("Failed to load initial events request"));
+    }
+  }
+
+  Future<void> _onEventProposed(
+      EventProposed event, Emitter<EventState> emit) async {
+    emit(EventLoading());
+    try {
+      final proposeResponse =
+          await _eventRepository.proposeEvent(event.token, event.eventData);
+      if (proposeResponse['code'] == 200) {
+        emit(EventProposeSuccess(proposeResponse['message']));
+      } else {
+        emit(EventError(proposeResponse['message']));
+      }
+    } catch (error) {
+      emit(EventError(error.toString()));
     }
   }
 }

@@ -289,7 +289,7 @@ class OrganizerSection extends StatelessWidget {
             children: [
               Text(
                 // 'UKM PCC',
-                data.proposeUsername,
+                data.proposeUsername!,
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
               Text('Organizer', style: TextStyle(color: Colors.grey)),
@@ -346,13 +346,13 @@ class MainInfoSection extends StatelessWidget {
                       Container(
                         margin: EdgeInsets.only(right: 8),
                         decoration: BoxDecoration(
-                          color: UIColor.getStatusColor(data.status),
+                          color: UIColor.getStatusColor(data.status!),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         padding:
                             EdgeInsets.symmetric(vertical: 0, horizontal: 14),
                         child: Text(
-                          data.status,
+                          data.status!,
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 10,

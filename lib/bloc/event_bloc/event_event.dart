@@ -36,3 +36,13 @@ class EventReloadData extends EventEvent {
   @override
   List<Object> get props => [requestEvent, requestEventCarousel!, pathRequest];
 }
+
+class EventProposed extends EventEvent {
+  final EventDataModel eventData;
+  final String token;
+
+  const EventProposed({required this.eventData, required this.token});
+
+  @override
+  List<Object> get props => [eventData, token];
+}

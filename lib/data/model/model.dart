@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
 //! MODEL : Digunakan untuk menyimpan data yang diambil dari API

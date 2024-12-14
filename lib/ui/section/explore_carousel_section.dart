@@ -193,7 +193,7 @@ class CarouselItems extends StatelessWidget {
                                       ],
                                     ),
                                     StatusOrSeeMore(
-                                      status: eventData![index].status,
+                                      status: eventData![index].status!,
                                       currentRole: currentRole,
                                     )
                                   ],

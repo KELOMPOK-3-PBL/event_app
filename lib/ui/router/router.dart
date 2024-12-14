@@ -125,8 +125,18 @@ class AppRouter {
         searchQuery: searchQuery ?? categoryName!,
       );
     },
-    formProposeEventRoute: (context) => BlocProvider(
-          create: (context) => CategoryBloc()..add(CategoryReadData()),
+    formProposeEventRoute: (context) => MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+              value: context.read<AuthBloc>(),
+            ),
+            BlocProvider(
+              create: (context) => CategoryBloc()..add(CategoryReadData()),
+            ),
+            BlocProvider(
+              create: (context) => EventBloc(),
+            ),
+          ],
           child: FormProposeEvent(),
         ),
     detailAccount: (context) {

@@ -21,6 +21,8 @@ class UserProvider {
             value == null); // Menghapus parameter yang bernilai null
       dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
       dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
+      dio.options.contentType = "application/json";
+
       // request get ke API
       final Response rawResponse = await dio.get('/users.php',
           // options: Options(contentType: 'application/json', headers: {

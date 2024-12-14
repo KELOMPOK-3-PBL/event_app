@@ -35,6 +35,7 @@ class EventProvider {
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
       // dio.interceptors
       //     .add(LogInterceptor(responseBody: true, requestBody: true));
+      dio.options.contentType = "application/json";
 
       // Melakukan permintaan GET dengan query parameters
       final Response rawResponse = await dio.get(
@@ -51,16 +52,28 @@ class EventProvider {
 
   Future<Response> postEvent(String token, EventDataModel eventData) async {
     try {
-      final data = jsonEncode(eventData.toJson());
+      // debugPrint("Token: $token");
+      // debugPrint("Data : ${eventData.toString()}");
+
+      final data = await eventData.toFormData();
+
       // Melakukan permintaan POST dengan data yang ingin dikirim
       dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
       dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
+      // dio.options.contentType = "application/json";
+      // dio.options.contentType = "multipart/form-data";
       final Response rawResponse = await dio.post(
         event,
         data: data,
       );
+
+      // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
+      dio.interceptors
+          .add(LogInterceptor(responseBody: true, requestBody: true));
+
       return rawResponse;
     } on DioException catch (e) {
+      debugPrint('Error response data: ${e.response}');
       return e.response!;
     }
   }

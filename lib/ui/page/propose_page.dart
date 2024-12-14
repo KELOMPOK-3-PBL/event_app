@@ -108,7 +108,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
         if (state is EventLoaded) {
           requestFilteredEvent = state.requestEvent;
           // Navigator.of(context).pop();
-        } else if (state is EventLoadError) {
+        } else if (state is EventError) {
           debugPrint("load error");
           showError(context, state.message);
         }

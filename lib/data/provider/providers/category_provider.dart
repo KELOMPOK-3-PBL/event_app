@@ -5,6 +5,7 @@ class CategoryProvider {
 
   Future<Response> getCategoryAPI() async {
     try {
+      dio.options.contentType = "application/json";
       // request get ke API
       final Response rawResponse = await dio.get('/categories.php');
 

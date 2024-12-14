@@ -31,7 +31,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     // on<SessionTimeout>(_onSessionTimeout);
   }
 
-  void _onAppStarted(AuthAppStarted event, Emitter<AuthState> emit) async {
+  Future<void> _onAppStarted(
+      AuthAppStarted event, Emitter<AuthState> emit) async {
     try {
       // emit(AuthLoading());
       final authData = await _authRepository.checkAuthentication();
@@ -50,7 +51,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _onSaveCurrentRole(
+  Future<void> _onSaveCurrentRole(
       AuthSaveCurrentRole event, Emitter<AuthState> emit) async {
     debugPrint(
         "Event received: AuthSaveCurrentRole with role: ${event.currentRole}");
@@ -81,7 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       AuthLoginRequest user, Emitter<AuthState> emit) async {
     // emit(AuthLoading());
     try {
-      final authData = await _authRepository.login(
+      final AuthModel authData = await _authRepository.login(
           user.email, user.password, user.rememberMe);
       if (authData.status == 'success') {
         emit(AuthAuthenticated(authData: authData));
@@ -112,7 +113,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _onAuthLogoutRequest(
+  Future<void> _onAuthLogoutRequest(
       AuthLogoutRequest event, Emitter<AuthState> emit) async {
     await _authRepository.logout();
     emit(AuthUnauthenticated(message: "Loging Out Succes"));

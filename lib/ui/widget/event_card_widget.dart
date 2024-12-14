@@ -88,13 +88,13 @@ class EventCardWidget extends StatelessWidget {
                   if (showStatus)
                     Container(
                       decoration: BoxDecoration(
-                        color: UIColor.getStatusColor(events.status),
+                        color: UIColor.getStatusColor(events.status!),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       padding: const EdgeInsets.symmetric(
                           vertical: 0, horizontal: 12),
                       child: Text(
-                        events.status,
+                        events.status!,
                         style: const TextStyle(
                           color: UIColor.solidWhite,
                           fontSize: 10,

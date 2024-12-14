@@ -97,7 +97,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
         if (state is EventLoaded) {
           //! Mengambil data request event
           requestFilteredEvent = state.requestEvent;
-        } else if (state is EventLoadError) {
+        } else if (state is EventError) {
           debugPrint("load error");
           showError(context, state.message);
         }

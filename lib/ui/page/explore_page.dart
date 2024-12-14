@@ -157,7 +157,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                         requestFilteredEvent = state.requestEvent;
                         requestFilteredEventCarousel =
                             state.requestEventCarousel!;
-                      } else if (state is EventLoadError) {
+                      } else if (state is EventError) {
                         debugPrint("load error");
                         showError(context, state.message);
                       }
@@ -496,13 +496,13 @@ class ExploreCard extends StatelessWidget {
               // margin: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               margin: EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
-                color: UIColor.getStatusColor(eventData.status),
+                color: UIColor.getStatusColor(eventData.status!),
                 borderRadius: BorderRadius.circular(6),
               ),
               padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
               child: Text(
                 // textAlign: TextAlign.center,
-                eventData.status,
+                eventData.status!,
                 style: const TextStyle(
                   color: UIColor.solidWhite,
                   fontSize: 10,

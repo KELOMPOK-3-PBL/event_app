@@ -7,9 +7,20 @@ abstract class UserEvent extends Equatable {
 
 class FetchUser extends UserEvent {
   final String? searchUser;
+  final String? userId;
+  final String? sort;
+  final String? order;
+  final String? role;
   final String token;
 
-  FetchUser({this.searchUser, required this.token});
+  FetchUser({
+    this.sort,
+    this.order,
+    this.role,
+    this.searchUser,
+    this.userId,
+    required this.token,
+  });
 
   @override
   List<Object> get props => [searchUser!, token];

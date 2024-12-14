@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 // import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -28,7 +29,7 @@ void setupLocator() {
           baseUrl: 'http://10.0.2.2:80/api-03/routes',
           // baseUrl: 'http://192.168.110.131/api-03/routes',
           // baseUrl: 'https://polivent.my.id/api',
-          contentType: 'application/json',
+          // contentType: 'application/json',
           // persistentConnection: true,
           preserveHeaderCase: true,
           // connectTimeout: Duration(minutes: 1)

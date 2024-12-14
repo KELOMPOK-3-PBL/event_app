@@ -21,7 +21,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   List<String>? roles;
-  String? anotherRole;
+  // String? anotherRole;
   String? currentRole;
   String? userId;
   String? token;
@@ -39,21 +39,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
       token = state.authData.token;
       debugPrint('Current Role: ${state.currentRole.toString()}');
       currentRole = currentRole!;
-      if (roles!.length != 1) {
-        for (int i = 0; i < roles!.length; i++) {
-          if (currentRole != roles?[i]) {
-            anotherRole = roles?[i];
-          }
-        }
-      }
+      // if (roles!.length != 1) {
+      //   for (int i = 0; i < roles!.length; i++) {
+      //     if (currentRole != roles?[i]) {
+      //       anotherRole = roles?[i];
+      //     }
+      //   }
+      // }
       debugPrint('Roles: $roles');
-      debugPrint('Another Role: $anotherRole');
+      // debugPrint('Another Role: $anotherRole');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
+    return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthUnauthenticated) {
           // Navigator.of(context).pushAndRemoveUntil(
@@ -76,100 +76,119 @@ class _SettingsScreenState extends State<SettingsScreen> {
         //   }
         // }
       },
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              UIconsPro.regularRounded.angle_small_left,
-              // size: 20,
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                UIconsPro.regularRounded.angle_small_left,
+                // size: 20,
+              ),
+            ),
+            automaticallyImplyLeading: false,
+            // remove leading(left) back icon
+            centerTitle: true,
+            backgroundColor: UIColor.white,
+            scrolledUnderElevation: 0,
+            title: const Text(
+              "Settings",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: UIColor.typoBlack,
+              ),
             ),
           ),
-          automaticallyImplyLeading: false, // remove leading(left) back icon
-          centerTitle: true,
-          backgroundColor: UIColor.white,
-          scrolledUnderElevation: 0,
-          title: const Text(
-            "Settings",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: UIColor.typoBlack,
-            ),
-          ),
-        ),
-        body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          children: [
-            const SizedBox(height: 20.0),
-            _buildSectionTitle(title: 'Account Settings'),
-            _buildListTile(
-              leadingIcon: UIconsPro.solidRounded.user,
-              title: 'Edit Profile',
-              trailingIcon: UIconsPro.solidRounded.angle_small_right,
-              onTap: () {
-                // Menunggu state di proses
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  // Setelah logout, arahkan pengguna ke halaman login
-                  Navigator.of(context).pushNamed(
-                    AppRouter.editProfile,
-                    arguments: {
-                      'token': token,
-                      'user_id': userId,
-                    },
-                  );
-                });
-              },
-            ),
-            const SizedBox(height: 16.0),
-            _buildSectionTitle(title: 'Preferences'),
-            _buildListTile(
-              leadingIcon: UIconsPro.solidRounded.notebook,
-              title: 'About',
-              trailingIcon: UIconsPro.solidRounded.angle_small_right,
-              onTap: () {},
-            ),
-            _buildListTile(
-              leadingIcon: UIconsPro.solidRounded.interrogation,
-              title: 'Help',
-              trailingIcon: UIconsPro.solidRounded.angle_small_right,
-              onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => const HelpScreen(),
-                //   ),
-                // );
-              },
-            ),
-            const SizedBox(height: 20.0),
-            if (anotherRole != null)
+          body: ListView(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            children: [
+              const SizedBox(height: 20.0),
+              _buildSectionTitle(title: 'Account Settings'),
               _buildListTile(
-                  leadingIcon: UIconsPro.regularRounded.sign_in_alt,
-                  title: 'Sign in as ${anotherRole!}',
-                  trailingIcon: null,
-                  onTap: () {
-                    switchUser(context, anotherRole!);
-                  },
-                  // titleColor: UIColor.reviewing,
-                  leadingIconColor: UIColor.solidWhite,
-                  titleColor: UIColor.solidWhite,
-                  tileColor: UIColor.getRoleColor(anotherRole!)),
-            const SizedBox(height: 6.0),
-            _buildListTile(
-                leadingIcon: UIconsPro.regularRounded.sign_out_alt,
-                title: 'Sign Out',
+                leadingIcon: UIconsPro.solidRounded.user,
+                title: 'Edit Profile',
+                trailingIcon: UIconsPro.solidRounded.angle_small_right,
                 onTap: () {
-                  showLogoutBottomSheet(context);
+                  // Menunggu state di proses
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    // Setelah logout, arahkan pengguna ke halaman login
+                    Navigator.of(context).pushNamed(
+                      AppRouter.editProfile,
+                      arguments: {
+                        'token': token,
+                        'user_id': userId,
+                      },
+                    );
+                  });
                 },
-                titleColor: UIColor.solidWhite,
-                leadingIconColor: UIColor.solidWhite,
-                tileColor: UIColor.rejected),
-          ],
-        ),
-      ),
+              ),
+              const SizedBox(height: 16.0),
+              _buildSectionTitle(title: 'Preferences'),
+              _buildListTile(
+                leadingIcon: UIconsPro.solidRounded.notebook,
+                title: 'About',
+                trailingIcon: UIconsPro.solidRounded.angle_small_right,
+                onTap: () {},
+              ),
+              _buildListTile(
+                leadingIcon: UIconsPro.solidRounded.interrogation,
+                title: 'Help',
+                trailingIcon: UIconsPro.solidRounded.angle_small_right,
+                onTap: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => const HelpScreen(),
+                  //   ),
+                  // );
+                },
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 20),
+
+                // height: 300,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: roles!.length,
+                    itemBuilder: (context, index) {
+                      final role = roles![index];
+                      if (role != currentRole) {
+                        debugPrint(role);
+                        return _buildListTile(
+                          leadingIcon: UIconsPro.regularRounded.sign_in_alt,
+                          title: 'Sign in as $role',
+                          trailingIcon: null,
+                          onTap: () {
+                            switchUser(context, role);
+                          },
+                          leadingIconColor: UIColor.solidWhite,
+                          titleColor: UIColor.solidWhite,
+                          tileColor: UIColor.getRoleColor(role),
+                        );
+                      } else {
+                        return Center();
+                      }
+                    }),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: _buildListTile(
+                    leadingIcon: UIconsPro.regularRounded.sign_out_alt,
+                    title: 'Sign Out',
+                    onTap: () {
+                      showLogoutBottomSheet(context);
+                    },
+                    titleColor: UIColor.solidWhite,
+                    leadingIconColor: UIColor.solidWhite,
+                    tileColor: UIColor.rejected),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

@@ -32,7 +32,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         }
 
         // Ambil data berikutnya berdasarkan indeks halaman saat ini
-        final nextPage = (currentState.listUser.length);
+        final nextPage = currentState.listUser.length;
+        debugPrint(nextPage.toString());
         final newUserData = await _userRepository.getUsers(
             event.searchUser, event.token,
             offset: nextPage, limit: limit);

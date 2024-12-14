@@ -37,12 +37,41 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
       // debugPrint("User is not authenticated.");
     }
 
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        context.read<UserBloc>().add(FetchUser(searchUser: '', token: token));
-      }
-    });
+    _scrollController.addListener(_onScroll);
+
+    // _scrollController.addListener(() {
+    //   if (_scrollController.position.pixels ==
+    //       _scrollController.position.maxScrollExtent) {
+    //     context.read<UserBloc>().add(FetchUser(searchUser: '', token: token));
+    //   }
+    // });
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
+  }
+
+  void _onScroll() {
+    // if (_isBottom) {
+    if (_isBottom
+    // &&!(context.read<EventBloc>().state as EventApprovedLoaded)
+    // .hasReachedMax
+    ) {
+      //! mengatasi perubahan request ketika di scroll
+      // mengambil request yang sudah diubah current statenya
+      // requestFilteredEvent =
+      //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
+      // requestEvent.copyWith();
+      context.read<UserBloc>().add(
+        FetchUser(
+          token: token,
+          searchUser: searchUser,
+        ),
+      );
+    }
   }
 
   @override

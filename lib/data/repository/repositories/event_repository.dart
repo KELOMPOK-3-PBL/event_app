@@ -49,6 +49,7 @@ class EventRepository {
         'code': response.statusCode,
         'status': response.data['status'],
         'message': response.data['message'],
+        'event_data': response.data['data']['event_'],
         // 'message': 'Event proposed failed',
       };
     } catch (_) {

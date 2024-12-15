@@ -35,9 +35,10 @@ class EventLoaded extends EventState {
 }
 
 class EventProposeSuccess extends EventState {
+  final EventDataModel eventData;
   final String message;
 
-  const EventProposeSuccess(this.message);
+  const EventProposeSuccess({required this.message, required this.eventData});
 }
 
 class EventError extends EventState {

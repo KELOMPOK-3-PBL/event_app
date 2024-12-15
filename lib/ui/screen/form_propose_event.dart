@@ -155,7 +155,11 @@ class FormProposeEventState extends State<FormProposeEvent> {
                       SnackBar(content: Text("Propose event success!")));
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                      AppRouter.loginRoute,
+                      AppRouter.detailEventApprovalProposeRoute,
+                      arguments: {
+                        'event_data': eventProposeData,
+                        'current_role': 'Propose',
+                      },
                       (Route<dynamic> route) => false,
                     );
                   });

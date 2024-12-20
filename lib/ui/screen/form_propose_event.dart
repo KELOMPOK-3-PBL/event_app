@@ -178,7 +178,7 @@ class FormProposeEventState extends State<FormProposeEvent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         buildField(
-                            icon: UIconsPro.regularRounded.head_side_brain,
+                            icon: UIconsPro.regularRounded.head_side_thinking,
                             "Title",
                             "Enter title",
                             _titleController),
@@ -187,10 +187,13 @@ class FormProposeEventState extends State<FormProposeEvent> {
                             _selectedCategory = value;
                           });
                         }, _selectedCategory),
-                        buildField("Place", "Enter place", _placeController),
+                        buildField("Place", "Enter place", _placeController,
+                            icon: UIconsPro.regularRounded.house_building),
                         buildField(
-                            "Location", "Enter location", _locationController),
+                            "Location", "Enter location", _locationController,
+                            icon: UIconsPro.regularRounded.marker),
                         buildField("Quota", "Enter quota", _quotaController,
+                            icon: UIconsPro.regularRounded.user,
                             inputType: TextInputType.number),
                         Flex(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -225,9 +228,11 @@ class FormProposeEventState extends State<FormProposeEvent> {
                           ],
                         ),
                         buildField("Schedule Link", "Enter schedule link",
-                            _scheduleLinkController),
+                            _scheduleLinkController,
+                            icon: UIconsPro.regularRounded.time_fast),
                         buildField("Description", "Enter description",
-                            _descriptionController),
+                            _descriptionController,
+                            icon: UIconsPro.regularRounded.description),
                         // const SizedBox(height: 10),
                         Text(
                           "Poster",

@@ -11,7 +11,11 @@ class EventInitial extends EventState {}
 
 class EventLoading extends EventState {}
 
-// class EventLoadedMax extends EventState {}
+class EventUpdated extends EventState {
+  final String message;
+
+  const EventUpdated({required this.message});
+}
 
 class EventLoaded extends EventState {
   final List<EventDataModel> event;

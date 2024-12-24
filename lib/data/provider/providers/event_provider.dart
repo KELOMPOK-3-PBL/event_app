@@ -52,16 +52,11 @@ class EventProvider {
 
   Future<Response> postEvent(String token, EventDataModel eventData) async {
     try {
-      // debugPrint("Token: $token");
-      // debugPrint("Data : ${eventData.toString()}");
-
       final data = await eventData.toFormData();
 
-      // Melakukan permintaan POST dengan data yang ingin dikirim
       dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
       dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
-      // dio.options.contentType = "application/json";
-      // dio.options.contentType = "multipart/form-data";
+
       final Response rawResponse = await dio.post(
         event,
         data: data,
@@ -78,25 +73,48 @@ class EventProvider {
     }
   }
 
-  // Future<Response> getEventByID(String token, String eventId) async {
-  //   try {
-  //     // Melakukan permintaan GET dengan query parameters
-  //     final Response rawResponse = await dio.get(
-  //       event,
-  //       options: Options(
-  //         contentType: 'application/json',
-  //         headers: {
-  //           'Cookie': 'jwt=$token',
-  //           'Authorization': token,
-  //         },
-  //       ),
-  //       queryParameters: {'event_id': eventId},
-  //     );
-  //     return rawResponse;
-  //   } on DioException catch (e) {
-  //     debugPrint(
-  //         'Error response event by id $eventId. data: ${e.response.toString()}');
-  //     return e.response!;
-  //   }
-  // }
+  Future<Response> updateEvent(
+      String eventId, String token, EventDataModel eventData) async {
+    try {
+      final data = await eventData.toFormData();
+
+      dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
+      dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
+
+      final Response rawResponse = await dio.post(
+        event,
+        queryParameters: {
+          'event_id': eventId,
+        },
+        data: data,
+      );
+
+      // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
+      // dio.interceptors
+      //     .add(LogInterceptor(responseBody: true, requestBody: true));
+
+      return rawResponse;
+    } on DioException catch (e) {
+      debugPrint('Error response data: ${e.response}');
+      return e.response!;
+    }
+  }
+
+  Future<Response> getEventByID(String token, String eventId) async {
+    try {
+      dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
+      dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
+
+      // Melakukan permintaan GET dengan query parameters
+      final Response rawResponse = await dio.get(
+        event,
+        queryParameters: {'event_id': eventId},
+      );
+      return rawResponse;
+    } on DioException catch (e) {
+      debugPrint(
+          'Error response event by id $eventId. data: ${e.response.toString()}');
+      return e.response!;
+    }
+  }
 }

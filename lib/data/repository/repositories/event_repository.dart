@@ -31,26 +31,25 @@ class EventRepository {
     }
   }
 
-  Future<Map<String, dynamic>> proposeEvent(
+  Future<EventModel> proposeEvent(
       String token, EventDataModel eventData) async {
     try {
       final response = await _eventProvider.postEvent(token, eventData);
+      return EventModel.fromJsonPropose(json: response.data);
+    } catch (_) {
+      throw Exception('API REQUEST FAILED');
+    }
+  }
 
-      debugPrint(response.toString());
-      // if (response.statusCode == 200) {
-      //   return {
-      //     'code': response.statusCode,
-      //     'status': response.data['status'],
-      //     'message': response.data['message'],
-      //     // 'message': 'Event proposed successfully',
-      //   };
-      // }
+  Future<Map<String, dynamic>> updateEvent(
+      String eventId, String token, EventDataModel eventData) async {
+    try {
+      final response =
+          await _eventProvider.updateEvent(eventId, token, eventData);
       return {
         'code': response.statusCode,
         'status': response.data['status'],
         'message': response.data['message'],
-        'event_data': response.data['data']['event_'],
-        // 'message': 'Event proposed failed',
       };
     } catch (_) {
       throw Exception('API REQUEST FAILED');

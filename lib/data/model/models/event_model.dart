@@ -2,29 +2,40 @@ part of '../model.dart';
 
 class EventModel extends Equatable {
   final String status;
+  final int code;
   final String message;
-  final List<EventDataModel>? data;
+  final List<EventDataModel>? listData;
+  final EventDataModel? data;
 
   // Constructor
-  const EventModel({
-    required this.status,
-    required this.message,
-    this.data,
-  });
+  const EventModel(
+      {required this.status,
+      required this.code,
+      required this.message,
+      this.listData,
+      this.data});
 
   // Convert a JSON map to the EventModel object
   factory EventModel.fromJson({required Map<String, dynamic> json}) =>
       EventModel(
         status: json['status'],
+        code: json['code'],
         message: json['message'],
-        data: (json['data'] as List<dynamic>?)
+        listData: (json['data'] as List<dynamic>?)
             ?.map(
                 (item) => EventDataModel.fromJson(item as Map<String, dynamic>))
             .toList(),
       );
 
+  factory EventModel.fromJsonPropose({required Map<String, dynamic> json}) =>
+      EventModel(
+        status: json['status'],
+        code: json['code'],
+        message: json['message'],
+        data: EventDataModel.fromJson(json['data']['event']),
+      );
   @override
-  List<Object?> get props => [status, message, data!];
+  List<Object?> get props => [status, message, listData, data];
 }
 
 class EventDataModel extends Equatable {
@@ -131,6 +142,10 @@ class EventDataModel extends Equatable {
     data.removeWhere((key, value) => value == null);
 
     return FormData.fromMap(data);
+  }
+
+  String getEventId() {
+    return eventId!;
   }
 
   @override

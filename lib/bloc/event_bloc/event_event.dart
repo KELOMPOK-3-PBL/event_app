@@ -46,3 +46,18 @@ class EventProposed extends EventEvent {
   @override
   List<Object> get props => [eventData, token];
 }
+
+class EventUpdateData extends EventEvent {
+  final EventDataModel eventData;
+  final String token;
+  final String eventId;
+
+  const EventUpdateData({
+    required this.eventData,
+    required this.token,
+    required this.eventId,
+  });
+
+  @override
+  List<Object> get props => [eventData, token];
+}

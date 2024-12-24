@@ -386,14 +386,12 @@ class ExploreBody extends StatelessWidget {
                             25, // Lebar untuk 2 kolom
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              route,
-                              arguments: {
-                                'event_data': events[index],
-                                'current_role': currentRole
-                              },
-                            );
+                            if (currentRole == 'Superadmin' ||
+                                currentRole == 'Admin') {
+                              showReviewConfirmationDialog(context, index);
+                            } else {
+                              pushPage(context, index);
+                            }
                           },
                           child: ExploreCard(
                             currentRole: currentRole,
@@ -411,6 +409,58 @@ class ExploreBody extends StatelessWidget {
           // ),
         ],
       ),
+    );
+  }
+
+  Future<String?> showReviewConfirmationDialog(
+      BuildContext context, int index) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) => Dialog(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                  'Want to review ${events[index].category}: ${events[index].title}?'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                        context,
+                        route,
+                        arguments: {
+                          'event_data': events[index],
+                          'current_role': currentRole
+                        },
+                      );
+                    },
+                    child: const Text('Confirm'),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void pushPage(BuildContext context, int index) {
+    Navigator.pushNamed(
+      context,
+      route,
+      arguments: {'event_data': events[index], 'current_role': currentRole},
     );
   }
 }

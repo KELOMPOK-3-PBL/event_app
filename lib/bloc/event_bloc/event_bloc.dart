@@ -153,7 +153,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     try {
       final proposeResponse =
           await _eventRepository.proposeEvent(event.token, event.eventData);
-      if (proposeResponse['code'] == 200) {
+      if (proposeResponse['code'] == 201) {
         emit(EventProposeSuccess(
             message: proposeResponse['message'],
             eventData: proposeResponse['event_data']));

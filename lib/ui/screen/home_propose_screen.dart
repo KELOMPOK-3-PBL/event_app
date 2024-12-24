@@ -103,6 +103,9 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
               FetchUserById(token: token, userId: proposeUID),
             ),
         ),
+        BlocProvider(
+          create: (context) => CategoryBloc()..add(CategoryReadData()),
+        ),
       ],
       child: Scaffold(
         body: DoubleBackToCloseApp(
@@ -125,13 +128,26 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
             color: UIColor.propose,
             borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
-          child: IconButton(
-            onPressed: () =>
-                Navigator.pushNamed(context, AppRouter.formProposeEventRoute),
-            icon: Icon(
-              UIconsPro.solidRounded.file_upload,
-              color: UIColor.solidWhite,
-            ),
+          child: BlocBuilder<CategoryBloc, CategoryState>(
+            builder: (context, state) {
+              CategoryModel? categories;
+              if (state is CategoryLoaded) categories = state.categoryData;
+              return IconButton(
+                onPressed: () {
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (_) {
+                      Navigator.pushNamed(
+                          context, AppRouter.formProposeEventRoute,
+                          arguments: categories);
+                    },
+                  );
+                },
+                icon: Icon(
+                  UIconsPro.solidRounded.file_upload,
+                  color: UIColor.solidWhite,
+                ),
+              );
+            },
           ),
         ),
         bottomNavigationBar: BottomNavbarPropose(
@@ -193,9 +209,12 @@ class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
             BlocProvider.value(
               value: context.read<UserBloc>(),
             ),
-            BlocProvider(
-              create: (context) => CategoryBloc()..add(CategoryReadData()),
-            ),
+            BlocProvider.value(
+              value: context.read<CategoryBloc>(),
+            )
+            // BlocProvider(
+            //   create: (context) => CategoryBloc()..add(CategoryReadData()),
+            // ),
           ],
           child: HomeExplorePage(token: widget.token),
         );

@@ -68,8 +68,8 @@ class EventProvider {
       );
 
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
-      dio.interceptors
-          .add(LogInterceptor(responseBody: true, requestBody: true));
+      // dio.interceptors
+      //     .add(LogInterceptor(responseBody: true, requestBody: true));
 
       return rawResponse;
     } on DioException catch (e) {

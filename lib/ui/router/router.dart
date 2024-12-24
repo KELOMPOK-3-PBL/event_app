@@ -125,20 +125,24 @@ class AppRouter {
         searchQuery: searchQuery ?? categoryName!,
       );
     },
-    formProposeEventRoute: (context) => MultiBlocProvider(
-          providers: [
-            BlocProvider.value(
-              value: context.read<AuthBloc>(),
-            ),
-            BlocProvider(
-              create: (context) => CategoryBloc()..add(CategoryReadData()),
-            ),
-            BlocProvider(
-              create: (context) => EventBloc(),
-            ),
-          ],
-          child: FormProposeEvent(),
-        ),
+    formProposeEventRoute: (context) {
+      final CategoryModel categoryData =
+          ModalRoute.of(context)!.settings.arguments as CategoryModel;
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+            value: context.read<AuthBloc>(),
+          ),
+          // BlocProvider(
+          //   create: (context) => CategoryBloc()..add(CategoryReadData()),
+          // ),
+          BlocProvider(
+            create: (context) => EventBloc(),
+          ),
+        ],
+        child: FormProposeEvent(categoryData: categoryData),
+      );
+    },
     detailAccount: (context) {
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;

@@ -24,7 +24,6 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     if (state is UsersLoaded) {
       try {
         final currentState = state as UsersLoaded;
-
         // Cek apakah semua data sudah termuat
         if (currentState.hasReachedMax) {
           debugPrint("All users loaded");
@@ -37,7 +36,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         final newUserData = await _userRepository.getUsers(
             event.searchUser, event.token,
             offset: nextPage, limit: limit);
-
+        debugPrint(newUserData.toString());
         if (newUserData.status == 'success' &&
                 newUserData.listUserData!.isEmpty ||
             newUserData.listUserData!.length < limit) {
@@ -61,7 +60,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       // Jika ini adalah permintaan pertama
       try {
         emit(UserLoading());
-
+        debugPrint('Test initial');
         final userData = await _userRepository
             .getUsers(event.searchUser, event.token, limit: limit);
         debugPrint(userData.toString());

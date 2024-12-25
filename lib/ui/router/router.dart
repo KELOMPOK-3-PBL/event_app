@@ -103,7 +103,10 @@ class AppRouter {
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       final EventDataModel eventData = arguments['event_data'];
       // final String currentRole = arguments['current_role'];
-      return DetailEventScreen(data: eventData);
+      return BlocProvider(
+        create: (context) => EventBloc(),
+        child: DetailEventScreen(data: eventData),
+      );
     },
     detailEventApprovalProposeRoute: (context) {
       final Map<String, dynamic> arguments =
@@ -111,9 +114,12 @@ class AppRouter {
       final EventDataModel eventData = arguments['event_data'];
       final String currentRole = arguments['current_role'];
       debugPrint(arguments.toString());
-      return DetailEventApprovalProposeScreen(
-        eventData: eventData,
-        currentRole: currentRole,
+      return BlocProvider(
+        create: (context) => EventBloc(),
+        child: DetailEventApprovalProposeScreen(
+          eventData: eventData,
+          currentRole: currentRole,
+        ),
       );
     },
     searchResultEventRoute: (context) {

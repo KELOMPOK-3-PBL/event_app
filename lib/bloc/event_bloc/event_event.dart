@@ -61,3 +61,16 @@ class EventUpdateData extends EventEvent {
   @override
   List<Object> get props => [eventData, token];
 }
+
+class EventGetByID extends EventEvent {
+  final String token;
+  final String eventId;
+
+  const EventGetByID({
+    required this.token,
+    required this.eventId,
+  });
+
+  @override
+  List<Object> get props => [eventId, token];
+}

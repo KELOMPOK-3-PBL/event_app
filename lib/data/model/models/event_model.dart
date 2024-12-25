@@ -34,6 +34,15 @@ class EventModel extends Equatable {
         message: json['message'],
         data: EventDataModel.fromJson(json['data']['event']),
       );
+
+  factory EventModel.fromJsonSingeEvent({required Map<String, dynamic> json}) =>
+      EventModel(
+        status: json['status'],
+        code: json['code'],
+        message: json['message'],
+        data: EventDataModel.fromJson(json['data']),
+      );
+
   @override
   List<Object?> get props => [status, message, listData, data];
 }

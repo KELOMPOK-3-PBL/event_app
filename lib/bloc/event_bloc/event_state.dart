@@ -17,7 +17,7 @@ class EventUpdated extends EventState {
   const EventUpdated({required this.message});
 }
 
-class EventLoaded extends EventState {
+class EventsListLoaded extends EventState {
   final List<EventDataModel> event;
   final List<EventDataModel>? listEventsCarousel;
   final RequestFilteredEventModel requestEvent;
@@ -25,7 +25,7 @@ class EventLoaded extends EventState {
   // final PathRequestEvents? pathRequest;
   final bool hasReachedMax;
 
-  const EventLoaded({
+  const EventsListLoaded({
     required this.event,
     this.listEventsCarousel,
     // required this.pathRequest,
@@ -38,11 +38,11 @@ class EventLoaded extends EventState {
   List<Object> get props => [event, requestEvent, hasReachedMax];
 }
 
-class EventProposeSuccess extends EventState {
+class EventLoaded extends EventState {
   final EventDataModel eventData;
   final String message;
 
-  const EventProposeSuccess({required this.message, required this.eventData});
+  const EventLoaded({required this.message, required this.eventData});
 }
 
 class EventError extends EventState {

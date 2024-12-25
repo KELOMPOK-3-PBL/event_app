@@ -43,7 +43,7 @@ class CarouselSection extends StatelessWidget {
         //! Carousel Content
         BlocBuilder<EventBloc, EventState>(
           builder: (context, state) {
-            if (state is EventLoaded) {
+            if (state is EventsListLoaded) {
               final eventData = state.listEventsCarousel;
               return CarouselItems(
                   eventData: eventData, route: route, currentRole: currentRole);

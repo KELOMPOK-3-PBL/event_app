@@ -22,6 +22,10 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       _onEventReloadData,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     );
+    on<EventGetByID>(
+      _onEventGetByID,
+      transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
+    );
     on<EventProposed>(
       _onEventProposed,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
@@ -36,9 +40,9 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       EventFetchData event, Emitter<EventState> emit) async {
     late List<EventDataModel> carousel = [];
     // Mengecek apakah sudah ada data yang terambil sebelumnya
-    if (state is EventLoaded) {
+    if (state is EventsListLoaded) {
       try {
-        final currentState = state as EventLoaded;
+        final currentState = state as EventsListLoaded;
         // Mengecek apakah semua event yang ada di database sudah termuat
         if ((currentState as dynamic).hasReachedMax) {
           debugPrint("Max Loaded");
@@ -58,14 +62,14 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         // Menentukan apakah data event di DB sudah termuat semua atau belum
         if (newEvents.listData!.isEmpty ||
             newEvents.listData!.length < event.requestEvent.postLimit!) {
-          emit(EventLoaded(
+          emit(EventsListLoaded(
               event: combinedEvents,
               listEventsCarousel: currentState.listEventsCarousel ?? [],
               requestEvent: event.requestEvent,
               requestEventCarousel: event.requestEventCarousel,
               hasReachedMax: true));
         } else {
-          emit(EventLoaded(
+          emit(EventsListLoaded(
               event: combinedEvents,
               listEventsCarousel: currentState.listEventsCarousel ?? [],
               requestEvent: event.requestEvent,
@@ -96,14 +100,14 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         }
         // Menentukan apakah data event di DB sudah termuat semua atau belum
         if (events.listData!.length < event.requestEvent.postLimit!) {
-          emit(EventLoaded(
+          emit(EventsListLoaded(
               event: events.listData!,
               listEventsCarousel: carousel,
               requestEvent: event.requestEvent,
               requestEventCarousel: event.requestEventCarousel,
               hasReachedMax: true));
         } else {
-          emit(EventLoaded(
+          emit(EventsListLoaded(
               event: events.listData!,
               listEventsCarousel: carousel,
               requestEvent: event.requestEvent,
@@ -136,14 +140,14 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       }
       // Menentukan apakah data event di DB sudah termuat semua atau belum
       if (events.listData!.length < event.requestEvent.postLimit!) {
-        emit(EventLoaded(
+        emit(EventsListLoaded(
             event: events.listData!,
             listEventsCarousel: carousel,
             requestEvent: event.requestEvent,
             requestEventCarousel: event.requestEventCarousel,
             hasReachedMax: true));
       } else {
-        emit(EventLoaded(
+        emit(EventsListLoaded(
             event: events.listData!,
             listEventsCarousel: carousel,
             requestEvent: event.requestEvent,
@@ -162,7 +166,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       final proposeResponse =
           await _eventRepository.proposeEvent(event.token, event.eventData);
       if (proposeResponse.status == 'success' && proposeResponse.code == 201) {
-        emit(EventProposeSuccess(
+        emit(EventLoaded(
             message: proposeResponse.message,
             eventData: proposeResponse.data!));
       } else {
@@ -181,11 +185,28 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       final updateResponse = await _eventRepository.updateEvent(
           event.eventId, event.token, event.eventData);
       if (updateResponse['code'] == 200) {
-        emit(EventProposeSuccess(
+        emit(EventLoaded(
             message: updateResponse['message'],
             eventData: updateResponse['event_data']));
       } else {
         emit(EventError(updateResponse['message']));
+      }
+    } catch (error) {
+      emit(EventError(error.toString()));
+    }
+  }
+
+  Future<void> _onEventGetByID(
+      EventGetByID event, Emitter<EventState> emit) async {
+    emit(EventLoading());
+    try {
+      final eventData = await _eventRepository.getEventByIDFromAPI(
+          token: event.token, eventId: event.eventId);
+      if (eventData.code == 200) {
+        emit(EventLoaded(
+            message: eventData.message, eventData: eventData.data!));
+      } else {
+        emit(EventError("Error ${eventData.code}: ${eventData.message}"));
       }
     } catch (error) {
       emit(EventError(error.toString()));

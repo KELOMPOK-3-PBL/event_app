@@ -74,7 +74,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   Widget build(BuildContext context) {
     return BlocListener<EventBloc, EventState>(
       listener: (context, state) {
-        if (state is EventLoaded) {
+        if (state is EventsListLoaded) {
           //! Mengambil data request event
           requestFilteredEventApproval = state.requestEvent;
           debugPrint("Cek Request ${state.requestEvent.adminUserId}");
@@ -146,7 +146,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else if (state is EventLoaded) {
+                      } else if (state is EventsListLoaded) {
                         final events = state.event;
                         if (events.isEmpty) {
                           return const Center(

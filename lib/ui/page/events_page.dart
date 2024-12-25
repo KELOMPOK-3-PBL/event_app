@@ -94,7 +94,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
   Widget build(BuildContext context) {
     return BlocListener<EventBloc, EventState>(
       listener: (context, state) {
-        if (state is EventLoaded) {
+        if (state is EventsListLoaded) {
           //! Mengambil data request event
           requestFilteredEvent = state.requestEvent;
         } else if (state is EventError) {
@@ -164,7 +164,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else if (state is EventLoaded) {
+                      } else if (state is EventsListLoaded) {
                         final events = state.event;
                         if (events.isEmpty) {
                           return Center(

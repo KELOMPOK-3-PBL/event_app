@@ -54,4 +54,14 @@ class EventRepository {
       throw Exception('API REQUEST FAILED');
     }
   }
+
+  Future<EventModel> getEventByIDFromAPI(
+      {required String token, required String eventId}) async {
+    try {
+      final response = await _eventProvider.getEventByID(token, eventId);
+      return EventModel.fromJsonSingeEvent(json: response.data);
+    } catch (_) {
+      throw Exception('API REQUEST FAILED');
+    }
+  }
 }

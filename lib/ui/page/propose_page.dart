@@ -63,7 +63,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
 
   void _onScroll() {
     if (_isBottom &&
-        !(context.read<EventBloc>().state as EventLoaded).hasReachedMax) {
+        !(context.read<EventBloc>().state as EventsListLoaded).hasReachedMax) {
       //! mengatasi perubahan request ketika di scroll
       // mengambil request yang sudah diubah current statenya
       // requestFilteredEvent =
@@ -105,7 +105,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
         //         requestEvent: requestFilteredEvent,
         //       ));
         // } else
-        if (state is EventLoaded) {
+        if (state is EventsListLoaded) {
           requestFilteredEvent = state.requestEvent;
           // Navigator.of(context).pop();
         } else if (state is EventError) {
@@ -171,7 +171,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else if (state is EventLoaded) {
+                      } else if (state is EventsListLoaded) {
                         final events = state.event;
                         if (events.isEmpty) {
                           return const Center(

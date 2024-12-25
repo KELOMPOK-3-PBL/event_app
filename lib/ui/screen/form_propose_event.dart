@@ -235,7 +235,7 @@ class FormProposeEventState extends State<FormProposeEvent> {
           SliverToBoxAdapter(
             child: BlocConsumer<EventBloc, EventState>(
               listener: (context, state) {
-                if (state is EventProposeSuccess) {
+                if (state is EventLoaded) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Propose event success!")));
                   WidgetsBinding.instance.addPostFrameCallback((_) {

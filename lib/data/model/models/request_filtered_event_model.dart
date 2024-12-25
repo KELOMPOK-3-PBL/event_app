@@ -1,8 +1,6 @@
 part of '../model.dart';
 
-class RequestFilteredEventModel
-//  extends Equatable
-{
+class RequestFilteredEventModel extends Equatable {
   final String token;
   final int currentIndex;
   // final String? proposeUserId;

@@ -153,7 +153,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                   ),
                   BlocConsumer<EventBloc, EventState>(
                     listener: (context, state) {
-                      if (state is EventLoaded) {
+                      if (state is EventsListLoaded) {
                         requestFilteredEvent = state.requestEvent;
                         requestFilteredEventCarousel =
                             state.requestEventCarousel!;
@@ -169,7 +169,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                         return Center(
                           child: CircularProgressIndicator(),
                         );
-                      } else if (state is EventLoaded) {
+                      } else if (state is EventsListLoaded) {
                         return ExploreBody(
                             hasReachedMax: state.hasReachedMax,
                             events: state.event,

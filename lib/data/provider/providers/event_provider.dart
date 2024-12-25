@@ -19,11 +19,6 @@ class EventProvider {
         ..removeWhere((key, value) =>
             value == null); // Menghapus parameter yang bernilai null
 
-      // mengatur default options
-      // var options = Options(
-      //   contentType: 'application/json',
-      // );
-
       // memperbarui path dan options bila permintaan untuk mengambil allEvents
       if (pathRequest == PathRequestEvents.events) {
         // set header untuk auth token
@@ -33,9 +28,8 @@ class EventProvider {
         path = event;
       }
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
-      // dio.interceptors
-      //     .add(LogInterceptor(responseBody: true, requestBody: true));
-      dio.options.contentType = "application/json";
+      dio.interceptors
+          .add(LogInterceptor(responseBody: true, requestBody: true));
 
       // Melakukan permintaan GET dengan query parameters
       final Response rawResponse = await dio.get(

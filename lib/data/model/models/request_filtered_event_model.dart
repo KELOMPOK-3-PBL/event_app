@@ -1,6 +1,8 @@
 part of '../model.dart';
 
-class RequestFilteredEventModel extends Equatable {
+class RequestFilteredEventModel
+//  extends Equatable
+{
   final String token;
   final int currentIndex;
   // final String? proposeUserId;
@@ -36,6 +38,7 @@ class RequestFilteredEventModel extends Equatable {
     String? token,
     int? currentIndex,
     int? postLimit,
+    String? adminUserId,
     String? eventId,
     String? status,
     String? category,
@@ -49,6 +52,7 @@ class RequestFilteredEventModel extends Equatable {
       token: token ?? this.token,
       currentIndex: currentIndex ?? this.currentIndex,
       postLimit: postLimit ?? this.postLimit,
+      adminUserId: adminUserId ?? this.adminUserId,
       eventId: eventId ?? this.eventId,
       status: status ?? this.status,
       category: category ?? this.category,
@@ -62,11 +66,11 @@ class RequestFilteredEventModel extends Equatable {
 
   // Convert the CategoryModel object to a JSON map
   Map<String, dynamic> toJson() {
-    return {
+    final data = {
       'offset': currentIndex,
-      // 'propose_uid': proposeUserId,
       'admin_user_id': adminUserId,
       'limit': postLimit,
+      'event_id': eventId,
       'status': status,
       'category': category,
       'date_from': dateFrom,
@@ -75,6 +79,11 @@ class RequestFilteredEventModel extends Equatable {
       'sortBy': sortBy,
       'sort_order': sortOrder,
     };
+
+    // Menghapus semua nilai `null`
+    data.removeWhere((key, value) => value == null);
+
+    return data;
   }
 
   @override

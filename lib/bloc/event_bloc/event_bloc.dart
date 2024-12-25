@@ -44,6 +44,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
           debugPrint("Max Loaded");
           return;
         }
+        debugPrint(event.requestEvent.toString());
         // Mengambil jumah index yang termuat saat ini
         final currentIndex = currentState.event.length;
         // Mengambil data event baru berdasarkan index yang termuat saat ini dari API
@@ -51,6 +52,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
           requestEvent: event.requestEvent.copyWith(currentIndex: currentIndex),
           pathRequest: event.pathRequest,
         );
+
         // Menggabungkan data event yang sudah dengan event baru
         final combinedEvents = currentState.event + newEvents.listData!;
         // Menentukan apakah data event di DB sudah termuat semua atau belum
@@ -76,6 +78,8 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     }
     // Mengambil data untuk pertama kalinya
     else {
+      debugPrint("Initial Event");
+
       try {
         // loading ketika halaman baru saja dibuka
         emit(EventLoading());

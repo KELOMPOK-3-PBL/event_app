@@ -48,7 +48,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
 
     // mencari role untuk menyesuaikan output
     if (authState is AuthAuthenticated) {
-      currentRole = authState.currentRole!;
+      currentRole = authState.currentRole ?? authState.authData.data!.roles[0];
     }
 
     // debugPrint(authState.toString());
@@ -119,7 +119,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
           username = state.userData.username;
           userid = state.userData.userid;
         }
-        debugPrint(state.toString());
+        // debugPrint(state.toString());
         // },
         // child:
         // builder: (context, state) {
@@ -157,6 +157,8 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                         requestFilteredEvent = state.requestEvent;
                         requestFilteredEventCarousel =
                             state.requestEventCarousel!;
+                        // debugPrint(
+                        //     "Cek Request ${state.requestEvent.adminUserId.toString()}");
                       } else if (state is EventError) {
                         debugPrint("load error");
                         showError(context, state.message);

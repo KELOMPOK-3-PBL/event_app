@@ -144,10 +144,6 @@ class EventDataModel extends Equatable {
     return FormData.fromMap(data);
   }
 
-  String getEventId() {
-    return eventId!;
-  }
-
   @override
   List<Object?> get props => [
         eventId,

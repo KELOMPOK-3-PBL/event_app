@@ -19,7 +19,6 @@ class EventRepository {
         ); // Simulate network delay
         EventModel dataEvent = EventModel.fromJson(json: data);
 
-        debugPrint(dataEvent.toString());
         return dataEvent;
         // } else if (response.statusCode == 404 || data["status"] == 'error') {
         //   return EventModel.fromJson(json: data);

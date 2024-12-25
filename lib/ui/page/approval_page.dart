@@ -25,8 +25,9 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
   // late final String token;
 
   //! Updated request
-  late RequestFilteredEventModel requestFilteredEvent;
+  late RequestFilteredEventModel requestFilteredEventApproval;
   String? currentRole;
+  String? userId;
 
   @override
   void initState() {
@@ -37,6 +38,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
 
     if (authState is AuthAuthenticated) {
       currentRole = authState.currentRole!;
+      userId = authState.authData.data!.userId;
     }
   }
 
@@ -49,12 +51,13 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
 
   void _onScroll() {
     if (_isBottom
-        // && !(context.read<EventBloc>().state as EventAllLoaded).hasReachedMax
+        // && !(context.read<EventBloc>().state as EventLoaded).hasReachedMax
         ) {
       //! mengatasi perubahan request ketika di scroll
+      debugPrint("User ID: ${requestFilteredEventApproval.adminUserId}");
       context.read<EventBloc>().add(
             EventFetchData(
-              requestEvent: requestFilteredEvent,
+              requestEvent: requestFilteredEventApproval,
               pathRequest: PathRequestEvents.events,
             ),
           );
@@ -73,7 +76,8 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
       listener: (context, state) {
         if (state is EventLoaded) {
           //! Mengambil data request event
-          requestFilteredEvent = state.requestEvent;
+          requestFilteredEventApproval = state.requestEvent;
+          debugPrint("Cek Request ${state.requestEvent.adminUserId}");
         } else if (state is EventError) {
           debugPrint("load error");
           showError(context, state.message);
@@ -81,11 +85,13 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
       },
       child: RefreshIndicator(
         onRefresh: () async {
+          debugPrint("Reload Page");
+
           context.read<EventBloc>().add(
                 EventReloadData(
                     requestEvent: RequestFilteredEventModel(
-                      token: requestFilteredEvent.token,
-                      adminUserId: requestFilteredEvent.adminUserId,
+                      token: requestFilteredEventApproval.token,
+                      adminUserId: requestFilteredEventApproval.adminUserId,
                     ),
                     pathRequest: PathRequestEvents.events),
               );

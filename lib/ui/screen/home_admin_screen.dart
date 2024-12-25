@@ -199,9 +199,10 @@ class _HomeTabPageState extends State<_HomeTabPage>
             ..add(
               EventFetchData(
                 requestEvent: RequestFilteredEventModel(
-                  token: widget.token,
-                  adminUserId: widget.adminUID,
-                ),
+                    token: widget.token,
+                    adminUserId: widget.adminUID,
+                    postLimit: 5,
+                    currentIndex: 0),
                 pathRequest: PathRequestEvents.events,
               ),
             ),

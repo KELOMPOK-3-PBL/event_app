@@ -443,7 +443,8 @@ class ExploreBody extends StatelessWidget {
                         route,
                         arguments: {
                           'event_data': events[index],
-                          'current_role': currentRole
+                          'current_role': currentRole,
+                          // 'token': token,
                         },
                       );
                     },

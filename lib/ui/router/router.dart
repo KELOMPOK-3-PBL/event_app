@@ -99,24 +99,39 @@ class AppRouter {
     detailEventRoute: (context) {
       // final EventDataModel arguments =
       //     ModalRoute.of(context)!.settings.arguments as EventDataModel;
+      String? token;
+      final authState = context.read<AuthBloc>().state;
+      if (authState is AuthAuthenticated) {
+        token = authState.authData.token;
+      }
+
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       final EventDataModel eventData = arguments['event_data'];
       // final String currentRole = arguments['current_role'];
       return BlocProvider(
-        create: (context) => EventBloc(),
-        child: DetailEventScreen(data: eventData),
+        create: (context) => EventBloc()
+          ..add(EventGetByID(token: token!, eventId: eventData.eventId!)),
+        child: DetailEventScreen(token: token!, data: eventData),
       );
     },
     detailEventApprovalProposeRoute: (context) {
+      String? token;
+      final authState = context.read<AuthBloc>().state;
+      if (authState is AuthAuthenticated) {
+        token = authState.authData.token;
+      }
+
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       final EventDataModel eventData = arguments['event_data'];
       final String currentRole = arguments['current_role'];
       debugPrint(arguments.toString());
       return BlocProvider(
-        create: (context) => EventBloc(),
+        create: (context) => EventBloc()
+          ..add(EventGetByID(token: token!, eventId: eventData.eventId!)),
         child: DetailEventApprovalProposeScreen(
+          token: token!,
           eventData: eventData,
           currentRole: currentRole,
         ),

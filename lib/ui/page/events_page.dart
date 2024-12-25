@@ -32,6 +32,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
   //! Updated request
   late RequestFilteredEventModel requestFilteredEvent;
   String? currentRole;
+  String? token;
 
   @override
   void initState() {
@@ -42,6 +43,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
     // final roles = .authData.data?.roles;
     if (authState is AuthAuthenticated) {
       currentRole = authState.currentRole!;
+      token = authState.authData.token!;
     }
     // token =
     //     (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
@@ -198,7 +200,8 @@ class _HomeEventsPageState extends State<HomeEventsPage>
                                     Navigator.pushNamed(
                                         context, AppRouter.detailEventRoute,
                                         arguments: {
-                                          'event_data': events[index]
+                                          'event_data': events[index],
+                                          'token': token,
                                         });
                                     // context
                                     //     .read<EventBloc>()

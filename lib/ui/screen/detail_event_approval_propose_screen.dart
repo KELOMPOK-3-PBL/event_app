@@ -1,6 +1,8 @@
 import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/event_bloc/event_bloc.dart';
 import '../navigation/button_admin_update_event.dart';
 import '../navigation/button_propose_update_event.dart';
 import '../section/detail_event_content_section.dart';
@@ -9,8 +11,10 @@ import '../theme/ui_colors.dart';
 class DetailEventApprovalProposeScreen extends StatefulWidget {
   final EventDataModel eventData;
   final String currentRole;
+  final String token;
   const DetailEventApprovalProposeScreen({
     super.key,
+    required this.token,
     required this.eventData,
     required this.currentRole,
   });
@@ -172,22 +176,37 @@ class DetailEventApprovalProposeScreenState
 
   @override
   Widget build(BuildContext context) {
-    final data = widget.eventData;
+    EventDataModel? data = widget.eventData;
 
     return Scaffold(
       backgroundColor: UIColor.white,
-      body: CustomScrollView(
-        slivers: [
-          AppBarDetailEvent(
-            data: data,
-            title: 'Review Event',
-          ),
-          BodyDetailEvent(
-            textEditingController: adminNoteController,
-            data: data,
-            forEventPage: false,
-          ),
-        ],
+      body: BlocBuilder<EventBloc, EventState>(
+        builder: (context, state) {
+          if (state is EventLoaded) {
+            data = state.eventData;
+          }
+
+          return RefreshIndicator(
+            onRefresh: () async {
+              context.read<EventBloc>().add(
+                    EventGetByID(token: widget.token, eventId: data!.eventId!),
+                  );
+            },
+            child: CustomScrollView(
+              slivers: [
+                AppBarDetailEvent(
+                  data: data!,
+                  title: 'Review Event',
+                ),
+                BodyDetailEvent(
+                  textEditingController: adminNoteController,
+                  data: data!,
+                  forEventPage: false,
+                ),
+              ],
+            ),
+          );
+        },
       ),
       bottomNavigationBar: (widget.currentRole == 'Propose')
           ? ButtonProposeUpdateEvent(

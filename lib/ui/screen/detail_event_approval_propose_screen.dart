@@ -1,6 +1,7 @@
 import 'package:event_proposal_app/data/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../bloc/event_bloc/event_bloc.dart';
 import '../navigation/button_admin_update_event.dart';
@@ -174,6 +175,54 @@ class DetailEventApprovalProposeScreenState
     );
   }
 
+  // Fungsi untuk menampilkan QR
+  // Fungsi untuk menampilkan QR
+  void _showQR(String eventId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Attendance QR"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Participants are asked to scan to check attendance',
+                style: TextStyle(fontSize: 12),
+              ),
+              SizedBox(height: 10),
+              Center(
+                child: QrImageView(
+                  data: eventId,
+                  version: QrVersions.auto,
+                  size: 200.0,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Close"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Tambahkan fungsi download QR di sini
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+              ),
+              child: Text("Download"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     EventDataModel? data = widget.eventData;
@@ -210,6 +259,9 @@ class DetailEventApprovalProposeScreenState
       ),
       bottomNavigationBar: (widget.currentRole == 'Propose')
           ? ButtonProposeUpdateEvent(
+              showQR: () {
+                _showQR(data!.eventId!);
+              },
               changeStatus: _changeStatus,
               showEditNoteDialog: _showEditNoteDialog)
           : ButtonAdminUpdateEvent(

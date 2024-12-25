@@ -6,11 +6,13 @@ import '../theme/ui_colors.dart';
 class ButtonProposeUpdateEvent extends StatelessWidget {
   final VoidCallback changeStatus;
   final VoidCallback showEditNoteDialog;
+  final VoidCallback showQR;
 
   const ButtonProposeUpdateEvent({
     super.key,
     required this.changeStatus,
     required this.showEditNoteDialog,
+    required this.showQR,
   });
 
   @override
@@ -37,7 +39,7 @@ class ButtonProposeUpdateEvent extends StatelessWidget {
                   Expanded(
                     // flex: 5,
                     child: ElevatedButton(
-                      onPressed: changeStatus,
+                      onPressed: showQR,
                       style: ElevatedButton.styleFrom(
                           backgroundColor: UIColor.admin),
                       child: LayoutBuilder(

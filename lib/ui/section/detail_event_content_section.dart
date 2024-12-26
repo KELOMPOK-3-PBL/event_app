@@ -1,4 +1,5 @@
 import 'package:event_proposal_app/data/model/model.dart';
+import 'package:event_proposal_app/ui/widget/show_error.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:uicons_pro/uicons_pro.dart';
@@ -311,6 +312,78 @@ class MainInfoSection extends StatelessWidget {
   final EventDataModel data;
   final bool forEventPage;
 
+  // Fungsi untuk menampilkan dialog konfirmasi
+  Future<bool> showConfirmationDialog(BuildContext context, String url) async {
+    return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Confirm'),
+              content: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'You will be redirected to an external link:\n',
+                    ),
+                    TextSpan(
+                      text: url,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(color: UIColor.typoBlack),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                  ),
+                  child: const Text(
+                    'Continue',
+                    style: TextStyle(color: UIColor.solidWhite),
+                  ),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
+
+  // Fungsi untuk membuka URL
+  Future<void> launchUrlWithErrorHandling(
+      BuildContext context, String url) async {
+    try {
+      final uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        if (!context.mounted) return;
+        final shouldLaunch = await showConfirmationDialog(context, url);
+        if (shouldLaunch) {
+          await launchUrl(
+            uri,
+            mode: LaunchMode.externalApplication,
+          );
+          debugPrint('URL launched successfully');
+        }
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      debugPrint('Error launching URL: $e');
+      if (context.mounted) {
+        showError(context, 'Failed to open link: $e');
+        // showError(context, 'Gagal membuka link: $e');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -445,24 +518,7 @@ class MainInfoSection extends StatelessWidget {
             onTap: () async {
               debugPrint(data.toString());
               if (data.schedule != null) {
-                final url = data.schedule!;
-                debugPrint('Attempting to launch URL: $url');
-                try {
-                  if (await canLaunchUrl(Uri.parse(url))) {
-                    await launchUrl(
-                      Uri.parse(url),
-                      mode: LaunchMode.externalApplication,
-                    );
-                    debugPrint('URL launched successfully');
-                  } else {
-                    // debugPrint('Could not launch URL: $url');
-                    throw 'Could not launch $url';
-                  }
-                } catch (e) {
-                  debugPrint('Error launching URL: $e');
-                }
-                // } else {
-                //   debugPrint('URL is null or empty');
+                await launchUrlWithErrorHandling(context, data.schedule!);
               }
             },
             child: Container(

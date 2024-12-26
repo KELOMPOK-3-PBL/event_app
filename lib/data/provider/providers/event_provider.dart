@@ -6,8 +6,8 @@ class EventProvider {
   final dio = getIt<Dio>();
 
   // Inisialisasi path
-  static const String event = '/events.php';
-  static const String availableEvent = '/available_events.php';
+  static const String event = '/events';
+  static const String availableEvent = '/available_events';
 
   Future<Response> getFilteredEvents(
       RequestFilteredEventModel request, PathRequestEvents pathRequest) async {

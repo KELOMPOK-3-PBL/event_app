@@ -19,8 +19,11 @@ class AuthRepository {
       if (data["status"] == 'success') {
         //! Simpan waktu login dan waktu sesi berakhir
         saveUserPreferences(email, password, rememberMe);
-        saveToken(data['data']['token']);
-        token = data['data']['token'];
+        // saveToken(data['data']['token']);
+        // token = data['data']['token'];
+        saveToken(data['data']['access_token']);
+        token = data['data']['access_token'];
+
         payload = await decodeToken(token!);
       }
       return AuthModel.fromJson(json: data, token: token, payload: payload);

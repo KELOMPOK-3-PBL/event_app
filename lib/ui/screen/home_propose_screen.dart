@@ -131,7 +131,10 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
           child: BlocBuilder<CategoryBloc, CategoryState>(
             builder: (context, state) {
               CategoryModel? categories;
-              if (state is CategoryLoaded) categories = state.categoryData;
+              if (state is CategoryLoaded) {
+                categories = state.categoryData;
+                // debugPrint(state.categoryData.categories.toString());
+              }
               return IconButton(
                 onPressed: () {
                   WidgetsBinding.instance.addPostFrameCallback(

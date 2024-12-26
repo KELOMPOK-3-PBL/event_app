@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
 import '../widget/card_info.dart';
+import '../widget/explore_push_action.dart';
 
 class CarouselSection extends StatelessWidget {
   final String currentRole;
@@ -91,17 +92,8 @@ class CarouselItems extends StatelessWidget {
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
-                // context
-                //     .read<EventBloc>()
-                //     .add(EventCardPressed(eventData![index]));
-                Navigator.pushNamed(
-                  context,
-                  route,
-                  arguments: {
-                    'event_data': eventData![index],
-                    'current_role': currentRole
-                  },
-                );
+                explorePushAction(
+                    context, route, eventData![index], currentRole);
               },
               child: SizedBox(
                 width: MediaQuery.of(context).size.width - 40,

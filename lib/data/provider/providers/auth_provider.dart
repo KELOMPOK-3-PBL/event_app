@@ -7,7 +7,7 @@ class AuthProvider {
     try {
       dio.options.contentType = "application/json";
       final Response rawResponse = await dio.post(
-        '/auth.php',
+        '/auth',
         // options: Options(contentType: 'application/json'),
         data: jsonEncode({
           'email': email,

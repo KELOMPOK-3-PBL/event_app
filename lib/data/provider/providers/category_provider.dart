@@ -7,7 +7,7 @@ class CategoryProvider {
     try {
       dio.options.contentType = "application/json";
       // request get ke API
-      final Response rawResponse = await dio.get('/categories.php');
+      final Response rawResponse = await dio.get('/categories');
 
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
       // dio.interceptors

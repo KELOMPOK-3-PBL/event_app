@@ -10,15 +10,15 @@ import 'package:uicons_pro/uicons_pro.dart';
 
 import '../theme/ui_colors.dart';
 
-class FormProposeEvent extends StatefulWidget {
-  const FormProposeEvent({super.key, required this.categoryData});
+class FormEditEvent extends StatefulWidget {
+  const FormEditEvent({super.key, required this.categoryData});
   final CategoryModel categoryData;
 
   @override
-  FormProposeEventState createState() => FormProposeEventState();
+  FormEditEventState createState() => FormEditEventState();
 }
 
-class FormProposeEventState extends State<FormProposeEvent> {
+class FormEditEventState extends State<FormEditEvent> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _titleController = TextEditingController();

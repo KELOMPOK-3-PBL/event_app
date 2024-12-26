@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../data/provider/provider.dart';
@@ -45,10 +45,10 @@ class EventBloc extends Bloc<EventEvent, EventState> {
         final currentState = state as EventsListLoaded;
         // Mengecek apakah semua event yang ada di database sudah termuat
         if ((currentState as dynamic).hasReachedMax) {
-          debugPrint("Max Loaded");
+          // debugPrint("Max Loaded");
           return;
         }
-        debugPrint(event.requestEvent.toString());
+        // debugPrint(event.requestEvent.toString());
         // Mengambil jumah index yang termuat saat ini
         final currentIndex = currentState.event.length;
         // Mengambil data event baru berdasarkan index yang termuat saat ini dari API
@@ -82,7 +82,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     }
     // Mengambil data untuk pertama kalinya
     else {
-      debugPrint("Initial Event");
+      // debugPrint("Initial Event");
 
       try {
         // loading ketika halaman baru saja dibuka

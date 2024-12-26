@@ -2,7 +2,7 @@ part of '../model.dart';
 
 class EventModel extends Equatable {
   final String status;
-  final int code;
+  final int? code;
   final String message;
   final List<EventDataModel>? listData;
   final EventDataModel? data;

@@ -9,6 +9,7 @@ import '../section/explore_quick_category_section.dart';
 import '../section/explore_carousel_section.dart';
 import '../theme/ui_colors.dart';
 import '../widget/card_info.dart';
+import '../widget/explore_push_action.dart';
 import '../widget/search_widget.dart';
 import '../widget/show_error.dart';
 
@@ -340,75 +341,44 @@ class ExploreBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // SizedBox(
-          //   height: 16,
-          // ),
-          // QuickCategorySection(),
-          //! Carousel Section
-          // CarouselSection(
-          //     currentRole: currentRole,
-          //     eventData: listEventsCarousel ?? [],
-          //     route: route),
-
-          // Padding(
-          //   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-          //   child: Text(
-          //     (currentRole == 'Admin' || currentRole == 'Superadmin')
-          //         ? 'Events Available'
-          //         : "Events Near You",
-          //     textAlign: TextAlign.right,
-          //     style: const TextStyle(
-          //         color: UIColor.typoBlack,
-          //         fontSize: 16,
-          //         fontWeight: FontWeight.w800),
-          //   ),
-          // ),
-
           //! Events List Card
           Padding(
-              padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
-              child: Wrap(
-                spacing: 10, // Jarak horizontal antar item
-                runSpacing: 10, // Jarak vertikal antar baris
-                children: List.generate(
-                  hasReachedMax ? events.length : events.length + 1,
-                  (index) {
-                    if (index >= events.length) {
-                      return Container(
-                        // width: (MediaQuery.of(context).size.width / 2) -
-                        //     25, // Lebar untuk 2 kolom
-                        padding: const EdgeInsets.only(top: 10, bottom: 20),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+            child: Wrap(
+              spacing: 10, // Jarak horizontal antar item
+              runSpacing: 10, // Jarak vertikal antar baris
+              children: List.generate(
+                hasReachedMax ? events.length : events.length + 1,
+                (index) {
+                  if (index >= events.length) {
+                    return Container(
+                      // width: (MediaQuery.of(context).size.width / 2) -
+                      //     25, // Lebar untuk 2 kolom
+                      padding: const EdgeInsets.only(top: 10, bottom: 20),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else {
+                    return SizedBox(
+                      width: (MediaQuery.of(context).size.width / 2) -
+                          25, // Lebar untuk 2 kolom
+                      child: GestureDetector(
+                        onTap: () {
+                          explorePushAction(
+                              context, route, events[index], currentRole);
+                        },
+                        child: ExploreCard(
+                          currentRole: currentRole,
+                          eventData: events[index],
                         ),
-                      );
-                    } else {
-                      return SizedBox(
-                        width: (MediaQuery.of(context).size.width / 2) -
-                            25, // Lebar untuk 2 kolom
-                        child: GestureDetector(
-                          onTap: () {
-                            if (currentRole == 'Superadmin' ||
-                                currentRole == 'Admin') {
-                              showReviewConfirmationDialog(context, index);
-                            } else {
-                              pushPage(context, index);
-                            }
-                          },
-                          child: ExploreCard(
-                            currentRole: currentRole,
-                            eventData: events[index],
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              )),
-          // ),
-          // const SizedBox(
-          //   height: 14,
-          // ),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ),
+          ),
         ],
       ),
     );

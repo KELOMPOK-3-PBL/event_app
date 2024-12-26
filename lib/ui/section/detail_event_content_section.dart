@@ -516,9 +516,10 @@ class MainInfoSection extends StatelessWidget {
           // ),
           GestureDetector(
             onTap: () async {
-              debugPrint(data.toString());
               if (data.schedule != null) {
                 await launchUrlWithErrorHandling(context, data.schedule!);
+              } else {
+                showError(context, 'No Complete Schedule Found');
               }
             },
             child: Container(

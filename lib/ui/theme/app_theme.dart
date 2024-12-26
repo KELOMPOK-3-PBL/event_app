@@ -9,7 +9,7 @@ class AppTheme {
       snackBarTheme: SnackBarThemeData(
         // backgroundColor: const Color.fromARGB(221, 41, 41, 41),
         backgroundColor: UIColor.typoGray,
-        behavior: SnackBarBehavior.floating,
+        // behavior: SnackBarBehavior.floating,
       ),
       focusColor: UIColor.primary,
       // hintColor: UIColor.typoGray,

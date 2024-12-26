@@ -24,7 +24,7 @@ class UserProvider {
       dio.options.contentType = "application/json";
 
       // request get ke API
-      final Response rawResponse = await dio.get('/users.php',
+      final Response rawResponse = await dio.get('/users',
           // options: Options(contentType: 'application/json', headers: {
           //   'Authorization': 'Bearer $token',
           //   'Cookie': 'jwt=$token',

@@ -7,6 +7,7 @@ class UIColor {
   static const Color typoGray = Color(0xff747688);
   static const Color typoGray2 = Color(0xcccccccc);
   static const Color shadowColor = Colors.black26;
+  static const Color transparentWhite = Color.fromARGB(157, 255, 255, 255);
 
   static const Color solidWhite = Color(0xffffffff);
   static const Color white = Color(0xfff6f6f6);

@@ -98,9 +98,9 @@ class _HomeMemberScreenState extends State<HomeMemberScreen> {
           value: context.read<AuthBloc>(),
         ),
         BlocProvider(
-          create: (context) => UserBloc()
+          create: (context) => UserBloc(authBloc: context.read<AuthBloc>())
             ..add(
-              FetchUserById(token: token, userId: memberUID),
+              FetchUserById(userId: memberUID),
             ),
         ),
       ],
@@ -191,9 +191,8 @@ class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
                 ),
             ),
             BlocProvider(
-              create: (context) => UserBloc()
-                ..add(FetchUserById(
-                    token: widget.token, userId: widget.proposeUID)),
+              create: (context) => UserBloc(authBloc: context.read<AuthBloc>())
+                ..add(FetchUserById(userId: widget.proposeUID)),
             ),
             BlocProvider(
               create: (context) => CategoryBloc()..add(CategoryReadData()),
@@ -229,9 +228,8 @@ class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
         );
       case 3:
         return BlocProvider(
-          create: (context) => UserBloc()
-            ..add(
-                FetchUserById(token: widget.token, userId: widget.proposeUID)),
+          create: (context) => UserBloc(authBloc: context.read<AuthBloc>())
+            ..add(FetchUserById(userId: widget.proposeUID)),
           child: HomeProfilePage(),
         );
       default:

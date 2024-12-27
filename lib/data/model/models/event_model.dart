@@ -32,7 +32,8 @@ class EventModel extends Equatable {
         status: json['status'],
         code: json['code'],
         message: json['message'],
-        data: EventDataModel.fromJson(json['data']['event']),
+        // data: eventData,
+        // data: EventDataModel.fromJson(json['data']['event']),
       );
 
   factory EventModel.fromJsonSingeEvent({required Map<String, dynamic> json}) =>
@@ -171,14 +172,10 @@ class EventDataModel extends Equatable {
       dateStart: json['date_start'],
       dateEnd: json['date_end'],
       schedule: json['schedule'],
-      // adminUserID: json['admin_user_id'],
       adminUsername: json['admin_user'],
       updated: json['updated'],
-      // statusID: json['status'],
       status: json['status'],
       adminNote: json['note'],
-      // invitedPersons: json['invited_users'].toString(),
-
       invitedPersons: (json['invited_users'] as List?)
           ?.map((user) => InvitedPerson.fromJson(user))
           .toList(),
@@ -187,14 +184,10 @@ class EventDataModel extends Equatable {
 
   Future<FormData> toFormDataPropose() async {
     final Map<String, dynamic> data = {
-      // 'event_id': eventId,
       'title': title,
       'date_add': dateAdd,
-      // 'propose_user': proposeUsername,
-      // 'propose_user_avatar': proposeAvatar,
       'category_id': categoryId,
       'description': description,
-      // 'poster': base64Encode(await imagePoster!.readAsBytes()),
       'poster': await MultipartFile.fromFile(imagePoster!.path),
       'location': location,
       'place': place,
@@ -202,11 +195,6 @@ class EventDataModel extends Equatable {
       'date_start': dateStart,
       'date_end': dateEnd,
       'schedule': schedule,
-      // 'admin_user': adminUsername,
-      // 'admin_user_id': adminUserID,
-      // 'updated': updated,
-      // 'status': statusID,
-      // 'status': status,
       'note': adminNote,
       'invited_users': invitedPersons,
     };

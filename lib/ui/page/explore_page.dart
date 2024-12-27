@@ -107,9 +107,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                   ),
                   pathRequest: PathRequestEvents.events),
             );
-        context
-            .read<UserBloc>()
-            .add(ReloadFetchUserById(token: widget.token, userId: userid));
+        context.read<UserBloc>().add(FetchUserById(userId: userid));
         context.read<CategoryBloc>().add(
             (currentRole == 'Superadmin' || currentRole == 'Admin')
                 ? StatusReadData()

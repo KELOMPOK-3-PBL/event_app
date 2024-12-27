@@ -11,7 +11,7 @@ class FetchUser extends UserEvent {
   final String? sort;
   final String? order;
   final String? role;
-  final String token;
+  // final String? token;
 
   FetchUser({
     this.sort,
@@ -19,29 +19,32 @@ class FetchUser extends UserEvent {
     this.role,
     this.searchUser,
     this.userId,
-    required this.token,
+    // this.token,
   });
 
   @override
-  List<Object> get props => [searchUser!, token];
+  List<Object> get props => [searchUser!];
 }
 
 class FetchUserById extends UserEvent {
   final String userId;
-  final String token;
+  // final String token;
 
-  FetchUserById({required this.token, required this.userId});
-
-  @override
-  List<Object> get props => [userId, token];
-}
-
-class ReloadFetchUserById extends UserEvent {
-  final String userId;
-  final String token;
-
-  ReloadFetchUserById({required this.token, required this.userId});
+  FetchUserById({
+    // required this.token,
+    required this.userId,
+  });
 
   @override
-  List<Object> get props => [userId, token];
+  List<Object> get props => [userId];
 }
+
+// class ReloadFetchUserById extends UserEvent {
+//   final String userId;
+//   final String token;
+
+//   ReloadFetchUserById({required this.token, required this.userId});
+
+//   @override
+//   List<Object> get props => [userId, token];
+// }

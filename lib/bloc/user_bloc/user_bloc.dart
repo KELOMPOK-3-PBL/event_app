@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:equatable/equatable.dart';
+import 'package:event_proposal_app/bloc/auth_bloc/auth_bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,115 +15,131 @@ int limit = 10;
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final _userRepository = UserRepository();
+  final AuthBloc authBloc;
 
-  UserBloc() : super(UserInitial()) {
+  UserBloc({required this.authBloc}) : super(UserInitial()) {
     on<FetchUser>(_onFetchUser);
     on<FetchUserById>(_onFetchUserById);
-    on<ReloadFetchUserById>(_onReloadFetchUserById);
+    // on<ReloadFetchUserById>(_onReloadFetchUserById);
   }
 
   Future<void> _onFetchUser(FetchUser event, Emitter<UserState> emit) async {
-    if (state is UsersLoaded) {
-      try {
-        final currentState = state as UsersLoaded;
-        // Cek apakah semua data sudah termuat
-        if (currentState.hasReachedMax) {
-          debugPrint("All users loaded");
-          return;
-        }
+    final authState = authBloc.state;
+    if (authState is AuthAuthenticated) {
+      final token = authState.authData.token;
+      if (state is UsersLoaded) {
+        try {
+          final currentState = state as UsersLoaded;
+          // Cek apakah semua data sudah termuat
+          if (currentState.hasReachedMax) {
+            debugPrint("All users loaded");
+            return;
+          }
 
-        // Ambil data berikutnya berdasarkan indeks halaman saat ini
-        final nextPage = currentState.listUser.length;
-        debugPrint(nextPage.toString());
-        final newUserData = await _userRepository.getUsers(
-            event.searchUser, event.token,
-            offset: nextPage, limit: limit);
-        debugPrint(newUserData.toString());
-        if (newUserData.status == 'success' &&
-                newUserData.listUserData!.isEmpty ||
-            newUserData.listUserData!.length < limit) {
-          // Emit state dengan data gabungan
-          emit(UsersLoaded(
-            listUser: currentState.listUser + newUserData.listUserData!,
-            searchUser: event.searchUser,
-            hasReachedMax: true,
-          ));
-        } else {
-          emit(UsersLoaded(
-            listUser: currentState.listUser + newUserData.listUserData!,
-            searchUser: event.searchUser,
-            hasReachedMax: false,
-          ));
+          // Ambil data berikutnya berdasarkan indeks halaman saat ini
+          final nextPage = currentState.listUser.length;
+          debugPrint(nextPage.toString());
+          final newUserData = await _userRepository.getUsers(
+              event.searchUser, token!,
+              offset: nextPage, limit: limit);
+          debugPrint(newUserData.toString());
+          if (newUserData.status == 'success' &&
+                  newUserData.listUserData!.isEmpty ||
+              newUserData.listUserData!.length < limit) {
+            // Emit state dengan data gabungan
+            emit(UsersLoaded(
+              listUser: currentState.listUser + newUserData.listUserData!,
+              searchUser: event.searchUser,
+              hasReachedMax: true,
+            ));
+          } else {
+            emit(UsersLoaded(
+              listUser: currentState.listUser + newUserData.listUserData!,
+              searchUser: event.searchUser,
+              hasReachedMax: false,
+            ));
+          }
+        } catch (error) {
+          emit(ErrorUserState(errorMessage: error.toString()));
         }
-      } catch (error) {
-        emit(ErrorUserState(errorMessage: error.toString()));
+      } else {
+        // Jika ini adalah permintaan pertama
+        try {
+          emit(UserLoading());
+          debugPrint('Test initial');
+          final userData = await _userRepository
+              .getUsers(event.searchUser, token!, limit: limit);
+          debugPrint(userData.toString());
+          if (userData.listUserData!.length < limit) {
+            emit(UsersLoaded(
+              listUser: userData.listUserData!,
+              searchUser: event.searchUser,
+              hasReachedMax: true,
+            ));
+          } else {
+            emit(UsersLoaded(
+              listUser: userData.listUserData!,
+              searchUser: event.searchUser,
+              hasReachedMax: false,
+            ));
+          }
+        } catch (error) {
+          emit(ErrorUserState(errorMessage: error.toString()));
+        }
       }
     } else {
-      // Jika ini adalah permintaan pertama
-      try {
-        emit(UserLoading());
-        debugPrint('Test initial');
-        final userData = await _userRepository
-            .getUsers(event.searchUser, event.token, limit: limit);
-        debugPrint(userData.toString());
-        if (userData.listUserData!.length < limit) {
-          emit(UsersLoaded(
-            listUser: userData.listUserData!,
-            searchUser: event.searchUser,
-            hasReachedMax: true,
-          ));
-        } else {
-          emit(UsersLoaded(
-            listUser: userData.listUserData!,
-            searchUser: event.searchUser,
-            hasReachedMax: false,
-          ));
-        }
-      } catch (error) {
-        emit(ErrorUserState(errorMessage: error.toString()));
-      }
+      debugPrint('No Auth');
     }
   }
 
   Future<void> _onFetchUserById(
       FetchUserById event, Emitter<UserState> emit) async {
     emit(UserLoading());
-    try {
-      debugPrint("fetch user");
-
-      final userData =
-          await _userRepository.getUserByUID(event.userId, event.token);
-      // debugPrint(userData.toString());
-      if (userData.status == 'success') {
-        emit(UserByUIDLoaded(userData: userData.userData!));
-      } else {
-        emit(ErrorUserState(errorMessage: userData.message));
+    final authState = authBloc.state;
+    if (authState is AuthAuthenticated) {
+      try {
+        final token = authState.authData.token;
+        final userData =
+            await _userRepository.getUserByUID(event.userId, token!);
+        // debugPrint(userData.toString());
+        if (userData.status == 'success') {
+          emit(UserByUIDLoaded(userData: userData.userData!));
+        } else {
+          emit(ErrorUserState(errorMessage: userData.message));
+        }
+      } catch (error) {
+        debugPrint('error model');
+        emit(ErrorUserState(errorMessage: error.toString()));
       }
-    } catch (error) {
-      debugPrint('error model');
-      emit(ErrorUserState(errorMessage: error.toString()));
+    } else {
+      debugPrint('No Auth');
     }
   }
 
-  Future<void> _onReloadFetchUserById(
-      ReloadFetchUserById event, Emitter<UserState> emit) async {
-    // emit(UserLoading());
-    try {
-      debugPrint("fetch user");
+  // Future<void> _onReloadFetchUserById(
+  //     ReloadFetchUserById event, Emitter<UserState> emit) async {
+  //   // emit(UserLoading());
+  //   final authState = authBloc.state;
+  //   if (authState is AuthAuthenticated) {
+  //     try {
+  //       debugPrint("fetch user");
 
-      final userData =
-          await _userRepository.getUserByUID(event.userId, event.token);
-      // debugPrint(userData.toString());
-      if (userData.status == 'success') {
-        emit(UserByUIDLoaded(userData: userData.userData!));
-      } else {
-        emit(ErrorUserState(errorMessage: userData.message));
-      }
-    } catch (error) {
-      debugPrint('error model');
-      emit(ErrorUserState(errorMessage: error.toString()));
-    }
-  }
+  //       final userData =
+  //           await _userRepository.getUserByUID(event.userId, event.token);
+  //       // debugPrint(userData.toString());
+  //       if (userData.status == 'success') {
+  //         emit(UserByUIDLoaded(userData: userData.userData!));
+  //       } else {
+  //         emit(ErrorUserState(errorMessage: userData.message));
+  //       }
+  //     } catch (error) {
+  //       debugPrint('error model');
+  //       emit(ErrorUserState(errorMessage: error.toString()));
+  //     }
+  //   } else {
+  //     debugPrint('No Auth');
+  //   }
+  // }
 
   static value() {}
 }

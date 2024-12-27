@@ -30,13 +30,21 @@ class EventRepository {
     }
   }
 
-  Future<EventModel> proposeEvent(
+  Future<Map<String, dynamic>> proposeEvent(
       String token, EventDataModel eventData) async {
     try {
       final response = await _eventProvider.createEvent(token, eventData);
-      return EventModel.fromJsonPropose(json: response.data);
+
+      // debugPrint(response.data['data'].toString());
+
+      return {
+        'code': response.statusCode,
+        'status': response.data['status'],
+        'message': response.data['message'],
+        'event_id': response.data['data']['event']['event_id'].toString(),
+      };
     } catch (_) {
-      throw Exception('API REQUEST FAILED');
+      throw Exception('Failed to propose event');
     }
   }
 
@@ -45,14 +53,14 @@ class EventRepository {
     try {
       final response =
           await _eventProvider.updateEvent(token, eventData, currentRole);
-      // debugPrint(response.data.toString());
+      debugPrint(response.data);
       return {
         'code': response.statusCode,
         'status': response.data['status'],
         'message': response.data['message'],
       };
     } catch (_) {
-      throw Exception('API REQUEST FAILED');
+      throw Exception('Failed to update event');
     }
   }
 
@@ -63,6 +71,20 @@ class EventRepository {
       return EventModel.fromJsonSingeEvent(json: response.data);
     } catch (_) {
       throw Exception('API REQUEST FAILED');
+    }
+  }
+
+  Future<Map<String, dynamic>> deleteEventFromAPI(
+      {required String token, required String eventId}) async {
+    try {
+      final response = await _eventProvider.deleteEvent(token, eventId);
+      debugPrint(response.toString());
+      return {
+        'message': response.data['message'],
+        'data': response.data['data']
+      };
+    } catch (_) {
+      throw Exception('Failed to delete event');
     }
   }
 }

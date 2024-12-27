@@ -99,9 +99,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           value: context.read<AuthBloc>(),
         ),
         BlocProvider(
-          create: (context) => UserBloc()
+          create: (context) => UserBloc(authBloc: context.read<AuthBloc>())
             ..add(
-              FetchUserById(token: token, userId: adminUID),
+              FetchUserById(userId: adminUID),
             ),
         ),
       ],

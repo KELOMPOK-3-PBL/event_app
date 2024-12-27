@@ -85,17 +85,20 @@ class AppBarDetailEvent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       actions: [
-        if (currentRole == 'Propose')
+        if (currentRole == 'Propose' || currentRole == 'Superadmin')
           Container(
             margin: EdgeInsets.only(right: 6),
             child: IconButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        WidgetStatePropertyAll(UIColor.transparentWhite)),
                 color: UIColor.rejected,
                 onPressed: () {
                   context
                       .read<EventBloc>()
                       .add(EventDeleteData(eventID: data.eventId!));
                 },
-                icon: Icon(UIconsPro.solidRounded.trash)),
+                icon: Icon(UIconsPro.solidRounded.trash_check)),
           )
       ],
       shadowColor: UIColor.shadowColor,
@@ -106,23 +109,33 @@ class AppBarDetailEvent extends StatelessWidget {
       expandedHeight: MediaQuery.of(context).size.width /
           1.4, //! Buat tinggi gambar berbanding dengan lebar layar
       leading: IconButton(
-        color: UIColor.solidWhite,
+        style: ButtonStyle(
+            backgroundColor: WidgetStatePropertyAll(UIColor.transparentWhite)),
+        color: UIColor.typoBlack,
         icon: Icon(UIconsPro.regularRounded.angle_small_left),
         onPressed: () {
           Navigator.pop(context);
         },
       ),
       backgroundColor: UIColor.solidWhite,
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color:
-              // _isScrolled ?
-              // UIColor.typoBlack,
-              // :
-              UIColor.solidWhite,
+      title: Container(
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 7, vertical: 4),
+        decoration: BoxDecoration(
+            color: UIColor.shadowColor,
+            borderRadius: BorderRadius.circular(10)),
+        child: Text(
+          title,
+          style: TextStyle(
+            // backgroundColor: UIColor.solidWhite,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color:
+                // _isScrolled ?
+                // UIColor.typoBlack,
+                // :
+                UIColor.solidWhite,
+          ),
         ),
       ),
       flexibleSpace: FlexibleSpaceBar(

@@ -68,40 +68,35 @@ class EventProvider {
   }
 
   Future<Response> updateEvent(
-      // String? eventId,
-      String token,
-      EventDataModel eventData,
-      String currentRole) async {
-    // debugPrint('Event update request');
-
+      String token, EventDataModel eventData, String currentRole) async {
     try {
       late FormData data;
       final String eventID = eventData.getEventId();
+      debugPrint(eventData.toString());
+      debugPrint(eventID.toString());
+      debugPrint(token.toString());
+      debugPrint(currentRole.toString());
 
       if (currentRole == 'Propose') {
         data = await eventData.toFormDataPropose();
-      } else
-      //  if (currentRole == 'Admin' || currentRole == 'Superadmin')
-      {
+      } else {
         data = await eventData.toFormDataAdmin();
       }
-      // debugPrint('Event Status: ${eventData.statusID}');
+
       dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
       dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
 
       final Response rawResponse = await dio.post(
         event,
         queryParameters: {
-          'event_id':
-              // eventId ??
-              eventID,
+          'event_id': eventID,
         },
         data: data,
       );
 
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
-      // dio.interceptors
-      //     .add(LogInterceptor(responseBody: true, requestBody: true));
+      dio.interceptors
+          .add(LogInterceptor(responseBody: true, requestBody: true));
 
       return rawResponse;
     } on DioException catch (e) {
@@ -117,6 +112,24 @@ class EventProvider {
 
       // Melakukan permintaan GET dengan query parameters
       final Response rawResponse = await dio.get(
+        event,
+        queryParameters: {'event_id': eventId},
+      );
+      return rawResponse;
+    } on DioException catch (e) {
+      // debugPrint(
+      //     'Error response event by id $eventId. data: ${e.response.toString()}');
+      return e.response!;
+    }
+  }
+
+  Future<Response> deleteEvent(String token, String eventId) async {
+    try {
+      dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
+      dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
+
+      // Melakukan permintaan delete dengan query parameters
+      final Response rawResponse = await dio.delete(
         event,
         queryParameters: {'event_id': eventId},
       );

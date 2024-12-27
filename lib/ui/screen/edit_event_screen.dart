@@ -9,10 +9,12 @@ import 'package:intl/intl.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
 import '../theme/ui_colors.dart';
+import '../widget/show_error.dart';
 
 class FormEditEvent extends StatefulWidget {
-  const FormEditEvent({super.key, required this.categoryData});
-  final CategoryModel categoryData;
+  const FormEditEvent({super.key, this.categoryData, this.eventData});
+  final CategoryModel? categoryData;
+  final EventDataModel? eventData;
 
   @override
   FormEditEventState createState() => FormEditEventState();
@@ -43,6 +45,26 @@ class FormEditEventState extends State<FormEditEvent> {
     if (authState is AuthAuthenticated) {
       token = authState.authData.token!;
     }
+    eventProposeData = widget.eventData;
+    debugPrint(widget.categoryData.toString());
+    _titleController.value = TextEditingValue(text: eventProposeData!.title);
+    _categoryController.value =
+        TextEditingValue(text: eventProposeData!.category ?? '');
+    _placeController.value = TextEditingValue(text: eventProposeData!.place);
+    _locationController.value =
+        TextEditingValue(text: eventProposeData!.location ?? '');
+    _quotaController.value =
+        TextEditingValue(text: eventProposeData!.quota.toString());
+    _scheduleLinkController.value =
+        TextEditingValue(text: eventProposeData!.schedule ?? '');
+    _descriptionController.value =
+        TextEditingValue(text: eventProposeData!.description);
+    _startDateController.value =
+        TextEditingValue(text: eventProposeData!.dateStart);
+    _endDateController.value =
+        TextEditingValue(text: eventProposeData!.dateEnd ?? '');
+    // eventProposeData = widget.eventData;
+    // _selectedImage = eventProposeData!.imagePoster;
   }
 
   Future<void> _pickImage() async {
@@ -73,7 +95,8 @@ class FormEditEventState extends State<FormEditEvent> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      eventProposeData = EventDataModel(
+      final EventDataModel eventUpdate = EventDataModel(
+        eventId: eventProposeData!.eventId!,
         title: _titleController.text,
         categoryId: _selectedCategory,
         description: _descriptionController.text,
@@ -86,10 +109,7 @@ class FormEditEventState extends State<FormEditEvent> {
         schedule: _scheduleLinkController.text,
         invitedPersons: null,
       );
-      debugPrint(eventProposeData.toString());
-      context
-          .read<EventBloc>()
-          .add(EventProposed(eventData: eventProposeData!, token: token!));
+      context.read<EventBloc>().add(EventUpdateData(eventData: eventUpdate));
     }
   }
 
@@ -204,7 +224,7 @@ class FormEditEventState extends State<FormEditEvent> {
 
   @override
   Widget build(BuildContext context) {
-    List<CategoryDataModel> categories = widget.categoryData.categories!;
+    List<CategoryDataModel> categories = widget.categoryData!.categories!;
 
     return Scaffold(
       backgroundColor: UIColor.white,
@@ -223,7 +243,7 @@ class FormEditEventState extends State<FormEditEvent> {
             ),
             backgroundColor: const Color.fromARGB(0, 255, 255, 255),
             title: Text(
-              "Propose Form",
+              "Edit Form",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -232,146 +252,138 @@ class FormEditEventState extends State<FormEditEvent> {
             ),
           ),
           SliverToBoxAdapter(
-            child: BlocConsumer<EventBloc, EventState>(
+            child: BlocListener<EventBloc, EventState>(
               listener: (context, state) {
-                if (state is EventLoaded) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Propose event success!")));
-
+                if (state is EventUpdated) {
+                  showCustomSnackBar(context, 'Edit event success!');
                   Navigator.of(context).pop();
-                  // WidgetsBinding.instance.addPostFrameCallback((_) {
-
-                  // Navigator.of(context).pushNamed(
-                  //   AppRouter.detailEventApprovalProposeRoute,
-                  //   arguments: {
-                  //     'event_data': eventProposeData,
-                  //     'current_role': 'Propose',
-                  //   },
-                  // );
-                  // });
                 } else if (state is EventError) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(state.message)));
+                  showCustomSnackBar(context, state.message);
                 }
               },
-              builder: (context, state) {
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        buildField("Title", "Enter title", _titleController,
-                            icon: UIconsPro.regularRounded.head_side_thinking),
-                        buildDropdown("Category", categories, (value) {
-                          setState(() {
-                            _selectedCategory = value;
-                          });
-                        }, _selectedCategory),
-                        buildField("Place", "Enter place", _placeController,
-                            icon: UIconsPro.regularRounded.house_building),
-                        buildField(
-                            "Location", "Enter location", _locationController,
-                            icon: UIconsPro.regularRounded.map_marker),
-                        buildField("Quota", "Enter quota", _quotaController,
-                            icon: UIconsPro.regularRounded.users_alt,
-                            inputType: TextInputType.number),
-                        buildField(
-                          "Start Date",
-                          "Pick start date",
-                          _startDateController,
-                          icon: UIconsPro.regularRounded.calendar,
-                          readonly: true,
-                          onTap: () => _pickDate(context, _startDateController),
-                        ),
-                        buildField(
-                          "End Date",
-                          "Pick end date",
-                          _endDateController,
-                          icon: UIconsPro.regularRounded.calendar,
-                          readonly: true,
-                          onTap: () => _pickDate(context, _endDateController),
-                        ),
-                        buildField(
-                          "Schedule Link",
-                          "Enter schedule link",
-                          _scheduleLinkController,
-                          icon: UIconsPro.regularRounded.link,
-                          inputType: TextInputType.url,
-                        ),
-                        buildField(
-                          "Description",
-                          "Enter description",
-                          _descriptionController,
-                          icon: UIconsPro.regularRounded.text,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Poster",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
-                              const SizedBox(height: 5),
-                              InkWell(
-                                onTap: _pickImage,
-                                child: Container(
-                                  height: 150,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: UIColor.solidWhite,
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(color: UIColor.typoGray),
-                                  ),
-                                  child: _selectedImage == null
-                                      ? const Center(
-                                          child: Text(
-                                            "Tap to upload image",
-                                            style: TextStyle(
-                                                color: UIColor.typoGray,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        )
-                                      : Image.file(
-                                          _selectedImage!,
-                                          fit: BoxFit.cover,
-                                        ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: _submitForm,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: UIColor.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              padding: const EdgeInsets.symmetric(vertical: 15),
-                            ),
-                            child: Text(
-                              "Submit",
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildField("Title", "Enter title", _titleController,
+                          icon: UIconsPro.regularRounded.head_side_thinking),
+                      buildDropdown("Category", categories, (value) {
+                        setState(() {
+                          _selectedCategory = value;
+                        });
+                      }, _selectedCategory),
+                      buildField("Place", "Enter place", _placeController,
+                          icon: UIconsPro.regularRounded.house_building),
+                      buildField(
+                          "Location", "Enter location", _locationController,
+                          icon: UIconsPro.regularRounded.map_marker),
+                      buildField("Quota", "Enter quota", _quotaController,
+                          icon: UIconsPro.regularRounded.users_alt,
+                          inputType: TextInputType.number),
+                      buildField(
+                        "Start Date",
+                        "Pick start date",
+                        _startDateController,
+                        icon: UIconsPro.regularRounded.calendar,
+                        readonly: true,
+                        onTap: () => _pickDate(context, _startDateController),
+                      ),
+                      buildField(
+                        "End Date",
+                        "Pick end date",
+                        _endDateController,
+                        icon: UIconsPro.regularRounded.calendar,
+                        readonly: true,
+                        onTap: () => _pickDate(context, _endDateController),
+                      ),
+                      buildField(
+                        "Schedule Link",
+                        "Enter schedule link",
+                        _scheduleLinkController,
+                        icon: UIconsPro.regularRounded.link,
+                        inputType: TextInputType.url,
+                      ),
+                      buildField(
+                        "Description",
+                        "Enter description",
+                        _descriptionController,
+                        icon: UIconsPro.regularRounded.text,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Poster",
                               style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: UIColor.white,
+                                  fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 5),
+                            InkWell(
+                              onTap: _pickImage,
+                              child: Container(
+                                height: 150,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: UIColor.solidWhite,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  border: Border.all(color: UIColor.typoGray),
+                                ),
+                                child: (_selectedImage == null)
+                                    ? (eventProposeData!.posterUrl == null ||
+                                            eventProposeData!
+                                                .posterUrl!.isEmpty)
+                                        ? Center(
+                                            child: Text(
+                                              "Tap to upload image",
+                                              style: TextStyle(
+                                                  color: UIColor.typoGray,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          )
+                                        : Image.network(
+                                            eventProposeData!.posterUrl!,
+                                            fit: BoxFit.cover,
+                                          )
+                                    : Image.file(
+                                        _selectedImage!,
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _submitForm,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: UIColor.primary,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                          ),
+                          child: Text(
+                            "Submit",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: UIColor.white,
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                );
-              },
+                ),
+              ),
             ),
           ),
         ],

@@ -17,6 +17,13 @@ class EventUpdated extends EventState {
   const EventUpdated({required this.message});
 }
 
+class EventProposed extends EventState {
+  final String message;
+  final String eventId;
+
+  const EventProposed({required this.message, required this.eventId});
+}
+
 class EventsListLoaded extends EventState {
   final List<EventDataModel> event;
   final List<EventDataModel>? listEventsCarousel;

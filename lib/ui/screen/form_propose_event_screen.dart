@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:event_proposal_app/bloc/bloc.dart';
 import 'package:event_proposal_app/data/model/model.dart';
+import 'package:event_proposal_app/ui/router/router.dart';
+import 'package:event_proposal_app/ui/widget/show_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -73,23 +75,76 @@ class FormProposeEventState extends State<FormProposeEvent> {
 
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      eventProposeData = EventDataModel(
-        title: _titleController.text,
-        categoryId: _selectedCategory,
-        description: _descriptionController.text,
-        imagePoster: _selectedImage,
-        location: _locationController.text,
-        place: _placeController.text,
-        quota: int.tryParse(_quotaController.text) ?? 0,
-        dateStart: _startDateController.text,
-        dateEnd: _endDateController.text,
-        schedule: _scheduleLinkController.text,
-        invitedPersons: null,
-      );
-      debugPrint(eventProposeData.toString());
-      context
-          .read<EventBloc>()
-          .add(EventProposed(eventData: eventProposeData!, token: token!));
+      // Check if title is null or empty
+      if (_titleController.text.isEmpty) {
+        showCustomSnackBar(context, 'Title cannot be null or empty');
+      }
+
+      // Check if category is null
+      if (_selectedCategory == null) {
+        showCustomSnackBar(context, 'Category cannot be null');
+      }
+
+      // Check if description is null or empty
+      if (_descriptionController.text.isEmpty) {
+        showCustomSnackBar(context, 'Description cannot be null or empty');
+      }
+
+      // Check if image poster is null
+      if (_selectedImage == null) {
+        showCustomSnackBar(context, 'Image poster cannot be null');
+      }
+
+      // Check if location is null or empty
+      if (_locationController.text.isEmpty) {
+        showCustomSnackBar(context, 'Location cannot be null or empty');
+      }
+
+      // Check if place is null or empty
+      if (_placeController.text.isEmpty) {
+        showCustomSnackBar(context, 'Place cannot be null or empty');
+      }
+
+      // Check if quota is null or empty or not a valid number
+      if (_quotaController.text.isEmpty ||
+          int.tryParse(_quotaController.text) == null) {
+        showCustomSnackBar(context, 'Quota must be a valid number');
+      }
+
+      // Check if date start is null or empty
+      if (_startDateController.text.isEmpty) {
+        showCustomSnackBar(context, 'Start date cannot be null or empty');
+      }
+
+      // Check if date end is null or empty
+      if (_endDateController.text.isEmpty) {
+        showCustomSnackBar(context, 'End date cannot be null or empty');
+      }
+
+      try {
+        eventProposeData = EventDataModel(
+          title: _titleController.text,
+          categoryId: _selectedCategory,
+          description: _descriptionController.text,
+          imagePoster: _selectedImage,
+          location: _locationController.text,
+          place: _placeController.text,
+          quota: int.parse(_quotaController.text),
+          dateStart: _startDateController.text,
+          dateEnd: _endDateController.text,
+          schedule:
+              _scheduleLinkController.text, // Schedule boleh null atau kosong
+          invitedPersons: null,
+        );
+
+        debugPrint(eventProposeData.toString());
+        context
+            .read<EventBloc>()
+            .add(EventProposeData(eventData: eventProposeData!, token: token!));
+      } catch (e) {
+        // showCustomSnackBar(context, e.toString());
+        throw ArgumentError(e.toString());
+      }
     }
   }
 
@@ -234,24 +289,19 @@ class FormProposeEventState extends State<FormProposeEvent> {
           SliverToBoxAdapter(
             child: BlocConsumer<EventBloc, EventState>(
               listener: (context, state) {
-                if (state is EventLoaded) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Propose event success!")));
+                if (state is EventProposed) {
+                  showCustomSnackBar(context, "Propose event success!");
 
-                  Navigator.of(context).pop();
-                  // WidgetsBinding.instance.addPostFrameCallback((_) {
-
-                  // Navigator.of(context).pushNamed(
-                  //   AppRouter.detailEventApprovalProposeRoute,
-                  //   arguments: {
-                  //     'event_data': eventProposeData,
-                  //     'current_role': 'Propose',
-                  //   },
-                  // );
-                  // });
+                  Navigator.of(context).pushReplacementNamed(
+                    AppRouter.detailEventApprovalProposeRoute,
+                    arguments: {
+                      'event_data':
+                          eventProposeData!.copyWith(eventId: state.eventId),
+                      'current_role': 'Propose',
+                    },
+                  );
                 } else if (state is EventError) {
-                  ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(state.message)));
+                  showCustomSnackBar(context, state.message);
                 }
               },
               builder: (context, state) {

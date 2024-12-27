@@ -102,9 +102,9 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
           value: context.read<AuthBloc>(),
         ),
         BlocProvider(
-          create: (context) => UserBloc()
+          create: (context) => UserBloc(authBloc: context.read<AuthBloc>())
             ..add(
-              FetchUserById(token: token, userId: superadminUID),
+              FetchUserById(userId: superadminUID),
             ),
         ),
       ],
@@ -220,8 +220,8 @@ class _HomeTabPageState extends State<_HomeTabPage>
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) =>
-                  UserBloc()..add(FetchUser(token: widget.token)),
+              create: (context) => UserBloc(authBloc: context.read<AuthBloc>())
+                ..add(FetchUser()),
             ),
             BlocProvider.value(value: context.read<AuthBloc>()),
           ],

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
-import '../../bloc/auth_bloc/auth_bloc.dart';
 import '../../bloc/user_bloc/user_bloc.dart';
 import '../router/router.dart';
 
@@ -17,34 +16,13 @@ class HomeAccountsPage extends StatefulWidget {
 
 class _HomeAccountsPageState extends State<HomeAccountsPage> {
   final _scrollController = ScrollController();
-  String token = "";
+  // String token = "";
   String? searchUser;
 
   @override
   void initState() {
     super.initState();
-    final authState = context.read<AuthBloc>().state;
-
-    if (authState is AuthAuthenticated) {
-      token = authState.authData.token!;
-    } else {
-      // WidgetsBinding.instance.addPostFrameCallback((_) {
-      //   Navigator.of(context).pushNamedAndRemoveUntil(
-      //     AppRouter.loginRoute,
-      //     (Route<dynamic> route) => false,
-      //   );
-      // });
-      // debugPrint("User is not authenticated.");
-    }
-
     _scrollController.addListener(_onScroll);
-
-    // _scrollController.addListener(() {
-    //   if (_scrollController.position.pixels ==
-    //       _scrollController.position.maxScrollExtent) {
-    //     context.read<UserBloc>().add(FetchUser(searchUser: '', token: token));
-    //   }
-    // });
   }
 
   bool get _isBottom {
@@ -57,20 +35,20 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
   void _onScroll() {
     // if (_isBottom) {
     if (_isBottom
-    // &&!(context.read<EventBloc>().state as EventApprovedLoaded)
-    // .hasReachedMax
-    ) {
+        // &&!(context.read<EventBloc>().state as EventApprovedLoaded)
+        // .hasReachedMax
+        ) {
       //! mengatasi perubahan request ketika di scroll
       // mengambil request yang sudah diubah current statenya
       // requestFilteredEvent =
       //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
       // requestEvent.copyWith();
       context.read<UserBloc>().add(
-        FetchUser(
-          token: token,
-          searchUser: searchUser,
-        ),
-      );
+            FetchUser(
+              // token: token,
+              searchUser: searchUser,
+            ),
+          );
     }
   }
 
@@ -172,7 +150,7 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
                                   context,
                                   AppRouter.detailAccount,
                                   arguments: {
-                                    'token': token,
+                                    // 'token': token,
                                     'user_id':
                                         state.listUser[index].userid.toString(),
                                   },

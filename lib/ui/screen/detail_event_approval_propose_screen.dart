@@ -1,18 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:event_proposal_app/bloc/bloc.dart';
 import 'package:event_proposal_app/data/model/model.dart';
+import 'package:event_proposal_app/ui/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screenshot/screenshot.dart';
 
-import '../../bloc/event_bloc/event_bloc.dart';
 import '../navigation/button_admin_update_event.dart';
 import '../navigation/button_propose_update_event.dart';
 import '../section/detail_event_content_section.dart';
 import '../theme/ui_colors.dart';
+import '../widget/show_invited_person_list.dart';
 
 class DetailEventApprovalProposeScreen extends StatelessWidget {
   final String currentRole;
@@ -30,6 +32,8 @@ class DetailEventApprovalProposeScreen extends StatelessWidget {
       body: BlocConsumer<EventBloc, EventState>(listener: (context, state) {
         if (state is EventUpdated) {
           context.read<EventBloc>().add(EventGetByID(eventId: eventId));
+        } else if (state is EventDeleted) {
+          Navigator.of(context).pop();
         }
       }, builder: (context, state) {
         debugPrint(state.toString());
@@ -298,6 +302,7 @@ class _DetailEventApprovalProposeScreenContentState
             AppBarDetailEvent(
               data: _currentEventData,
               title: 'Review Event',
+              currentRole: widget.currentRole,
             ),
             BodyDetailEvent(
               textEditingController: _adminNoteController,
@@ -315,8 +320,23 @@ class _DetailEventApprovalProposeScreenContentState
     return widget.currentRole == 'Propose'
         ? ButtonProposeUpdateEvent(
             showQR: () => _showQR(_currentEventData.eventId!),
-            changeStatus: () => _changeStatus(context),
-            showEditNoteDialog: _showEditNoteDialog,
+            invitedPerson: () {
+              showDialog(
+                context: context,
+                builder: (_) => BlocProvider(
+                  create: (context) =>
+                      UserBloc(authBloc: context.read<AuthBloc>())
+                        ..add(FetchUser()),
+                  child: InvitedDialog(),
+                ),
+              );
+            },
+            toEdit: () => Navigator.of(context)
+                .pushNamed(AppRouter.editEventRoute, arguments: {
+              'event': widget.eventData,
+              'context': context,
+              // 'category_data':
+            }),
           )
         : ButtonAdminUpdateEvent(
             changeStatus: () => _changeStatus(context),

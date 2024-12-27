@@ -98,9 +98,9 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
           value: context.read<AuthBloc>(),
         ),
         BlocProvider(
-          create: (context) => UserBloc()
+          create: (context) => UserBloc(authBloc: context.read<AuthBloc>())
             ..add(
-              FetchUserById(token: token, userId: proposeUID),
+              FetchUserById(userId: proposeUID),
             ),
         ),
         BlocProvider(

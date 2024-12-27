@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 // import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,12 +33,16 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     //   _onEventGetByIDRefresh,
     //   transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     // );
-    on<EventProposed>(
+    on<EventProposeData>(
       _onEventProposed,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     );
     on<EventUpdateData>(
       _onEventUpdateData,
+      transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
+    );
+    on<EventDeleteData>(
+      _onEventDeleteData,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     );
   }
@@ -166,18 +171,20 @@ class EventBloc extends Bloc<EventEvent, EventState> {
   }
 
   Future<void> _onEventProposed(
-      EventProposed event, Emitter<EventState> emit) async {
+      EventProposeData event, Emitter<EventState> emit) async {
     emit(EventLoading());
     try {
       final proposeResponse =
           await _eventRepository.proposeEvent(event.token, event.eventData);
-      if (proposeResponse.status == 'success') {
-        emit(EventLoaded(
-            message: proposeResponse.message,
-            eventData: proposeResponse.data!));
+      debugPrint(proposeResponse.toString());
+
+      if (proposeResponse['status'] == 'success') {
+        emit(EventProposed(
+            message: proposeResponse['message'],
+            eventId: proposeResponse['event_id']));
       } else {
         emit(EventError(
-            "Error ${proposeResponse.code}: ${proposeResponse.message}"));
+            "Error ${proposeResponse['code']}: ${proposeResponse['message']}"));
       }
     } catch (error) {
       emit(EventError(error.toString()));
@@ -187,11 +194,12 @@ class EventBloc extends Bloc<EventEvent, EventState> {
   Future<void> _onEventUpdateData(
       EventUpdateData event, Emitter<EventState> emit) async {
     emit(EventLoading());
-    final authState = authBloc.state;
     try {
+      final authState = authBloc.state;
       if (authState is AuthAuthenticated) {
         final updateResponse = await _eventRepository.updateEvent(
             authState.authData.token!, event.eventData, authState.currentRole!);
+
         if (updateResponse['status'] == 'success') {
           emit(EventUpdated(message: updateResponse['message']));
         } else {
@@ -229,26 +237,26 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     }
   }
 
-  // Future<void> _onEventGetByIDRefresh(
-  //     EventGetByIDRefresh event, Emitter<EventState> emit) async {
-  //   emit(EventLoading());
-  //   final authState = authBloc.state;
+  Future<void> _onEventDeleteData(
+      EventDeleteData event, Emitter<EventState> emit) async {
+    emit(EventLoading());
+    debugPrint('delete event');
+    final authState = authBloc.state;
 
-  //   try {
-  //     if (authState is AuthAuthenticated) {
-  //       final eventData = await _eventRepository.getEventByIDFromAPI(
-  //           token: authState.authData.token!, eventId: event.eventId);
-  //       if (eventData.code == 200) {
-  //         emit(EventLoaded(
-  //             message: eventData.message, eventData: eventData.data!));
-  //       } else {
-  //         emit(EventError("Error ${eventData.code}: ${eventData.message}"));
-  //       }
-  //     } else {
-  //       Exception('Not authentication');
-  //     }
-  //   } catch (error) {
-  //     emit(EventError(error.toString()));
-  //   }
-  // }
+    try {
+      if (authState is AuthAuthenticated) {
+        final deleteEvent = await _eventRepository.deleteEventFromAPI(
+            token: authState.authData.token!, eventId: event.eventID);
+        if (deleteEvent['status'] == 'success') {
+          emit(EventDeleted(message: deleteEvent['message']));
+        } else {
+          emit(EventError("Error : ${deleteEvent['message']}"));
+        }
+      } else {
+        Exception('Not authentication');
+      }
+    } catch (error) {
+      emit(EventError(error.toString()));
+    }
+  }
 }

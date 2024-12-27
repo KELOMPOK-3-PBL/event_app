@@ -94,9 +94,10 @@ class _DetailEventApprovalProposeScreenContentState
 
   AlertDialog _buildStatusDialog() {
     final statusOptions = [
-      ('Revision Propose', 2),
-      ('Approved', 4),
-      ('Rejected', 5),
+      ('Revision Propose', 3),
+      ('Approved', 5),
+      ('Rejected', 4),
+      ('Completed', 6),
     ];
 
     return AlertDialog(
@@ -131,17 +132,13 @@ class _DetailEventApprovalProposeScreenContentState
     );
   }
 
-  void _updateEventStatus(BuildContext context, int statusId) {
+  void _updateEventStatus(BuildContext context, int? statusId) {
     final updatedEvent = _currentEventData.copyWith(
       statusID: statusId,
       adminNote: _adminNoteController.text,
     );
 
-    context.read<EventBloc>().add(EventUpdateData(eventData: updatedEvent))
-        // ..add(
-        //   EventGetByIDRefresh(eventId: updatedEvent.eventId!),
-        // )
-        ;
+    context.read<EventBloc>().add(EventUpdateData(eventData: updatedEvent));
   }
 
   Future<void> _showEditNoteDialog() async {
@@ -152,7 +149,7 @@ class _DetailEventApprovalProposeScreenContentState
 
     if (result != null && mounted) {
       setState(() => _adminNoteController.text = result);
-      _updateEventStatus(context, _currentEventData.statusID!);
+      _updateEventStatus(context, 3);
     }
   }
 

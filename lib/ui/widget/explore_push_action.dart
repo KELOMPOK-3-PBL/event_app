@@ -61,7 +61,7 @@ Future<void> explorePushAction(
                           onPressed: () {
                             try {
                               event = event.copyWith(
-                                  statusID: 3, status: 'Review Admin');
+                                  statusID: 2, status: 'Review Admin');
                               context
                                   .read<EventBloc>()
                                   .add(EventUpdateData(eventData: event));

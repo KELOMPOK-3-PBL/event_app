@@ -168,7 +168,7 @@ class _HomeTabPageState extends State<_HomeTabPage>
               value: context.read<UserBloc>(),
             ),
             BlocProvider(
-              create: (context) => EventBloc()
+              create: (context) => EventBloc(authBloc: context.read<AuthBloc>())
                 ..add(EventFetchData(
                     requestEventCarousel: RequestFilteredEventModel(
                         token: widget.token, status: 'Proposed'),
@@ -184,7 +184,7 @@ class _HomeTabPageState extends State<_HomeTabPage>
         );
       case 1:
         return BlocProvider(
-          create: (context) => EventBloc()
+          create: (context) => EventBloc(authBloc: context.read<AuthBloc>())
             ..add(
               EventFetchData(
                 requestEvent: RequestFilteredEventModel(token: widget.token),
@@ -195,7 +195,7 @@ class _HomeTabPageState extends State<_HomeTabPage>
         );
       case 2:
         return BlocProvider(
-          create: (context) => EventBloc()
+          create: (context) => EventBloc(authBloc: context.read<AuthBloc>())
             ..add(
               EventFetchData(
                 requestEvent: RequestFilteredEventModel(

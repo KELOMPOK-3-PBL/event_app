@@ -49,28 +49,53 @@ class EventProposed extends EventEvent {
 
 class EventUpdateData extends EventEvent {
   final EventDataModel eventData;
-  final String token;
-  final String eventId;
+  // final String? token;
 
   const EventUpdateData({
     required this.eventData,
-    required this.token,
-    required this.eventId,
+    // required String eventId,
+    // this.token,
   });
 
   @override
-  List<Object> get props => [eventData, token];
+  List<Object> get props => [eventData];
+}
+
+class EventDeleteData extends EventEvent {
+  final String eventID;
+  // final String? token;
+
+  const EventDeleteData({
+    required this.eventID,
+    // this.token,
+  });
+
+  @override
+  List<Object> get props => [eventID];
 }
 
 class EventGetByID extends EventEvent {
-  final String token;
+  // final String token;
   final String eventId;
 
   const EventGetByID({
-    required this.token,
+    // required this.token,
     required this.eventId,
   });
 
   @override
-  List<Object> get props => [eventId, token];
+  List<Object> get props => [eventId];
 }
+
+// class EventGetByIDRefresh extends EventEvent {
+//   // final String token;
+//   final String eventId;
+
+//   const EventGetByIDRefresh({
+//     // required this.token,
+//     required this.eventId,
+//   });
+
+//   @override
+//   List<Object> get props => [eventId];
+// }

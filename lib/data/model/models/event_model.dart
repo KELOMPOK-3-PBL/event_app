@@ -64,8 +64,10 @@ class EventDataModel extends Equatable {
   final String dateStart;
   final String? dateEnd;
   final String? schedule;
+  // final String? adminUserID;
   final String? adminUsername;
   final String? updated;
+  final int? statusID;
   final String? status;
   final String? adminNote;
   // final String? invitedPersons;
@@ -88,12 +90,70 @@ class EventDataModel extends Equatable {
     required this.dateStart,
     this.dateEnd,
     this.schedule,
+    // this.adminUserID,
     this.adminUsername,
     this.updated,
+    this.statusID,
     this.status,
     this.adminNote,
     this.invitedPersons,
   });
+
+  String getEventId() {
+    return eventId!;
+  }
+
+  EventDataModel copyWith({
+    String? eventId,
+    String? title,
+    String? dateAdd,
+    String? proposeUsername,
+    String? proposeAvatar,
+    String? categoryId,
+    String? category,
+    String? description,
+    String? posterUrl,
+    File? imagePoster,
+    String? location,
+    String? place,
+    int? quota,
+    String? dateStart,
+    String? dateEnd,
+    String? schedule,
+    String? adminUserID,
+    String? adminUsername,
+    String? updated,
+    String? status,
+    int? statusID,
+    String? adminNote,
+    List<InvitedPerson>? invitedPersons,
+  }) {
+    return EventDataModel(
+      eventId: eventId ?? this.eventId,
+      title: title ?? this.title,
+      dateAdd: dateAdd ?? this.dateAdd,
+      proposeUsername: proposeUsername ?? this.proposeUsername,
+      proposeAvatar: proposeAvatar ?? this.proposeAvatar,
+      categoryId: categoryId ?? this.categoryId,
+      category: category ?? this.category,
+      description: description ?? this.description,
+      posterUrl: posterUrl ?? this.posterUrl,
+      imagePoster: imagePoster ?? this.imagePoster,
+      location: location ?? this.location,
+      place: place ?? this.place,
+      quota: quota ?? this.quota,
+      dateStart: dateStart ?? this.dateStart,
+      dateEnd: dateEnd ?? this.dateEnd,
+      schedule: schedule ?? this.schedule,
+      adminUsername: adminUsername ?? this.adminUsername,
+      // adminUserID: adminUserID ?? this.adminUserID,
+      updated: updated ?? this.updated,
+      status: status ?? this.status,
+      statusID: statusID ?? this.statusID,
+      adminNote: adminNote ?? this.adminNote,
+      invitedPersons: invitedPersons ?? this.invitedPersons,
+    );
+  }
 
   factory EventDataModel.fromJson(Map<String, dynamic> json) {
     return EventDataModel(
@@ -111,8 +171,10 @@ class EventDataModel extends Equatable {
       dateStart: json['date_start'],
       dateEnd: json['date_end'],
       schedule: json['schedule'],
+      // adminUserID: json['admin_user_id'],
       adminUsername: json['admin_user'],
       updated: json['updated'],
+      // statusID: json['status'],
       status: json['status'],
       adminNote: json['note'],
       // invitedPersons: json['invited_users'].toString(),
@@ -123,13 +185,13 @@ class EventDataModel extends Equatable {
     );
   }
 
-  Future<FormData> toFormData() async {
+  Future<FormData> toFormDataPropose() async {
     final Map<String, dynamic> data = {
-      'event_id': eventId,
+      // 'event_id': eventId,
       'title': title,
       'date_add': dateAdd,
-      'propose_user': proposeUsername,
-      'propose_user_avatar': proposeAvatar,
+      // 'propose_user': proposeUsername,
+      // 'propose_user_avatar': proposeAvatar,
       'category_id': categoryId,
       'description': description,
       // 'poster': base64Encode(await imagePoster!.readAsBytes()),
@@ -140,11 +202,25 @@ class EventDataModel extends Equatable {
       'date_start': dateStart,
       'date_end': dateEnd,
       'schedule': schedule,
-      'admin_user': adminUsername,
-      'updated': updated,
-      'status': status,
+      // 'admin_user': adminUsername,
+      // 'admin_user_id': adminUserID,
+      // 'updated': updated,
+      // 'status': statusID,
+      // 'status': status,
       'note': adminNote,
       'invited_users': invitedPersons,
+    };
+
+    // Hapus key dengan nilai null
+    data.removeWhere((key, value) => value == null);
+
+    return FormData.fromMap(data);
+  }
+
+  Future<FormData> toFormDataAdmin() async {
+    final Map<String, dynamic> data = {
+      'status': statusID,
+      'note': adminNote,
     };
 
     // Hapus key dengan nilai null

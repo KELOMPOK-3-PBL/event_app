@@ -14,7 +14,6 @@ class AuthRepository {
     String? token;
     // debugPrint(response.toString());
 
-    debugPrint(response.toString());
     try {
       if (data["status"] == 'success') {
         //! Simpan waktu login dan waktu sesi berakhir

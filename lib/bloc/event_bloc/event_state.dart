@@ -45,6 +45,12 @@ class EventLoaded extends EventState {
   const EventLoaded({required this.message, required this.eventData});
 }
 
+class EventDeleted extends EventState {
+  final String message;
+
+  const EventDeleted({required this.message});
+}
+
 class EventError extends EventState {
   final String message;
 

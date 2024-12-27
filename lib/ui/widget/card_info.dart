@@ -6,7 +6,7 @@ Widget cardInfoRow(IconData icon, String text) {
     padding: const EdgeInsets.only(bottom: 2),
     child: Row(
       children: [
-        Icon(icon, color: UIColor.typoGray, size: 10),
+        Icon(icon, color: UIColor.primary, size: 10),
         const SizedBox(width: 4),
         Expanded(
           child: Text(

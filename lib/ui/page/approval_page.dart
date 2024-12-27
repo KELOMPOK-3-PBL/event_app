@@ -80,7 +80,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
           debugPrint("Cek Request ${state.requestEvent.adminUserId}");
         } else if (state is EventError) {
           debugPrint("load error");
-          showError(context, state.message);
+          showCustomSnackBar(context, state.message);
         }
       },
       child: RefreshIndicator(

@@ -14,349 +14,316 @@ import '../navigation/button_propose_update_event.dart';
 import '../section/detail_event_content_section.dart';
 import '../theme/ui_colors.dart';
 
-class DetailEventApprovalProposeScreen extends StatefulWidget {
-  final EventDataModel eventData;
+class DetailEventApprovalProposeScreen extends StatelessWidget {
   final String currentRole;
-  final String token;
+  final String eventId;
+
   const DetailEventApprovalProposeScreen({
     super.key,
-    required this.token,
-    required this.eventData,
     required this.currentRole,
+    required this.eventId,
   });
 
   @override
-  DetailEventApprovalProposeScreenState createState() =>
-      DetailEventApprovalProposeScreenState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: BlocConsumer<EventBloc, EventState>(listener: (context, state) {
+        if (state is EventUpdated) {
+          context.read<EventBloc>().add(EventGetByID(eventId: eventId));
+        }
+      }, builder: (context, state) {
+        debugPrint(state.toString());
+
+        if (state is EventLoaded) {
+          return DetailEventApprovalProposeScreenContent(
+            currentRole: currentRole,
+            eventData: state.eventData,
+          );
+        }
+        return Center(child: CircularProgressIndicator());
+      }),
+    );
+  }
 }
 
-class DetailEventApprovalProposeScreenState
-    extends State<DetailEventApprovalProposeScreen> {
-  TextEditingController adminNoteController = TextEditingController(text: '-');
+class DetailEventApprovalProposeScreenContent extends StatefulWidget {
+  final String currentRole;
+  final EventDataModel eventData;
 
-  final ScreenshotController screenshotController = ScreenshotController();
+  const DetailEventApprovalProposeScreenContent({
+    super.key,
+    required this.currentRole,
+    required this.eventData,
+  });
+
+  @override
+  State<DetailEventApprovalProposeScreenContent> createState() =>
+      _DetailEventApprovalProposeScreenContentState();
+}
+
+class _DetailEventApprovalProposeScreenContentState
+    extends State<DetailEventApprovalProposeScreenContent> {
+  late TextEditingController _adminNoteController;
+  final ScreenshotController _screenshotController = ScreenshotController();
+  late EventDataModel _currentEventData;
 
   @override
   void initState() {
     super.initState();
+    _adminNoteController =
+        TextEditingController(text: widget.eventData.adminNote ?? '-');
+    _currentEventData = widget.eventData;
   }
 
   @override
   void dispose() {
+    _adminNoteController.dispose();
     super.dispose();
   }
 
-  // Fungsi untuk mengubah status
-  void _changeStatus() {
-    showDialog(
+  Future<void> _changeStatus(BuildContext context) async {
+    final newStatus = await showDialog<int>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Change Status"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(bottom: 5),
-                decoration: BoxDecoration(
-                  color: UIColor.getStatusColor('Pending'),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ListTile(
-                  title: Text(
-                    "Pending",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: UIColor.solidWhite,
-                    ),
-                  ),
-                  onTap: () {
-                    // setState(() {
-                    //   status = "Pending";
-                    //   _updateStatusColor();
-                    // });
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 5),
-                decoration: BoxDecoration(
-                  color: UIColor.getStatusColor('Approved'),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ListTile(
-                  title: Text(
-                    "Approved",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: UIColor.solidWhite,
-                    ),
-                  ),
-                  onTap: () {
-                    // setState(() {
-                    //   status = "Proposed";
-                    //   _updateStatusColor();
-                    // });
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 5),
-                decoration: BoxDecoration(
-                  color: UIColor.getStatusColor('Rejected'),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: ListTile(
-                  title: Text(
-                    "Rejected",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: UIColor.solidWhite,
-                    ),
-                  ),
-                  onTap: () {
-                    // setState(() {
-                    //   status = "Pending";
-                    //   _updateStatusColor();
-                    // });
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ),
-              // ListTile(
-              //   title: Text("Approved"),
-              //   onTap: () {
-              //     // setState(() {
-              //     //   status = "Approved";
-              //     //   _updateStatusColor();
-              //     // });
-              //     Navigator.of(context).pop();
-              //   },
-              // ),
-            ],
-          ),
-        );
-      },
+      builder: (_) => _buildStatusDialog(),
+    );
+
+    if (newStatus != null && context.mounted) {
+      _updateEventStatus(context, newStatus);
+    }
+  }
+
+  AlertDialog _buildStatusDialog() {
+    final statusOptions = [
+      ('Revision Propose', 2),
+      ('Approved', 4),
+      ('Rejected', 5),
+    ];
+
+    return AlertDialog(
+      title: const Text("Change Status"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: statusOptions
+            .where((status) =>
+                status.$1 !=
+                _currentEventData.status) // Filter status yang sama
+            .map((status) => _buildStatusOption(status))
+            .toList(),
+      ),
     );
   }
 
-  // Fungsi untuk menampilkan dialog pengeditan
-  void _showEditNoteDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Edit Admin Note"),
-          content: TextField(
-            controller: adminNoteController,
-            maxLines: 4,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: "Enter new admin note...",
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("Cancel"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  // Update admin note dengan teks baru dari controller
-                });
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-              ),
-              child: Text("Save"),
-            ),
-          ],
-        );
-      },
+  Widget _buildStatusOption((String, int) status) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 5),
+      decoration: BoxDecoration(
+        color: UIColor.getStatusColor(status.$1),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: ListTile(
+        title: Text(
+          status.$1,
+          textAlign: TextAlign.center,
+          style: TextStyle(color: UIColor.solidWhite),
+        ),
+        onTap: () => Navigator.of(context).pop(status.$2),
+      ),
     );
   }
 
-  // Fungsi untuk menampilkan QR
-  void _showQR(String eventId) {
-    showDialog(
+  void _updateEventStatus(BuildContext context, int statusId) {
+    final updatedEvent = _currentEventData.copyWith(
+      statusID: statusId,
+      adminNote: _adminNoteController.text,
+    );
+
+    context.read<EventBloc>().add(EventUpdateData(eventData: updatedEvent))
+        // ..add(
+        //   EventGetByIDRefresh(eventId: updatedEvent.eventId!),
+        // )
+        ;
+  }
+
+  Future<void> _showEditNoteDialog() async {
+    final result = await showDialog<String>(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: UIColor.solidWhite,
-          title: Text("Attendance QR"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Participants are asked to scan to check attendance',
-                style: TextStyle(
-                  fontSize: 12,
-                ),
-              ),
-              // Screenshot widget
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.width - 130,
-                child: Screenshot(
-                  controller: screenshotController,
-                  child: QrImageView(
-                    data: base64Encode(utf8.encode(eventId)),
-                    version: QrVersions.auto,
-                    backgroundColor: UIColor.solidWhite,
-                  ),
-                ),
-              ),
-            ],
+      builder: (context) => _buildEditNoteDialog(),
+    );
+
+    if (result != null && mounted) {
+      setState(() => _adminNoteController.text = result);
+      _updateEventStatus(context, _currentEventData.statusID!);
+    }
+  }
+
+  AlertDialog _buildEditNoteDialog() {
+    final TextEditingController tempController =
+        TextEditingController(text: _adminNoteController.text);
+
+    return AlertDialog(
+      title: const Text("Edit Admin Note"),
+      content: TextField(
+        controller: tempController,
+        maxLines: 4,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          hintText: "Enter new admin note...",
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text("Cancel"),
+        ),
+        ElevatedButton(
+          onPressed: () => Navigator.of(context).pop(tempController.text),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                "Close",
-                style: TextStyle(color: UIColor.typoBlack),
+          child: const Text("Save"),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _showQR(String eventId) async {
+    await showDialog(
+      context: context,
+      builder: (context) => _buildQRDialog(eventId),
+    );
+  }
+
+  AlertDialog _buildQRDialog(String eventId) {
+    return AlertDialog(
+      backgroundColor: UIColor.solidWhite,
+      title: const Text("Attendance QR"),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            'Participants are asked to scan to check attendance',
+            style: TextStyle(fontSize: 12),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.width - 130,
+            child: Screenshot(
+              controller: _screenshotController,
+              child: QrImageView(
+                data: base64Encode(utf8.encode(eventId)),
+                version: QrVersions.auto,
+                backgroundColor: UIColor.solidWhite,
               ),
             ),
-            ElevatedButton(
-              onPressed: _downloadQR,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-              ),
-              child:
-                  Text("Download", style: TextStyle(color: UIColor.solidWhite)),
-            ),
-          ],
-        );
-      },
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(
+            "Close",
+            style: TextStyle(color: UIColor.typoBlack),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: _downloadQR,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+          ),
+          child: Text(
+            "Download",
+            style: TextStyle(color: UIColor.solidWhite),
+          ),
+        ),
+      ],
     );
   }
 
   Future<void> _downloadQR() async {
     try {
-      // Ambil screenshot widget
-      final image = await screenshotController.capture();
+      final image = await _screenshotController.capture();
+      if (image == null) throw Exception('Failed to capture QR code');
 
-      if (image == null) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to capture QR code')),
-          );
-        }
-        return;
+      if (!await _requestStoragePermission()) {
+        throw Exception('Storage permission denied');
       }
 
-      // Periksa izin penyimpanan
-      if (await _requestStoragePermission()) {
-        // Dapatkan direktori folder Download
-        final directory = Directory('/storage/emulated/0/Download');
-        if (!directory.existsSync()) {
-          directory.createSync(); // Buat folder Download jika belum ada
-        }
+      final directory = Directory('/storage/emulated/0/Download');
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
 
-        // Buat path file di folder Download
-        final path =
-            "${directory.path}/qr_code_${DateTime.now().millisecondsSinceEpoch}.png";
+      final path =
+          '${directory.path}/qr_code_${DateTime.now().millisecondsSinceEpoch}.png';
+      await File(path).writeAsBytes(image);
 
-        // Simpan file
-        final file = File(path);
-        await file.writeAsBytes(image);
-
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('QR Code downloaded to $path')),
-          );
-        }
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Permission denied to save file')),
-          );
-        }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('QR Code downloaded to $path')),
+        );
+        Navigator.of(context).pop();
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text('Error: ${e.toString()}')),
         );
-      }
-    } finally {
-      if (mounted) {
-        Navigator.of(context).pop();
       }
     }
   }
 
   Future<bool> _requestStoragePermission() async {
-    if (Platform.isAndroid) {
-      // Android 11+ (SDK 30+) membutuhkan izin MANAGE_EXTERNAL_STORAGE
-      if (await Permission.manageExternalStorage.request().isGranted) {
-        return true;
-      }
-      // Untuk Android versi lebih rendah, cukup minta storage permission
-      else if (await Permission.storage.request().isGranted) {
-        return true;
-      }
-    } else if (Platform.isIOS) {
-      // Pada iOS, izin penyimpanan biasanya tidak diperlukan
-      return true;
-    }
+    if (!Platform.isAndroid) return true;
 
-    // Izin tidak diberikan
-    return false;
+    final status = await Permission.manageExternalStorage.status;
+    if (status.isGranted) return true;
+
+    final result = await Permission.manageExternalStorage.request();
+    if (result.isGranted) return true;
+
+    return await Permission.storage.request().isGranted;
   }
 
   @override
   Widget build(BuildContext context) {
-    EventDataModel? data = widget.eventData;
-
     return Scaffold(
       backgroundColor: UIColor.white,
-      body: BlocBuilder<EventBloc, EventState>(
-        builder: (context, state) {
-          if (state is EventLoaded) {
-            data = state.eventData;
-          }
-
-          return RefreshIndicator(
-            onRefresh: () async {
-              context.read<EventBloc>().add(
-                    EventGetByID(token: widget.token, eventId: data!.eventId!),
-                  );
-            },
-            child: CustomScrollView(
-              slivers: [
-                AppBarDetailEvent(
-                  data: data!,
-                  title: 'Review Event',
-                ),
-                BodyDetailEvent(
-                  textEditingController: adminNoteController,
-                  data: data!,
-                  forEventPage: false,
-                ),
-              ],
-            ),
-          );
+      body: RefreshIndicator(
+        onRefresh: () async {
+          context.read<EventBloc>().add(
+                EventGetByID(eventId: _currentEventData.eventId!),
+              );
         },
+        child: CustomScrollView(
+          slivers: [
+            AppBarDetailEvent(
+              data: _currentEventData,
+              title: 'Review Event',
+            ),
+            BodyDetailEvent(
+              textEditingController: _adminNoteController,
+              data: _currentEventData,
+              forEventPage: false,
+            ),
+          ],
+        ),
       ),
-      bottomNavigationBar: (widget.currentRole == 'Propose')
-          ? ButtonProposeUpdateEvent(
-              showQR: () {
-                _showQR(data!.eventId!);
-              },
-              changeStatus: _changeStatus,
-              showEditNoteDialog: _showEditNoteDialog)
-          : ButtonAdminUpdateEvent(
-              changeStatus: _changeStatus,
-              showEditNoteDialog: _showEditNoteDialog),
+      bottomNavigationBar: _buildBottomNavigationBar(),
     );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return widget.currentRole == 'Propose'
+        ? ButtonProposeUpdateEvent(
+            showQR: () => _showQR(_currentEventData.eventId!),
+            changeStatus: () => _changeStatus(context),
+            showEditNoteDialog: _showEditNoteDialog,
+          )
+        : ButtonAdminUpdateEvent(
+            changeStatus: () => _changeStatus(context),
+            showEditNoteDialog: _showEditNoteDialog,
+          );
   }
 }

@@ -101,7 +101,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
           requestFilteredEvent = state.requestEvent;
         } else if (state is EventError) {
           debugPrint("load error");
-          showError(context, state.message);
+          showCustomSnackBar(context, state.message);
         }
       },
       // builder: (context, state) {

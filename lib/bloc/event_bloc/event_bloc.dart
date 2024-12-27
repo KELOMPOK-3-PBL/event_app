@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/provider/provider.dart';
 import '../../data/repository/repository.dart';
 import '../../data/model/model.dart';
+import '../auth_bloc/auth_bloc.dart';
 import '../throtle_droppable.dart';
 
 part 'event_event.dart';
@@ -12,8 +13,9 @@ part 'event_state.dart';
 
 class EventBloc extends Bloc<EventEvent, EventState> {
   final _eventRepository = EventRepository();
+  final AuthBloc authBloc;
 
-  EventBloc() : super(EventInitial()) {
+  EventBloc({required this.authBloc}) : super(EventInitial()) {
     on<EventFetchData>(
       _onEventFetchData,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
@@ -26,6 +28,10 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       _onEventGetByID,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     );
+    // on<EventGetByIDRefresh>(
+    //   _onEventGetByIDRefresh,
+    //   transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
+    // );
     on<EventProposed>(
       _onEventProposed,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
@@ -165,7 +171,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     try {
       final proposeResponse =
           await _eventRepository.proposeEvent(event.token, event.eventData);
-      if (proposeResponse.status == 'success' && proposeResponse.code == 201) {
+      if (proposeResponse.status == 'success') {
         emit(EventLoaded(
             message: proposeResponse.message,
             eventData: proposeResponse.data!));
@@ -181,15 +187,16 @@ class EventBloc extends Bloc<EventEvent, EventState> {
   Future<void> _onEventUpdateData(
       EventUpdateData event, Emitter<EventState> emit) async {
     emit(EventLoading());
+    final authState = authBloc.state;
     try {
-      final updateResponse = await _eventRepository.updateEvent(
-          event.eventId, event.token, event.eventData);
-      if (updateResponse['code'] == 200) {
-        emit(EventLoaded(
-            message: updateResponse['message'],
-            eventData: updateResponse['event_data']));
-      } else {
-        emit(EventError(updateResponse['message']));
+      if (authState is AuthAuthenticated) {
+        final updateResponse = await _eventRepository.updateEvent(
+            authState.authData.token!, event.eventData, authState.currentRole!);
+        if (updateResponse['status'] == 'success') {
+          emit(EventUpdated(message: updateResponse['message']));
+        } else {
+          emit(EventError(updateResponse['message']));
+        }
       }
     } catch (error) {
       emit(EventError(error.toString()));
@@ -199,17 +206,49 @@ class EventBloc extends Bloc<EventEvent, EventState> {
   Future<void> _onEventGetByID(
       EventGetByID event, Emitter<EventState> emit) async {
     emit(EventLoading());
+    final authState = authBloc.state;
+
     try {
-      final eventData = await _eventRepository.getEventByIDFromAPI(
-          token: event.token, eventId: event.eventId);
-      if (eventData.code == 200) {
-        emit(EventLoaded(
-            message: eventData.message, eventData: eventData.data!));
+      // debugPrint('load event');
+
+      if (authState is AuthAuthenticated) {
+        final eventData = await _eventRepository.getEventByIDFromAPI(
+            token: authState.authData.token!, eventId: event.eventId);
+        if (eventData.status == 'success') {
+          emit(EventLoaded(
+              message: eventData.message, eventData: eventData.data!));
+        } else {
+          emit(EventError("Error ${eventData.code}: ${eventData.message}"));
+        }
       } else {
-        emit(EventError("Error ${eventData.code}: ${eventData.message}"));
+        // debugPrint(' load event failed');
+        Exception('Not authentication');
       }
     } catch (error) {
       emit(EventError(error.toString()));
     }
   }
+
+  // Future<void> _onEventGetByIDRefresh(
+  //     EventGetByIDRefresh event, Emitter<EventState> emit) async {
+  //   emit(EventLoading());
+  //   final authState = authBloc.state;
+
+  //   try {
+  //     if (authState is AuthAuthenticated) {
+  //       final eventData = await _eventRepository.getEventByIDFromAPI(
+  //           token: authState.authData.token!, eventId: event.eventId);
+  //       if (eventData.code == 200) {
+  //         emit(EventLoaded(
+  //             message: eventData.message, eventData: eventData.data!));
+  //       } else {
+  //         emit(EventError("Error ${eventData.code}: ${eventData.message}"));
+  //       }
+  //     } else {
+  //       Exception('Not authentication');
+  //     }
+  //   } catch (error) {
+  //     emit(EventError(error.toString()));
+  //   }
+  // }
 }

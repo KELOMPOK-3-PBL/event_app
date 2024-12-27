@@ -110,29 +110,29 @@ class AppRouter {
       final EventDataModel eventData = arguments['event_data'];
       // final String currentRole = arguments['current_role'];
       return BlocProvider(
-        create: (context) => EventBloc()
-          ..add(EventGetByID(token: token!, eventId: eventData.eventId!)),
+        create: (context) => EventBloc(authBloc: context.read<AuthBloc>())
+          ..add(EventGetByID(eventId: eventData.eventId!)),
         child: DetailEventScreen(token: token!, data: eventData),
       );
     },
     detailEventApprovalProposeRoute: (context) {
-      String? token;
-      final authState = context.read<AuthBloc>().state;
-      if (authState is AuthAuthenticated) {
-        token = authState.authData.token;
-      }
+      // String? token;
+      // final authState = context.read<AuthBloc>().state;
+      // if (authState is AuthAuthenticated) {
+      //   token = authState.authData.token;
+      // }
 
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       final EventDataModel eventData = arguments['event_data'];
       final String currentRole = arguments['current_role'];
-      debugPrint(arguments.toString());
+
       return BlocProvider(
-        create: (context) => EventBloc()
-          ..add(EventGetByID(token: token!, eventId: eventData.eventId!)),
+        create: (context) => EventBloc(authBloc: context.read<AuthBloc>())
+          ..add(EventGetByID(eventId: eventData.eventId!)),
         child: DetailEventApprovalProposeScreen(
-          token: token!,
-          eventData: eventData,
+          // token: token!,
+          eventId: eventData.eventId!,
           currentRole: currentRole,
         ),
       );
@@ -158,7 +158,7 @@ class AppRouter {
           //   create: (context) => CategoryBloc()..add(CategoryReadData()),
           // ),
           BlocProvider(
-            create: (context) => EventBloc(),
+            create: (context) => EventBloc(authBloc: context.read<AuthBloc>()),
           ),
         ],
         child: FormProposeEvent(categoryData: categoryData),

@@ -39,7 +39,7 @@ class CategoryRepository {
         throw Exception('Error: ${response.statusCode}');
       }
     } catch (error) {
-      debugPrint('request category failed');
+      // debugPrint('request category failed');
       throw Exception('API REQUEST FAILED');
     }
   }

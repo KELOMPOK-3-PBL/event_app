@@ -28,8 +28,8 @@ class EventProvider {
         path = event;
       }
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
-      dio.interceptors
-          .add(LogInterceptor(responseBody: true, requestBody: true));
+      // dio.interceptors
+      //     .add(LogInterceptor(responseBody: true, requestBody: true));
 
       // Melakukan permintaan GET dengan query parameters
       final Response rawResponse = await dio.get(
@@ -44,9 +44,9 @@ class EventProvider {
     }
   }
 
-  Future<Response> postEvent(String token, EventDataModel eventData) async {
+  Future<Response> createEvent(String token, EventDataModel eventData) async {
     try {
-      final data = await eventData.toFormData();
+      final data = await eventData.toFormDataPropose();
 
       dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
       dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
@@ -62,23 +62,39 @@ class EventProvider {
 
       return rawResponse;
     } on DioException catch (e) {
-      debugPrint('Error response data: ${e.response}');
+      // debugPrint('Error response data: ${e.response}');
       return e.response!;
     }
   }
 
   Future<Response> updateEvent(
-      String eventId, String token, EventDataModel eventData) async {
-    try {
-      final data = await eventData.toFormData();
+      // String? eventId,
+      String token,
+      EventDataModel eventData,
+      String currentRole) async {
+    // debugPrint('Event update request');
 
+    try {
+      late FormData data;
+      final String eventID = eventData.getEventId();
+
+      if (currentRole == 'Propose') {
+        data = await eventData.toFormDataPropose();
+      } else
+      //  if (currentRole == 'Admin' || currentRole == 'Superadmin')
+      {
+        data = await eventData.toFormDataAdmin();
+      }
+      // debugPrint('Event Status: ${eventData.statusID}');
       dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
       dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
 
       final Response rawResponse = await dio.post(
         event,
         queryParameters: {
-          'event_id': eventId,
+          'event_id':
+              // eventId ??
+              eventID,
         },
         data: data,
       );
@@ -89,7 +105,7 @@ class EventProvider {
 
       return rawResponse;
     } on DioException catch (e) {
-      debugPrint('Error response data: ${e.response}');
+      // debugPrint('Error response data: ${e.response}');
       return e.response!;
     }
   }
@@ -106,8 +122,8 @@ class EventProvider {
       );
       return rawResponse;
     } on DioException catch (e) {
-      debugPrint(
-          'Error response event by id $eventId. data: ${e.response.toString()}');
+      // debugPrint(
+      //     'Error response event by id $eventId. data: ${e.response.toString()}');
       return e.response!;
     }
   }

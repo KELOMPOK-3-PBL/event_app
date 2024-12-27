@@ -130,7 +130,7 @@ class LoginScreenState extends State<LoginScreen>
           //       content: Text(state.message),
           //       duration: const Duration(days: 1)),
           // );
-          showError(context, state.message);
+          showCustomSnackBar(context, state.message);
         }
       },
       child: Scaffold(
@@ -318,7 +318,7 @@ class LoginScreenState extends State<LoginScreen>
                                         _passwordController.text.trim();
 
                                     if (email.isEmpty || password.isEmpty) {
-                                      showError(context,
+                                      showCustomSnackBar(context,
                                           "Email and password cannot be empty.");
                                       return;
                                     }

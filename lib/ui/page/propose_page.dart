@@ -110,7 +110,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
           // Navigator.of(context).pop();
         } else if (state is EventError) {
           debugPrint("load error");
-          showError(context, state.message);
+          showCustomSnackBar(context, state.message);
         }
       },
       // builder: (context, state) {

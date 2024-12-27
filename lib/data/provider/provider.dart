@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 // import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -31,7 +31,7 @@ void setupLocator() {
           baseUrl: 'https://polivent.my.id/api',
           // contentType: 'application/json',
           // persistentConnection: true,
-          preserveHeaderCase: true,
+          // preserveHeaderCase: true,
           // connectTimeout: Duration(minutes: 1)
         ),
       ));

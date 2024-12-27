@@ -43,7 +43,7 @@ class DetailEventScreenState extends State<DetailEventScreen> {
           return RefreshIndicator(
             onRefresh: () async {
               context.read<EventBloc>().add(
-                    EventGetByID(token: widget.token, eventId: data!.eventId!),
+                    EventGetByID(eventId: data!.eventId!),
                   );
             },
             child: CustomScrollView(

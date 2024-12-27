@@ -33,7 +33,7 @@ class EventRepository {
   Future<EventModel> proposeEvent(
       String token, EventDataModel eventData) async {
     try {
-      final response = await _eventProvider.postEvent(token, eventData);
+      final response = await _eventProvider.createEvent(token, eventData);
       return EventModel.fromJsonPropose(json: response.data);
     } catch (_) {
       throw Exception('API REQUEST FAILED');
@@ -41,10 +41,11 @@ class EventRepository {
   }
 
   Future<Map<String, dynamic>> updateEvent(
-      String eventId, String token, EventDataModel eventData) async {
+      String token, EventDataModel eventData, String currentRole) async {
     try {
       final response =
-          await _eventProvider.updateEvent(eventId, token, eventData);
+          await _eventProvider.updateEvent(token, eventData, currentRole);
+      // debugPrint(response.data.toString());
       return {
         'code': response.statusCode,
         'status': response.data['status'],

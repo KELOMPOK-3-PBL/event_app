@@ -1,6 +1,8 @@
+import 'package:event_proposal_app/bloc/bloc.dart';
 import 'package:event_proposal_app/data/model/model.dart';
 import 'package:event_proposal_app/ui/widget/show_error.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -72,14 +74,30 @@ class AppBarDetailEvent extends StatelessWidget {
     super.key,
     required this.data,
     required this.title,
+    this.currentRole,
   });
 
   final EventDataModel data;
   final String title;
+  final String? currentRole;
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
+      actions: [
+        if (currentRole == 'Propose')
+          Container(
+            margin: EdgeInsets.only(right: 6),
+            child: IconButton(
+                color: UIColor.rejected,
+                onPressed: () {
+                  context
+                      .read<EventBloc>()
+                      .add(EventDeleteData(eventID: data.eventId!));
+                },
+                icon: Icon(UIconsPro.solidRounded.trash)),
+          )
+      ],
       shadowColor: UIColor.shadowColor,
       centerTitle: true,
       surfaceTintColor: UIColor.solidWhite,
@@ -88,11 +106,7 @@ class AppBarDetailEvent extends StatelessWidget {
       expandedHeight: MediaQuery.of(context).size.width /
           1.4, //! Buat tinggi gambar berbanding dengan lebar layar
       leading: IconButton(
-        color:
-            // _isScrolled ?
-            // UIColor.typoBlack,
-            // :
-            UIColor.solidWhite,
+        color: UIColor.solidWhite,
         icon: Icon(UIconsPro.regularRounded.angle_small_left),
         onPressed: () {
           Navigator.pop(context);
@@ -378,7 +392,7 @@ class MainInfoSection extends StatelessWidget {
     } catch (e) {
       debugPrint('Error launching URL: $e');
       if (context.mounted) {
-        showError(context, 'Failed to open link: $e');
+        showCustomSnackBar(context, 'Failed to open link: $e');
         // showError(context, 'Gagal membuka link: $e');
       }
     }
@@ -498,28 +512,27 @@ class MainInfoSection extends StatelessWidget {
           SizedBox(
             width: 20,
           ),
-          // Row(
-          //   children: [
-          //     Icon(UIconsPro.regularRounded.clock,
-          //         color: UIColor.primary, size: 12),
-          //     SizedBox(width: 8),
-          //     Text(
-          //       data.dateEnd!,
-          //       style: TextStyle(
-          //         fontSize: 12,
-          //         fontWeight: FontWeight.w500,
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          //   ],
-          // ),
+          if (data.dateEnd != null || data.dateEnd!.isNotEmpty)
+            Row(
+              children: [
+                Icon(UIconsPro.solidRounded.calendar,
+                    color: UIColor.primary, size: 12),
+                SizedBox(width: 8),
+                Text(
+                  data.dateEnd!,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
           GestureDetector(
             onTap: () async {
               if (data.schedule != null) {
                 await launchUrlWithErrorHandling(context, data.schedule!);
               } else {
-                showError(context, 'No Complete Schedule Found');
+                showCustomSnackBar(context, 'No Complete Schedule Found');
               }
             },
             child: Container(

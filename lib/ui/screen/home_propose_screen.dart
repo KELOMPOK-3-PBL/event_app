@@ -197,7 +197,7 @@ class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => EventBloc()
+              create: (context) => EventBloc(authBloc: context.read<AuthBloc>())
                 ..add(
                   EventFetchData(
                     requestEventCarousel: RequestFilteredEventModel(
@@ -223,7 +223,7 @@ class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
         );
       case 1:
         return BlocProvider(
-          create: (context) => EventBloc()
+          create: (context) => EventBloc(authBloc: context.read<AuthBloc>())
             ..add(
               EventFetchData(
                 requestEvent: RequestFilteredEventModel(
@@ -236,7 +236,7 @@ class _HomeProposeTabPageState extends State<_HomeProposeTabPage>
         );
       case 2:
         return BlocProvider(
-          create: (context) => EventBloc()
+          create: (context) => EventBloc(authBloc: context.read<AuthBloc>())
             ..add(
               EventFetchData(
                 requestEvent: RequestFilteredEventModel(

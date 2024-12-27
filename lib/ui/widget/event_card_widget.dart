@@ -61,30 +61,6 @@ class EventCardWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // if (showStatus == false)
-                  //   Container(
-                  //     margin: EdgeInsets.only(bottom: 4),
-                  //     // width: 108,
-                  //     // height: 20,
-                  //     decoration: BoxDecoration(
-                  //         color: UIColor.reviewing,
-                  //         borderRadius: BorderRadius.circular(8)),
-                  //     child: Container(
-                  //       margin: EdgeInsets.symmetric(
-                  //           horizontal:
-                  //               (MediaQuery.of(context).size.width / 20),
-                  //           vertical: 3),
-                  //       child: Text(
-                  //         'See detail',
-                  //         textAlign: TextAlign.center,
-                  //         style: const TextStyle(
-                  //             color: UIColor.solidWhite,
-                  //             // height: 2.5,
-                  //             fontWeight: FontWeight.w500,
-                  //             fontSize: 12),
-                  //       ),
-                  //     ),
-                  //   ),
                   if (showStatus)
                     Container(
                       decoration: BoxDecoration(
@@ -102,7 +78,6 @@ class EventCardWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                  // const SizedBox(height: 8),
                   Text(
                     '${events.category}: ${events.title}',
                     style: const TextStyle(
@@ -122,7 +97,9 @@ class EventCardWidget extends StatelessWidget {
                       UIconsPro.regularRounded.marker, events.location ?? ''),
                   cardInfoRow(
                       UIconsPro.regularRounded.calendar, events.dateStart),
-
+                  if (events.dateEnd != null || events.dateEnd!.isNotEmpty)
+                    cardInfoRow(
+                        UIconsPro.solidRounded.calendar, events.dateEnd!),
                   const SizedBox(height: 8),
                 ],
               ),

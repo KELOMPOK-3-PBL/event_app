@@ -85,7 +85,7 @@
 //                 BlocProvider(
 //                     create: (context) => CategoryBloc()..add(StatusReadData())),
 //                 // BlocProvider(
-//                 //     create: (context) => EventBloc()
+//                 //     create: (context) => EventBloc(authBloc: context.read<AuthBloc>())
 //                 //       // create: (context) => EventBloc(
 //                 //       //     authState: context.read<AuthBloc>().state)
 

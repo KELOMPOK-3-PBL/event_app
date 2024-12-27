@@ -162,7 +162,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
                         //     "Cek Request ${state.requestEvent.adminUserId.toString()}");
                       } else if (state is EventError) {
                         debugPrint("load error");
-                        showError(context, state.message);
+                        showCustomSnackBar(context, state.message);
                       }
                     },
                     builder: (context, state) {

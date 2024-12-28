@@ -5,19 +5,29 @@ class SearchWidget extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
   final String label;
   final ValueChanged<String> onSubmittedKeyboard;
-  final VoidCallback onPressedFilter;
+  final ValueChanged<String>? onChangedKeyboard;
+  final VoidCallback? onPressedFilter;
+  final bool haveFilter;
 
-  SearchWidget(
-      {super.key,
-      required this.label,
-      required this.onSubmittedKeyboard,
-      required this.onPressedFilter});
+  SearchWidget({
+    super.key,
+    required this.label,
+    required this.onSubmittedKeyboard,
+    this.onPressedFilter,
+    this.onChangedKeyboard,
+    this.haveFilter = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 45,
       child: TextField(
+        onChanged: (searchQuery) {
+          if (searchQuery.isNotEmpty) {
+            onChangedKeyboard!(searchQuery); // Passing the search query
+          }
+        },
         autofocus: false,
         controller: _searchController, // Assigning the controller
         textInputAction: TextInputAction.search,
@@ -41,14 +51,17 @@ class SearchWidget extends StatelessWidget {
             color: Colors.black,
             size: 18,
           ),
-          suffixIcon: IconButton(
-            icon: Icon(
-              UIconsPro.regularRounded.settings_sliders, // Using Material icons
-              color: Colors.black,
-              size: 18,
-            ),
-            onPressed: onPressedFilter,
-          ),
+          suffixIcon: (haveFilter)
+              ? IconButton(
+                  icon: Icon(
+                    UIconsPro.regularRounded
+                        .settings_sliders, // Using Material icons
+                    color: Colors.black,
+                    size: 18,
+                  ),
+                  onPressed: onPressedFilter,
+                )
+              : null,
         ),
         onSubmitted: (searchQuery) {
           if (searchQuery.isNotEmpty) {

@@ -79,6 +79,7 @@ class EventProvider {
       // debugPrint(eventID.toString());
       // debugPrint(token.toString());
       // debugPrint(currentRole.toString());
+      debugPrint(eventData.inviteUser.toString());
 
       if (currentRole == 'Propose') {
         data = await eventData.toFormDataPropose();
@@ -105,8 +106,8 @@ class EventProvider {
       return e.response!;
     } finally {
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
-      dio.interceptors
-          .add(LogInterceptor(responseBody: true, requestBody: true));
+      // dio.interceptors
+      //     .add(LogInterceptor(responseBody: true, requestBody: true));
     }
   }
 

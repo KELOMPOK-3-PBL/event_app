@@ -323,11 +323,18 @@ class _DetailEventApprovalProposeScreenContentState
             invitedPerson: () {
               showDialog(
                 context: context,
-                builder: (_) => BlocProvider(
-                  create: (context) =>
-                      UserBloc(authBloc: context.read<AuthBloc>())
-                        ..add(FetchUser()),
-                  child: InvitedDialog(),
+                builder: (_) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) =>
+                          UserBloc(authBloc: context.read<AuthBloc>())
+                            ..add(FetchUser()),
+                    ),
+                    BlocProvider.value(
+                      value: context.read<EventBloc>(),
+                    ),
+                  ],
+                  child: InvitedDialog(eventData: _currentEventData),
                 ),
               );
             },

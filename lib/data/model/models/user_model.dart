@@ -35,19 +35,19 @@ class UsersModel extends Equatable {
 }
 
 class UserDataModel extends Equatable {
-  final String userid;
+  final String? userid;
   final String username;
-  final String email;
+  final String? email;
   final List<String>? roles;
   final String? about;
   final String? avatar;
 
   // Constructor
   const UserDataModel({
-    required this.userid,
+    this.userid,
     required this.username,
-    required this.email,
-    required this.roles,
+    this.email,
+    this.roles,
     this.about,
     this.avatar,
   });

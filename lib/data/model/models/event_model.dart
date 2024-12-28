@@ -52,6 +52,7 @@ class EventDataModel extends Equatable {
   final String? eventId;
   final String title;
   final String? dateAdd;
+  final String? proposeUserId;
   final String? proposeUsername;
   final String? proposeAvatar;
   final String? categoryId;
@@ -71,13 +72,14 @@ class EventDataModel extends Equatable {
   final int? statusID;
   final String? status;
   final String? adminNote;
-  // final String? invitedPersons;
+  final List<int>? inviteUser;
   final List<InvitedPerson>? invitedPersons;
 
   const EventDataModel({
     this.eventId,
     required this.title,
     this.dateAdd,
+    this.proposeUserId,
     this.proposeUsername,
     this.proposeAvatar,
     this.categoryId,
@@ -97,6 +99,7 @@ class EventDataModel extends Equatable {
     this.statusID,
     this.status,
     this.adminNote,
+    this.inviteUser,
     this.invitedPersons,
   });
 
@@ -108,6 +111,7 @@ class EventDataModel extends Equatable {
     String? eventId,
     String? title,
     String? dateAdd,
+    String? proposeUserId,
     String? proposeUsername,
     String? proposeAvatar,
     String? categoryId,
@@ -127,12 +131,14 @@ class EventDataModel extends Equatable {
     String? status,
     int? statusID,
     String? adminNote,
+    List<int>? inviteUser,
     List<InvitedPerson>? invitedPersons,
   }) {
     return EventDataModel(
       eventId: eventId ?? this.eventId,
       title: title ?? this.title,
       dateAdd: dateAdd ?? this.dateAdd,
+      proposeUserId: proposeUserId ?? this.proposeUserId,
       proposeUsername: proposeUsername ?? this.proposeUsername,
       proposeAvatar: proposeAvatar ?? this.proposeAvatar,
       categoryId: categoryId ?? this.categoryId,
@@ -152,6 +158,7 @@ class EventDataModel extends Equatable {
       status: status ?? this.status,
       statusID: statusID ?? this.statusID,
       adminNote: adminNote ?? this.adminNote,
+      inviteUser: inviteUser ?? this.inviteUser,
       invitedPersons: invitedPersons ?? this.invitedPersons,
     );
   }
@@ -161,6 +168,7 @@ class EventDataModel extends Equatable {
       eventId: json['event_id'].toString(),
       title: json['title'],
       dateAdd: json['date_add'],
+      proposeUserId: json['propose_user_id'],
       proposeUsername: json['propose_user'],
       proposeAvatar: json['propose_user_avatar'],
       category: json['category'],
@@ -196,7 +204,7 @@ class EventDataModel extends Equatable {
       'date_start': dateStart,
       'date_end': dateEnd,
       'schedule': schedule,
-      'invited_users': invitedPersons,
+      'invited_users': inviteUser!.join(','),
     };
 
     // Hapus key dengan nilai null
@@ -242,11 +250,13 @@ class EventDataModel extends Equatable {
 }
 
 class InvitedPerson extends Equatable {
+  final String? userId;
   final String username;
   final String? avatar;
 
   // Constructor
   const InvitedPerson({
+    required this.userId,
     required this.username,
     this.avatar,
   });
@@ -254,6 +264,7 @@ class InvitedPerson extends Equatable {
   // Convert a JSON map to the InvitedPerson object
   factory InvitedPerson.fromJson(Map<String, dynamic> json) {
     return InvitedPerson(
+      userId: json['user_id'],
       username: json['username'],
       avatar: json['avatar'],
     );

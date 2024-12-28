@@ -19,6 +19,7 @@ class EventProvider {
         ..removeWhere((key, value) =>
             value == null); // Menghapus parameter yang bernilai null
 
+      debugPrint(queryParameters.toString());
       // memperbarui path dan options bila permintaan untuk mengambil allEvents
       if (pathRequest == PathRequestEvents.events) {
         // set header untuk auth token
@@ -69,19 +70,23 @@ class EventProvider {
 
   Future<Response> updateEvent(
       String token, EventDataModel eventData, String currentRole) async {
+    // debugPrint('Updaterr api');
+
     try {
       late FormData data;
       final String eventID = eventData.getEventId();
-      debugPrint(eventData.toString());
-      debugPrint(eventID.toString());
-      debugPrint(token.toString());
-      debugPrint(currentRole.toString());
+      debugPrint(eventData.imagePoster.toString());
+      // debugPrint(eventID.toString());
+      // debugPrint(token.toString());
+      // debugPrint(currentRole.toString());
 
       if (currentRole == 'Propose') {
         data = await eventData.toFormDataPropose();
       } else {
         data = await eventData.toFormDataAdmin();
       }
+
+      // debugPrint(data.toString());
 
       dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
       dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
@@ -94,14 +99,14 @@ class EventProvider {
         data: data,
       );
 
-      // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
-      dio.interceptors
-          .add(LogInterceptor(responseBody: true, requestBody: true));
-
       return rawResponse;
     } on DioException catch (e) {
       // debugPrint('Error response data: ${e.response}');
       return e.response!;
+    } finally {
+      // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
+      dio.interceptors
+          .add(LogInterceptor(responseBody: true, requestBody: true));
     }
   }
 

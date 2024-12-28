@@ -42,7 +42,8 @@ class EventsListLoaded extends EventState {
   });
 
   @override
-  List<Object> get props => [event, requestEvent, hasReachedMax];
+  List<Object> get props =>
+      [event, listEventsCarousel!, requestEvent, hasReachedMax];
 }
 
 class EventLoaded extends EventState {

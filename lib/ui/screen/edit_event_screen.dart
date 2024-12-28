@@ -33,23 +33,18 @@ class FormEditEventState extends State<FormEditEvent> {
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
 
-  String? _selectedCategory;
+  String? _selectedCategoryId, _selectedCategory;
   File? _selectedImage;
   EventDataModel? eventProposeData;
-  String? token;
 
   @override
   void initState() {
     super.initState();
-    final authState = context.read<AuthBloc>().state;
-    if (authState is AuthAuthenticated) {
-      token = authState.authData.token!;
-    }
     eventProposeData = widget.eventData;
-    debugPrint(widget.categoryData.toString());
+    // debugPrint(widget.categoryData.toString());
     _titleController.value = TextEditingValue(text: eventProposeData!.title);
     _categoryController.value =
-        TextEditingValue(text: eventProposeData!.category ?? '');
+        TextEditingValue(text: eventProposeData!.category!);
     _placeController.value = TextEditingValue(text: eventProposeData!.place);
     _locationController.value =
         TextEditingValue(text: eventProposeData!.location ?? '');
@@ -65,6 +60,8 @@ class FormEditEventState extends State<FormEditEvent> {
         TextEditingValue(text: eventProposeData!.dateEnd ?? '');
     // eventProposeData = widget.eventData;
     // _selectedImage = eventProposeData!.imagePoster;
+    _selectedCategory = _categoryController.text;
+    debugPrint(_selectedCategory);
   }
 
   Future<void> _pickImage() async {
@@ -98,7 +95,7 @@ class FormEditEventState extends State<FormEditEvent> {
       final EventDataModel eventUpdate = EventDataModel(
         eventId: eventProposeData!.eventId!,
         title: _titleController.text,
-        categoryId: _selectedCategory,
+        categoryId: _selectedCategoryId,
         description: _descriptionController.text,
         imagePoster: _selectedImage,
         location: _locationController.text,
@@ -273,7 +270,7 @@ class FormEditEventState extends State<FormEditEvent> {
                           icon: UIconsPro.regularRounded.head_side_thinking),
                       buildDropdown("Category", categories, (value) {
                         setState(() {
-                          _selectedCategory = value;
+                          _selectedCategoryId = value;
                         });
                       }, _selectedCategory),
                       buildField("Place", "Enter place", _placeController,

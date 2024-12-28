@@ -185,17 +185,17 @@ class EventDataModel extends Equatable {
   Future<FormData> toFormDataPropose() async {
     final Map<String, dynamic> data = {
       'title': title,
-      'date_add': dateAdd,
       'category_id': categoryId,
       'description': description,
-      'poster': await MultipartFile.fromFile(imagePoster!.path),
+      'poster': (imagePoster != null)
+          ? await MultipartFile.fromFile(imagePoster!.path)
+          : null,
       'location': location,
       'place': place,
       'quota': quota,
       'date_start': dateStart,
       'date_end': dateEnd,
       'schedule': schedule,
-      'note': adminNote,
       'invited_users': invitedPersons,
     };
 

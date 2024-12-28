@@ -21,18 +21,10 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       _onEventFetchData,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     );
-    on<EventReloadData>(
-      _onEventReloadData,
-      transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
-    );
     on<EventGetByID>(
       _onEventGetByID,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
     );
-    // on<EventGetByIDRefresh>(
-    //   _onEventGetByIDRefresh,
-    //   transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
-    // );
     on<EventProposeData>(
       _onEventProposed,
       transformer: throttleDroppable(throttleDuration), // Mengaktifkan throttle
@@ -51,7 +43,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       EventFetchData event, Emitter<EventState> emit) async {
     late List<EventDataModel> carousel = [];
     // Mengecek apakah sudah ada data yang terambil sebelumnya
-    if (state is EventsListLoaded) {
+    if (state is EventsListLoaded && event.isReload == false) {
       try {
         final currentState = state as EventsListLoaded;
         // Mengecek apakah semua event yang ada di database sudah termuat
@@ -59,7 +51,6 @@ class EventBloc extends Bloc<EventEvent, EventState> {
           // debugPrint("Max Loaded");
           return;
         }
-        // debugPrint(event.requestEvent.toString());
         // Mengambil jumah index yang termuat saat ini
         final currentIndex = currentState.event.length;
         // Mengambil data event baru berdasarkan index yang termuat saat ini dari API
@@ -108,7 +99,9 @@ class EventBloc extends Bloc<EventEvent, EventState> {
             pathRequest: event.pathRequest,
           );
           carousel = carouselModel.listData!;
+          debugPrint(carouselModel.toString());
         }
+
         // Menentukan apakah data event di DB sudah termuat semua atau belum
         if (events.listData!.length < event.requestEvent.postLimit!) {
           emit(EventsListLoaded(
@@ -128,45 +121,6 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       } catch (_) {
         emit(EventError("Failed to load initial events request"));
       }
-    }
-  }
-
-  Future<void> _onEventReloadData(
-      EventReloadData event, Emitter<EventState> emit) async {
-    try {
-      late List<EventDataModel> carousel = [];
-
-      // loading ketika halaman baru saja dibuka
-      emit(EventLoading());
-      // Mengambil data events dari API
-      final events = await _eventRepository.getEventsFromAPI(
-          requestEvent: event.requestEvent, pathRequest: event.pathRequest);
-      // try {
-      if (event.requestEventCarousel != null) {
-        final carouselModel = await _eventRepository.getEventsFromAPI(
-          requestEvent: event.requestEventCarousel!,
-          pathRequest: event.pathRequest,
-        );
-        carousel = carouselModel.listData!;
-      }
-      // Menentukan apakah data event di DB sudah termuat semua atau belum
-      if (events.listData!.length < event.requestEvent.postLimit!) {
-        emit(EventsListLoaded(
-            event: events.listData!,
-            listEventsCarousel: carousel,
-            requestEvent: event.requestEvent,
-            requestEventCarousel: event.requestEventCarousel,
-            hasReachedMax: true));
-      } else {
-        emit(EventsListLoaded(
-            event: events.listData!,
-            listEventsCarousel: carousel,
-            requestEvent: event.requestEvent,
-            requestEventCarousel: event.requestEventCarousel,
-            hasReachedMax: false));
-      }
-    } catch (_) {
-      emit(EventError("Failed to load initial events request"));
     }
   }
 

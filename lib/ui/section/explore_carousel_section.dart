@@ -126,16 +126,17 @@ class CarouselItems extends StatelessWidget {
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12)),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: BackdropFilter(
                               blendMode: BlendMode.src,
-                              //! menambahkan efek blur
                               filter: ImageFilter.blur(
-                                  sigmaX: 4,
-                                  sigmaY: 4,
-                                  tileMode: TileMode.repeated),
+                                sigmaX: 4,
+                                sigmaY: 4,
+                                tileMode: TileMode.repeated,
+                              ),
                               child: Container(
                                 padding:
                                     const EdgeInsets.fromLTRB(12, 8, 12, 8),
@@ -143,12 +144,6 @@ class CarouselItems extends StatelessWidget {
                                 child: Stack(
                                   alignment: AlignmentDirectional.bottomEnd,
                                   children: [
-                                    // Row(
-                                    //   mainAxisAlignment:
-                                    //       MainAxisAlignment.spaceBetween,
-                                    //   crossAxisAlignment:
-                                    //       CrossAxisAlignment.end,
-                                    //   children: [
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -157,16 +152,20 @@ class CarouselItems extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              overflow: TextOverflow.clip,
-                                              "${eventData![index].category} : ${eventData![index].title}",
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: UIColor.solidWhite,
+                                            Expanded(
+                                              child: Text(
+                                                "${eventData![index].category} : ${eventData![index].title}",
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: UIColor.solidWhite,
+                                                ),
+                                                textAlign: TextAlign.left,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines:
+                                                    1, // Membatasi teks ke 1 baris
                                               ),
-                                              textAlign: TextAlign.left,
-                                            )
+                                            ),
                                           ],
                                         ),
                                         cardInfoCarouselRow(
@@ -187,7 +186,7 @@ class CarouselItems extends StatelessWidget {
                                     StatusOrSeeMore(
                                       status: eventData![index].status!,
                                       currentRole: currentRole,
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),

@@ -11,31 +11,32 @@ class EventFetchData extends EventEvent {
   final RequestFilteredEventModel requestEvent;
   final RequestFilteredEventModel? requestEventCarousel;
   final PathRequestEvents pathRequest;
+  final bool? isReload;
 
-  const EventFetchData({
-    required this.requestEvent,
-    this.requestEventCarousel,
-    required this.pathRequest,
-  });
-
-  @override
-  List<Object> get props => [requestEvent, requestEventCarousel!, pathRequest];
-}
-
-class EventReloadData extends EventEvent {
-  final RequestFilteredEventModel requestEvent;
-  final RequestFilteredEventModel? requestEventCarousel;
-  final PathRequestEvents pathRequest;
-
-  const EventReloadData({
-    required this.requestEvent,
-    this.requestEventCarousel,
-    required this.pathRequest,
-  });
+  const EventFetchData(
+      {required this.requestEvent,
+      this.requestEventCarousel,
+      required this.pathRequest,
+      this.isReload = false});
 
   @override
   List<Object> get props => [requestEvent, requestEventCarousel!, pathRequest];
 }
+
+// class EventReloadData extends EventEvent {
+//   final RequestFilteredEventModel requestEvent;
+//   final RequestFilteredEventModel? requestEventCarousel;
+//   final PathRequestEvents pathRequest;
+
+//   const EventReloadData({
+//     required this.requestEvent,
+//     this.requestEventCarousel,
+//     required this.pathRequest,
+//   });
+
+//   @override
+//   List<Object> get props => [requestEvent, requestEventCarousel!, pathRequest];
+// }
 
 class EventProposeData extends EventEvent {
   final EventDataModel eventData;

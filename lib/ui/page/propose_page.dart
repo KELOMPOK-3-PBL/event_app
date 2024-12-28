@@ -118,7 +118,8 @@ class _HomeProposePageState extends State<HomeProposePage> {
       child: RefreshIndicator(
         onRefresh: () async {
           context.read<EventBloc>().add(
-                EventReloadData(
+                EventFetchData(
+                    isReload: true,
                     requestEvent: RequestFilteredEventModel(
                       token: requestFilteredEvent.token,
                     ),

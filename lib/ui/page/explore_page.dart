@@ -22,43 +22,33 @@ class HomeExplorePage extends StatefulWidget {
 }
 
 class _HomeExplorePageState extends State<HomeExplorePage> {
-  // final GlobalKey<SearchEventsWidgetState> _searchKey =
-  //     GlobalKey<SearchEventsWidgetState>();
-  // List<EventsMore> state.event = [];
-
   final ScrollController _scrollController = ScrollController();
 
   //! Updated request
   late RequestFilteredEventModel requestFilteredEvent,
       requestFilteredEventCarousel;
   PathRequestEvents requestPath = PathRequestEvents.approvedEvents;
-  // late EventFetchData eventFetchData;
 
   String route = AppRouter.detailEventRoute;
   String currentRole = '';
   String username = '';
   String userid = '';
+  String statusCarousel = '';
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
-    // _eventsMore = getEventsMore();
     final authState = context.read<AuthBloc>().state;
-    // final userState = context.read<UserBloc>().state;
 
     // mencari role untuk menyesuaikan output
     if (authState is AuthAuthenticated) {
       currentRole = authState.currentRole ?? authState.authData.data!.roles[0];
-    }
-
-    // debugPrint(authState.toString());
-    // debugPrint(userState.toString());
-    // username = (userState as UserByUIDLoaded).userData.username;
-
-    if (currentRole == 'Admin' || currentRole == 'Superadmin') {
-      requestPath = PathRequestEvents.events;
-      route = AppRouter.detailEventApprovalProposeRoute;
+      if (currentRole == 'Admin' || currentRole == 'Superadmin') {
+        requestPath = PathRequestEvents.events;
+        route = AppRouter.detailEventApprovalProposeRoute;
+        statusCarousel = 'Proposed';
+      }
     }
   }
 
@@ -94,18 +84,17 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
     return RefreshIndicator(
       onRefresh: () async {
         context.read<EventBloc>().add(
-              EventReloadData(
+              EventFetchData(
+                  isReload: true,
                   requestEventCarousel: RequestFilteredEventModel(
-                      token: widget.token,
-                      status:
-                          (currentRole != 'Member' || currentRole != 'Propose')
-                              ? 'Proposed'
-                              : null),
+                    token: widget.token,
+                    status: statusCarousel,
+                  ),
                   requestEvent: RequestFilteredEventModel(
                     token: widget.token,
                     postLimit: 6,
                   ),
-                  pathRequest: PathRequestEvents.events),
+                  pathRequest: requestPath),
             );
         context.read<UserBloc>().add(FetchUserById(userId: userid));
         context.read<CategoryBloc>().add(

@@ -10,7 +10,6 @@ class EventRepository {
       // final response = await eventProvider.getFilteredAllEvents(requestEvent);
       final response =
           await _eventProvider.getFilteredEvents(requestEvent, pathRequest);
-      // debugPrint("Response data: ${response.data}");
 
       final data = response.data;
       if (response.statusCode == 200 && data["status"] == 'success') {
@@ -53,7 +52,7 @@ class EventRepository {
     try {
       final response =
           await _eventProvider.updateEvent(token, eventData, currentRole);
-      debugPrint(response.data);
+      debugPrint(response.toString());
       return {
         'code': response.statusCode,
         'status': response.data['status'],

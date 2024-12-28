@@ -88,7 +88,8 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
           debugPrint("Reload Page");
 
           context.read<EventBloc>().add(
-                EventReloadData(
+                EventFetchData(
+                    isReload: true,
                     requestEvent: RequestFilteredEventModel(
                       token: requestFilteredEventApproval.token,
                       adminUserId: requestFilteredEventApproval.adminUserId,

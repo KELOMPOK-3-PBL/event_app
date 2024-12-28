@@ -109,7 +109,8 @@ class _HomeEventsPageState extends State<HomeEventsPage>
       child: RefreshIndicator(
         onRefresh: () async {
           context.read<EventBloc>().add(
-                EventReloadData(
+                EventFetchData(
+                    isReload: true,
                     requestEvent: RequestFilteredEventModel(
                       token: '',
                     ),

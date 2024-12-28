@@ -11,6 +11,7 @@ class FetchUser extends UserEvent {
   final String? sort;
   final String? order;
   final String? role;
+  final bool isReload;
   // final String? token;
 
   FetchUser({
@@ -19,6 +20,7 @@ class FetchUser extends UserEvent {
     this.role,
     this.searchUser,
     this.userId,
+    this.isReload = false,
     // this.token,
   });
 

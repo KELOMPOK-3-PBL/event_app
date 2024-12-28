@@ -11,7 +11,7 @@ import '../../data/repository/repository.dart';
 part 'user_event.dart';
 part 'user_state.dart';
 
-int limit = 10;
+int limit = 12;
 
 class UserBloc extends Bloc<UserEvent, UserState> {
   final _userRepository = UserRepository();
@@ -27,7 +27,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     final authState = authBloc.state;
     if (authState is AuthAuthenticated) {
       final token = authState.authData.token;
-      if (state is UsersLoaded) {
+      if (state is UsersLoaded && event.isReload == false) {
         try {
           final currentState = state as UsersLoaded;
           // Cek apakah semua data sudah termuat

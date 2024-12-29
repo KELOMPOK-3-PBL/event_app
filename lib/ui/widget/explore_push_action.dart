@@ -16,70 +16,57 @@ Future<void> explorePushAction(
       event.status == 'Proposed') {
     return showDialog(
       context: context,
-      builder: (dialogContext) => Dialog(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('Want to review ${event.category}: ${event.title}?'),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(dialogContext);
-                    },
-                    child: const Text('Cancel'),
-                  ),
-                  BlocProvider(
-                    create: (context) =>
-                        EventBloc(authBloc: context.read<AuthBloc>()),
-                    child: BlocConsumer<EventBloc, EventState>(
-                      listener: (context, state) {
-                        if (state is EventUpdated) {
-                          debugPrint('EVENT UPDATED TO REVIEW');
-                          Navigator.pushReplacementNamed(
-                            dialogContext,
-                            route,
-                            arguments: {
-                              'event_data': event,
-                              'current_role': currentRole,
-                              // 'token': token,
-                            },
-                          );
-                        } else if (state is EventError) {
-                          showCustomSnackBar(context, state.message);
-                        }
-                      },
-                      builder: (context, state) {
-                        return TextButton(
-                          onPressed: () {
-                            try {
-                              event = event.copyWith(
-                                  statusID: 2, status: 'Review Admin');
-                              context
-                                  .read<EventBloc>()
-                                  .add(EventUpdateData(eventData: event));
-                            } catch (_) {
-                              showCustomSnackBar(
-                                  context, 'Failed to review event');
-                            }
-                          },
-                          child: const Text('Confirm'),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(
+          '${event.category}: ${event.title}?',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
+        content: Text('Sure, want to review this event?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(dialogContext);
+            },
+            child: const Text('Cancel'),
+          ),
+          BlocProvider(
+            create: (context) => EventBloc(authBloc: context.read<AuthBloc>()),
+            child: BlocConsumer<EventBloc, EventState>(
+              listener: (context, state) {
+                if (state is EventUpdated) {
+                  debugPrint('EVENT UPDATED TO REVIEW');
+                  Navigator.pushReplacementNamed(
+                    dialogContext,
+                    route,
+                    arguments: {
+                      'event_data': event,
+                      'current_role': currentRole,
+                      // 'token': token,
+                    },
+                  );
+                } else if (state is EventError) {
+                  showCustomSnackBar(context, state.message);
+                }
+              },
+              builder: (context, state) {
+                return TextButton(
+                  onPressed: () {
+                    try {
+                      event =
+                          event.copyWith(statusID: 2, status: 'Review Admin');
+                      context
+                          .read<EventBloc>()
+                          .add(EventUpdateData(eventData: event));
+                    } catch (_) {
+                      showCustomSnackBar(context, 'Failed to review event');
+                    }
+                  },
+                  child: const Text('Confirm'),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   } else {

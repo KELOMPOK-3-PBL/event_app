@@ -54,7 +54,7 @@ class EventRepository {
           await _eventProvider.updateEvent(token, eventData, currentRole);
       debugPrint(response.toString());
       return {
-        'code': response.statusCode,
+        // 'code': response.statusCode,
         'status': response.data['status'],
         'message': response.data['message'],
       };
@@ -79,8 +79,8 @@ class EventRepository {
       final response = await _eventProvider.deleteEvent(token, eventId);
       debugPrint(response.toString());
       return {
+        'status': response.data['status'],
         'message': response.data['message'],
-        'data': response.data['data']
       };
     } catch (_) {
       throw Exception('Failed to delete event');

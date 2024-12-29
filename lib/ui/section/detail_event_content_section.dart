@@ -94,9 +94,44 @@ class AppBarDetailEvent extends StatelessWidget {
                         WidgetStatePropertyAll(UIColor.transparentWhite)),
                 color: UIColor.rejected,
                 onPressed: () {
-                  context
-                      .read<EventBloc>()
-                      .add(EventDeleteData(eventID: data.eventId!));
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text(
+                            "Delete ${data.title}",
+                            style: TextStyle(
+                                color: UIColor.rejected,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
+                          content: Text('Sure, wat to delete this event?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(color: UIColor.typoBlack),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      WidgetStatePropertyAll(UIColor.rejected)),
+                              onPressed: () {
+                                context.read<EventBloc>().add(
+                                    EventDeleteData(eventID: data.eventId!));
+                              },
+                              child: Text(
+                                'Confirm',
+                                style: TextStyle(color: UIColor.solidWhite),
+                              ),
+                            )
+                          ],
+                        );
+                      });
                 },
                 icon: Icon(UIconsPro.solidRounded.trash_check)),
           )

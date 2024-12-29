@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:event_proposal_app/bloc/bloc.dart';
 import 'package:event_proposal_app/data/model/model.dart';
 import 'package:event_proposal_app/ui/router/router.dart';
+import 'package:event_proposal_app/ui/widget/show_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -29,23 +30,30 @@ class DetailEventApprovalProposeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<EventBloc, EventState>(listener: (context, state) {
-        if (state is EventUpdated) {
-          context.read<EventBloc>().add(EventGetByID(eventId: eventId));
-        } else if (state is EventDeleted) {
-          Navigator.of(context).pop();
-        }
-      }, builder: (context, state) {
-        debugPrint(state.toString());
+      body: BlocConsumer<EventBloc, EventState>(
+        listener: (context, state) {
+          if (state is EventUpdated) {
+            context.read<EventBloc>().add(EventGetByID(eventId: eventId));
+          } else if (state is EventDeleted) {
+            Navigator.of(context).pop();
+          } else if (state is EventError) {
+            showCustomSnackBar(
+                context, 'Event not found, please refresh the page');
+            Navigator.of(context).pop();
+          }
+        },
+        builder: (context, state) {
+          debugPrint(state.toString());
 
-        if (state is EventLoaded) {
-          return DetailEventApprovalProposeScreenContent(
-            currentRole: currentRole,
-            eventData: state.eventData,
-          );
-        }
-        return Center(child: CircularProgressIndicator());
-      }),
+          if (state is EventLoaded) {
+            return DetailEventApprovalProposeScreenContent(
+              currentRole: currentRole,
+              eventData: state.eventData,
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }

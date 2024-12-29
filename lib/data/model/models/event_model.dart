@@ -74,6 +74,7 @@ class EventDataModel extends Equatable {
   final String? adminNote;
   final List<int>? inviteUser;
   final List<InvitedPerson>? invitedPersons;
+  final bool isInvitePerson;
 
   const EventDataModel({
     this.eventId,
@@ -101,6 +102,7 @@ class EventDataModel extends Equatable {
     this.adminNote,
     this.inviteUser,
     this.invitedPersons,
+    this.isInvitePerson = false,
   });
 
   String getEventId() {
@@ -133,6 +135,7 @@ class EventDataModel extends Equatable {
     String? adminNote,
     List<int>? inviteUser,
     List<InvitedPerson>? invitedPersons,
+    bool? isInvitePerson,
   }) {
     return EventDataModel(
       eventId: eventId ?? this.eventId,
@@ -160,6 +163,7 @@ class EventDataModel extends Equatable {
       adminNote: adminNote ?? this.adminNote,
       inviteUser: inviteUser ?? this.inviteUser,
       invitedPersons: invitedPersons ?? this.invitedPersons,
+      isInvitePerson: isInvitePerson ?? this.isInvitePerson,
     );
   }
 
@@ -204,12 +208,19 @@ class EventDataModel extends Equatable {
       'date_start': dateStart,
       'date_end': dateEnd,
       'schedule': schedule,
-      'invited_users': inviteUser!.join(','),
+      // 'invited_users': (isInvitePerson) ? inviteUser!.join(',') : null,
     };
 
     // Hapus key dengan nilai null
     data.removeWhere((key, value) => value == null);
 
+    return FormData.fromMap(data);
+  }
+
+  Future<FormData> toFormDataInvitedPerson() async {
+    final Map<String, dynamic> data = {
+      'invited_users': (isInvitePerson) ? inviteUser!.join(',') : [null],
+    };
     return FormData.fromMap(data);
   }
 

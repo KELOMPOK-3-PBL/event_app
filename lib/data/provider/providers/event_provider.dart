@@ -75,14 +75,18 @@ class EventProvider {
     try {
       late FormData data;
       final String eventID = eventData.getEventId();
-      debugPrint(eventData.imagePoster.toString());
+      // debugPrint(eventData.imagePoster.toString());
       // debugPrint(eventID.toString());
       // debugPrint(token.toString());
       // debugPrint(currentRole.toString());
-      debugPrint(eventData.inviteUser.toString());
+      // debugPrint(eventData.inviteUser.toString());
 
       if (currentRole == 'Propose') {
-        data = await eventData.toFormDataPropose();
+        if (eventData.isInvitePerson) {
+          data = await eventData.toFormDataInvitedPerson();
+        } else {
+          data = await eventData.toFormDataPropose();
+        }
       } else {
         data = await eventData.toFormDataAdmin();
       }

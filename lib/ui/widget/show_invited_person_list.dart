@@ -30,8 +30,7 @@ class _InvitedDialogState extends State<InvitedDialog> {
 
     // Menambahkan invited user ke dalam list
     for (var person in invitedPersonsList) {
-      // inviteUsersId.add(int.parse(
-      //     person.userId!)); // Gunakan tryParse untuk menghindari error parsing
+      inviteUsersId.add(int.parse(person.userId!));
       invitedPersons.add(
         UserDataModel(
           username: person.username,
@@ -51,6 +50,9 @@ class _InvitedDialogState extends State<InvitedDialog> {
       builder: (context, state) {
         if (state is UsersLoaded) {
           availablePersons = state.listUser;
+          for (var person in invitedPersons) {
+            availablePersons.remove(person);
+          }
 
           debugPrint('Invited Persons: $invitedPersons');
           debugPrint('Invited Persons UserId: $inviteUsersId');
@@ -83,17 +85,18 @@ class _InvitedDialogState extends State<InvitedDialog> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  SearchWidget(
-                    haveFilter: false,
-                    label: 'Search person',
-                    onSubmittedKeyboard: (searchQuery) {
-                      // Implementasikan pencarian
-                    },
-                  ),
+                  // const SizedBox(height: 16),
+                  // SearchWidget(
+                  //   haveFilter: false,
+                  //   label: 'Search person',
+                  //   onSubmittedKeyboard: (searchQuery) {
+                  //     // Implementasikan pencarian
+                  //   },
+                  // ),
                   const SizedBox(height: 16),
                   Expanded(
                     child: ListView(
+                      // controller: ,
                       shrinkWrap: true,
                       children: [
                         const Text('Invited',
@@ -120,6 +123,9 @@ class _InvitedDialogState extends State<InvitedDialog> {
                       ],
                     ),
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -138,8 +144,9 @@ class _InvitedDialogState extends State<InvitedDialog> {
                           onPressed: () {
                             context.read<EventBloc>().add(
                                   EventUpdateData(
-                                    eventData: widget.eventData
-                                        .copyWith(inviteUser: inviteUsersId),
+                                    eventData: widget.eventData.copyWith(
+                                        inviteUser: inviteUsersId,
+                                        isInvitePerson: true),
                                   ),
                                 );
                             Navigator.of(context).pop();
@@ -196,12 +203,14 @@ class _InvitedDialogState extends State<InvitedDialog> {
               availablePersons.insert(0, person);
             });
           } else {
-            setState(() {
-              // Tambahkan ke daftar undangan
-              inviteUsersId.add(int.parse(person.userid!));
-              invitedPersons.add(person);
-              availablePersons.remove(person);
-            });
+            if (!inviteUsersId.contains(int.parse(person.userid!))) {
+              setState(() {
+                // Tambahkan ke daftar undangan
+                inviteUsersId.add(int.parse(person.userid!));
+                invitedPersons.add(person);
+                availablePersons.remove(person);
+              });
+            }
           }
         },
       ),

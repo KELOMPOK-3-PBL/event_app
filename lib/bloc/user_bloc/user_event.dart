@@ -41,12 +41,11 @@ class FetchUserById extends UserEvent {
   List<Object> get props => [userId];
 }
 
-// class ReloadFetchUserById extends UserEvent {
-//   final String userId;
-//   final String token;
+class UpdateUser extends UserEvent {
+  final UserDataModel userData;
 
-//   ReloadFetchUserById({required this.token, required this.userId});
+  UpdateUser({required this.userData});
 
-//   @override
-//   List<Object> get props => [userId, token];
-// }
+  @override
+  List<Object> get props => [userData];
+}

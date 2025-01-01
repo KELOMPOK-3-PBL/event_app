@@ -21,7 +21,7 @@ class DetailProfileContentSection extends StatelessWidget {
           CircleAvatar(
             radius: 60, // Atur ukuran lingkaran di sini
             backgroundColor: Colors.grey[300],
-            backgroundImage: NetworkImage(userData?.avatar ??
+            backgroundImage: NetworkImage(userData?.avatarLink ??
                 'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?t=st=1729955954~exp=1729959554~hmac=21f4e9f848ed4521b47e6041fcd202d019651577ec676e23bba8e7fe93adce16&w=826'), // Ganti dengan URL gambar Anda
           ),
 

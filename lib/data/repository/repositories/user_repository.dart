@@ -47,4 +47,26 @@ class UserRepository {
       throw Exception('API REQUEST FAILED');
     }
   }
+
+  Future<Map<String, dynamic>> updateUserAPI(
+    UserDataModel userData,
+    String token,
+    String currentUser,
+    String userIdWhoEditing,
+  ) async {
+    final userUpdateResponse = await userProvider.updateUser(
+        userData: userData,
+        token: token,
+        currentUser: currentUser,
+        userIdWhoEditing: userIdWhoEditing);
+    try {
+      return {
+        'status': userUpdateResponse.data['status'],
+        'code': userUpdateResponse.statusCode,
+        'message': userUpdateResponse.data['data'],
+      };
+    } catch (_) {
+      throw Exception('API REQUEST FAILED, Update user Failed');
+    }
+  }
 }

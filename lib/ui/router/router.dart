@@ -18,7 +18,6 @@ import '../screen/search_result_event_screen.dart';
 import '../screen/settings_screen.dart';
 import '../screen/splash_screen.dart';
 import '../screen/welcome_screen.dart';
-import '../widget/show_error.dart';
 
 class AppRouter {
   static const String splashRoute = '/splash';

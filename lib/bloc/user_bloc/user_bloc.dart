@@ -20,7 +20,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc({required this.authBloc}) : super(UserInitial()) {
     on<FetchUser>(_onFetchUser);
     on<FetchUserById>(_onFetchUserById);
-    // on<ReloadFetchUserById>(_onReloadFetchUserById);
+    on<UpdateUser>(_onUpdateUser);
   }
 
   Future<void> _onFetchUser(FetchUser event, Emitter<UserState> emit) async {
@@ -116,30 +116,29 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  // Future<void> _onReloadFetchUserById(
-  //     ReloadFetchUserById event, Emitter<UserState> emit) async {
-  //   // emit(UserLoading());
-  //   final authState = authBloc.state;
-  //   if (authState is AuthAuthenticated) {
-  //     try {
-  //       debugPrint("fetch user");
-
-  //       final userData =
-  //           await _userRepository.getUserByUID(event.userId, event.token);
-  //       // debugPrint(userData.toString());
-  //       if (userData.status == 'success') {
-  //         emit(UserByUIDLoaded(userData: userData.userData!));
-  //       } else {
-  //         emit(ErrorUserState(errorMessage: userData.message));
-  //       }
-  //     } catch (error) {
-  //       debugPrint('error model');
-  //       emit(ErrorUserState(errorMessage: error.toString()));
-  //     }
-  //   } else {
-  //     debugPrint('No Auth');
-  //   }
-  // }
+  Future<void> _onUpdateUser(UpdateUser event, Emitter<UserState> emit) async {
+    emit(UserLoading());
+    final authState = authBloc.state;
+    if (authState is AuthAuthenticated) {
+      try {
+        final updateResponse = await _userRepository.updateUserAPI(
+          event.userData,
+          authState.authData.token!,
+          authState.currentRole!,
+          authState.authData.data!.userId,
+        );
+        if (updateResponse['status'] == 'success') {
+          emit(UserUpdated(message: updateResponse['message']));
+        } else {
+          emit(ErrorUserState(errorMessage: updateResponse['message']));
+        }
+      } catch (error) {
+        emit(ErrorUserState(errorMessage: error.toString()));
+      }
+    } else {
+      debugPrint('No Auth');
+    }
+  }
 
   static value() {}
 }

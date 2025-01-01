@@ -35,7 +35,7 @@ class _InvitedDialogState extends State<InvitedDialog> {
         UserDataModel(
           username: person.username,
           userid: person.userId,
-          avatar: person.avatar,
+          avatarLink: person.avatar,
         ),
       );
       // } else {
@@ -51,7 +51,7 @@ class _InvitedDialogState extends State<InvitedDialog> {
         if (state is UsersLoaded) {
           availablePersons = state.listUser;
           for (var person in invitedPersons) {
-            availablePersons.remove(person);
+            availablePersons.contains(person);
           }
 
           debugPrint('Invited Persons: $invitedPersons');
@@ -173,7 +173,7 @@ class _InvitedDialogState extends State<InvitedDialog> {
   Widget _buildPersonTile(BuildContext context, UserDataModel person,
       {required bool isInvited}) {
     // Pastikan atribut valid
-    final avatarUrl = person.avatar ??
+    final avatarUrl = person.avatarLink ??
         'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?t=st=1729955954~exp=1729959554~hmac=21f4e9f848ed4521b47e6041fcd202d019651577ec676e23bba8e7fe93adce16&w=826';
     final username = person.username;
     // final role =

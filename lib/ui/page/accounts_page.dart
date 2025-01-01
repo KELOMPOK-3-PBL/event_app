@@ -204,7 +204,7 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
             backgroundColor: UIColor.solidWhite,
             radius: 24,
             backgroundImage: NetworkImage(
-              account.avatar
+              account.avatarLink
                   // : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
                   ??
                   'https://img.freepik.com/free-vector/illustration-businessman_53876-5856.jpg?t=st=1729955954~exp=1729959554~hmac=21f4e9f848ed4521b47e6041fcd202d019651577ec676e23bba8e7fe93adce16&w=826',

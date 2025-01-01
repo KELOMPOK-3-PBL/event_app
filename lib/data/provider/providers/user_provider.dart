@@ -24,24 +24,46 @@ class UserProvider {
       dio.options.contentType = "application/json";
 
       // request get ke API
-      final Response rawResponse = await dio.get('/users',
-          // options: Options(contentType: 'application/json', headers: {
-          //   'Authorization': 'Bearer $token',
-          //   'Cookie': 'jwt=$token',
-          //   'Accept': 'application/json',
-          //   'User-Agent': 'Dart/Flutter',
-          // }),
-          queryParameters: queryParameters);
-      // debugPrint(rawResponse.toString());
+      final Response rawResponse = await dio.get(
+        '/users',
+        queryParameters: queryParameters,
+      );
+
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
       // dio.interceptors
       //     .add(LogInterceptor(responseBody: true, requestBody: true));
-      // debugPrint("Raw response: $rawResponse.toString()");
+
       return rawResponse;
     } on DioException catch (e) {
-      // debugPrint(e.toString());
+      return e.response!;
+    }
+  }
 
-      // debugPrint('Error response data: ${e.response}');
+  Future<Response> updateUser({
+    required UserDataModel userData,
+    required String token,
+    required String currentUser,
+    required String userIdWhoEditing,
+  }) async {
+    try {
+      late FormData formUserData;
+      final String editedUserId = userData.getUserId()!;
+
+      if (editedUserId == userIdWhoEditing) {
+        formUserData = await userData.toFormDataEditMyProfile();
+      } else if (currentUser == 'Superadmin' &&
+          editedUserId != userIdWhoEditing) {
+        formUserData = await userData.toFormDataChangeRoles();
+      }
+
+      final Response rawResponse = await dio.get(
+        '/users',
+        queryParameters: {'user_id': editedUserId},
+        data: formUserData,
+      );
+
+      return rawResponse;
+    } on DioException catch (e) {
       return e.response!;
     }
   }

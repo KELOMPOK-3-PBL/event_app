@@ -40,7 +40,8 @@ class UserDataModel extends Equatable {
   final String? email;
   final List<String>? roles;
   final String? about;
-  final String? avatar;
+  final String? avatarLink;
+  final File? avatar;
 
   // Constructor
   const UserDataModel({
@@ -49,8 +50,25 @@ class UserDataModel extends Equatable {
     this.email,
     this.roles,
     this.about,
+    this.avatarLink,
     this.avatar,
   });
+
+  String? getUserId() {
+    return userid;
+  }
+
+  UserDataModel removeUnusedDataToInvitePerson() {
+    return UserDataModel(
+      userid: userid,
+      username: username,
+      avatarLink: avatarLink,
+      roles: null,
+      about: null,
+      email: null,
+      avatar: null,
+    );
+  }
 
   // Convert a JSON map to the UserModel object
   factory UserDataModel.fromJson(Map<String, dynamic> json) {
@@ -62,10 +80,39 @@ class UserDataModel extends Equatable {
           ? (json['roles'] as String).split(',').map((e) => e.trim()).toList()
           : [],
       about: json['about'],
-      avatar: json['avatar'],
+      avatarLink: json['avatar'],
     );
   }
 
+  Future<FormData> toFormDataChangeRoles() async {
+    final Map<String, dynamic> data = {
+      'roles': (roles != null || roles != []) ? roles!.join(',') : '',
+    };
+
+    // Hapus key dengan nilai null
+    data.removeWhere((key, value) => value == null);
+
+    return FormData.fromMap(data);
+  }
+
+  Future<FormData> toFormDataEditMyProfile() async {
+    final Map<String, dynamic> data = {
+      // 'user_id': userid,
+      'username': username,
+      // 'email': email,
+      'avatar':
+          (avatar != null) ? await MultipartFile.fromFile(avatar!.path) : null,
+      // 'roles': (roles != null || roles != []) ? roles!.join(',') : '',
+      'about': about,
+    };
+
+    // Hapus key dengan nilai null
+    data.removeWhere((key, value) => value == null);
+
+    return FormData.fromMap(data);
+  }
+
   @override
-  List<Object?> get props => [userid, username, email, roles, about, avatar];
+  List<Object?> get props =>
+      [userid, username, email, roles, about, avatarLink, avatar];
 }

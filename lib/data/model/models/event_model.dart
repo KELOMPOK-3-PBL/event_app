@@ -219,7 +219,8 @@ class EventDataModel extends Equatable {
 
   Future<FormData> toFormDataInvitedPerson() async {
     final Map<String, dynamic> data = {
-      'invited_users': (isInvitePerson) ? inviteUser!.join(',') : [null],
+      'invited_users':
+          (inviteUser != null || inviteUser != []) ? inviteUser!.join(',') : '',
     };
     return FormData.fromMap(data);
   }

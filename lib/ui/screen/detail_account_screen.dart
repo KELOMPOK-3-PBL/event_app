@@ -1,8 +1,6 @@
-import 'package:event_proposal_app/bloc/auth_bloc/auth_bloc.dart';
 import 'package:event_proposal_app/data/model/model.dart';
 import 'package:event_proposal_app/ui/section/detail_profile_content_section.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
-import 'package:event_proposal_app/ui/widget/show_error.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uicons_pro/uicons_pro.dart';
@@ -136,7 +134,7 @@ class _HomeProfile extends State<DetailAccountScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Change Role',
+                                'Change Roles',
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -144,11 +142,11 @@ class _HomeProfile extends State<DetailAccountScreen> {
                               ),
                               CircleAvatar(
                                 radius: 12,
-                                backgroundColor: Colors.grey.shade300,
+                                backgroundColor: UIColor.primary,
                                 child: Text(
                                   '${selectedRoles.length}',
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: UIColor.solidWhite,
                                     fontSize: 12,
                                   ),
                                 ),
@@ -174,7 +172,8 @@ class _HomeProfile extends State<DetailAccountScreen> {
                                 roleName,
                                 selectedRoles.contains(roleMapping[roleName]!)
                                     ? UIColor.getRoleColor(roleName)
-                                    : Colors.grey.shade200,
+                                    // : Colors.grey.shade200,
+                                    : UIColor.white,
                                 selectedRoles.contains(roleMapping[roleName]!)
                                     ? Colors.white
                                     : Colors.black,
@@ -193,8 +192,10 @@ class _HomeProfile extends State<DetailAccountScreen> {
                                       .pop(null); // Return null
                                 },
                                 style: ElevatedButton.styleFrom(
+                                  elevation: 0,
                                   fixedSize: const Size(150, 50),
-                                  backgroundColor: Colors.grey[200],
+                                  // backgroundColor: Colors.grey[200],
+                                  backgroundColor: UIColor.white,
                                 ),
                                 child: const Text(
                                   'Cancel',
@@ -225,6 +226,7 @@ class _HomeProfile extends State<DetailAccountScreen> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
+                                  elevation: 0,
                                   fixedSize: const Size(150, 50),
                                   backgroundColor: Colors.blue,
                                 ),

@@ -1,6 +1,6 @@
 import 'package:event_proposal_app/data/model/model.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
-import 'package:event_proposal_app/ui/widget/search_widget.dart';
+// import 'package:event_proposal_app/ui/widget/search_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -71,16 +71,17 @@ class _InvitedDialogState extends State<InvitedDialog> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
-                        'Invited Person',
+                        'Invite Person',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                       CircleAvatar(
                         radius: 12,
-                        backgroundColor: Colors.grey[300],
+                        backgroundColor: UIColor.primary,
                         child: Text(
                           '${invitedPersons.length}',
-                          style: const TextStyle(fontSize: 12),
+                          style: const TextStyle(
+                              fontSize: 12, color: UIColor.solidWhite),
                         ),
                       ),
                     ],

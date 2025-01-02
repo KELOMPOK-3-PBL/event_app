@@ -40,13 +40,15 @@ class UserByUIDLoaded extends UserState {
 }
 
 class UserUpdated extends UserState {
-  final UserDataModel? userData;
-  final String message;
+  // final UserDataModel? userData;
+  final String? message;
 
-  const UserUpdated({this.userData, required this.message});
+  const UserUpdated(
+      // this.userData,
+      this.message);
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [];
 }
 
 class ErrorUserState extends UserState {

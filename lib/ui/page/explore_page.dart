@@ -104,7 +104,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
       },
       child: BlocBuilder<UserBloc, UserState>(builder: (context, state) {
         if (state is UserByUIDLoaded) {
-          username = state.userData.username;
+          username = state.userData.username!;
           userid = state.userData.userid!;
         }
         // debugPrint(state.toString());

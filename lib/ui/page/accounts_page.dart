@@ -231,7 +231,7 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
               children: [
                 // Username
                 Text(
-                  account.username,
+                  account.username!,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

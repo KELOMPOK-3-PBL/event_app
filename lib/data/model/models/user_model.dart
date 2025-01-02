@@ -36,9 +36,10 @@ class UsersModel extends Equatable {
 
 class UserDataModel extends Equatable {
   final String? userid;
-  final String username;
+  final String? username;
   final String? email;
   final List<String>? roles;
+  final List<int>? changeRoles;
   final String? about;
   final String? avatarLink;
   final File? avatar;
@@ -46,9 +47,10 @@ class UserDataModel extends Equatable {
   // Constructor
   const UserDataModel({
     this.userid,
-    required this.username,
+    this.username,
     this.email,
     this.roles,
+    this.changeRoles,
     this.about,
     this.avatarLink,
     this.avatar,
@@ -86,7 +88,7 @@ class UserDataModel extends Equatable {
 
   Future<FormData> toFormDataChangeRoles() async {
     final Map<String, dynamic> data = {
-      'roles': (roles != null || roles != []) ? roles!.join(',') : '',
+      'roles': changeRoles!.join(','),
     };
 
     // Hapus key dengan nilai null

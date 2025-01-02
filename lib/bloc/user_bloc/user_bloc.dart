@@ -119,6 +119,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Future<void> _onUpdateUser(UpdateUser event, Emitter<UserState> emit) async {
     emit(UserLoading());
     final authState = authBloc.state;
+    debugPrint('Update User');
     if (authState is AuthAuthenticated) {
       try {
         final updateResponse = await _userRepository.updateUserAPI(
@@ -127,12 +128,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           authState.currentRole!,
           authState.authData.data!.userId,
         );
+        debugPrint(updateResponse.toString());
         if (updateResponse['status'] == 'success') {
-          emit(UserUpdated(message: updateResponse['message']));
+          emit(UserUpdated(updateResponse['message']));
         } else {
           emit(ErrorUserState(errorMessage: updateResponse['message']));
         }
       } catch (error) {
+        debugPrint('Error');
         emit(ErrorUserState(errorMessage: error.toString()));
       }
     } else {

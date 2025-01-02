@@ -292,6 +292,7 @@ void showLogoutBottomSheet(BuildContext context) {
                     Navigator.of(context).pop(); // Close the bottom sheet
                   },
                   style: ElevatedButton.styleFrom(
+                    elevation: 0,
                     fixedSize: const Size(150, 50),
                     // padding: const EdgeInsets.symmetric(
                     //     horizontal: 50, vertical: 20),
@@ -318,11 +319,12 @@ void showLogoutBottomSheet(BuildContext context) {
                     //     (Route<dynamic> route) => false);
                   },
                   style: ElevatedButton.styleFrom(
+                    elevation: 0,
                     fixedSize: const Size(150, 50),
                     // padding: const EdgeInsets.symmetric(
                     //     horizontal: 50, vertical: 20),
-                    backgroundColor: Colors
-                        .blue, // Set Yes, Sign out button background to blue
+                    backgroundColor: UIColor
+                        .rejected, // Set Yes, Sign out button background to blue
                   ),
                   child: const Text(
                     'Yes, sign out',
@@ -385,6 +387,7 @@ void switchUser(BuildContext context, String anotherRole) {
                     Navigator.of(context).pop(); // Close the bottom sheet
                   },
                   style: ElevatedButton.styleFrom(
+                    elevation: 0,
                     fixedSize: const Size(150, 50),
                     // padding: const EdgeInsets.symmetric(
                     //     horizontal: 50, vertical: 20),
@@ -410,6 +413,7 @@ void switchUser(BuildContext context, String anotherRole) {
                     });
                   },
                   style: ElevatedButton.styleFrom(
+                    elevation: 0,
                     fixedSize: const Size(150, 50),
                     // padding: const EdgeInsets.symmetric(
                     //     horizontal: 50, vertical: 20),

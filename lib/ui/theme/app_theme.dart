@@ -19,6 +19,10 @@ class AppTheme {
       brightness: brightness,
       textTheme: (ThemeData(brightness: brightness).textTheme),
       scaffoldBackgroundColor: UIColor.white,
+      // elevatedButtonTheme: ElevatedButtonThemeData(
+      //     style: ButtonStyle(
+      //         textStyle: WidgetStatePropertyAll(TextStyle(
+      //             fontFamily: "Inter", fontWeight: FontWeight.w800))))
     );
   }
 }

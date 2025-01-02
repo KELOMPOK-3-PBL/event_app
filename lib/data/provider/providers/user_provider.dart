@@ -50,13 +50,15 @@ class UserProvider {
       final String editedUserId = userData.getUserId()!;
 
       if (editedUserId == userIdWhoEditing) {
+        debugPrint('Update Profile');
         formUserData = await userData.toFormDataEditMyProfile();
       } else if (currentUser == 'Superadmin' &&
           editedUserId != userIdWhoEditing) {
+        debugPrint('Update Roles');
         formUserData = await userData.toFormDataChangeRoles();
       }
 
-      final Response rawResponse = await dio.get(
+      final Response rawResponse = await dio.post(
         '/users',
         queryParameters: {'user_id': editedUserId},
         data: formUserData,

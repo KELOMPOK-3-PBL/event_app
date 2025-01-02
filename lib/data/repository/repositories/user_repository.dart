@@ -59,11 +59,12 @@ class UserRepository {
         token: token,
         currentUser: currentUser,
         userIdWhoEditing: userIdWhoEditing);
+    // debugPrint(userUpdateResponse.toString());
     try {
       return {
         'status': userUpdateResponse.data['status'],
         'code': userUpdateResponse.statusCode,
-        'message': userUpdateResponse.data['data'],
+        'message': userUpdateResponse.data['message'],
       };
     } catch (_) {
       throw Exception('API REQUEST FAILED, Update user Failed');

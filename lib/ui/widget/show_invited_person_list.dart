@@ -183,7 +183,7 @@ class _InvitedDialogState extends State<InvitedDialog> {
       leading: CircleAvatar(
         backgroundImage: NetworkImage(avatarUrl),
       ),
-      title: Text(username),
+      title: Text(username!),
       // subtitle: Text(
       //   role,
       //   style:

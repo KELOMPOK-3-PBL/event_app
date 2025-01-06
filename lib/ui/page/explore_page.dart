@@ -126,8 +126,7 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  QuickCategorySection(
-                      token: widget.token, currentRole: currentRole),
+                  QuickCategorySection(token: widget.token),
                   CarouselSection(
                       currentRole: currentRole,
                       // eventData: listEventsCarousel ?? [],
@@ -240,7 +239,12 @@ class ExploreAppBar extends StatelessWidget {
                       // 'search_query': searchQuery,
                       // 'token': token,
                       'request_search': RequestFilteredEventModel(
-                          token: token, search: searchQuery)
+                          token: token,
+                          search: searchQuery,
+                          isAllEvent: (currentRole == 'Propose' ||
+                                  currentRole == 'Member')
+                              ? false
+                              : true)
                     });
               },
               onPressedFilter: () async {
@@ -255,6 +259,7 @@ class ExploreAppBar extends StatelessWidget {
                   ),
                   builder: (_) {
                     return FilterBottomSheet(
+                      currentRoe: currentRole,
                       token: token,
                     );
                   },
@@ -262,7 +267,11 @@ class ExploreAppBar extends StatelessWidget {
                 if (context.mounted) {
                   Navigator.of(context)
                       .pushNamed(AppRouter.searchResultEventRoute, arguments: {
-                    'request_search': requestSearch,
+                    'request_search': requestSearch.copyWith(
+                        isAllEvent: (currentRole == 'Propose' ||
+                                currentRole == 'Member')
+                            ? false
+                            : true),
                     'token': token
                   });
                 }

@@ -35,26 +35,31 @@ class _HomeProfilePageState extends State<HomeProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ProfileAppBar(userData: userData),
-        Expanded(
-          child: BlocBuilder<UserBloc, UserState>(
-            builder: (context, state) {
-              if (state is UserByUIDLoaded) {
-                userData = state.userData;
-                return DetailProfileContentSection(userData: userData);
-              } else if (state is UserLoading) {
-                return Center(child: CircularProgressIndicator());
-              }
-              return Center(
-                child: Text("User Not Found"),
-                // child: CircularProgressIndicator(),
-              );
-            },
+    return RefreshIndicator(
+      onRefresh: () async {
+        context.read<UserBloc>().add(FetchUserById(userId: userData!.userid!));
+      },
+      child: Column(
+        children: [
+          ProfileAppBar(userData: userData),
+          Expanded(
+            child: BlocBuilder<UserBloc, UserState>(
+              builder: (context, state) {
+                if (state is UserByUIDLoaded) {
+                  userData = state.userData;
+                  return DetailProfileContentSection(userData: userData);
+                } else if (state is UserLoading) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return Center(
+                  child: Text("User Not Found"),
+                  // child: CircularProgressIndicator(),
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

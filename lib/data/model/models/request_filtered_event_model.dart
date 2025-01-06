@@ -1,6 +1,7 @@
 part of '../model.dart';
 
 class RequestFilteredEventModel extends Equatable {
+  final bool isAllEvent;
   final String token;
   final int currentIndex;
   // final String? proposeUserId;
@@ -17,6 +18,7 @@ class RequestFilteredEventModel extends Equatable {
   final String? sortOrder;
 
   const RequestFilteredEventModel({
+    this.isAllEvent = true,
     required this.token,
     this.currentIndex = 0,
     // this.proposeUserId,
@@ -33,6 +35,7 @@ class RequestFilteredEventModel extends Equatable {
   });
 
   RequestFilteredEventModel copyWith({
+    bool? isAllEvent,
     String? token,
     int? currentIndex,
     int? postLimit,
@@ -47,6 +50,7 @@ class RequestFilteredEventModel extends Equatable {
     String? sortOrder,
   }) {
     return RequestFilteredEventModel(
+      isAllEvent: isAllEvent ?? this.isAllEvent,
       token: token ?? this.token,
       currentIndex: currentIndex ?? this.currentIndex,
       postLimit: postLimit ?? this.postLimit,

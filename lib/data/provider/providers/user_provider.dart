@@ -39,6 +39,27 @@ class UserProvider {
     }
   }
 
+  Future<Response> chekLogin({required String token}) async {
+    try {
+      dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
+      dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
+      dio.options.contentType = "application/json";
+
+      // request get ke API
+      final Response rawResponse = await dio.get(
+        '/auth',
+      );
+
+      // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
+      // dio.interceptors
+      //     .add(LogInterceptor(responseBody: true, requestBody: true));
+
+      return rawResponse;
+    } on DioException catch (e) {
+      return e.response!;
+    }
+  }
+
   Future<Response> updateUser({
     required UserDataModel userData,
     required String token,

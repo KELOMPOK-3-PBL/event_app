@@ -7,13 +7,11 @@ import '../theme/ui_colors.dart';
 
 class EventCardWidget extends StatelessWidget {
   final EventDataModel events;
-  final String currentRole;
   final bool showStatus;
 
   const EventCardWidget({
     super.key,
     required this.events,
-    required this.currentRole,
     required this.showStatus,
   });
 

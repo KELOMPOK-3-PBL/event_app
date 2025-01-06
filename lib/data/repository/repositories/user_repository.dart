@@ -35,13 +35,19 @@ class UserRepository {
       final data = response.data;
       debugPrint(response.toString());
 
-      if (response.statusCode == 200 && data["status"] == 'success') {
+      Response? checkLogin = await userProvider.chekLogin(token: token);
+      String? email = checkLogin.data['data']['email'];
+      debugPrint("email : $email");
+
+      if (data["status"] == 'success') {
         final UsersModel userModel = UsersModel.fromJsonForSingle(json: data);
-        // debugPrint('User Model: $userModel');
+        if (userId == checkLogin.data['data']['user_id'].toString()) {
+          return userModel.copyWith(
+              userData: userModel.userData!.copyWith(
+            email: email,
+          ));
+        }
         return userModel;
-        // return UsersModel.fromJsonForSingle(json: data);
-        // } else if (response.statusCode == 404 || data["status"] == 'error') {
-        //   return EventModel.fromJson(json: data);
       } else {
         throw Exception('Error: ${response.statusCode}');
       }

@@ -29,8 +29,8 @@ void setupLocator() {
             // baseUrl: 'http://192.168.0.6/api-03/routes',
             baseUrl: 'https://polivent.my.id/api',
             // contentType: 'application/json',
-            persistentConnection: true,
-            preserveHeaderCase: true,
+            // persistentConnection: true,
+            // preserveHeaderCase: true,
             connectTimeout: Duration(minutes: 1)),
       ));
 }

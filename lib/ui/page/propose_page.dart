@@ -156,8 +156,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => SearchResultEventsScreen(
-                                // searchQuery: searchQuery
-                                )),
+                                searchValue: searchQuery)),
                       );
                     },
                     onPressedFilter: () {
@@ -217,7 +216,6 @@ class _HomeProposePageState extends State<HomeProposePage> {
                                   },
                                   child: EventCardWidget(
                                     events: events[index],
-                                    currentRole: currentRole!,
                                     showStatus: true,
                                   ),
                                 ),

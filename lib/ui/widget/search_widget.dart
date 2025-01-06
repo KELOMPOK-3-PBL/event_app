@@ -1,22 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:uicons_pro/uicons_pro.dart';
 
-class SearchWidget extends StatelessWidget {
-  final TextEditingController _searchController = TextEditingController();
+class SearchWidget extends StatefulWidget {
   final String label;
   final ValueChanged<String> onSubmittedKeyboard;
   final ValueChanged<String>? onChangedKeyboard;
   final VoidCallback? onPressedFilter;
   final bool haveFilter;
+  final String? value;
 
-  SearchWidget({
+  const SearchWidget({
     super.key,
     required this.label,
     required this.onSubmittedKeyboard,
     this.onPressedFilter,
     this.onChangedKeyboard,
     this.haveFilter = true,
+    this.value,
   });
+
+  @override
+  State<SearchWidget> createState() => _SearchWidgetState();
+}
+
+class _SearchWidgetState extends State<SearchWidget> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    _searchController.value = TextEditingValue(text: widget.value ?? '');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +39,7 @@ class SearchWidget extends StatelessWidget {
       child: TextField(
         onChanged: (searchQuery) {
           if (searchQuery.isNotEmpty) {
-            onChangedKeyboard!(searchQuery); // Passing the search query
+            widget.onChangedKeyboard!(searchQuery); // Passing the search query
           }
         },
         autofocus: false,
@@ -40,7 +54,7 @@ class SearchWidget extends StatelessWidget {
           ),
           isDense: true,
           alignLabelWithHint: true,
-          hintText: label, // Label
+          hintText: widget.label, // Label
           contentPadding: const EdgeInsets.symmetric(vertical: 10.0),
           hintStyle: const TextStyle(
               color: Colors.grey, fontSize: 14), // Adjusted color
@@ -51,7 +65,7 @@ class SearchWidget extends StatelessWidget {
             color: Colors.black,
             size: 18,
           ),
-          suffixIcon: (haveFilter)
+          suffixIcon: (widget.haveFilter)
               ? IconButton(
                   icon: Icon(
                     UIconsPro.regularRounded
@@ -59,13 +73,13 @@ class SearchWidget extends StatelessWidget {
                     color: Colors.black,
                     size: 18,
                   ),
-                  onPressed: onPressedFilter,
+                  onPressed: widget.onPressedFilter,
                 )
               : null,
         ),
         onSubmitted: (searchQuery) {
           if (searchQuery.isNotEmpty) {
-            onSubmittedKeyboard(searchQuery); // Passing the search query
+            widget.onSubmittedKeyboard(searchQuery); // Passing the search query
           }
         },
       ),

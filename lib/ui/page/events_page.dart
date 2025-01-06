@@ -210,7 +210,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
                                   },
                                   child: EventCardWidget(
                                     events: events[index],
-                                    currentRole: currentRole!,
+                                    // currentRole: currentRole!,
                                     showStatus: false,
                                   ),
                                 ),

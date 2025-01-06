@@ -7,10 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class QuickCategorySection extends StatelessWidget {
-  const QuickCategorySection(
-      {super.key, required this.currentRole, required this.token});
-  final String currentRole;
+  const QuickCategorySection({
+    super.key,
+    required this.token,
+    //  required this.currentUser
+  });
   final String token;
+  // final String currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +43,16 @@ class QuickCategorySection extends StatelessWidget {
                         context,
                         AppRouter.searchResultEventRoute,
                         arguments: {
-                          'request_search': RequestFilteredEventModel(
-                            token: token,
-                            category: (currentRole == 'Member' ||
-                                    currentRole == 'Propose')
-                                ? categoryData[index].categoryName
-                                : null,
-                            status: (currentRole != 'Member' ||
-                                    currentRole != 'Propose')
-                                ? categoryData[index].categoryName
-                                : null,
-                          ),
+                          'request_search': (isCategoryEvents == true)
+                              ? RequestFilteredEventModel(
+                                  isAllEvent: false,
+                                  token: token,
+                                  category: categoryData[index].categoryName,
+                                )
+                              : RequestFilteredEventModel(
+                                  token: token,
+                                  status: categoryData[index].categoryName,
+                                ),
                         },
                       );
                     },

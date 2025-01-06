@@ -191,7 +191,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                                   },
                                   child: EventCardWidget(
                                     events: events[index],
-                                    currentRole: currentRole!,
+                                    // currentRole: currentRole!,
                                     showStatus: true,
                                   ),
                                 ),

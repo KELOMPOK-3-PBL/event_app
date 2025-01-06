@@ -31,7 +31,7 @@ class AuthProvider {
           "Bearer $refreshToken";
       dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$refreshToken";
       final Response rawResponse = await dio.post(
-        '/refresh_token.php',
+        '/refresh_token',
       );
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
       // dio.interceptors

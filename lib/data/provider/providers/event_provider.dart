@@ -30,8 +30,8 @@ class EventProvider {
         path = event;
       }
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
-      // dio.interceptors
-      //     .add(LogInterceptor(responseBody: true, requestBody: true));
+      dio.interceptors
+          .add(LogInterceptor(responseBody: true, requestBody: true));
 
       // Melakukan permintaan GET dengan query parameters
       final Response rawResponse = await dio.get(

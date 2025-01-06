@@ -9,15 +9,13 @@ import '../../data/provider/provider.dart';
 import '../router/router.dart';
 import '../theme/ui_colors.dart';
 import '../widget/event_card_widget.dart';
+import '../widget/filter_bottom_sheet.dart';
 import '../widget/search_widget.dart';
 
 class SearchResultEventsScreen extends StatefulWidget {
-  // final String searchQuery;
+  const SearchResultEventsScreen({super.key, this.searchValue});
 
-  const SearchResultEventsScreen({
-    super.key,
-    //  required this.searchQuery
-  });
+  final String? searchValue;
 
   @override
   State<SearchResultEventsScreen> createState() =>
@@ -26,37 +24,20 @@ class SearchResultEventsScreen extends StatefulWidget {
 
 class _SearchResultEventsScreenState extends State<SearchResultEventsScreen> {
   final ScrollController _scrollController = ScrollController();
-
-  // late String token;
-
-  //! Updated request
-  late RequestFilteredEventModel requestFilteredEvent;
+  RequestFilteredEventModel? requestFilteredEvent;
   String? currentRole;
   String? token;
+  bool isSearching = false;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
     final authState = context.read<AuthBloc>().state;
-    // mencari role untuk menyesuaikan output
-    // final roles = .authData.data?.roles;
     if (authState is AuthAuthenticated) {
-      currentRole = authState.currentRole!;
-      token = authState.authData.accessToken!;
+      currentRole = authState.currentRole;
+      token = authState.authData.accessToken;
     }
-    // token =
-    //     (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;
-
-    //! Inisiasi request pertama
-    // requestFilteredEvent = RequestFilteredEventModel(
-    //   token: token,
-    //   currentIndex: '0',
-    // );
-
-    // context.read<EventBloc>().add(EventFetchData(
-    //       requestEvent: requestFilteredEvent,
-    //     ));
   }
 
   bool get _isBottom {
@@ -67,19 +48,10 @@ class _SearchResultEventsScreenState extends State<SearchResultEventsScreen> {
   }
 
   void _onScroll() {
-    // if (_isBottom) {
-    if (_isBottom
-        // &&!(context.read<EventBloc>().state as EventApprovedLoaded)
-        // .hasReachedMax
-        ) {
-      //! mengatasi perubahan request ketika di scroll
-      // mengambil request yang sudah diubah current statenya
-      // requestFilteredEvent =
-      //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
-      // requestEvent.copyWith();
+    if (_isBottom) {
       context.read<EventBloc>().add(
             EventFetchData(
-              requestEvent: requestFilteredEvent,
+              requestEvent: requestFilteredEvent!,
               pathRequest: PathRequestEvents.approvedEvents,
             ),
           );
@@ -94,134 +66,178 @@ class _SearchResultEventsScreenState extends State<SearchResultEventsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(UIconsPro.regularRounded.angle_small_left),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        automaticallyImplyLeading: true, // remove leading(left) back icon
-        centerTitle: true,
-        backgroundColor: UIColor.solidWhite,
-        scrolledUnderElevation: 0,
-        title: Text(
-          "Search Result",
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: UIColor.typoBlack,
+    return BlocListener<EventBloc, EventState>(
+      listener: (context, state) {
+        if (state is EventLoading) {
+          setState(() {
+            isSearching = true;
+          });
+        } else if (state is EventsListLoaded) {
+          setState(() {
+            isSearching = false;
+            requestFilteredEvent = state.requestEvent;
+          });
+        } else if (state is EventError) {
+          setState(() {
+            isSearching = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message)),
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(UIconsPro.regularRounded.angle_small_left),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          centerTitle: true,
+          backgroundColor: UIColor.solidWhite,
+          scrolledUnderElevation: 0,
+          title: const Text(
+            "Search Result",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: UIColor.typoBlack,
+            ),
           ),
         ),
-      ),
-      body: Expanded(
-        child: RefreshIndicator(
-          onRefresh: () async {
-            context.read<EventBloc>().add(
-                  EventFetchData(
-                      isReload: true,
-                      requestEvent: RequestFilteredEventModel(
-                        token: token!,
-                      ),
-                      pathRequest: PathRequestEvents.approvedEvents),
-                );
-          },
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-                child: SearchWidget(
-                  label: 'Search Event ...',
-                  onSubmittedKeyboard: (searchQuery) {
-                    //! pencarian approval menu
-                    Navigator.pushNamed(
-                        context, AppRouter.searchResultEventRoute,
-                        arguments: {'search_query': searchQuery});
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => SearchResultEventsScreen(
-                    //           searchQuery: searchQuery)),
-                    // );
-                  },
-                  onPressedFilter: () {
-                    // Handle the button tap action here
-                    debugPrint('Tapped on FILTER ITEM-BUTTON');
-                  },
-                ), //! memanggil model => search,
-              ),
-              Expanded(
-                child: BlocBuilder<EventBloc, EventState>(
-                  builder: (context, state) {
-                    if (state is EventLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+        body: Stack(
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                  child: SearchWidget(
+                    value: widget.searchValue,
+                    label: 'Search Event ...',
+                    onSubmittedKeyboard: (searchQuery) {
+                      final request = requestFilteredEvent!.copyWith(
+                        search: searchQuery,
                       );
-                    } else if (state is EventsListLoaded) {
-                      final events = state.event;
-                      if (events.isEmpty) {
-                        return Center(
-                          child: Text('There are no events to attend'),
-                        );
+                      Navigator.pushNamed(
+                        context,
+                        AppRouter.searchResultEventRoute,
+                        arguments: {'request_search': request},
+                      );
+                    },
+                    onPressedFilter: () async {
+                      RequestFilteredEventModel requestSearch;
+                      requestSearch = await showModalBottomSheet(
+                        backgroundColor: UIColor.solidWhite,
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(20)),
+                        ),
+                        builder: (_) {
+                          return FilterBottomSheet(
+                            requestEvent: requestFilteredEvent,
+                            currentRoe: currentRole!,
+                            token: token!,
+                          );
+                        },
+                      );
+                      if (context.mounted) {
+                        Navigator.of(context).pushNamed(
+                            AppRouter.searchResultEventRoute,
+                            arguments: {
+                              'request_search': requestSearch.copyWith(
+                                  isAllEvent: (currentRole == 'Propose' ||
+                                          currentRole == 'Member')
+                                      ? false
+                                      : true),
+                              'token': token
+                            });
                       }
-                      return ListView.builder(
-                        controller: _scrollController,
-                        padding: EdgeInsets.zero,
-                        physics: const AlwaysScrollableScrollPhysics(),
 
-                        //! builder card event approval menu with INDEX
-                        itemBuilder: (context, index) {
+                      debugPrint(requestSearch.toString());
+                    },
+                    onChangedKeyboard: (_) {},
+                  ),
+                ),
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<EventBloc>().add(
+                            EventFetchData(
+                              isReload: true,
+                              requestEvent: requestFilteredEvent!,
+                              pathRequest: (requestFilteredEvent!.isAllEvent)
+                                  ? PathRequestEvents.events
+                                  : PathRequestEvents.approvedEvents,
+                            ),
+                          );
+                    },
+                    child: BlocBuilder<EventBloc, EventState>(
+                      builder: (context, state) {
+                        if (state is EventsListLoaded) {
                           final events = state.event;
-                          if (index >= events.length) {
-                            //! Loader ditampilkan hanya ketika belum mencapai batas maksimum data
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 20),
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                            );
-                          } else {
-                            //! card event
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, AppRouter.detailEventRoute,
-                                      arguments: {
-                                        'event_data': events[index],
-                                        'token': token,
-                                      });
-                                  // context
-                                  //     .read<EventBloc>()
-                                  //     .add(EventCardPressed(events[index]));
-                                },
-                                child: EventCardWidget(
-                                  events: events[index],
-                                  currentRole: currentRole!,
-                                  showStatus: false,
-                                ),
-                              ),
+                          if (events.isEmpty) {
+                            return const Center(
+                              child: Text('There are no events to attend'),
                             );
                           }
-                        },
-
-                        //! penambahan event
-                        // itemCount: state is EventLoadedMax
-                        itemCount: state.hasReachedMax
-                            ? events.length
-                            : events.length + 1,
-                      );
-                      // }
-                    }
-                    return SizedBox();
-                  },
+                          return ListView.builder(
+                            controller: _scrollController,
+                            padding: EdgeInsets.zero,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              if (index >= events.length) {
+                                return const Padding(
+                                  padding: EdgeInsets.only(top: 10, bottom: 20),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              } else {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(20, 0, 20, 8),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        AppRouter.detailEventRoute,
+                                        arguments: {
+                                          'event_data': events[index],
+                                          'token': token,
+                                        },
+                                      );
+                                    },
+                                    child: EventCardWidget(
+                                      events: events[index],
+                                      showStatus: (currentRole == 'Admin' ||
+                                              currentRole == 'Superadmin')
+                                          ? true
+                                          : false,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            itemCount: state.hasReachedMax
+                                ? events.length
+                                : events.length + 1,
+                          );
+                        }
+                        return const SizedBox();
+                      },
+                    ),
+                  ),
                 ),
+              ],
+            ),
+            if (isSearching)
+              const Center(
+                child: CircularProgressIndicator(),
               ),
-            ],
-          ),
+          ],
         ),
       ),
     );

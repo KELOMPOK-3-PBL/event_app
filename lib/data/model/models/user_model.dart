@@ -14,6 +14,16 @@ class UsersModel extends Equatable {
     this.userData,
   });
 
+  UsersModel copyWith(
+      {List<UserDataModel>? listUserData, UserDataModel? userData}) {
+    return UsersModel(
+      status: status,
+      message: message,
+      listUserData: listUserData ?? this.listUserData,
+      userData: userData ?? this.userData,
+    );
+  }
+
   // Convert a JSON map to the ListUsersModel object
   factory UsersModel.fromJsonforList({required Map<String, dynamic> json}) =>
       UsersModel(
@@ -55,6 +65,28 @@ class UserDataModel extends Equatable {
     this.avatarLink,
     this.avatar,
   });
+
+  UserDataModel copyWith({
+    String? userid,
+    String? username,
+    String? email,
+    List<String>? roles,
+    List<int>? changeRoles,
+    String? about,
+    String? avatarLink,
+    File? avatar,
+  }) {
+    return UserDataModel(
+      userid: userid ?? this.userid,
+      username: username ?? this.username,
+      email: email ?? this.email,
+      roles: roles ?? this.roles,
+      changeRoles: changeRoles ?? this.changeRoles,
+      about: about ?? this.about,
+      avatarLink: avatarLink ?? this.avatarLink,
+      avatar: avatar ?? this.avatar,
+    );
+  }
 
   String? getUserId() {
     return userid;

@@ -143,13 +143,7 @@ class AppRouter {
     searchResultEventRoute: (context) {
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      // String? searchQuery = arguments['search_query'];
-      // String? categoryId = arguments['category_id'];
-      // String? status = arguments['status'];
-      // String? token = arguments['token'];
-      // PathRequestEvents? pathReq = arguments['path'];
       RequestFilteredEventModel? requestSearch = arguments['request_search'];
-      // debugPrint("cek ${requestSearch.toString()}");
       return MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -157,7 +151,9 @@ class AppRouter {
               ..add(
                 EventFetchData(
                     requestEvent: requestSearch!,
-                    pathRequest: PathRequestEvents.events),
+                    pathRequest: (requestSearch.isAllEvent)
+                        ? PathRequestEvents.events
+                        : PathRequestEvents.approvedEvents),
               ),
           ),
           BlocProvider(
@@ -165,8 +161,8 @@ class AppRouter {
           ),
         ],
         child: SearchResultEventsScreen(
-            // searchQuery: searchQuery ?? searchQuery!,
-            ),
+          searchValue: requestSearch!.search,
+        ),
       );
     },
     formProposeEventRoute: (context) {

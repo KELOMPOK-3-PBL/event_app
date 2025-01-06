@@ -301,14 +301,14 @@ class LoginScreenState extends State<LoginScreen>
                                     ),
                                   ],
                                 ),
-                                TextButton(
-                                  onPressed: () =>
-                                      _showForgotPasswordDialog(context),
-                                  child: const Text(
-                                    "Forgot Password?",
-                                    style: TextStyle(color: Color(0xff1886EA)),
-                                  ),
-                                ),
+                                // TextButton(
+                                //   onPressed: () =>
+                                //       _showForgotPasswordDialog(context),
+                                //   child: const Text(
+                                //     "Forgot Password?",
+                                //     style: TextStyle(color: Color(0xff1886EA)),
+                                //   ),
+                                // ),
                                 const SizedBox(height: 12.0),
                                 //! BLOC LISTENER for Button SIGN IN
                                 ElevatedButton(
@@ -408,23 +408,23 @@ class LoginScreenState extends State<LoginScreen>
     );
   }
 
-  void _showForgotPasswordDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Forgot Password?"),
-          content: const Text("Reset password functionality goes here."),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _showForgotPasswordDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: const Text("Forgot Password?"),
+  //         content: const Text("Reset password functionality goes here."),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //             child: const Text("OK"),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }

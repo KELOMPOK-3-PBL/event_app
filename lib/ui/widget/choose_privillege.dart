@@ -12,6 +12,8 @@ class PrivilegeDialog {
     if (roles.isEmpty) {
       return; // No roles to display
     }
+    roles.remove('Member');
+
     if (roles.length == 1) return _navigateToHome(context, roles[0]);
 
     showDialog(

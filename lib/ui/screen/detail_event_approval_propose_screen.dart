@@ -109,7 +109,6 @@ class _DetailEventApprovalProposeScreenContentState
       ('Revision Propose', 3),
       ('Approved', 5),
       ('Rejected', 4),
-      ('Completed', 6),
     ];
 
     return AlertDialog(

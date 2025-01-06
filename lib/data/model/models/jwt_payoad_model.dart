@@ -13,25 +13,12 @@ class JwtPayloadModel extends Equatable {
     required this.expiration,
   });
 
-  JwtPayloadModel copyWith({
-    String? userId,
-    List<String>? roles,
-    int? issuedAt,
-    int? expiration,
-  }) {
-    return JwtPayloadModel(
-      userId: userId ?? this.userId,
-      roles: roles ?? this.roles,
-      issuedAt: issuedAt ?? this.issuedAt,
-      expiration: expiration ?? this.expiration,
-    );
-  }
-
   // Factory method for decoding from a Map (e.g., from a decoded JSON)
   factory JwtPayloadModel.fromJson(Map<String, dynamic> json) {
     return JwtPayloadModel(
       userId: json['user_id'].toString(),
       // roles: List<String>.from(json['roles']),
+      // roles: List.from(json['roles']),
       roles: List.from(json['roles']),
       issuedAt: json['iat'],
       expiration: json['exp'],

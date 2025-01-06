@@ -19,7 +19,8 @@ class EventProvider {
         ..removeWhere((key, value) =>
             value == null); // Menghapus parameter yang bernilai null
 
-      debugPrint(queryParameters.toString());
+      // debugPrint(queryParameters.toString());
+      debugPrint(request.token.toString());
       // memperbarui path dan options bila permintaan untuk mengambil allEvents
       if (pathRequest == PathRequestEvents.events) {
         // set header untuk auth token
@@ -92,9 +93,8 @@ class EventProvider {
       }
 
       // debugPrint(data.toString());
-
-      dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
       dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$token";
+      dio.options.headers[HttpHeaders.authorizationHeader] = "Bearer $token";
 
       final Response rawResponse = await dio.post(
         event,
@@ -110,8 +110,8 @@ class EventProvider {
       return e.response!;
     } finally {
       // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
-      // dio.interceptors
-      //     .add(LogInterceptor(responseBody: true, requestBody: true));
+      dio.interceptors
+          .add(LogInterceptor(responseBody: true, requestBody: true));
     }
   }
 

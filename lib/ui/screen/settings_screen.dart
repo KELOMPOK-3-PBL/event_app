@@ -152,10 +152,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 // height: 300,
                 child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: roles!.length,
+                    itemCount: (roles!.contains('Member'))
+                        ? roles!.length - 1
+                        : roles!.length,
                     itemBuilder: (context, index) {
                       final role = roles![index];
-                      if (role != currentRole) {
+                      // Tidak ada change role ke member
+                      if (role != currentRole && role != 'Member') {
                         debugPrint(role);
                         return _buildListTile(
                           leadingIcon: UIconsPro.regularRounded.sign_in_alt,

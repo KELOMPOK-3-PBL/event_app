@@ -161,10 +161,7 @@ class AuthRepository {
             message: "Refresh token success",
             accessToken: newAccessToken,
             refreshToken: refreshToken,
-            data: data.copyWith(
-              issuedAt: newData.issuedAt,
-              expiration: newData.expiration,
-            ));
+            data: newData);
       }
     } catch (e) {
       //! Nanti buat catch mengembalikan Excemtion not found

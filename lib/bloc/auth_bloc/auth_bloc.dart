@@ -85,6 +85,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final AuthModel authData = await _authRepository.login(
           user.email, user.password, user.rememberMe);
       if (authData.status == 'success') {
+        if (authData.data!.roles.length == 1 &&
+            authData.data!.roles.contains('Member')) {
+          emit(AuthLoading());
+          return emit(AuthUnauthenticated(
+            message: "Member user can't login with this app",
+          ));
+        }
         emit(AuthAuthenticated(authData: authData));
         // emit(AuthLoginRequested(authData: authData));
       } else {

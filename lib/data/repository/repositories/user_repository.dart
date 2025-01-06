@@ -33,6 +33,8 @@ class UserRepository {
       final response =
           await userProvider.getUsersAPI(userId: userId, token: token);
       final data = response.data;
+      debugPrint(response.toString());
+
       if (response.statusCode == 200 && data["status"] == 'success') {
         final UsersModel userModel = UsersModel.fromJsonForSingle(json: data);
         // debugPrint('User Model: $userModel');

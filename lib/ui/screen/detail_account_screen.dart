@@ -224,6 +224,7 @@ class _HomeProfile extends State<DetailAccountScreen> {
                                     // Navigator.of(context).pop(
                                     //     selectedRoles); // Return updated roles
                                   }
+                                  currentRole = selectedRoles;
                                 },
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0,

@@ -156,7 +156,8 @@ class _HomeProposePageState extends State<HomeProposePage> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => SearchResultEventsScreen(
-                                searchQuery: searchQuery)),
+                                // searchQuery: searchQuery
+                                )),
                       );
                     },
                     onPressedFilter: () {

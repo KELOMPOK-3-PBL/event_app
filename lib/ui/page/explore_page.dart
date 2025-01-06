@@ -10,6 +10,7 @@ import '../section/explore_carousel_section.dart';
 import '../theme/ui_colors.dart';
 import '../widget/card_info.dart';
 import '../widget/explore_push_action.dart';
+import '../widget/filter_bottom_sheet.dart';
 import '../widget/search_widget.dart';
 import '../widget/show_error.dart';
 
@@ -116,12 +117,17 @@ class _HomeExplorePageState extends State<HomeExplorePage> {
         return CustomScrollView(
           controller: _scrollController,
           slivers: [
-            ExploreAppBar(username: username, currentRole: currentRole),
+            ExploreAppBar(
+              username: username,
+              currentRole: currentRole,
+              token: widget.token,
+            ),
             SliverToBoxAdapter(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  QuickCategorySection(),
+                  QuickCategorySection(
+                      token: widget.token, currentRole: currentRole),
                   CarouselSection(
                       currentRole: currentRole,
                       // eventData: listEventsCarousel ?? [],
@@ -193,10 +199,12 @@ class ExploreAppBar extends StatelessWidget {
     super.key,
     required this.username,
     required this.currentRole,
+    required this.token,
   });
 
   final String username;
   final String currentRole;
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -228,11 +236,40 @@ class ExploreAppBar extends StatelessWidget {
               label: 'Search Event ...',
               onSubmittedKeyboard: (searchQuery) {
                 Navigator.pushNamed(context, AppRouter.searchResultEventRoute,
-                    arguments: {'search_query': searchQuery});
+                    arguments: {
+                      // 'search_query': searchQuery,
+                      // 'token': token,
+                      'request_search': RequestFilteredEventModel(
+                          token: token, search: searchQuery)
+                    });
               },
-              onPressedFilter: () {
-                debugPrint('Tapped on FILTER ITEM-BUTTON');
+              onPressedFilter: () async {
+                RequestFilteredEventModel requestSearch;
+                requestSearch = await showModalBottomSheet(
+                  backgroundColor: UIColor.solidWhite,
+                  context: context,
+                  isScrollControlled: true,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(20)),
+                  ),
+                  builder: (_) {
+                    return FilterBottomSheet(
+                      token: token,
+                    );
+                  },
+                );
+                if (context.mounted) {
+                  Navigator.of(context)
+                      .pushNamed(AppRouter.searchResultEventRoute, arguments: {
+                    'request_search': requestSearch,
+                    'token': token
+                  });
+                }
+
+                debugPrint(requestSearch.toString());
               },
+              onChangedKeyboard: (_) {},
             ),
             expandedTitleScale: 1,
             // collapseMode: CollapseMode.pin,

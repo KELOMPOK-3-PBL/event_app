@@ -1,4 +1,5 @@
 import '../../bloc/bloc.dart';
+import '../../data/model/model.dart';
 import '../../ui/router/router.dart';
 import '../../ui/theme/ui_colors.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class QuickCategorySection extends StatelessWidget {
-  const QuickCategorySection({super.key});
+  const QuickCategorySection(
+      {super.key, required this.currentRole, required this.token});
+  final String currentRole;
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +34,25 @@ class QuickCategorySection extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
+                      // debugPrint(currentRole);
+                      // debugPrint(token);
                       Navigator.pushNamed(
-                          context, AppRouter.searchResultEventRoute,
-                          arguments: {
-                            "category_name": categoryData[index].categoryName
-                          });
+                        context,
+                        AppRouter.searchResultEventRoute,
+                        arguments: {
+                          'request_search': RequestFilteredEventModel(
+                            token: token,
+                            category: (currentRole == 'Member' ||
+                                    currentRole == 'Propose')
+                                ? categoryData[index].categoryName
+                                : null,
+                            status: (currentRole != 'Member' ||
+                                    currentRole != 'Propose')
+                                ? categoryData[index].categoryName
+                                : null,
+                          ),
+                        },
+                      );
                     },
                     child: Container(
                       // width: 90,

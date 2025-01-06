@@ -1,4 +1,5 @@
 import 'package:event_proposal_app/data/model/model.dart';
+import 'package:event_proposal_app/data/provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -142,10 +143,30 @@ class AppRouter {
     searchResultEventRoute: (context) {
       final Map<String, dynamic> arguments =
           ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-      String? searchQuery = arguments['search_query'];
-      String? categoryName = arguments['category_name'];
-      return SearchResultEventsScreen(
-        searchQuery: searchQuery ?? categoryName!,
+      // String? searchQuery = arguments['search_query'];
+      // String? categoryId = arguments['category_id'];
+      // String? status = arguments['status'];
+      // String? token = arguments['token'];
+      // PathRequestEvents? pathReq = arguments['path'];
+      RequestFilteredEventModel? requestSearch = arguments['request_search'];
+      // debugPrint("cek ${requestSearch.toString()}");
+      return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => EventBloc(authBloc: context.read<AuthBloc>())
+              ..add(
+                EventFetchData(
+                    requestEvent: requestSearch!,
+                    pathRequest: PathRequestEvents.events),
+              ),
+          ),
+          BlocProvider(
+            create: (context) => CategoryBloc()..add(CategoryReadData()),
+          ),
+        ],
+        child: SearchResultEventsScreen(
+            // searchQuery: searchQuery ?? searchQuery!,
+            ),
       );
     },
     formProposeEventRoute: (context) {

@@ -33,7 +33,7 @@ class _HomeProposeScreenState extends State<HomeProposeScreen> {
     final authState = context.read<AuthBloc>().state;
 
     if (authState is AuthAuthenticated) {
-      token = authState.authData.token!;
+      token = authState.authData.accessToken!;
       proposeUID = authState.authData.data!.userId.toString();
     } else {
       WidgetsBinding.instance.addPostFrameCallback((_) {

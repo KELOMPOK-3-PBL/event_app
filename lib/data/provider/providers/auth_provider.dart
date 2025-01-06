@@ -24,4 +24,23 @@ class AuthProvider {
       return e.response!;
     }
   }
+
+  Future<Response> refreshToken(String refreshToken) async {
+    try {
+      dio.options.headers[HttpHeaders.authorizationHeader] =
+          "Bearer $refreshToken";
+      dio.options.headers[HttpHeaders.cookieHeader] = "jwt=$refreshToken";
+      final Response rawResponse = await dio.post(
+        '/refresh_token.php',
+      );
+      // Gunakan logging untuk melihat apakah header Authorization dikirim dengan benar
+      // dio.interceptors
+      //     .add(LogInterceptor(responseBody: true, requestBody: true));
+      // debugPrint("Raw response: $rawResponse.toString()");
+      return rawResponse;
+    } on DioException catch (e) {
+      // debugPrint('Error response data: ${e.response}');
+      return e.response!;
+    }
+  }
 }

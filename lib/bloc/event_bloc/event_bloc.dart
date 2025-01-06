@@ -152,7 +152,9 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       final authState = authBloc.state;
       if (authState is AuthAuthenticated) {
         final updateResponse = await _eventRepository.updateEvent(
-            authState.authData.token!, event.eventData, authState.currentRole!);
+            authState.authData.accessToken!,
+            event.eventData,
+            authState.currentRole!);
 
         if (updateResponse['status'] == 'success') {
           emit(EventUpdated(message: updateResponse['message']));
@@ -175,7 +177,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
 
       if (authState is AuthAuthenticated) {
         final eventData = await _eventRepository.getEventByIDFromAPI(
-            token: authState.authData.token!, eventId: event.eventId);
+            token: authState.authData.accessToken!, eventId: event.eventId);
         if (eventData.status == 'success') {
           emit(EventLoaded(
               message: eventData.message, eventData: eventData.data!));
@@ -200,7 +202,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
     try {
       if (authState is AuthAuthenticated) {
         final deleteEvent = await _eventRepository.deleteEventFromAPI(
-            token: authState.authData.token!, eventId: event.eventID);
+            token: authState.authData.accessToken!, eventId: event.eventID);
         if (deleteEvent['status'] == 'success') {
           emit(EventDeleted(message: deleteEvent['message']));
         } else {

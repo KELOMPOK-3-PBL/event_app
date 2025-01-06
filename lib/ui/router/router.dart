@@ -105,7 +105,7 @@ class AppRouter {
       String? token;
       final authState = context.read<AuthBloc>().state;
       if (authState is AuthAuthenticated) {
-        token = authState.authData.token;
+        token = authState.authData.accessToken;
       }
 
       final Map<String, dynamic> arguments =

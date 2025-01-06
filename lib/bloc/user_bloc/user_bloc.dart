@@ -26,7 +26,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   Future<void> _onFetchUser(FetchUser event, Emitter<UserState> emit) async {
     final authState = authBloc.state;
     if (authState is AuthAuthenticated) {
-      final token = authState.authData.token;
+      final token = authState.authData.accessToken;
       if (state is UsersLoaded && event.isReload == false) {
         try {
           final currentState = state as UsersLoaded;
@@ -98,7 +98,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     final authState = authBloc.state;
     if (authState is AuthAuthenticated) {
       try {
-        final token = authState.authData.token;
+        final token = authState.authData.accessToken;
         final userData =
             await _userRepository.getUserByUID(event.userId, token!);
         // debugPrint(userData.toString());
@@ -124,7 +124,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       try {
         final updateResponse = await _userRepository.updateUserAPI(
           event.userData,
-          authState.authData.token!,
+          authState.authData.accessToken!,
           authState.currentRole!,
           authState.authData.data!.userId,
         );

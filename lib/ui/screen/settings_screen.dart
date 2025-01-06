@@ -36,7 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       currentRole = state.currentRole ?? '';
       roles = state.authData.data?.roles;
       userId = state.authData.data?.userId;
-      token = state.authData.token;
+      token = state.authData.accessToken;
       debugPrint('Current Role: ${state.currentRole.toString()}');
       currentRole = currentRole!;
       // if (roles!.length != 1) {

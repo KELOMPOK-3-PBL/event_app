@@ -43,7 +43,7 @@ class FormProposeEventState extends State<FormProposeEvent> {
     super.initState();
     final authState = context.read<AuthBloc>().state;
     if (authState is AuthAuthenticated) {
-      token = authState.authData.token!;
+      token = authState.authData.accessToken!;
     }
   }
 

@@ -31,7 +31,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     final authState = context.read<AuthBloc>().state;
 
     if (authState is AuthAuthenticated) {
-      token = authState.authData.token!;
+      token = authState.authData.accessToken!;
       adminUID = authState.authData.data!.userId.toString();
       // context
       //     .read<UserBloc>()

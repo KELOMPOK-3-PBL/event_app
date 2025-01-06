@@ -32,7 +32,7 @@ class _HomeSuperadminScreenState extends State<HomeSuperadminScreen> {
     final authState = context.read<AuthBloc>().state;
 
     if (authState is AuthAuthenticated) {
-      token = authState.authData.token!;
+      token = authState.authData.accessToken!;
       superadminUID = authState.authData.data!.userId.toString();
     } else {
       WidgetsBinding.instance.addPostFrameCallback((_) {

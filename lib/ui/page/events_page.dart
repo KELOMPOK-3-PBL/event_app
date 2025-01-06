@@ -43,7 +43,7 @@ class _HomeEventsPageState extends State<HomeEventsPage>
     // final roles = .authData.data?.roles;
     if (authState is AuthAuthenticated) {
       currentRole = authState.currentRole!;
-      token = authState.authData.token!;
+      token = authState.authData.accessToken!;
     }
     // token =
     //     (context.read<AuthBloc>().state as AuthAuthenticated).authData.token!;

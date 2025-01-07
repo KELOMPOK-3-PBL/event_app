@@ -78,7 +78,7 @@ class RequestFilteredEventModel extends Equatable {
       'date_from': dateFrom,
       'date_to': dateTo,
       'search': search,
-      'sortBy': sortBy,
+      'sort_by': sortBy,
       'sort_order': sortOrder,
     };
 

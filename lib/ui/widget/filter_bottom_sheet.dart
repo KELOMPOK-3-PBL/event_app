@@ -114,58 +114,66 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   }).toList(),
                 ),
               ),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
             BlocConsumer<CategoryBloc, CategoryState>(
-                listener: (context, state) {
-              if (state is CategoryLoaded) {
-                categories = state.categoryData.categories!
-                    .map((category) => category.categoryName)
-                    .toList();
-
-                // List.from(state.categoryData.categories!.toList());
-              }
-            }, builder: (context, state) {
-              if (state is CategoryLoaded) {
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: categories!.map((category) {
-                      return Container(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        child: ChoiceChip(
-                          selectedColor: UIColor.primary,
-                          backgroundColor: Colors.grey.shade200,
-                          showCheckmark: false,
-                          side: BorderSide(color: Colors.transparent),
-                          label: Text(
-                            category,
-                            style: TextStyle(
+              listener: (context, state) {
+                if (state is CategoryLoaded) {
+                  categories = state.categoryData.categories!
+                      .map((category) => category.categoryName)
+                      .toList();
+                }
+              },
+              builder: (context, state) {
+                if (state is CategoryLoaded) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: categories!.map((category) {
+                        return Container(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: ChoiceChip(
+                            selectedColor: UIColor.primary,
+                            backgroundColor: Colors.grey.shade200,
+                            showCheckmark: false,
+                            side: BorderSide(color: Colors.transparent),
+                            label: Text(
+                              category,
+                              style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 color: (selectedCategory == category)
                                     ? Colors.white
-                                    : Colors.black),
+                                    : Colors.black,
+                              ),
+                            ),
+                            selected: selectedCategory == category,
+                            onSelected: (selected) {
+                              setState(() {
+                                // Membatalkan jika kategori yang sama dipilih lagi
+                                selectedCategory =
+                                    (selectedCategory == category)
+                                        ? null
+                                        : category;
+                                requestSearch = requestSearch!.copyWith(
+                                  category: selectedCategory,
+                                );
+                              });
+                              debugPrint(
+                                  'Selected Category: $selectedCategory');
+                            },
                           ),
-                          selected: selectedCategory == category,
-                          onSelected: (selected) {
-                            setState(() {
-                              selectedCategory = selected ? category : null;
-                              requestSearch = requestSearch!
-                                  .copyWith(category: selectedCategory!);
-                            });
-                            // debugPrint(requestSearch.toString());
-                          },
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                );
-              }
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }
 
-              return SizedBox();
-            }),
+                return const SizedBox();
+              },
+            ),
+
             // const SizedBox(height: 16),
             // Time & Date
             // const Align(
@@ -269,9 +277,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   selected: sortOrderASC == true,
                   onSelected: (selected) {
                     setState(() {
-                      sortOrderASC = selected ? true : null;
-                      requestSearch!.copyWith(sortOrder: 'ASC');
+                      // Jika Ascending dipilih, Descending dinonaktifkan
+                      sortOrderASC = true;
+                      requestSearch = requestSearch!.copyWith(sortOrder: 'ASC');
                     });
+                    debugPrint('Sort Order: ASC');
                   },
                 ),
                 ChoiceChip(
@@ -290,13 +300,17 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   selected: sortOrderASC == false,
                   onSelected: (selected) {
                     setState(() {
-                      sortOrderASC = selected ? false : null;
-                      requestSearch!.copyWith(sortOrder: 'DESC');
+                      // Jika Descending dipilih, Ascending dinonaktifkan
+                      sortOrderASC = false;
+                      requestSearch =
+                          requestSearch!.copyWith(sortOrder: 'DESC');
                     });
+                    debugPrint('Sort Order: ${requestSearch!.sortOrder!}');
                   },
                 ),
               ],
             ),
+
             const SizedBox(height: 20),
             // Action Buttons
             Flex(

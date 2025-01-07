@@ -95,25 +95,30 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                         label: Text(
                           status,
                           style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              color: (selectedStatus == status)
-                                  ? Colors.white
-                                  : Colors.black),
+                            fontWeight: FontWeight.w400,
+                            color: (selectedStatus == status)
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
                         selected: selectedStatus == status,
                         onSelected: (selected) {
                           setState(() {
-                            selectedStatus = selected ? status : null;
-                            requestSearch = requestSearch!
-                                .copyWith(status: selectedStatus!);
+                            // Membatalkan jika status yang sama dipilih lagi
+                            selectedStatus =
+                                (selectedStatus == status) ? null : status;
+                            requestSearch = requestSearch!.copyWith(
+                              status: selectedStatus,
+                            );
                           });
-                          // debugPrint(requestSearch.toString());
+                          debugPrint('Selected Status: $selectedStatus');
                         },
                       ),
                     );
                   }).toList(),
                 ),
               ),
+
             // SizedBox(
             //   height: 10,
             // ),

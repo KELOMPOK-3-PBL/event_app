@@ -57,7 +57,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
     'Revision Propose',
     'Rejected',
     'Approved',
-    'Complete'
+    'Completed'
   ];
   final List<String> dates = ['Today', 'Tomorrow', 'This week'];
   final List<String> sortOptions = ['Started', 'Name', 'Published'];

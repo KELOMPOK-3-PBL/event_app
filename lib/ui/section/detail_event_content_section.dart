@@ -105,7 +105,7 @@ class AppBarDetailEvent extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20),
                           ),
-                          content: Text('Sure, wat to delete this event?'),
+                          content: Text('Sure, want to delete this event?'),
                           actions: [
                             TextButton(
                               onPressed: () {
@@ -340,9 +340,11 @@ class OrganizerSection extends StatelessWidget {
         // tileColor: UIColor.solidWhite,
         children: [
           CircleAvatar(
-            // backgroundImage: Image.network(data.),
+            backgroundImage: NetworkImage(data.proposeAvatar ?? ''),
             backgroundColor: UIColor.primary,
-            child: Icon(UIconsPro.regularRounded.user, color: Colors.white),
+            child: (data.proposeAvatar == null)
+                ? Icon(UIconsPro.regularRounded.user, color: Colors.white)
+                : null,
           ),
           SizedBox(
             width: 10,
@@ -352,7 +354,7 @@ class OrganizerSection extends StatelessWidget {
             children: [
               Text(
                 // 'UKM PCC',
-                data.proposeUsername!,
+                data.proposeUsername ?? 'Unknown User',
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
               Text('Organizer', style: TextStyle(color: Colors.grey)),

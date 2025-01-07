@@ -38,7 +38,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
       selectedStatus = widget.requestEvent!.status;
       selectedCategory = widget.requestEvent!.category;
       selectedDate = widget.requestEvent!.dateFrom;
-      sortBy = widget.requestEvent!.sortBy;
+      if (widget.requestEvent!.sortBy == 'date_start') {
+        sortBy = 'Started';
+      } else if (widget.requestEvent!.sortBy == 'title') {
+        sortBy = 'Name';
+      } else if (widget.requestEvent!.sortBy == 'date_add') {
+        sortBy = 'Published';
+      }
       sortOrderASC = (widget.requestEvent!.sortOrder == 'ASC');
       requestSearch = widget.requestEvent;
     } else {
@@ -248,20 +254,37 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                   label: Text(
                     option,
                     style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color:
-                            (sortBy == option) ? Colors.white : Colors.black),
+                      fontWeight: FontWeight.w400,
+                      color: (sortBy == option) ? Colors.white : Colors.black,
+                    ),
                   ),
                   selected: sortBy == option,
                   onSelected: (selected) {
                     setState(() {
-                      sortBy = selected ? option : null;
-                      requestSearch!.copyWith(sortBy: sortBy);
+                      if (sortBy == option) {
+                        // Jika item yang dipilih sama, unselect
+                        sortBy = null;
+                        requestSearch = requestSearch!.copyWith(sortBy: null);
+                      } else {
+                        // Pilih item baru
+                        sortBy = option;
+                        String? sort;
+                        if (option == 'Started') {
+                          sort = 'date_start';
+                        } else if (option == 'Name') {
+                          sort = 'title';
+                        } else if (option == 'Published') {
+                          sort = 'date_add';
+                        }
+                        requestSearch = requestSearch!.copyWith(sortBy: sort);
+                      }
                     });
+                    debugPrint('Selected Sort: ${requestSearch!.sortBy}');
                   },
                 );
               }).toList(),
             ),
+
             // const SizedBox(height: 8),
             Wrap(
               spacing: 10,

@@ -146,25 +146,26 @@ class _HomeProposePageState extends State<HomeProposePage> {
             Expanded(
                 child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-                  child: SearchWidget(
-                    label: 'Search Event ...',
-                    onSubmittedKeyboard: (searchQuery) {
-                      //! pencarian approval menu
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SearchResultEventsScreen(
-                                searchValue: searchQuery)),
-                      );
-                    },
-                    onPressedFilter: () {
-                      // Handle the button tap action here
-                      debugPrint('Tapped on FILTER ITEM-BUTTON');
-                    },
-                  ), //! memanggil model => search,
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                //   child: SearchWidget(
+                //     label: 'Search Event ...',
+                //     onSubmittedKeyboard: (searchQuery) {
+                //       //! pencarian approval menu
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => SearchResultEventsScreen(
+                //                 searchValue: searchQuery)),
+                //       );
+                //     },
+                //     onPressedFilter: () {
+                //       // Handle the button tap action here
+                //       debugPrint('Tapped on FILTER ITEM-BUTTON');
+                //     },
+                //   ), //! memanggil model => search,
+                // ),
+                SizedBox(height: 20),
                 Expanded(
                   child: BlocBuilder<EventBloc, EventState>(
                     builder: (context, state) {
@@ -235,6 +236,7 @@ class _HomeProposePageState extends State<HomeProposePage> {
                     },
                   ),
                 ),
+                SizedBox(height: 10),
               ],
             ))
           ],

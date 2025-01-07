@@ -27,6 +27,7 @@ class _SearchResultEventsScreenState extends State<SearchResultEventsScreen> {
   RequestFilteredEventModel? requestFilteredEvent;
   String? currentRole;
   String? token;
+  String route = AppRouter.detailEventRoute;
   bool isSearching = false;
 
   @override
@@ -37,6 +38,9 @@ class _SearchResultEventsScreenState extends State<SearchResultEventsScreen> {
     if (authState is AuthAuthenticated) {
       currentRole = authState.currentRole;
       token = authState.authData.accessToken;
+      if (currentRole == 'Admin' || currentRole == 'Superadmin') {
+        route = AppRouter.detailEventApprovalProposeRoute;
+      }
     }
   }
 
@@ -201,12 +205,18 @@ class _SearchResultEventsScreenState extends State<SearchResultEventsScreen> {
                                       const EdgeInsets.fromLTRB(20, 0, 20, 8),
                                   child: GestureDetector(
                                     onTap: () {
+                                      debugPrint(currentRole);
                                       Navigator.pushNamed(
                                         context,
-                                        AppRouter.detailEventRoute,
+                                        // (currentRole != 'Admin' ||
+                                        //         currentRole != 'Superadmin')
+                                        //     ? AppRouter.detailEventRoute
+                                        //     : AppRouter
+                                        //         .detailEventApprovalProposeRoute,
+                                        route,
                                         arguments: {
                                           'event_data': events[index],
-                                          'token': token,
+                                          'current_role': currentRole,
                                         },
                                       );
                                     },

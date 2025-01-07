@@ -15,6 +15,7 @@ class InvitedDialog extends StatefulWidget {
 }
 
 class _InvitedDialogState extends State<InvitedDialog> {
+  final ScrollController _scrollController = ScrollController();
   List<int> inviteUsersId = [];
   List<UserDataModel> invitedPersons = [];
   List<UserDataModel> availablePersons = [];
@@ -22,6 +23,7 @@ class _InvitedDialogState extends State<InvitedDialog> {
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
 
     // Cek apakah invitedPersons null
     final invitedPersonsList = widget.eventData.invitedPersons ?? [];
@@ -41,6 +43,32 @@ class _InvitedDialogState extends State<InvitedDialog> {
       // } else {
       //   debugPrint('Invalid person data: $person');
       // }
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
+  }
+
+  void _onScroll() {
+    if (_isBottom &&
+        !(context.read<UserBloc>().state as UsersLoaded).hasReachedMax) {
+      //! mengatasi perubahan request ketika di scroll
+      // mengambil request yang sudah diubah current statenya
+      // requestFilteredEvent =
+      //     (context.read<EventBloc>().state as EventLoaded).requestEvent;
+      // requestEvent.copyWith();
+      context.read<UserBloc>().add(
+            FetchUser(
+                // searchUser: searchUser,
+                // sort: sort,
+                // order: order,
+                // role: role,
+                ),
+          );
     }
   }
 
@@ -97,7 +125,7 @@ class _InvitedDialogState extends State<InvitedDialog> {
                   const SizedBox(height: 16),
                   Expanded(
                     child: ListView(
-                      // controller: ,
+                      controller: _scrollController,
                       shrinkWrap: true,
                       children: [
                         const Text('Invited',

@@ -118,28 +118,29 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
             Expanded(
                 child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-                  child: SearchWidget(
-                    label: 'Search Event ...',
-                    onSubmittedKeyboard: (searchQuery) {
-                      Navigator.pushNamed(
-                          context, AppRouter.searchResultEventRoute,
-                          arguments: {'search_query': searchQuery});
-                      //! pencarian approval menu
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => SearchResultEventsScreen(
-                      //           searchQuery: searchQuery)),
-                      // );
-                    },
-                    onPressedFilter: () {
-                      // Handle the button tap action here
-                      debugPrint('Tapped on FILTER ITEM-BUTTON');
-                    },
-                  ), //! memanggil model => search,
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                //   child: SearchWidget(
+                //     label: 'Search Event ...',
+                //     onSubmittedKeyboard: (searchQuery) {
+                //       Navigator.pushNamed(
+                //           context, AppRouter.searchResultEventRoute,
+                //           arguments: {'search_query': searchQuery});
+                //       //! pencarian approval menu
+                //       // Navigator.push(
+                //       //   context,
+                //       //   MaterialPageRoute(
+                //       //       builder: (context) => SearchResultEventsScreen(
+                //       //           searchQuery: searchQuery)),
+                //       // );
+                //     },
+                //     onPressedFilter: () {
+                //       // Handle the button tap action here
+                //       debugPrint('Tapped on FILTER ITEM-BUTTON');
+                //     },
+                //   ), //! memanggil model => search,
+                // ),
+                SizedBox(height: 20),
                 Expanded(
                   child: BlocBuilder<EventBloc, EventState>(
                     builder: (context, state) {
@@ -214,6 +215,7 @@ class _HomeApprovalPageState extends State<HomeApprovalPage> {
                     },
                   ),
                 ),
+                SizedBox(height: 10),
               ],
             ))
           ],

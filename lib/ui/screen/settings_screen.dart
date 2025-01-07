@@ -1,4 +1,3 @@
-// Suggested code may be subject to a license. Learn more: ~LicenseLog:3100013983.
 import 'package:event_proposal_app/ui/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +5,7 @@ import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/auth_bloc/auth_bloc.dart';
 import '../theme/ui_colors.dart';
+import 'help_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   // final List<String> roles;
@@ -106,44 +106,44 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             children: [
               const SizedBox(height: 20.0),
-              _buildSectionTitle(title: 'Account Settings'),
-              _buildListTile(
-                leadingIcon: UIconsPro.solidRounded.user,
-                title: 'Edit Profile',
-                trailingIcon: UIconsPro.solidRounded.angle_small_right,
-                onTap: () {
-                  // Menunggu state di proses
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    // Setelah logout, arahkan pengguna ke halaman login
-                    Navigator.of(context).pushNamed(
-                      AppRouter.editProfile,
-                      arguments: {
-                        'token': token,
-                        'user_id': userId,
-                      },
-                    );
-                  });
-                },
-              ),
-              const SizedBox(height: 16.0),
+              // _buildSectionTitle(title: 'Account Settings'),
+              // _buildListTile(
+              //   leadingIcon: UIconsPro.solidRounded.user,
+              //   title: 'Edit Profile',
+              //   trailingIcon: UIconsPro.solidRounded.angle_small_right,
+              //   onTap: () {
+              //     // Menunggu state di proses
+              //     WidgetsBinding.instance.addPostFrameCallback((_) {
+              //       // Setelah logout, arahkan pengguna ke halaman login
+              //       Navigator.of(context).pushNamed(
+              //         AppRouter.editProfile,
+              //         arguments: {
+              //           'token': token,
+              //           'user_id': userId,
+              //         },
+              //       );
+              //     });
+              //   },
+              // ),
+              // const SizedBox(height: 16.0),
               _buildSectionTitle(title: 'Preferences'),
-              _buildListTile(
-                leadingIcon: UIconsPro.solidRounded.notebook,
-                title: 'About',
-                trailingIcon: UIconsPro.solidRounded.angle_small_right,
-                onTap: () {},
-              ),
+              // _buildListTile(
+              //   leadingIcon: UIconsPro.solidRounded.notebook,
+              //   title: 'About',
+              //   trailingIcon: UIconsPro.solidRounded.angle_small_right,
+              //   onTap: () {},
+              // ),
               _buildListTile(
                 leadingIcon: UIconsPro.solidRounded.interrogation,
                 title: 'Help',
                 trailingIcon: UIconsPro.solidRounded.angle_small_right,
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const HelpScreen(),
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const HelpScreen(),
+                    ),
+                  );
                 },
               ),
               Container(

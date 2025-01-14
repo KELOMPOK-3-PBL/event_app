@@ -2,7 +2,7 @@ import 'package:event_proposal_app/data/model/model.dart';
 import 'package:event_proposal_app/ui/theme/ui_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uicons_pro/uicons_pro.dart';
+// import 'package:uicons_pro/uicons_pro.dart';
 
 import '../../bloc/user_bloc/user_bloc.dart';
 import '../router/router.dart';
@@ -83,51 +83,52 @@ class _HomeAccountsPageState extends State<HomeAccountsPage> {
           Expanded(
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
-                  child: SizedBox(
-                    height: 45,
-                    child: TextField(
-                      textInputAction: TextInputAction.search,
-                      // controller: _searchController,
-                      maxLines: 1,
-                      minLines: 1,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
-                        ),
-                        isDense: true,
-                        alignLabelWithHint: true,
-                        hintText: 'Search account...',
-                        contentPadding:
-                            const EdgeInsets.symmetric(vertical: 10.0),
-                        hintStyle: const TextStyle(
-                            color: UIColor.typoGray, fontSize: 14),
-                        filled: true,
-                        fillColor: UIColor.solidWhite,
-                        prefixIcon: Icon(
-                          UIconsPro.regularRounded.search,
-                          color: UIColor.typoBlack,
-                          size: 18,
-                        ),
-                        suffixIcon: Icon(
-                          UIconsPro.regularRounded.settings_sliders,
-                          color: UIColor.typoBlack,
-                          size: 18,
-                        ),
-                      ),
-                      onSubmitted: (searchQuery) {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) =>
-                        //           SearchAccountResultScreen(searchQuery: searchQuery)),
-                        // );
-                      },
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+                //   child: SizedBox(
+                //     height: 45,
+                //     child: TextField(
+                //       textInputAction: TextInputAction.search,
+                //       // controller: _searchController,
+                //       maxLines: 1,
+                //       minLines: 1,
+                //       decoration: InputDecoration(
+                //         border: OutlineInputBorder(
+                //           borderRadius: BorderRadius.circular(10),
+                //           borderSide: BorderSide.none,
+                //         ),
+                //         isDense: true,
+                //         alignLabelWithHint: true,
+                //         hintText: 'Search account...',
+                //         contentPadding:
+                //             const EdgeInsets.symmetric(vertical: 10.0),
+                //         hintStyle: const TextStyle(
+                //             color: UIColor.typoGray, fontSize: 14),
+                //         filled: true,
+                //         fillColor: UIColor.solidWhite,
+                //         prefixIcon: Icon(
+                //           UIconsPro.regularRounded.search,
+                //           color: UIColor.typoBlack,
+                //           size: 18,
+                //         ),
+                //         suffixIcon: Icon(
+                //           UIconsPro.regularRounded.settings_sliders,
+                //           color: UIColor.typoBlack,
+                //           size: 18,
+                //         ),
+                //       ),
+                //       onSubmitted: (searchQuery) {
+                //         // Navigator.push(
+                //         //   context,
+                //         //   MaterialPageRoute(
+                //         //       builder: (context) =>
+                //         //           SearchAccountResultScreen(searchQuery: searchQuery)),
+                //         // );
+                //       },
+                //     ),
+                //   ),
+                // ),
+                SizedBox(height: 10),
                 Expanded(
                   child: BlocConsumer<UserBloc, UserState>(
                     listener: (context, state) {

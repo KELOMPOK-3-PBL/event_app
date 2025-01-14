@@ -85,7 +85,9 @@ class AppBarDetailEvent extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverAppBar(
       actions: [
-        if (currentRole == 'Propose' || currentRole == 'Superadmin')
+        if (currentRole == 'Propose'
+            //  || currentRole == 'Superadmin'
+            )
           Container(
             margin: EdgeInsets.only(right: 6),
             child: IconButton(

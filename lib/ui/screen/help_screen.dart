@@ -266,10 +266,10 @@ class HelpScreen extends StatefulWidget {
   const HelpScreen({super.key});
 
   @override
-  _HelpScreenState createState() => _HelpScreenState();
+  HelpScreenState createState() => HelpScreenState();
 }
 
-class _HelpScreenState extends State<HelpScreen> {
+class HelpScreenState extends State<HelpScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<HelpItem> _allHelpItems = [];
   List<HelpItem> _filteredHelpItems = [];

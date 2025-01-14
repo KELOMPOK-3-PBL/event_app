@@ -5,7 +5,7 @@ import '../../bloc/bloc.dart';
 
 import '../router/router.dart';
 import '../widget/event_card_widget.dart';
-import '../widget/search_widget.dart';
+// import '../widget/search_widget.dart';
 import '../widget/show_error.dart';
 import '../theme/ui_colors.dart';
 
